@@ -1,0 +1,62 @@
+[Global]
+CurrentProject=MagicJNILib.vpj
+[ProjectDates]
+MagicJNILib.vpj=20110509132508230
+[ActiveConfig]
+MagicJNILib.vpj=Debug
+[TreeExpansion2]
+- MagicJNILib.vpj
+  - Source Files
+    - gl_code.cpp
+    - glHelpers.cpp
+    - glHelpers.h
+  - Header Files
+  + Resource Files
+  + Bitmaps
+  + Other Files
+    - Android.mk
+scroll:0
+[State]
+SCREEN: 1280 800 100 100 960 550 0 0 M 0 0 0 0 1008 618 0
+CWD: ..\jni
+BUFFER: BN="D:\android-ndk\platforms\android-8\arch-arm\usr\include\jni.h"
+BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=1 ST=0 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=1049184 TL=0 MLL=0 ASE=0 LNL=5 LCF=2 CAPS=0 E=0 ESBU2=-1 CL="" SC="" SCE= SCU=
+VIEW: LN=.0 CL=1 LE=0 CX=1 CY=0 WI=5 BI=33 HT=0 HN=0 HF=0 HC=4
+BUFFER: BN="glHelpers.cpp"
+BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=1 ST=0 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=1180264 TL=0 MLL=0 ASE=0 LNL=5 LCF=2 CAPS=0 E=0 ESBU2=-1 CL="" SC="" SCE= SCU=
+VIEW: LN=.318 CL=40 LE=0 CX=40 CY=8 WI=5 BI=23 HT=0 HN=0 HF=0 HC=4
+BUFFER: BN="gl_code.cpp"
+BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=1 ST=0 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=1180264 TL=0 MLL=0 ASE=0 LNL=5 LCF=2 CAPS=0 E=0 ESBU2=-1 CL="" SC="" SCE= SCU=
+VIEW: LN=.4480 CL=45 LE=0 CX=45 CY=8 WI=5 BI=24 HT=0 HN=0 HF=0 HC=4
+BUFFER: BN="glHelpers.h"
+BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=1 ST=0 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=1179752 TL=0 MLL=0 ASE=0 LNL=5 LCF=2 CAPS=0 E=0 ESBU2=-1 CL="" SC="" SCE= SCU=
+VIEW: LN=.1348 CL=5 LE=0 CX=5 CY=15 WI=5 BI=34 HT=0 HN=0 HF=0 HC=4
+WINDOW: 80 100 781 432 -1 -1 N  WF=0 WT=2 ",,,"
+BUFFER: BN="D:\android-ndk\platforms\android-8\arch-arm\usr\include\jni.h"
+VIEW: LN=.0 CL=1 LE=0 CX=7 CY=0 WI=241 BI=33 HT=0 HN=0 HF=0 HC=4
+WINDOW: 120 150 781 432 -1 -1 N  WF=0 WT=4 ",,,"
+BUFFER: BN="glHelpers.h"
+VIEW: LN=.1348 CL=5 LE=0 CX=11 CY=15 WI=428 BI=34 HT=0 HN=0 HF=0 HC=4
+WINDOW: 100 125 781 432 -1 -1 N  WF=0 WT=3 ",,,"
+BUFFER: BN="glHelpers.cpp"
+VIEW: LN=.318 CL=40 LE=0 CX=46 CY=8 WI=421 BI=23 HT=0 HN=0 HF=0 HC=4
+WINDOW: 0 0 781 247 -1 -1 M  WF=0 WT=1 ",,,"
+BUFFER: BN="gl_code.cpp"
+VIEW: LN=.2287 CL=18 LE=0 CX=24 CY=19 WI=349 BI=24 HT=0 HN=0 HF=0 HC=4
+FILEHIST: 9
+\andoid\cocos2d-iphone-c175108\cocos2d\CCSpriteBatchNode.h
+\andoid\cocos2d-iphone-c175108\cocos2d\CCSpriteBatchNode.m
+\nginx\src\core\ngx_resolver.c
+D:\android-ndk\platforms\android-8\arch-arm\usr\include\GLES2\gl2.h
+D:\android-ndk\platforms\android-8\arch-arm\usr\include\GLES2\gl2ext.h
+D:\android-ndk\platforms\android-8\arch-arm\usr\include\jni.h
+gl_code.cpp
+glHelpers.h
+glHelpers.cpp
+DEBUG: 0 0 0 0 3 0 gdb
+printf
+strcpy
+std::*
+DEBUG2: 0
+PROJECT_CACHE: 0
+TBCLASS: 0 0
