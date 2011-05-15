@@ -27,8 +27,6 @@
 #define PI (3.141592)
 #define PI_OVER_180 (PI/180.0)
 
-typedef int BOOL;
-
 
 #ifdef __cplusplus
 extern "C" {
