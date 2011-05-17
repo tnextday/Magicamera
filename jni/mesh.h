@@ -1,7 +1,7 @@
 
 #include <GLES2/gl2.h>
 
-enum BufferType = {
+enum BufferType {
 	BT_VertexBuffer = 0,
 	BT_TexCoordBuffer,
 	BT_IndexBuffer
@@ -22,8 +22,8 @@ private:
 	GLfloat*	mTexCoordBuffer;
 	GLushort*	mIndexBuffer;
 
-	GLuint		gvPositionHandle;
-	GLuint		maPositionHandle;
+	GLuint		positionLoc;
+	GLuint		texCoordLoc;
 	
 	GLuint		m_vboIds[VBO_Ids_Num];
 
@@ -54,8 +54,8 @@ public:
 	int MW() const { return mW; }
 	int MH() const { return mH; }
 	int IndexCount() const { return mIndexCount; }
-	void setPositionHandle(GLuint val) { gvPositionHandle = val; }
-	void setPositionHandle(GLuint val) { maPositionHandle = val; }
+	void setPositionLoc(GLuint val) { positionLoc = val; }
+	void setTexCoordLoc(GLuint val) { texCoordLoc = val; }
 
 	GLuint getElementBufferObjectId() const { return m_vboIds[VOB_Element_Idx]; }
 	GLuint getTexCoordBufferId() const { return m_vboIds[VBO_TexCoord_Idx]; }

@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "mesh.h"
 #include "glutils.h"
@@ -76,7 +79,7 @@ void Mesh::set( int i, int j, float x, float y, float z, float u, float v )
 	if(i>=mW || j>=mH || i< 0 || j < 0)
 		LOGE("Mesh::set error");
 	setVertex(i,j,x,y,z);
-	setVertex(i,j,u,v);
+	setTexCoord(i,j,u,v);
 }
 
 void Mesh::setTexCoord( int i, int j, float u, float v )
@@ -99,15 +102,15 @@ bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
 	switch(bt){
 	case BT_IndexBuffer:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW)
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW);
 		break;
 	case BT_VertexBuffer:
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-		glBufferData(GL_ARRAY_BUFFER, mW*mH*3*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW)
+		glBufferData(GL_ARRAY_BUFFER, mW*mH*3*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
 		break;
 	case BT_TexCoordBuffer:
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-		glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW)
+		glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
 		break;
 	}
 }
@@ -131,19 +134,19 @@ bool Mesh::createBufferObjects()
 
 void Mesh::draw()
 {
-	glEnableVertexAttribArray(gvPositionHandle);
-	glEnableVertexAttribArray(maPositionHandle);
+	glEnableVertexAttribArray(positionLoc);
+	glEnableVertexAttribArray(texCoordLoc);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-	glVertexAttribPointer(gvPositionHandle, 3, GL_INT, GL_FALSE, 0, NULL);
+	glVertexAttribPointer(positionLoc, 3, GL_INT, GL_FALSE, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-	glVertexAttribPointer(maPositionHandle, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+	glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
 	glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
 	
-	glDisableVertexAttribArray(gvPositionHandle);
-	glDisableVertexAttribArray(maPositionHandle);
+	glDisableVertexAttribArray(positionLoc);
+	glDisableVertexAttribArray(texCoordLoc);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

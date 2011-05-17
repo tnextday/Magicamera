@@ -1,6 +1,5 @@
 
-#include "Texture.h"
-
+#include "texture.h"
 
 
 Texture::Texture()
@@ -45,7 +44,7 @@ Texture::Texture( const unsigned char *buffer, uint32_t len, uint32_t req_format
 		default:
 			dataFormat = GL_RGBA;
 	}
-	uploadImageData(pixmap->pixels, pixmap->width, pixmap->height, dataFormat);
+	uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, dataFormat);
 }
 
 Texture::Texture( char* texFilePath )
@@ -58,7 +57,7 @@ Texture::~Texture()
 {
 	GLuint texID[1];
 	texID[0] = m_TexHandle;
-	glDeleteTextures(1, m_TexHandle);
+	glDeleteTextures(1, texID);
 }
 
 void Texture::bind()
@@ -86,7 +85,7 @@ void Texture::setFilter( GLfloat min /*= GL_LINEAR*/, GLfloat mag /*= GL_LINEAR*
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-void Texture::uploadImageData( char* data, int width, int height, GLenum dataFormat )
+void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum dataFormat )
 {
 	bind();
 	m_Width = width;

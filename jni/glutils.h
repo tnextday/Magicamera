@@ -13,8 +13,8 @@
 extern "C" {
 #endif
 
-static void printGLString(const char *name, GLenum s);
-static void checkGlError(const char* op);
+void printGLString(const char *name, GLenum s);
+void checkGlError(const char* op);
 GLuint loadShader(GLenum shaderType, const char* pSource);
 GLuint createProgram(const char* pVertexSource, const char* pFragmentSource);
 

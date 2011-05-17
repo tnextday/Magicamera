@@ -20,7 +20,7 @@ public:
 	void bind(int unit);
 	void setWrap(GLfloat wrap_s = GL_REPEAT, GLfloat wrap_t = GL_REPEAT);
 	void setFilter(GLfloat min = GL_LINEAR, GLfloat mag = GL_LINEAR);
-	void uploadImageData(char* data, int width, int height, GLenum dataFormat);
+	void uploadImageData(GLubyte* data, int width, int height, GLenum dataFormat);
 	GLuint createGLHandle();
 
 private:
