@@ -1,8 +1,8 @@
 #include <jni.h>
 
-#include "glengine.h"
+#include "magicengine.h"
 
-GLEngine glEngine;
+MagicEngine g_MagicEngine;
 
 extern "C" {
 	JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height);
@@ -11,10 +11,10 @@ extern "C" {
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
-	glEngine.setupGraphics(width, height);
+	g_MagicEngine.setupGraphics(width, height);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj)
 {
-	glEngine.renderFrame();
+	g_MagicEngine.renderFrame();
 }

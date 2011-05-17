@@ -3,7 +3,7 @@
 
 #include <GLES2/gl2.h>
 
-class GLEngine{
+class MagicEngine{
 	GLuint gProgram;
 	GLuint gvPositionHandle;
 	GLuint maPositionHandle;
@@ -11,8 +11,8 @@ class GLEngine{
 	GLuint muMVPMatrixHandle;
 
 public:
-	GLEngine();
-	~GLEngine();
+	MagicEngine();
+	~MagicEngine();
 
 	bool setupGraphics(int w, int h) ;
 	void renderFrame();

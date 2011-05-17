@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "glengine.h"
+#include "magicengine.h"
 #include "glutils.h"
 
 
@@ -30,18 +30,18 @@ static const char gFragmentShader[] =
 
 
 
-GLEngine::GLEngine()
+MagicEngine::MagicEngine()
 {
 
 }
 
-GLEngine::~GLEngine()
+MagicEngine::~MagicEngine()
 {
 
 }
 
 
-bool GLEngine::setupGraphics(int w, int h) {
+bool MagicEngine::setupGraphics(int w, int h) {
 	printGLString("Version", GL_VERSION);
 	printGLString("Vendor", GL_VENDOR);
 	printGLString("Renderer", GL_RENDERER);
@@ -82,7 +82,7 @@ bool GLEngine::setupGraphics(int w, int h) {
 const GLfloat gTriangleVertices[] = { 0.0f, 0.5f, -0.5f, -0.5f,
 0.5f, -0.5f };
 
-void GLEngine::renderFrame() {
+void MagicEngine::renderFrame() {
 	static float grey;
 	grey += 0.01f;
 	if (grey > 1.0f) {

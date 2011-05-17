@@ -6,7 +6,7 @@ LOCAL_MODULE    := libmagicjni
 LOCAL_CFLAGS    := -Werror
 
 LOCAL_SRC_FILES := jni_main.cpp \
-			glengine.cpp \
+			magicengine.cpp \
 			glHelpers.cpp \
 			glutils.cpp \
 			mesh.cpp \
