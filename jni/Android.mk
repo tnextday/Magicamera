@@ -5,7 +5,8 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := libmagicjni
 LOCAL_CFLAGS    := -Werror
 
-LOCAL_SRC_FILES := gl_code.cpp \
+LOCAL_SRC_FILES := jni_main.cpp \
+			glengine.cpp \
 			glHelpers.cpp \
 			glutils.cpp \
 			mesh.cpp \
