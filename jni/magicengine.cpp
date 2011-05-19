@@ -32,12 +32,15 @@ static const char gFragmentShader[] =
 
 MagicEngine::MagicEngine()
 {
-
+	m_Mesh = NULL;
 }
 
 MagicEngine::~MagicEngine()
 {
-
+	if (m_Mesh){
+		delete m_Mesh;
+		m_Mesh = NULL;
+	}
 }
 
 
@@ -74,6 +77,9 @@ bool MagicEngine::setupGraphics(int w, int h) {
 		return false;
 	}
 
+	m_ViewWidth = w;
+	m_ViewHeight = h;
+
 	glViewport(0, 0, w, h);
 	checkGlError("glViewport");
 	return true;
@@ -102,4 +108,16 @@ void MagicEngine::renderFrame() {
 	checkGlError("glEnableVertexAttribArray");
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	checkGlError("glDrawArrays");
+}
+
+void MagicEngine::updatePreviewTex( char* data)
+{
+	m_PreviewTex.uploadImageData((GLubyte*)data);
+}
+
+void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ )
+{
+	m_PreviewTex.setSize(w, h);
+	m_PreviewTex.setImageFormat(imageFormat);
+	m_Mesh = new Mesh();
 }

@@ -85,14 +85,19 @@ void Texture::setFilter( GLfloat min /*= GL_LINEAR*/, GLfloat mag /*= GL_LINEAR*
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum dataFormat )
+void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum imageFormat )
 {
 	bind();
 	m_Width = width;
 	m_Height = height;
-	glTexImage2D(GL_TEXTURE_2D, 0, dataFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+	m_imageFormat = imageFormat;
+	glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
 }
 
+void Texture::uploadImageData( GLubyte* data )
+{
+	uploadImageData(data, m_Width, m_Height, m_imageFormat);
+}
 GLuint Texture::createGLHandle()
 {
 	GLuint texID[1];
