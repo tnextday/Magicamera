@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MagicEngineView"/>
+        <activity android:name=".GL20SurfaceView"/>
 
     </application>
 </manifest>

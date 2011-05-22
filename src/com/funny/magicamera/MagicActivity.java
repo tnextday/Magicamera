@@ -1,6 +1,9 @@
 package com.funny.magicamera;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 
 public class MagicActivity extends Activity {
@@ -11,10 +14,21 @@ public class MagicActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mView = new MagicEngineView(getApplication());
-        setContentView(mView);
+        if (detectOpenGLES20()){
+            mView = new MagicEngineView(getApplication());
+            setContentView(mView);
+        } else{
+            //TODO unsupport
+        }
+
     }
 
+    private boolean detectOpenGLES20() {
+        ActivityManager am =
+            (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+        return (info.reqGlEsVersion >= 0x20000);
+    }
 
     @Override
     protected void onPause() {
