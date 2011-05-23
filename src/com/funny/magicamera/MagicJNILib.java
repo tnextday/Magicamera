@@ -11,4 +11,10 @@ public class MagicJNILib {
     */
     public static native void init(int width, int height);
     public static native void step();
+    public static native void setPreviewInfo(int width, int height);
+    public static native void uploadPreviewData(byte[] buffer);
+    public static native boolean onTouchDown(float x, float y);
+    public static native boolean onTouchDrag(float x, float y);
+    public static native boolean onTouchUp(float x, float y);
+
 }

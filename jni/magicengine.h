@@ -3,6 +3,8 @@
 
 #include <GLES2/gl2.h>
 
+const static int MESH_WIDTH = 20;
+
 class MagicEngine{
 	GLuint gProgram;
 	GLuint gvPositionHandle;
@@ -25,6 +27,10 @@ public:
 
 	void updatePreviewTex(char* data);
 	void setPreviewInfo(int w, int h, int imageFormat = GL_RGB565);
+
+	bool onTouchDown(float x, float y);
+	bool onTouchDrag(float x, float y);
+	bool onTouchUp(float x, float y);
 };
 
 

@@ -65,5 +65,5 @@ public:
 	GLfloat* VertexBuffer() const { return mVertexBuffer; }
 
 private:
-	void generateDefault();
+	void generateDefaultTexCoord();
 };

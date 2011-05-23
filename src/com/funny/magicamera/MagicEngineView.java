@@ -5,6 +5,7 @@ import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -28,8 +29,53 @@ public class MagicEngineView extends GL20SurfaceView
         setRenderer(this);
     }
     public void onDrawFrame(GL10 gl) {
-//            GL2JNILib.step();
+            MagicJNILib.step();
     }
+
+
+    public void onSurfaceChanged(GL10 gl, int width, int height) {
+         MagicJNILib.init(width, height);
+        // Now that the size is known, set up the camera parameters and begin
+        // the preview.
+        Camera.Parameters parameters = m_Camera.getParameters();
+
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+//        List<Size> psizes = parameters.getSupportedPictureSizes();
+//        List<Integer> formats = parameters.getSupportedPreviewFormats();
+//        formats  = parameters.getSupportedPictureFormats();
+        Camera.Size optimalSize = getOptimalPreviewSize(sizes, width, height);
+        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
+//        parameters.setPreviewSize(320, 240);
+        parameters.setPreviewFormat(ImageFormat.RGB_565);
+        m_Camera.setParameters(parameters);
+        MagicJNILib.setPreviewInfo(optimalSize.width, optimalSize.height);
+        m_Camera.startPreview();
+    }
+
+    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        m_Camera = Camera.open();
+        m_Camera.setPreviewCallback(this);
+    }
+
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        MagicJNILib.uploadPreviewData(bytes);
+        //TODO deal camera data
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        stopCamera();
+        super.surfaceDestroyed(holder);
+    }
+
+    public void stopCamera(){
+        m_Camera.stopPreview();
+        m_Camera.setPreviewCallback(null);
+        m_Camera.release();
+        m_Camera = null;
+    }
+
 
     private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
         final double ASPECT_TOLERANCE = 0.05;
@@ -64,44 +110,19 @@ public class MagicEngineView extends GL20SurfaceView
         return optimalSize;
     }
 
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-//            GL2JNILib.init(width, height);
-        // Now that the size is known, set up the camera parameters and begin
-        // the preview.
-        Camera.Parameters parameters = m_Camera.getParameters();
-
-        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-//        List<Size> psizes = parameters.getSupportedPictureSizes();
-//        List<Integer> formats = parameters.getSupportedPreviewFormats();
-//        formats  = parameters.getSupportedPictureFormats();
-        Camera.Size optimalSize = getOptimalPreviewSize(sizes, width, height);
-        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-//        parameters.setPreviewSize(320, 240);
-        parameters.setPreviewFormat(ImageFormat.RGB_565);
-        m_Camera.setParameters(parameters);
-        m_Camera.startPreview();
-    }
-
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        m_Camera = Camera.open();
-        m_Camera.setPreviewCallback(this);
-    }
-
     @Override
-    public void onPreviewFrame(byte[] bytes, Camera camera) {
-        //TODO deal camera data
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        stopCamera();
-        super.surfaceDestroyed(holder);
-    }
-
-    public void stopCamera(){
-        m_Camera.stopPreview();
-        m_Camera.setPreviewCallback(null);
-        m_Camera.release();
-        m_Camera = null;
+    public boolean onTouchEvent(MotionEvent e) {
+        float x = e.getX();
+        float y = e.getY();
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                return MagicJNILib.onTouchDrag(x, y);
+            case MotionEvent.ACTION_DOWN:
+                return MagicJNILib.onTouchDown(x, y);
+            case MotionEvent.ACTION_UP:
+                return MagicJNILib.onTouchUp(x, y);
+        }
+        return true;
+//        return super.onTouchEvent(e);
     }
 }

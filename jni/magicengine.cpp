@@ -37,10 +37,7 @@ MagicEngine::MagicEngine()
 
 MagicEngine::~MagicEngine()
 {
-	if (m_Mesh){
-		delete m_Mesh;
-		m_Mesh = NULL;
-	}
+	SafeDelete(m_Mesh);
 }
 
 
@@ -119,5 +116,31 @@ void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ 
 {
 	m_PreviewTex.setSize(w, h);
 	m_PreviewTex.setImageFormat(imageFormat);
-	m_Mesh = new Mesh();
+	if (m_Mesh){
+		SafeDelete(m_Mesh);
+	}
+	int mw = MESH_WIDTH+1;
+	int mh = MESH_WIDTH*w/h + 1;
+	m_Mesh = new Mesh(mw, mh);
+	for(int j = 0;j < mh; j++){
+		for(int i = 0; i < mw; i++){
+
+		}
+	}
+
+}
+
+bool MagicEngine::onTouchDown( float x, float y )
+{
+	return true;
+}
+
+bool MagicEngine::onTouchDrag( float x, float y )
+{
+	return true;
+}
+
+bool MagicEngine::onTouchUp( float x, float y )
+{
+	return true;
 }

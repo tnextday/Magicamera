@@ -47,6 +47,8 @@ Mesh::Mesh(int width, int height){
 			mIndexBuffer[i++] = d;
 		}
 	}
+
+	generateDefaultTexCoord();
 }
 
 Mesh::~Mesh(){
@@ -152,13 +154,13 @@ void Mesh::draw()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Mesh::generateDefault()
+void Mesh::generateDefaultTexCoord()
 {
 	//生成默认纹理坐标
-	float u, v;
+	GLfloat u, v;
 	int i = 0;
 	for (int y = 0; y < mH; y++){
-		v = (float)y/mW;
+		v = (GLfloat)y/mW;
 		for(int x = 0; x < mW; x++){
 			u = (float)x/mH;
 			mTexCoordBuffer[i++] = u;
