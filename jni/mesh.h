@@ -17,7 +17,7 @@ const int VBO_Ids_Num = 3;
 
 class Mesh
 {
-private:
+protected::
 	GLfloat*	mVertexBuffer;	
 	GLfloat*	mTexCoordBuffer;
 	GLushort*	mIndexBuffer;

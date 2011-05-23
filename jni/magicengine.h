@@ -2,21 +2,21 @@
 #define _glengine_h_
 
 #include <GLES2/gl2.h>
+#include "meshengine.h"
 
 const static int MESH_WIDTH = 20;
 
 class MagicEngine{
 	GLuint gProgram;
-	GLuint gvPositionHandle;
-	GLuint maPositionHandle;
-	GLuint maTextureHandle;
-	GLuint muMVPMatrixHandle;
+	GLuint m_positionLoc;
+	GLuint m_texCoordLoc;
+	GLuint m_viewprojLoc;
 
 	Texture m_PreviewTex;
-	Mesh*	m_Mesh;
+	MeshEngine*	m_Mesh;
 
-	int m_ViewWidth;
-	int m_ViewHeight;
+	GLfloat m_ViewWidth;
+	GLfloat m_ViewHeight;
 
 public:
 	MagicEngine();

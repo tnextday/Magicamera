@@ -7,6 +7,8 @@
 #include <math.h>
 #include "magicengine.h"
 #include "glutils.h"
+#include "glHelpers.h"
+
 
 
 static const char gVertexShader[] = 
@@ -54,57 +56,63 @@ bool MagicEngine::setupGraphics(int w, int h) {
 		return false;
 	}
 
-	maPositionHandle = glGetAttribLocation(gProgram, "aPosition");
+	m_positionLoc = glGetAttribLocation(gProgram, "aPosition");
 	checkGlError("glGetAttribLocation aPosition");
-	if (maPositionHandle == -1) {
+	if (m_positionLoc == -1) {
 		LOGE("Could not get attrib location for aPosition");
 		return false;
 	}
-	maTextureHandle = glGetAttribLocation(gProgram, "aTextureCoord");
+	m_texCoordLoc = glGetAttribLocation(gProgram, "aTextureCoord");
 	checkGlError("glGetAttribLocation aTextureCoord");
-	if (maTextureHandle == -1) {
+	if (m_texCoordLoc == -1) {
 		LOGE("Could not get attrib location for aTextureCoord");
 		return false;
 	}
 
-	muMVPMatrixHandle = glGetUniformLocation(gProgram, "uMVPMatrix");
+	m_viewprojLoc = glGetUniformLocation(gProgram, "uMVPMatrix");
 	checkGlError("glGetUniformLocation uMVPMatrix");
-	if (muMVPMatrixHandle == -1) {
+	if (m_viewprojLoc == -1) {
 		LOGE("Could not get attrib location for uMVPMatrix");
 		return false;
 	}
+
+	glClearColor(0f, 0f, 0f, 1.0f);
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	//glBlendColor(0.0, 0.0, 0.0, 0.0);
+	//启用混合操作
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
 
 	m_ViewWidth = w;
 	m_ViewHeight = h;
 
 	glViewport(0, 0, w, h);
 	checkGlError("glViewport");
+
+	//使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
+	GLfloat mvp[16];
+	matIdentity(mvp);
+	matOrtho(mvp, 0, w, 0, h, -1, 1);
+	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (float*)mvp);
 	return true;
 }
 
-const GLfloat gTriangleVertices[] = { 0.0f, 0.5f, -0.5f, -0.5f,
-0.5f, -0.5f };
+
 
 void MagicEngine::renderFrame() {
-	static float grey;
-	grey += 0.01f;
-	if (grey > 1.0f) {
-		grey = 0.0f;
-	}
-	glClearColor(grey, grey, grey, 1.0f);
-	checkGlError("glClearColor");
+
 	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	checkGlError("glClear");
 
 	glUseProgram(gProgram);
 	checkGlError("glUseProgram");
 
-	glVertexAttribPointer(gvPositionHandle, 2, GL_FLOAT, GL_FALSE, 0, gTriangleVertices);
-	checkGlError("glVertexAttribPointer");
-	glEnableVertexAttribArray(gvPositionHandle);
-	checkGlError("glEnableVertexAttribArray");
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	checkGlError("glDrawArrays");
+	
+	m_PreviewTex.bind();
+	m_Mesh->draw();
 }
 
 void MagicEngine::updatePreviewTex( char* data)
@@ -122,25 +130,37 @@ void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ 
 	int mw = MESH_WIDTH+1;
 	int mh = MESH_WIDTH*w/h + 1;
 	m_Mesh = new Mesh(mw, mh);
+	GLfloat x = 0, y = 0;
+	GLfloat xStep = m_ViewWidth/(mw-1);
+	GLfloat yStep = m_ViewHeight/(mh-1);
 	for(int j = 0;j < mh; j++){
+		x = 0;
 		for(int i = 0; i < mw; i++){
-
+			m_Mesh->setVertex(i, j, x, y, 0);
+			x += xStep;
 		}
+		y += yStep;
 	}
 
 }
 
 bool MagicEngine::onTouchDown( float x, float y )
 {
+	y = m_ViewHeight - y;
+	//TODO onTouchDown
 	return true;
 }
 
 bool MagicEngine::onTouchDrag( float x, float y )
 {
+	y = m_ViewHeight - y;
+	//TODO onTouchDrag
 	return true;
 }
 
 bool MagicEngine::onTouchUp( float x, float y )
 {
+	y = m_ViewHeight - y;
+	//TODO onTouchUp
 	return true;
 }
