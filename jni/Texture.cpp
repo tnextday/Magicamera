@@ -1,5 +1,6 @@
 
 #include "texture.h"
+#include "glutils.h"
 
 
 Texture::Texture()
@@ -92,6 +93,7 @@ void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum imag
 	m_Height = height;
 	m_imageFormat = imageFormat;
 	glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
+	checkGlError("uploadImageData");
 }
 
 void Texture::uploadImageData( GLubyte* data )

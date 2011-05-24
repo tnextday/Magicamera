@@ -3,6 +3,7 @@
 
 #include <GLES2/gl2.h>
 #include "meshengine.h"
+#include "texture.h"
 
 const static int MESH_WIDTH = 20;
 

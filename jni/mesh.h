@@ -7,6 +7,7 @@ enum BufferType {
 	BT_IndexBuffer
 };
 
+
 const GLuint VOB_Element_Idx = 0;
 const GLuint VBO_TexCoord_Idx = 1;
 const GLuint VBO_Vertex_Idx = 2;
@@ -17,7 +18,7 @@ const int VBO_Ids_Num = 3;
 
 class Mesh
 {
-protected::
+protected:
 	GLfloat*	mVertexBuffer;	
 	GLfloat*	mTexCoordBuffer;
 	GLushort*	mIndexBuffer;

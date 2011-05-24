@@ -2,8 +2,6 @@
 #include "jni_main.h"
 #include "magicengine.h"
 
-
-
 MagicEngine g_MagicEngine;
 
 
@@ -22,7 +20,7 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewInfo(JNIE
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer){
-	const unsigned char* p_buffer = (const unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
+	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
 	g_MagicEngine.updatePreviewTex(p_buffer);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }

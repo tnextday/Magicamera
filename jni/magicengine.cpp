@@ -76,7 +76,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 		return false;
 	}
 
-	glClearColor(0f, 0f, 0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
@@ -115,7 +115,7 @@ void MagicEngine::renderFrame() {
 	m_Mesh->draw();
 }
 
-void MagicEngine::updatePreviewTex( char* data)
+void MagicEngine::updatePreviewTex( char* data )
 {
 	m_PreviewTex.uploadImageData((GLubyte*)data);
 }
@@ -129,7 +129,7 @@ void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ 
 	}
 	int mw = MESH_WIDTH+1;
 	int mh = MESH_WIDTH*w/h + 1;
-	m_Mesh = new Mesh(mw, mh);
+	m_Mesh = new MeshEngine(mw, mh);
 	GLfloat x = 0, y = 0;
 	GLfloat xStep = m_ViewWidth/(mw-1);
 	GLfloat yStep = m_ViewHeight/(mh-1);
@@ -141,7 +141,7 @@ void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ 
 		}
 		y += yStep;
 	}
-
+	m_Mesh->backupOrigVertex();
 }
 
 bool MagicEngine::onTouchDown( float x, float y )
