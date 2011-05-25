@@ -86,7 +86,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 // 	glEnable(GL_BLEND);
 // 	checkGlError("glEnable(GL_BLEND)");
 // 	//glBlendColor(0.0, 0.0, 0.0, 0.0);
-// 	//ÆôÓÃ»ìºÏ²Ù×÷
+// 	//å¯ç”¨æ··åˆæ“ä½œ
 // 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
 // 	checkGlError("glBlendFunc");
 	m_ViewWidth = w;
@@ -95,7 +95,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	glViewport(0, 0, w, h);
 	checkGlError("glViewport");
 
-	//Ê¹ÓÃ2DÍ¶Ó°,µÑ¿¨¶û×ø±êÏµ£¬¿í¸ßÎªÆÁÄ»¿í¸ß
+	//ä½¿ç”¨2DæŠ•å½±,ç¬›å¡å°”åæ ‡ç³»ï¼Œå®½é«˜ä¸ºå±å¹•å®½é«˜
 	
 	GLfloat mat_p[16];
 	GLfloat mat_t[16];
@@ -104,9 +104,9 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	matIdentity(mat_p);
 	matIdentity(mat_t);
 
-	// ÉèÖÃÊÓ¿ÚµÄ´óĞ¡
+	// è®¾ç½®è§†å£çš„å¤§å°
 	matOrtho(mvp, 0, w, 0, h, -1, 1);
-	//ÉèÖÃ¾µÍ·
+	//è®¾ç½®é•œå¤´
 	matLookAt((float*)mat_t, 0,0, 2, 0,0,0, 0,1,0);
 	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);
 	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);

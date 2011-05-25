@@ -34,8 +34,8 @@ protected:
 	bool		m_bGenBuffers;
 	
 public:
-	//widtdÓëheight·Ö±ğÎªMeshÉÏºáÊúµÄµãÊı£¬ÊıÖµÓ¦Éè¶¨Îª¿éÊı+1
-	//Èç¹û°ÑÒ»¸ömesh·Ö³É10x20µÄ¿é£¬ÄÇÃ´widthÓ¦ÉèÖÃÎª11£¬height=21
+	//widtdä¸heightåˆ†åˆ«ä¸ºMeshä¸Šæ¨ªç«–çš„ç‚¹æ•°ï¼Œæ•°å€¼åº”è®¾å®šä¸ºå—æ•°+1
+	//å¦‚æœæŠŠä¸€ä¸ªmeshåˆ†æˆ10x20çš„å—ï¼Œé‚£ä¹ˆwidthåº”è®¾ç½®ä¸º11ï¼Œheight=21
 	Mesh(int width, int height);
 	~Mesh();
 
@@ -51,7 +51,7 @@ public:
 	bool createBufferObjects();
 	void draw();
 
-	//Òª±éÀúËùÓĞµã
+	//è¦éå†æ‰€æœ‰ç‚¹
 	//for(i=0;i<MW();i++){}
 	int MW() const { return mW; }
 	int MH() const { return mH; }

@@ -74,7 +74,7 @@ void Mesh::setTexCoordBuffer( GLfloat* cb, int size, int offset /*= 0*/ )
 
 void Mesh::setIndexBuffer( GLushort* ib, int size, int offset /*= 0*/ )
 {
-	//TODO ÓĞ¿ÕĞ´
+	//TODO æœ‰ç©ºå†™
 }
 
 void Mesh::set( int i, int j, float x, float y, float z, float u, float v )
@@ -169,7 +169,7 @@ void Mesh::draw()
 
 void Mesh::generateDefaultTexCoord()
 {
-	//Éú³ÉÄ¬ÈÏÎÆÀí×ø±ê
+	//ç”Ÿæˆé»˜è®¤çº¹ç†åæ ‡
 	GLfloat u, v;
 	int i = 0;
 	for (int y = 0; y < mH; y++){

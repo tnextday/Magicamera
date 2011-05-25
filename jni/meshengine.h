@@ -12,11 +12,11 @@ struct Vertex {
 class MeshEngine : public Mesh{
 
 private:
-	//×ø±ê²îÖµ
+	//åæ ‡å·®å€¼
 	GLfloat*	m_DeltaVertex;
-	//Ä¿±ê×ø±ê
+	//ç›®æ ‡åæ ‡
 	GLfloat*	m_DestVertex;
-	//Ô­Ê¼×ø±ê£¬»Ö¸´ÓÃ
+	//åŸå§‹åæ ‡ï¼Œæ¢å¤ç”¨
 	GLfloat*	m_OrgiVertex;
 	int			m_BufferCount;
 	
@@ -30,7 +30,7 @@ public:
 
 	void update(GLfloat delta);
 
-	//ÉèÖÃÍê×ø±êºó£¬µ÷ÓÃ´Ëº¯Êı±¸·İÔ­Ê¼×ø±ê
+	//è®¾ç½®å®Œåæ ‡åï¼Œè°ƒç”¨æ­¤å‡½æ•°å¤‡ä»½åŸå§‹åæ ‡
 	void backupOrigVertex();
 
 	//set destvertex then start animating

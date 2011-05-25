@@ -15,7 +15,7 @@ public:
 	Texture();
 
 	//************************************
-	// Method: 内存解码并生成texture
+	// Method: 鍐呭瓨瑙ｇ爜骞剁敓鎴恡exture
 	// Description: 
 	// Parameter: const unsigned char * buffer
 	// Parameter: uint32_t len
