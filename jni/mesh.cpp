@@ -7,6 +7,7 @@
 
 
 Mesh::Mesh(int width, int height){
+	m_bGenBuffers = false;
 	mW = width;
 	mH = height;
 	int size =  mW * mH;
@@ -119,16 +120,24 @@ bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
 
 bool Mesh::createBufferObjects()
 {
+	m_bGenBuffers = true;
 	glGenBuffers(VBO_Ids_Num, m_vboIds);
+	checkGlError("glGenBuffers");
 	
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
+	checkGlError("glBindBuffer1");
 	glBufferData(GL_ARRAY_BUFFER, mW*mH*3*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
+	checkGlError("glBufferData1");
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
+	checkGlError("glBindBuffer2");
 	glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
+	checkGlError("glBufferData2");
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
+	checkGlError("glBindBuffer3");
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW);
+	checkGlError("glBufferData3");
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -136,6 +145,10 @@ bool Mesh::createBufferObjects()
 
 void Mesh::draw()
 {
+	if(!m_bGenBuffers){
+		LOGE("You must createBufferObjects before draw");
+		return;
+	}
 	glEnableVertexAttribArray(positionLoc);
 	glEnableVertexAttribArray(texCoordLoc);
 

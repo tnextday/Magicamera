@@ -31,6 +31,7 @@ protected:
 	int			mW;
 	int			mH;
 	int			mIndexCount;
+	bool		m_bGenBuffers;
 	
 public:
 	//widtd与height分别为Mesh上横竖的点数，数值应设定为块数+1

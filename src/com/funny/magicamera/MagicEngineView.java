@@ -59,7 +59,8 @@ public class MagicEngineView extends GL20SurfaceView
 
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
-        MagicJNILib.uploadPreviewData(bytes);
+
+//        MagicJNILib.uploadPreviewData(bytes);
         //TODO deal camera data
     }
 

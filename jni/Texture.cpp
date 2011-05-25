@@ -64,6 +64,7 @@ Texture::~Texture()
 void Texture::bind()
 {
 	glBindTexture(GL_TEXTURE_2D, m_TexHandle);
+	checkGlError("glBindTexture");
 }
 
 void Texture::bind( int unit )

@@ -76,16 +76,19 @@ bool MagicEngine::setupGraphics(int w, int h) {
 		return false;
 	}
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	//glBlendColor(0.0, 0.0, 0.0, 0.0);
-	//启用混合操作
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
-
+	
+// 	glDisable(GL_DEPTH_TEST);
+// 	checkGlError("glDisable(GL_DEPTH_TEST)");
+// 	glCullFace(GL_BACK);
+// 	checkGlError("glCullFace(GL_BACK)");
+// 	glEnable(GL_CULL_FACE);
+// 	checkGlError("glEnable(GL_CULL_FACE)");
+// 	glEnable(GL_BLEND);
+// 	checkGlError("glEnable(GL_BLEND)");
+// 	//glBlendColor(0.0, 0.0, 0.0, 0.0);
+// 	//启用混合操作
+// 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
+// 	checkGlError("glBlendFunc");
 	m_ViewWidth = w;
 	m_ViewHeight = h;
 
@@ -93,26 +96,36 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	checkGlError("glViewport");
 
 	//使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
+	
+	GLfloat mat_p[16];
+	GLfloat mat_t[16];
 	GLfloat mvp[16];
 	matIdentity(mvp);
+	matIdentity(mat_p);
+	matIdentity(mat_t);
+
+	// 设置视口的大小
 	matOrtho(mvp, 0, w, 0, h, -1, 1);
-	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (float*)mvp);
+	//设置镜头
+	matLookAt((float*)mat_t, 0,0, 2, 0,0,0, 0,1,0);
+	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);
+	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
+	checkGlError("glUniformMatrix4fv");
 	return true;
 }
 
 
 
 void MagicEngine::renderFrame() {
-
-	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	checkGlError("glClear");
 
 	glUseProgram(gProgram);
 	checkGlError("glUseProgram");
 
-	
-	m_PreviewTex.bind();
-	m_Mesh->draw();
+// 	m_PreviewTex.bind();
+// 	m_Mesh->draw();
 }
 
 void MagicEngine::updatePreviewTex( char* data )
@@ -142,6 +155,7 @@ void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ 
 		y += yStep;
 	}
 	m_Mesh->backupOrigVertex();
+	m_Mesh->createBufferObjects();
 }
 
 bool MagicEngine::onTouchDown( float x, float y )
