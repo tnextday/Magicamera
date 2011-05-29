@@ -9,9 +9,11 @@ void printGLString(const char *name, GLenum s) {
 }
 
 void checkGlError(const char* op) {
+	int i = 0;
 	for (GLint error = glGetError(); error; error
 		= glGetError()) {
-			LOGI("after %s() glError (0x%x)\n", op, error);
+			LOGI("after %s() glError (0x%x) No. %d\n", op, error, i);
+			i++;
 	}
 }
 

@@ -4,6 +4,11 @@
 #include <GLES2/gl2.h>
 #include "gdx2d/gdx2d.h"
 
+
+const int IMAGE_FORMAT_RGB_565	= 0x00000004; //4
+const int IMAGE_FORMAT_NV21		= 0x00000011; //17
+const int IMAGE_FORMAT_JPEG		= 0x00000100; //256
+
 class Texture
 {
 	GLuint m_TexHandle;
@@ -39,5 +44,7 @@ public:
 private:
 	void init();
 };
+
+void decodeYUV420SP(int* rgb, char* yuv420sp, int width, int height);
 
 #endif // _Texture_h_

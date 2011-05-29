@@ -27,7 +27,7 @@ public:
 	void renderFrame();
 
 	void updatePreviewTex(char* data);
-	void setPreviewInfo(int w, int h, int imageFormat = GL_RGB565);
+	void setPreviewInfo(int w, int h, int imageFormat);
 
 	bool onTouchDown(float x, float y);
 	bool onTouchDrag(float x, float y);

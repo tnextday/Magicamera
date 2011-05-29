@@ -14,8 +14,8 @@ Mesh::Mesh(int width, int height){
 	int quadW = mW - 1;
 	int quadH = mH - 1;
 	int quadCount = quadW * quadH;
-	int indexCount = quadCount * 6;
-	mIndexBuffer = new GLushort[indexCount];
+	mIndexCount = quadCount * 6;
+	mIndexBuffer = new GLushort[mIndexCount];
 	mVertexBuffer = new GLfloat[size*3];
 	mTexCoordBuffer = new GLfloat[size*2];
 
@@ -122,22 +122,16 @@ bool Mesh::createBufferObjects()
 {
 	m_bGenBuffers = true;
 	glGenBuffers(VBO_Ids_Num, m_vboIds);
-	checkGlError("glGenBuffers");
+
 	
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-	checkGlError("glBindBuffer1");
 	glBufferData(GL_ARRAY_BUFFER, mW*mH*3*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
-	checkGlError("glBufferData1");
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-	checkGlError("glBindBuffer2");
 	glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
-	checkGlError("glBufferData2");
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
-	checkGlError("glBindBuffer3");
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW);
-	checkGlError("glBufferData3");
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -150,21 +144,33 @@ void Mesh::draw()
 		return;
 	}
 	glEnableVertexAttribArray(positionLoc);
+	checkGlError("Mesh::draw 0");
 	glEnableVertexAttribArray(texCoordLoc);
+	checkGlError("Mesh::draw 1");
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-	glVertexAttribPointer(positionLoc, 3, GL_INT, GL_FALSE, 0, NULL);
+	checkGlError("Mesh::draw 2");
+	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	checkGlError("Mesh::draw 3");
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
+	checkGlError("Mesh::draw 4");
 	glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+	checkGlError("Mesh::draw 5");
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
+	checkGlError("Mesh::draw 6");
 	glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
+	checkGlError("Mesh::draw 7");
 	
 	glDisableVertexAttribArray(positionLoc);
+	checkGlError("Mesh::draw 8");
 	glDisableVertexAttribArray(texCoordLoc);
+	checkGlError("Mesh::draw 9");
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	checkGlError("Mesh::draw 10");
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	checkGlError("Mesh::draw 11");
 }
 
 void Mesh::generateDefaultTexCoord()

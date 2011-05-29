@@ -9,7 +9,7 @@ extern "C" {
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewInfo(JNIEnv * env, jobject obj,  jint width, jint height);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewInfo(JNIEnv * env, jobject obj,  jint width, jint height, int format);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag(JNIEnv * env, jobject obj, jfloat x, jfloat y);

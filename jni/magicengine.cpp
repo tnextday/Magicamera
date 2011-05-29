@@ -55,6 +55,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 		LOGE("Could not create program.");
 		return false;
 	}
+	glUseProgram(gProgram);
 
 	m_positionLoc = glGetAttribLocation(gProgram, "aPosition");
 	checkGlError("glGetAttribLocation aPosition");
@@ -119,13 +120,12 @@ bool MagicEngine::setupGraphics(int w, int h) {
 void MagicEngine::renderFrame() {
 	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	checkGlError("glClear");
 
 	glUseProgram(gProgram);
 	checkGlError("glUseProgram");
 
-// 	m_PreviewTex.bind();
-// 	m_Mesh->draw();
+ 	m_PreviewTex.bind();
+ 	m_Mesh->draw();
 }
 
 void MagicEngine::updatePreviewTex( char* data )
@@ -133,7 +133,7 @@ void MagicEngine::updatePreviewTex( char* data )
 	m_PreviewTex.uploadImageData((GLubyte*)data);
 }
 
-void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ )
+void MagicEngine::setPreviewInfo( int w, int h, int imageFormat = GL_RGB565 )
 {
 	m_PreviewTex.setSize(w, h);
 	m_PreviewTex.setImageFormat(imageFormat);
@@ -143,6 +143,8 @@ void MagicEngine::setPreviewInfo( int w, int h, int imageFormat /*= GL_RGB565*/ 
 	int mw = MESH_WIDTH+1;
 	int mh = MESH_WIDTH*w/h + 1;
 	m_Mesh = new MeshEngine(mw, mh);
+	m_Mesh->setPositionLoc(m_positionLoc);
+	m_Mesh->setTexCoordLoc(m_texCoordLoc);
 	GLfloat x = 0, y = 0;
 	GLfloat xStep = m_ViewWidth/(mw-1);
 	GLfloat yStep = m_ViewHeight/(mh-1);
