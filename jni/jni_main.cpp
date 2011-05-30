@@ -15,8 +15,8 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, 
 	g_MagicEngine.renderFrame();
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format){
-	g_MagicEngine.setPreviewInfo(width, height, format);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format){
+	g_MagicEngine.setPreviewDataInfo(width, height, format);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer){

@@ -5,6 +5,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
+import android.view.Window;
+
+import static android.view.WindowManager.LayoutParams;
 
 public class MagicActivity extends Activity {
     MagicEngineView mView;
@@ -14,6 +17,8 @@ public class MagicActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
         if (detectOpenGLES20()){
             mView = new MagicEngineView(getApplication());
             setContentView(mView);

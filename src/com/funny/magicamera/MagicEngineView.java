@@ -1,6 +1,8 @@
 package com.funny.magicamera;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
@@ -10,6 +12,7 @@ import android.view.SurfaceHolder;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -22,7 +25,7 @@ public class MagicEngineView extends GL20SurfaceView
 
     boolean m_bUseCamera = false;
 //    int m_CameraId; //use above 2.3
-    Camera m_Camera;
+    Camera m_Camera = null;
     byte[] m_frameBuffer;
     boolean m_frameChanged = false;
     final ReentrantLock m_lock = new ReentrantLock();
@@ -52,90 +55,37 @@ public class MagicEngineView extends GL20SurfaceView
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
          MagicJNILib.init(width, height);
-        // Now that the size is known, set up the camera parameters and begin
-        // the preview.
-        Camera.Parameters parameters = m_Camera.getParameters();
-
-        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-//        List<Size> psizes = parameters.getSupportedPictureSizes();
-        List<Integer> formats = parameters.getSupportedPreviewFormats();
-        formats  = parameters.getSupportedPictureFormats();
-        Camera.Size optimalSize = getOptimalPreviewSize(sizes, width, height);
-        m_previewHeight = optimalSize.height;
-        m_previewWidth = optimalSize.width;
-        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-        
-//        parameters.setPreviewSize(320, 240);
-        parameters.setPreviewFormat(ImageFormat.RGB_565);
-        m_Camera.setParameters(parameters);
-        MagicJNILib.setPreviewInfo(optimalSize.width, optimalSize.height, GL10.GL_RGBA);
-        m_frameBuffer = new byte[optimalSize.width*optimalSize.height*4];
-        m_Camera.startPreview();
+        if (m_bUseCamera){
+            startCamera();
+        }
+        setLocalTexture("/sdcard/test/tex.jpg");
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        m_Camera = Camera.open();
-        m_Camera.setPreviewCallback(this);
+
     }
 
-    @Override
-    public void onPreviewFrame(byte[] bytes, Camera camera) {
-        m_lock.lock();
-        Camera.Parameters parameters = m_Camera.getParameters();
-        int imageFormat = parameters.getPreviewFormat();
-        int bits = ImageFormat.getBitsPerPixel(imageFormat);
-        System.arraycopy(bytes, 0, m_frameBuffer, 0, bytes.length);
-        decodeYUV420SP(m_frameBuffer, bytes, m_previewWidth, m_previewHeight);
-        m_frameChanged = true;
-        m_lock.unlock();
-    }
+
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        stopCamera();
+        if (m_bUseCamera)
+            stopCamera();
         super.surfaceDestroyed(holder);
     }
 
-    public void stopCamera(){
-        m_Camera.stopPreview();
-        m_Camera.setPreviewCallback(null);
-        m_Camera.release();
-        m_Camera = null;
+    public void setLocalTexture(String path){
+        Bitmap bitmap = null;
+        bitmap = BitmapFactory.decodeFile(path);
+        m_previewHeight = bitmap.getHeight();
+        m_previewWidth = bitmap.getWidth();
+        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, GL10.GL_RGBA);
+        ByteBuffer bf = ByteBuffer.allocate(m_previewHeight*m_previewWidth*4);
+        bitmap.copyPixelsToBuffer(bf);
+        MagicJNILib.uploadPreviewData(bf.array());
+        bf = null;
     }
 
-
-    private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
-        final double ASPECT_TOLERANCE = 0.05;
-        double targetRatio = (double) w / h;
-        if (sizes == null) return null;
-
-        Size optimalSize = null;
-        double minDiff = Double.MAX_VALUE;
-
-        int targetHeight = h;
-
-        // Try to find an size match aspect ratio and size
-        for (Size size : sizes) {
-            double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
-            if (Math.abs(size.height - targetHeight) < minDiff) {
-                optimalSize = size;
-                minDiff = Math.abs(size.height - targetHeight);
-            }
-        }
-
-        // Cannot find the one match the aspect ratio, ignore the requirement
-        if (optimalSize == null) {
-            minDiff = Double.MAX_VALUE;
-            for (Size size : sizes) {
-                if (Math.abs(size.height - targetHeight) < minDiff) {
-                    optimalSize = size;
-                    minDiff = Math.abs(size.height - targetHeight);
-                }
-            }
-        }
-        return optimalSize;
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
@@ -193,4 +143,85 @@ public class MagicEngineView extends GL20SurfaceView
 			}
 		}
 	}
+
+        public void startCamera(){
+        m_Camera = Camera.open();
+        m_Camera.setPreviewCallback(this);
+        // Now that the size is known, set up the camera parameters and begin
+        // the preview.
+        Camera.Parameters parameters = m_Camera.getParameters();
+
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+//        List<Size> psizes = parameters.getSupportedPictureSizes();
+        List<Integer> formats = parameters.getSupportedPreviewFormats();
+        if (formats.contains(ImageFormat.RGB_565)){
+            parameters.setPreviewFormat(ImageFormat.RGB_565);
+        }
+        //formats  = parameters.getSupportedPictureFormats();
+//        Camera.Size optimalSize = getOptimalPreviewSize(sizes, width, height);
+        m_previewHeight = 640;
+        m_previewWidth = 480;
+        parameters.setPreviewSize(m_previewWidth, m_previewHeight);
+
+//        parameters.setPreviewSize(320, 240);
+
+        m_Camera.setParameters(parameters);
+        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, GL10.GL_RGBA);
+        m_frameBuffer = new byte[m_previewWidth*m_previewHeight*4];
+        m_Camera.startPreview();
+    }
+
+    public void stopCamera(){
+        if (m_Camera == null) return;
+        m_Camera.stopPreview();
+        m_Camera.setPreviewCallback(null);
+        m_Camera.release();
+        m_Camera = null;
+    }
+
+
+    private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.05;
+        double targetRatio = (double) w / h;
+        if (sizes == null) return null;
+
+        Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        // Try to find an size match aspect ratio and size
+        for (Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        // Cannot find the one match the aspect ratio, ignore the requirement
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        return optimalSize;
+    }
+
+        @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        m_lock.lock();
+        Camera.Parameters parameters = m_Camera.getParameters();
+        int imageFormat = parameters.getPreviewFormat();
+        int bits = ImageFormat.getBitsPerPixel(imageFormat);
+        System.arraycopy(bytes, 0, m_frameBuffer, 0, bytes.length);
+        decodeYUV420SP(m_frameBuffer, bytes, m_previewWidth, m_previewHeight);
+        m_frameChanged = true;
+        m_lock.unlock();
+    }
 }

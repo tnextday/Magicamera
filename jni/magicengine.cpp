@@ -108,7 +108,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	// 设置视口的大小
 	matOrtho(mvp, 0, w, 0, h, -1, 1);
 	//设置镜头
-	matLookAt((float*)mat_t, 0,0, 2, 0,0,0, 0,1,0);
+	matLookAt((float*)mat_t, 0,0, -0.5, 0,0,0, 0,1,0);
 	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);
 	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 	checkGlError("glUniformMatrix4fv");
@@ -133,7 +133,7 @@ void MagicEngine::updatePreviewTex( char* data )
 	m_PreviewTex.uploadImageData((GLubyte*)data);
 }
 
-void MagicEngine::setPreviewInfo( int w, int h, int imageFormat = GL_RGB565 )
+void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 {
 	m_PreviewTex.setSize(w, h);
 	m_PreviewTex.setImageFormat(imageFormat);
@@ -179,4 +179,44 @@ bool MagicEngine::onTouchUp( float x, float y )
 	y = m_ViewHeight - y;
 	//TODO onTouchUp
 	return true;
+}
+
+
+inline void decodeYUV420SP(int* rgb, char* yuv420sp, int width, int height) 
+{
+	int frameSize = width * height;
+
+	for (int j = 0, yp = 0; j < height; j++) {
+		int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
+		for (int i = 0; i < width; i++, yp++) {
+			int y = (0xff & ((int) yuv420sp[yp])) - 16;
+			if (y < 0)
+				y = 0;
+			if ((i & 1) == 0) {
+				v = (0xff & yuv420sp[uvp++]) - 128;
+				u = (0xff & yuv420sp[uvp++]) - 128;
+			}
+
+			int y1192 = 1192 * y;
+			int r = (y1192 + 1634 * v);
+			int g = (y1192 - 833 * v - 400 * u);
+			int b = (y1192 + 2066 * u);
+
+			if (r < 0)
+				r = 0;
+			else if (r > 262143)
+				r = 262143;
+			if (g < 0)
+				g = 0;
+			else if (g > 262143)
+				g = 262143;
+			if (b < 0)
+				b = 0;
+			else if (b > 262143)
+				b = 262143;
+
+			rgb[yp] = 0xff000000 | ((r << 6) & 0xff0000)
+				| ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
+		}
+	}
 }

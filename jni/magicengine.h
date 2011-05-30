@@ -7,6 +7,8 @@
 
 const static int MESH_WIDTH = 20;
 
+void decodeYUV420SP(int* rgb, char* yuv420sp, int width, int height);
+
 class MagicEngine{
 	GLuint gProgram;
 	GLuint m_positionLoc;
@@ -27,7 +29,7 @@ public:
 	void renderFrame();
 
 	void updatePreviewTex(char* data);
-	void setPreviewInfo(int w, int h, int imageFormat);
+	void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
 
 	bool onTouchDown(float x, float y);
 	bool onTouchDrag(float x, float y);
