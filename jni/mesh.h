@@ -8,7 +8,7 @@ enum BufferType {
 };
 
 
-const GLuint VOB_Element_Idx = 0;
+const GLuint VBO_Element_Idx = 0;
 const GLuint VBO_TexCoord_Idx = 1;
 const GLuint VBO_Vertex_Idx = 2;
 const int VBO_Ids_Num = 3;
@@ -59,7 +59,7 @@ public:
 	void setPositionLoc(GLuint val) { positionLoc = val; }
 	void setTexCoordLoc(GLuint val) { texCoordLoc = val; }
 
-	GLuint getElementBufferObjectId() const { return m_vboIds[VOB_Element_Idx]; }
+	GLuint getElementBufferObjectId() const { return m_vboIds[VBO_Element_Idx]; }
 	GLuint getTexCoordBufferId() const { return m_vboIds[VBO_TexCoord_Idx]; }
 	GLuint getVertexBufferObjectId() const { return m_vboIds[VBO_Vertex_Idx]; }
 	GLushort* IndexBuffer() const { return mIndexBuffer; }

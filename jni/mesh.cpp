@@ -104,7 +104,7 @@ bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
 {
 	switch(bt){
 	case BT_IndexBuffer:
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW);
 		break;
 	case BT_VertexBuffer:
@@ -130,7 +130,7 @@ bool Mesh::createBufferObjects()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
 	glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -157,7 +157,7 @@ void Mesh::draw()
 	glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	checkGlError("Mesh::draw 5");
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VOB_Element_Idx]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
 	checkGlError("Mesh::draw 6");
 	glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
 	checkGlError("Mesh::draw 7");

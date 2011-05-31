@@ -100,10 +100,10 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	matIdentity(mat_t);
 
 	// 设置视口的大小
-	matOrtho(mvp, 0, w, 0, h, -1, 1);
+	matOrtho(mvp, 0, w, 0, h, -1000, 1000);
 	//设置镜头
-	matLookAt((float*)mat_t, 0,0, -0.5, 0,0,0, 0,1,0);
-	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);
+//  	matLookAt((float*)mat_t, 0,0, -0.5, 0,0,0, 0,1,0);
+//  	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);	
 	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 	checkGlError("glUniformMatrix4fv");
 	return true;
