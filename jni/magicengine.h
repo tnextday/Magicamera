@@ -7,7 +7,11 @@
 
 const static int MESH_WIDTH = 20;
 
-void decodeYUV420SP(int* rgb, char* yuv420sp, int width, int height);
+const int IMAGE_FORMAT_RGB_565	= 0x00000004; //4
+const int IMAGE_FORMAT_NV21		= 0x00000011; //17
+const int IMAGE_FORMAT_PACKET	= 0x00000100; //256  打包压缩的数据，jpeg,png,tga,bitmap...
+
+void decodeYUV420SP(char* rgb565, char* yuv420sp, int width, int height);
 
 class MagicEngine{
 	GLuint gProgram;
@@ -20,6 +24,9 @@ class MagicEngine{
 
 	GLfloat m_ViewWidth;
 	GLfloat m_ViewHeight;
+	
+	int		m_inputFortmat;
+	char*	m_tmpImageData;
 
 public:
 	MagicEngine();
@@ -28,7 +35,7 @@ public:
 	bool setupGraphics(int w, int h) ;
 	void renderFrame();
 
-	void updatePreviewTex(char* data);
+	void updatePreviewTex(char* data, long len);
 	void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
 
 	bool onTouchDown(float x, float y);

@@ -8,6 +8,7 @@
 
 class Texture
 {
+public:
 	GLuint m_TexHandle;
 	GLuint m_Width;
 	GLuint m_Height;
@@ -34,6 +35,8 @@ public:
 	void setFilter(GLfloat min = GL_LINEAR, GLfloat mag = GL_LINEAR);
 	void uploadImageData(GLubyte* data, int width, int height, GLenum imageFormat);
 	void uploadImageData(GLubyte* data);
+	//update压缩过的数据，jpeg,png,tga。。。
+	void uploadImageData(const unsigned char *buffer, uint32_t len, uint32_t req_format = GDX2D_FORMAT_RGBA8888);
 	void setSize(int w, int h){m_Width = w; m_Height = h;};
 	//GL Format
 	void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};

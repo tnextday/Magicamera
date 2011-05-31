@@ -35,6 +35,7 @@ static const char gFragmentShader[] =
 MagicEngine::MagicEngine()
 {
 	m_Mesh = NULL;
+	SafeDeleteArray(m_tmpImageData);
 }
 
 MagicEngine::~MagicEngine()
@@ -77,24 +78,17 @@ bool MagicEngine::setupGraphics(int w, int h) {
 		return false;
 	}
 
-	
-// 	glDisable(GL_DEPTH_TEST);
-// 	checkGlError("glDisable(GL_DEPTH_TEST)");
-// 	glCullFace(GL_BACK);
-// 	checkGlError("glCullFace(GL_BACK)");
-// 	glEnable(GL_CULL_FACE);
-// 	checkGlError("glEnable(GL_CULL_FACE)");
-// 	glEnable(GL_BLEND);
-// 	checkGlError("glEnable(GL_BLEND)");
-// 	//glBlendColor(0.0, 0.0, 0.0, 0.0);
-// 	//启用混合操作
-// 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
-// 	checkGlError("glBlendFunc");
+	glDisable(GL_DEPTH_TEST);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	//启用混合操作
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
+
 	m_ViewWidth = w;
 	m_ViewHeight = h;
 
 	glViewport(0, 0, w, h);
-	checkGlError("glViewport");
 
 	//使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
 	
@@ -128,15 +122,31 @@ void MagicEngine::renderFrame() {
  	m_Mesh->draw();
 }
 
-void MagicEngine::updatePreviewTex( char* data )
+void MagicEngine::updatePreviewTex( char* data, long len )
 {
-	m_PreviewTex.uploadImageData((GLubyte*)data);
+	if (m_inputFortmat == IMAGE_FORMAT_NV21){
+		decodeYUV420SP(m_tmpImageData, data, m_PreviewTex.m_Width, m_PreviewTex.m_Height);
+		m_PreviewTex.uploadImageData((GLubyte*)m_tmpImageData);
+	}else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
+		m_PreviewTex.uploadImageData((GLubyte*)data);
+	}else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
+		m_PreviewTex.uploadImageData((unsigned char*)data, len, GDX2D_FORMAT_RGB565);
+	}
+	
+	
 }
 
 void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 {
 	m_PreviewTex.setSize(w, h);
-	m_PreviewTex.setImageFormat(imageFormat);
+	m_inputFortmat = imageFormat;
+
+	if (m_inputFortmat == IMAGE_FORMAT_NV21){
+		m_PreviewTex.setImageFormat(GL_RGB565);
+		m_tmpImageData = new char[w*h*2];
+	}if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
+		m_PreviewTex.setImageFormat(GL_RGB565);
+
 	if (m_Mesh){
 		SafeDelete(m_Mesh);
 	}
@@ -182,10 +192,11 @@ bool MagicEngine::onTouchUp( float x, float y )
 }
 
 
-inline void decodeYUV420SP(int* rgb, char* yuv420sp, int width, int height) 
+inline void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height )
 {
 	int frameSize = width * height;
-
+	unsigned short* dest_ptr = (unsigned short*)rgb565;
+	//rgb全部左移8位，变成整数计算
 	for (int j = 0, yp = 0; j < height; j++) {
 		int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
 		for (int i = 0; i < width; i++, yp++) {
@@ -215,8 +226,8 @@ inline void decodeYUV420SP(int* rgb, char* yuv420sp, int width, int height)
 			else if (b > 262143)
 				b = 262143;
 
-			rgb[yp] = 0xff000000 | ((r << 6) & 0xff0000)
-				| ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
+			//还原 rgb >> 8 位
+			dest_ptr[yp] = (unsigned(r) & 0xF800)|((unsigned(g) >> 5) & 0x7E0) | (unsigned(b) >> 11);
 		}
 	}
 }

@@ -29,23 +29,7 @@ Texture::Texture()
 Texture::Texture( const unsigned char *buffer, uint32_t len, uint32_t req_format /*= GDX2D_FORMAT_RGBA8888*/)
 {
 	init();
-	gdx2d_pixmap* pixmap = gdx2d_load(buffer, len, req_format);
-	 GLenum dataFormat;
-	switch(pixmap->format){
-		case GDX2D_FORMAT_ALPHA:
-			dataFormat = GL_ALPHA;
-			break;
-		case GDX2D_FORMAT_RGBA8888:
-		case GDX2D_FORMAT_RGBA4444:
-			dataFormat = GL_RGBA;
-			break;
-		case GDX2D_FORMAT_RGB565:
-			dataFormat = GL_RGB565;
-			break;
-		default:
-			dataFormat = GL_RGBA;
-	}
-	uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, dataFormat);
+	uploadImageData(buffer, len, req_format);
 }
 
 Texture::Texture( char* texFilePath )
@@ -100,6 +84,29 @@ void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum imag
 void Texture::uploadImageData( GLubyte* data )
 {
 	uploadImageData(data, m_Width, m_Height, m_imageFormat);
+}
+
+void Texture::uploadImageData( const unsigned char *buffer, uint32_t len, uint32_t req_format /*= GDX2D_FORMAT_RGBA8888*/ )
+{
+	gdx2d_pixmap* pixmap = gdx2d_load(buffer, len, req_format);
+	switch(pixmap->format){
+		case GDX2D_FORMAT_ALPHA:
+			m_imageFormat = GL_ALPHA;
+			break;
+		case GDX2D_FORMAT_RGBA8888:
+		case GDX2D_FORMAT_RGBA4444:
+			m_imageFormat = GL_RGBA;
+			break;
+		case GDX2D_FORMAT_RGB565:
+			m_imageFormat = GL_RGB565;
+			break;
+		default:
+			m_imageFormat = GL_RGBA;
+	}
+	m_Width = pixmap->width;
+	m_Height = pixmap->height;
+	uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, m_imageFormat);
+	gdx2d_free(pixmap);
 }
 GLuint Texture::createGLHandle()
 {

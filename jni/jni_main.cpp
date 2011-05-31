@@ -19,9 +19,9 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(
 	g_MagicEngine.setPreviewDataInfo(width, height, format);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer){
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer, jlong len){
 	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
-	g_MagicEngine.updatePreviewTex(p_buffer);
+	g_MagicEngine.updatePreviewTex(p_buffer, len);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }
 

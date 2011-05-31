@@ -2,8 +2,6 @@ package com.funny.magicamera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.opengl.GLSurfaceView;
@@ -12,7 +10,9 @@ import android.view.SurfaceHolder;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import java.nio.ByteBuffer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -26,11 +26,11 @@ public class MagicEngineView extends GL20SurfaceView
     boolean m_bUseCamera = false;
 //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
-    byte[] m_frameBuffer;
+    byte[] m_frameBuffer = null;
     boolean m_frameChanged = false;
     final ReentrantLock m_lock = new ReentrantLock();
-    int     m_previewHeight;
-    int     m_previewWidth;
+    int     m_previewHeight = 640;
+    int     m_previewWidth = 480;
 
     public MagicEngineView(Context context) {
         super(context);
@@ -47,7 +47,7 @@ public class MagicEngineView extends GL20SurfaceView
     public void checkFrameBuffer(){
         m_lock.lock();
         if (m_frameChanged){
-            MagicJNILib.uploadPreviewData(m_frameBuffer);
+            MagicJNILib.uploadPreviewData(m_frameBuffer, m_frameBuffer.length);
             m_frameChanged = false;
         }
         m_lock.unlock();
@@ -57,14 +57,14 @@ public class MagicEngineView extends GL20SurfaceView
          MagicJNILib.init(width, height);
         if (m_bUseCamera){
             startCamera();
+        }else{
+            setLocalTexture("/sdcard/test/tex.jpg");
         }
-        setLocalTexture("/sdcard/test/tex.jpg");
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
     }
-
 
 
     @Override
@@ -76,14 +76,26 @@ public class MagicEngineView extends GL20SurfaceView
 
     public void setLocalTexture(String path){
         Bitmap bitmap = null;
-        bitmap = BitmapFactory.decodeFile(path);
-        m_previewHeight = bitmap.getHeight();
-        m_previewWidth = bitmap.getWidth();
-        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, GL10.GL_RGBA);
-        ByteBuffer bf = ByteBuffer.allocate(m_previewHeight*m_previewWidth*4);
-        bitmap.copyPixelsToBuffer(bf);
-        MagicJNILib.uploadPreviewData(bf.array());
-        bf = null;
+//        bitmap = BitmapFactory.decodeFile(path);
+//        m_previewHeight = bitmap.getHeight();
+//        m_previewWidth = bitmap.getWidth();
+//        bitmap.recycle();
+        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, MagicJNILib.IMAGE_FORMAT_PACKET);
+        FileInputStream inputStream = null;
+        byte[] buffer = null;
+        int szRead = 0;
+        try {
+            inputStream = new FileInputStream(path);
+            buffer = new byte[inputStream.available()];
+            szRead = inputStream.read(buffer);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        if (szRead > 0){
+            MagicJNILib.uploadPreviewData(buffer, buffer.length);
+        }
     }
 
 
@@ -103,48 +115,7 @@ public class MagicEngineView extends GL20SurfaceView
 //        return super.onTouchEvent(e);
     }
 
-    static public void decodeYUV420SP(byte[] rgb, byte[] yuv420sp, int width,
-			int height) {
-		final int frameSize = width * height;
-
-		for (int j = 0, yp = 0; j < height; j++) {
-			int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
-			for (int i = 0; i < width; i++, yp++) {
-				int y = (0xff & ((int) yuv420sp[yp])) - 16;
-				if (y < 0)
-					y = 0;
-				if ((i & 1) == 0) {
-					v = (0xff & yuv420sp[uvp++]) - 128;
-					u = (0xff & yuv420sp[uvp++]) - 128;
-				}
-
-				int y1192 = 1192 * y;
-				int r = (y1192 + 1634 * v);
-				int g = (y1192 - 833 * v - 400 * u);
-				int b = (y1192 + 2066 * u);
-
-				if (r < 0)
-					r = 0;
-				else if (r > 262143)
-					r = 262143;
-				if (g < 0)
-					g = 0;
-				else if (g > 262143)
-					g = 262143;
-				if (b < 0)
-					b = 0;
-				else if (b > 262143)
-					b = 262143;
-
-				rgb[yp*4] = (byte)0xff;
-                rgb[yp*4 + 1] = (byte)(r >> 10);
-                rgb[yp*4 + 2] = (byte)(g >> 10);
-                rgb[yp*4 + 3] = (byte)(b >> 10);
-			}
-		}
-	}
-
-        public void startCamera(){
+    public void startCamera(){
         m_Camera = Camera.open();
         m_Camera.setPreviewCallback(this);
         // Now that the size is known, set up the camera parameters and begin
@@ -152,22 +123,24 @@ public class MagicEngineView extends GL20SurfaceView
         Camera.Parameters parameters = m_Camera.getParameters();
 
         List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-//        List<Size> psizes = parameters.getSupportedPictureSizes();
+        List<Size> psizes = parameters.getSupportedPictureSizes();
         List<Integer> formats = parameters.getSupportedPreviewFormats();
-        if (formats.contains(ImageFormat.RGB_565)){
-            parameters.setPreviewFormat(ImageFormat.RGB_565);
-        }
+
         //formats  = parameters.getSupportedPictureFormats();
-//        Camera.Size optimalSize = getOptimalPreviewSize(sizes, width, height);
-        m_previewHeight = 640;
-        m_previewWidth = 480;
+        Camera.Size optimalSize = getOptimalPreviewSize(sizes, 640, 480);
+        m_previewHeight = optimalSize.height;
+        m_previewWidth = optimalSize.width;
         parameters.setPreviewSize(m_previewWidth, m_previewHeight);
-
-//        parameters.setPreviewSize(320, 240);
-
+        int szBuffer;
+        if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)){
+            parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
+            szBuffer = m_previewWidth*m_previewHeight*2;
+        }else {
+            szBuffer = m_previewWidth*m_previewHeight*12/8;
+        }
+        m_frameBuffer = new byte[szBuffer];
+        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
         m_Camera.setParameters(parameters);
-        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, GL10.GL_RGBA);
-        m_frameBuffer = new byte[m_previewWidth*m_previewHeight*4];
         m_Camera.startPreview();
     }
 
@@ -216,11 +189,7 @@ public class MagicEngineView extends GL20SurfaceView
         @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
         m_lock.lock();
-        Camera.Parameters parameters = m_Camera.getParameters();
-        int imageFormat = parameters.getPreviewFormat();
-        int bits = ImageFormat.getBitsPerPixel(imageFormat);
         System.arraycopy(bytes, 0, m_frameBuffer, 0, bytes.length);
-        decodeYUV420SP(m_frameBuffer, bytes, m_previewWidth, m_previewHeight);
         m_frameChanged = true;
         m_lock.unlock();
     }

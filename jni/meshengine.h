@@ -3,10 +3,6 @@
 #include "mesh.h"
 #include <GLES2/gl2.h>
 
-const int IMAGE_FORMAT_RGB_565	= 0x00000004; //4
-const int IMAGE_FORMAT_NV21		= 0x00000011; //17
-const int IMAGE_FORMAT_RGBA		= 0x00000100; //256
-
 struct Vertex {
 	GLfloat x;
 	GLfloat y;

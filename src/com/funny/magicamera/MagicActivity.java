@@ -3,6 +3,7 @@ package com.funny.magicamera;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.view.Window;
@@ -19,6 +20,7 @@ public class MagicActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         if (detectOpenGLES20()){
             mView = new MagicEngineView(getApplication());
             setContentView(mView);
