@@ -10,9 +10,9 @@ import android.view.SurfaceHolder;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -29,12 +29,12 @@ public class MagicEngineView extends GL20SurfaceView
     byte[] m_frameBuffer = null;
     boolean m_frameChanged = false;
     final ReentrantLock m_lock = new ReentrantLock();
-    int     m_previewHeight = 640;
-    int     m_previewWidth = 480;
+    int     m_previewHeight = 480;
+    int     m_previewWidth = 640;
 
     public MagicEngineView(Context context) {
         super(context);
-        //after api level 8 can do as that
+//        after api level 8 can do as that
 //        this.setEGLContextClientVersion(2);
         setRenderer(this);
     }
@@ -81,21 +81,24 @@ public class MagicEngineView extends GL20SurfaceView
 //        m_previewWidth = bitmap.getWidth();
 //        bitmap.recycle();
         MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, MagicJNILib.IMAGE_FORMAT_PACKET);
-        FileInputStream inputStream = null;
+        InputStream inputStream = null;
+
         byte[] buffer = null;
         int szRead = 0;
         try {
-            inputStream = new FileInputStream(path);
+//            inputStream = new FileInputStream(path);
+            inputStream = getResources().getAssets().open("test2.jpg");
             buffer = new byte[inputStream.available()];
             szRead = inputStream.read(buffer);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace(); 
         }
         if (szRead > 0){
             MagicJNILib.uploadPreviewData(buffer, buffer.length);
         }
+        buffer = null;
     }
 
 

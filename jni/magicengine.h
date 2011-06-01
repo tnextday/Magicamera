@@ -14,7 +14,7 @@ const int IMAGE_FORMAT_PACKET	= 0x00000100; //256  打包压缩的数据，jpeg,png,tga,
 void decodeYUV420SP(char* rgb565, char* yuv420sp, int width, int height);
 
 class MagicEngine{
-	GLuint gProgram;
+	GLuint m_Program;
 	GLuint m_positionLoc;
 	GLuint m_texCoordLoc;
 	GLuint m_viewprojLoc;
@@ -41,6 +41,7 @@ public:
 	bool onTouchDown(float x, float y);
 	bool onTouchDrag(float x, float y);
 	bool onTouchUp(float x, float y);
+	void drawTexture( Texture *tex, GLint posX, GLint posY );
 };
 
 

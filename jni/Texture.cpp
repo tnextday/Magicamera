@@ -8,22 +8,34 @@ Texture::Texture()
 	init();
 }
 
-// int getGLInternalFormat() {
-// 	switch(format) {
-// 		case GDX2D_FORMAT_ALPHA:
-// 			return GL_ALPHA;
-// 		case GDX2D_FORMAT_LUMINANCE_ALPHA:
-// 			return GL_LUMINANCE_ALPHA;
-// 		case GDX2D_FORMAT_RGB888:
-// 		case GDX2D_FORMAT_RGB565:
-// 			return GL_RGB;
-// 		case GDX2D_FORMAT_RGBA8888:
-// 		case GDX2D_FORMAT_RGBA4444:
-// 			return GL_RGBA;
-// 		default:
-// 			//throw new GdxRuntimeException("unknown format: " + format);
-// 	}
-// }	
+int getGLInternalFormat(int format) {
+	switch(format) {
+		case GDX2D_FORMAT_ALPHA:
+			return GL_ALPHA;
+		case GDX2D_FORMAT_LUMINANCE_ALPHA:
+			return GL_LUMINANCE_ALPHA;
+		case GDX2D_FORMAT_RGB888:
+		case GDX2D_FORMAT_RGB565:
+			return GL_RGB;
+		case GDX2D_FORMAT_RGBA8888:
+		case GDX2D_FORMAT_RGBA4444:
+			return GL_RGBA;
+			//throw new GdxRuntimeException("unknown format: " + format);
+	}
+}
+int getGLType(int format) {
+	switch(format) {
+		case GDX2D_FORMAT_ALPHA:			
+		case GDX2D_FORMAT_LUMINANCE_ALPHA:
+		case GDX2D_FORMAT_RGB888:
+		case GDX2D_FORMAT_RGBA8888:
+			return GL_UNSIGNED_BYTE;
+		case GDX2D_FORMAT_RGB565:
+			return GL_UNSIGNED_SHORT_5_6_5;
+		case GDX2D_FORMAT_RGBA4444:
+			return GL_UNSIGNED_SHORT_4_4_4_4;
+	}
+}
 
 
 Texture::Texture( const unsigned char *buffer, uint32_t len, uint32_t req_format /*= GDX2D_FORMAT_RGBA8888*/)
@@ -77,7 +89,7 @@ void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum imag
 	m_Width = width;
 	m_Height = height;
 	m_imageFormat = imageFormat;
-	glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, width, height, 0, imageFormat, getGLType(m_imageFormat), data);
 	checkGlError("uploadImageData");
 }
 
@@ -89,22 +101,10 @@ void Texture::uploadImageData( GLubyte* data )
 void Texture::uploadImageData( const unsigned char *buffer, uint32_t len, uint32_t req_format /*= GDX2D_FORMAT_RGBA8888*/ )
 {
 	gdx2d_pixmap* pixmap = gdx2d_load(buffer, len, req_format);
-	switch(pixmap->format){
-		case GDX2D_FORMAT_ALPHA:
-			m_imageFormat = GL_ALPHA;
-			break;
-		case GDX2D_FORMAT_RGBA8888:
-		case GDX2D_FORMAT_RGBA4444:
-			m_imageFormat = GL_RGBA;
-			break;
-		case GDX2D_FORMAT_RGB565:
-			m_imageFormat = GL_RGB565;
-			break;
-		default:
-			m_imageFormat = GL_RGBA;
-	}
+	m_imageFormat = getGLInternalFormat(pixmap->format);
 	m_Width = pixmap->width;
 	m_Height = pixmap->height;
+	LOGI("Decoder Image : %d,%d format:%d", pixmap->width, pixmap->height, pixmap->format);
 	uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, m_imageFormat);
 	gdx2d_free(pixmap);
 }

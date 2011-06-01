@@ -13,10 +13,11 @@
 extern "C" {
 #endif
 
-void printGLString(const char *name, GLenum s);
-void checkGlError(const char* op);
 GLuint loadShader(GLenum shaderType, const char* pSource);
 GLuint createProgram(const char* pVertexSource, const char* pFragmentSource);
+void printGLString(const char *name, GLenum s);
+void checkGlError(const char* op);
+bool checkIfSupportsExtension(const char *extension);
 
 #ifdef __cplusplus
 }

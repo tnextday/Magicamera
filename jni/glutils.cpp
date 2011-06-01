@@ -8,14 +8,43 @@ void printGLString(const char *name, GLenum s) {
 	LOGI("GL %s = %s\n", name, v);
 }
 
+
+
+
+const char* glErrorString(GLenum errcode)
+{
+
+	if (errcode == GL_NO_ERROR)
+		return "GL_NO_ERROR";
+	else if (errcode == GL_INVALID_ENUM)
+		return"GL_INVALID_ENUM";
+	else if (errcode == GL_INVALID_VALUE)
+		return "GL_INVALID_VALUE";
+	else if (errcode == GL_INVALID_OPERATION)
+		return "GL_INVALID_OPERATION";
+	else if (errcode == GL_OUT_OF_MEMORY)
+		return "GL_OUT_OF_MEMORY";
+	else
+		return "Unknow Error Code";
+}
+
+
+
 void checkGlError(const char* op) {
 	int i = 0;
 	for (GLint error = glGetError(); error; error
 		= glGetError()) {
-			LOGI("after %s() glError (0x%x) No. %d\n", op, error, i);
+			LOGI("after %s glError (0x%x[%s]) No. %d\n", op, error, glErrorString(error), i);
 			i++;
 	}
 }
+
+bool checkIfSupportsExtension(const char *extension){
+	const char *extensions = (const char *) glGetString(GL_EXTENSIONS);
+	return strstr(extensions, extension) != NULL;
+}
+
+
 
 GLuint loadShader(GLenum shaderType, const char* pSource) {
 	GLuint shader = glCreateShader(shaderType);
