@@ -1,5 +1,10 @@
 syntax: glob
 bin/*
 gen/*
-jni/VSProject/*
 obj/*
+Debug/*
+Relase/*
+*.user
+*.ncb
+*.so
+*.suo

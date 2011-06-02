@@ -29,9 +29,9 @@ typedef uint32_t(*get_pixel_func)(unsigned char* pixel_addr);
 
 inline void generate_look_ups() {
 	uint32_t i = 0;
-	lu4 = malloc(sizeof(uint32_t) * 16);
-	lu5 = malloc(sizeof(uint32_t) * 32);
-	lu6 = malloc(sizeof(uint32_t) * 64);
+	lu4 = (uint32_t*)malloc(sizeof(uint32_t) * 16);
+	lu5 = (uint32_t*)malloc(sizeof(uint32_t) * 32);
+	lu6 = (uint32_t*)malloc(sizeof(uint32_t) * 64);
 
 	for(i = 0; i < 16; i++) {
 		lu4[i] = (uint32_t) i / 15.0f * 255;
@@ -156,13 +156,13 @@ inline void set_pixel_RGBA4444(unsigned char *pixel_addr, uint32_t color) {
 
 inline set_pixel_func set_pixel_func_ptr(uint32_t format) {
 	switch(format) {
-		case GDX2D_FORMAT_ALPHA:			return &set_pixel_alpha;
-		case GDX2D_FORMAT_LUMINANCE_ALPHA:	return &set_pixel_luminance_alpha;
-		case GDX2D_FORMAT_RGB888:			return &set_pixel_RGB888;
-		case GDX2D_FORMAT_RGBA8888:			return &set_pixel_RGBA8888;
-		case GDX2D_FORMAT_RGB565:			return &set_pixel_RGB565;
-		case GDX2D_FORMAT_RGBA4444:			return &set_pixel_RGBA4444;
-		default: return &set_pixel_alpha; // better idea for a default?
+		case GDX2D_FORMAT_ALPHA:			return (set_pixel_func)&set_pixel_alpha;
+		case GDX2D_FORMAT_LUMINANCE_ALPHA:	return (set_pixel_func)&set_pixel_luminance_alpha;
+		case GDX2D_FORMAT_RGB888:			return (set_pixel_func)&set_pixel_RGB888;
+		case GDX2D_FORMAT_RGBA8888:			return (set_pixel_func)&set_pixel_RGBA8888;
+		case GDX2D_FORMAT_RGB565:			return (set_pixel_func)&set_pixel_RGB565;
+		case GDX2D_FORMAT_RGBA4444:			return (set_pixel_func)&set_pixel_RGBA4444;
+		default: return (set_pixel_func)&set_pixel_alpha; // better idea for a default?
 	}
 }
 
@@ -424,7 +424,7 @@ void gdx2d_draw_line(const gdx2d_pixmap* pixmap, int32_t x0, int32_t y0, int32_t
 	set_pixel_func pset = set_pixel_func_ptr(pixmap->format);
 	get_pixel_func pget = get_pixel_func_ptr(pixmap->format);
 	uint32_t col_format = to_format(pixmap->format, col);
-	void* addr = ptr + (x0 + y0 * pixmap->width) * bpp;
+	unsigned char* addr = ptr + (x0 + y0 * pixmap->width) * bpp;
 
     if (dy < 0) { dy = -dy;  stepy = -1; } else { stepy = 1; }
     if (dx < 0) { dx = -dx;  stepx = -1; } else { stepx = 1; }
@@ -433,7 +433,7 @@ void gdx2d_draw_line(const gdx2d_pixmap* pixmap, int32_t x0, int32_t y0, int32_t
 
     if(in_pixmap(pixmap, x0, y0)) {
     	if(gdx2d_blend) {
-    		col_format = to_format(pixmap->format, blend(col, to_RGBA8888(pixmap->format, pget(addr))));
+    		col_format = to_format(pixmap->format, blend(col, to_RGBA8888(pixmap->format, pget((uint8_t*)addr))));
     	}
     	pset(addr, col_format);
     }
@@ -449,7 +449,7 @@ void gdx2d_draw_line(const gdx2d_pixmap* pixmap, int32_t x0, int32_t y0, int32_t
 			if(in_pixmap(pixmap, x0, y0)) {
 				addr = ptr + (x0 + y0 * pixmap->width) * bpp;
 				if(gdx2d_blend) {
-					col_format = to_format(pixmap->format, blend(col, to_RGBA8888(pixmap->format, pget(addr))));
+					col_format = to_format(pixmap->format, blend(col, to_RGBA8888(pixmap->format, pget((uint8_t*)addr))));
 				}
 				pset(addr, col_format);
 			}
@@ -466,7 +466,7 @@ void gdx2d_draw_line(const gdx2d_pixmap* pixmap, int32_t x0, int32_t y0, int32_t
 			if(in_pixmap(pixmap, x0, y0)) {
 				addr = ptr + (x0 + y0 * pixmap->width) * bpp;
 				if(gdx2d_blend) {
-					col_format = to_format(pixmap->format, blend(col, to_RGBA8888(pixmap->format, pget(addr))));
+					col_format = to_format(pixmap->format, blend(col, to_RGBA8888(pixmap->format, pget((uint8_t*)addr))));
 				}
 				pset(addr, col_format);
 			}
@@ -677,18 +677,18 @@ void blit_same_size(const gdx2d_pixmap* src_pixmap, const gdx2d_pixmap* dst_pixm
 			if(sx < 0 || dx < 0) continue;
 			if(sx >= src_pixmap->width || dx >= dst_pixmap->width) break;
 
-			const void* src_ptr = src_pixmap->pixels + sx * sbpp + sy * spitch;
-			const void* dst_ptr = dst_pixmap->pixels + dx * dbpp + dy * dpitch;
-			uint32_t src_col = to_RGBA8888(src_pixmap->format, pget((void*)src_ptr));
+			const unsigned char* src_ptr = src_pixmap->pixels + sx * sbpp + sy * spitch;
+			const unsigned char* dst_ptr = dst_pixmap->pixels + dx * dbpp + dy * dpitch;
+			uint32_t src_col = to_RGBA8888(src_pixmap->format, pget((uint8_t*)src_ptr));
 
 			if(gdx2d_blend) {
-				uint32_t dst_col = to_RGBA8888(dst_pixmap->format, dpget((void*)dst_ptr));
+				uint32_t dst_col = to_RGBA8888(dst_pixmap->format, dpget((uint8_t*)dst_ptr));
 				src_col = to_format(dst_pixmap->format, blend(src_col, dst_col));
 			} else {
 				src_col = to_format(dst_pixmap->format, src_col); 
 			}
 			
-			pset((void*)dst_ptr, src_col);
+			pset((unsigned char*)dst_ptr, src_col);
 		}
 	}
 }
@@ -730,13 +730,13 @@ void blit_bilinear(const gdx2d_pixmap* src_pixmap, const gdx2d_pixmap* dst_pixma
 			if(sx < 0 || dx < 0) continue;
 			if(sx >= src_pixmap->width || dx >= dst_pixmap->width) break;
 
-			const void* dst_ptr = dst_pixmap->pixels + dx * dbpp + dy * dpitch;
-			const void* src_ptr = src_pixmap->pixels + sx * sbpp + sy * spitch;
+			const uint8_t* dst_ptr = dst_pixmap->pixels + dx * dbpp + dy * dpitch;
+			const uint8_t* src_ptr = src_pixmap->pixels + sx * sbpp + sy * spitch;
 			uint32_t c1 = 0, c2 = 0, c3 = 0, c4 = 0;
-			c1 = to_RGBA8888(src_pixmap->format, pget((void*)src_ptr));
-			if(sx + 1 < src_width) c2 = to_RGBA8888(src_pixmap->format, pget((void*)(src_ptr + sbpp))); else c2 = c1;
-			if(sy + 1< src_height) c3 = to_RGBA8888(src_pixmap->format, pget((void*)(src_ptr + spitch))); else c3 = c1;
-			if(sx + 1< src_width && sy + 1 < src_height) c4 = to_RGBA8888(src_pixmap->format, pget((void*)(src_ptr + spitch + sbpp))); else c4 = c1;
+			c1 = to_RGBA8888(src_pixmap->format, pget((uint8_t*)src_ptr));
+			if(sx + 1 < src_width) c2 = to_RGBA8888(src_pixmap->format, pget((uint8_t*)(src_ptr + sbpp))); else c2 = c1;
+			if(sy + 1< src_height) c3 = to_RGBA8888(src_pixmap->format, pget((uint8_t*)(src_ptr + spitch))); else c3 = c1;
+			if(sx + 1< src_width && sy + 1 < src_height) c4 = to_RGBA8888(src_pixmap->format, pget((uint8_t*)(src_ptr + spitch + sbpp))); else c4 = c1;
 
 			float ta = (1 - x_diff) * (1 - y_diff);
 			float tb = (x_diff) * (1 - y_diff);
@@ -763,13 +763,13 @@ void blit_bilinear(const gdx2d_pixmap* src_pixmap, const gdx2d_pixmap* dst_pixma
 			uint32_t src_col = (r << 24) | (g << 16) | (b << 8) | a;
 
 			if(gdx2d_blend) {
-				uint32_t dst_col = to_RGBA8888(dst_pixmap->format, dpget((void*)dst_ptr));
+				uint32_t dst_col = to_RGBA8888(dst_pixmap->format, dpget((uint8_t*)dst_ptr));
 				src_col = to_format(dst_pixmap->format, blend(src_col, dst_col));
 			} else {
 				src_col = to_format(dst_pixmap->format, src_col);
 			}
 
-			pset((void*)dst_ptr, src_col);
+			pset((unsigned char*)dst_ptr, src_col);
 		}
 	}
 }
@@ -809,16 +809,16 @@ void blit_linear(const gdx2d_pixmap* src_pixmap, const gdx2d_pixmap* dst_pixmap,
 
 			const void* src_ptr = src_pixmap->pixels + sx * sbpp + sy * spitch;
 			const void* dst_ptr = dst_pixmap->pixels + dx * dbpp + dy * dpitch;
-			uint32_t src_col = to_RGBA8888(src_pixmap->format, pget((void*)src_ptr));
+			uint32_t src_col = to_RGBA8888(src_pixmap->format, pget((uint8_t*)src_ptr));
 
 			if(gdx2d_blend) {
-				uint32_t dst_col = to_RGBA8888(dst_pixmap->format, dpget((void*)dst_ptr));
+				uint32_t dst_col = to_RGBA8888(dst_pixmap->format, dpget((uint8_t*)dst_ptr));
 				src_col = to_format(dst_pixmap->format, blend(src_col, dst_col));
 			} else {
 				src_col = to_format(dst_pixmap->format, src_col);
 			}
 
-			pset((void*)dst_ptr, src_col);
+			pset((unsigned char*)dst_ptr, src_col);
 		}
 	}
 }

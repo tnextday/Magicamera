@@ -116,6 +116,7 @@ bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
 		glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
 		break;
 	}
+	return true;
 }
 
 bool Mesh::createBufferObjects()
@@ -135,6 +136,8 @@ bool Mesh::createBufferObjects()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	return true;
 }
 
 void Mesh::draw()

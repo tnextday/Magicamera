@@ -112,12 +112,12 @@ GLuint Texture::createGLHandle()
 {
 	GLuint texID[1];
 	glGenTextures(1, texID);
-	m_TexHandle = texID[0];
+	return texID[0];
 }
 
 void Texture::init()
 {
-	createGLHandle();
+	m_TexHandle = createGLHandle();
 	setWrap();
 	setFilter();
 }
