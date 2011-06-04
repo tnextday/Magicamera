@@ -3,7 +3,7 @@
       package="com.funny.magicamera"
       android:versionCode="1"
       android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="6" />
+    <uses-sdk android:minSdkVersion="8" />
     <uses-feature android:glEsVersion="0x00020000"></uses-feature>
     <uses-feature android:name="android.hardware.camera"></uses-feature>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>

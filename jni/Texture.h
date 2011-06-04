@@ -25,7 +25,7 @@ public:
 	// Parameter: uint32_t req_format
 	// Returns:   
 	//************************************
-	Texture(const unsigned char *buffer, uint32_t len, uint32_t req_format = GDX2D_FORMAT_RGBA8888);
+	Texture(const unsigned char *buffer, uint32_t len);
 	Texture(char* texFilePath);
 	~Texture();
 
@@ -36,7 +36,7 @@ public:
 	void uploadImageData(GLubyte* data, int width, int height, GLenum imageFormat);
 	void uploadImageData(GLubyte* data);
 	//update压缩过的数据，jpeg,png,tga。。。
-	void uploadImageData(const unsigned char *buffer, uint32_t len, uint32_t req_format = GDX2D_FORMAT_RGBA8888);
+	void uploadImageData(const unsigned char *buffer, uint32_t len);
 	void setSize(int w, int h){m_Width = w; m_Height = h;};
 	//GL Format
 	void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};

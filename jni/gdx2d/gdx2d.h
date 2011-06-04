@@ -60,7 +60,7 @@ typedef struct {
 	const unsigned char* pixels;
 } gdx2d_pixmap;
 
-extern gdx2d_pixmap* gdx2d_load (const unsigned char *buffer, uint32_t len, uint32_t req_format);
+extern gdx2d_pixmap* gdx2d_load (const unsigned char *buffer, uint32_t len);
 extern gdx2d_pixmap* gdx2d_new  (uint32_t width, uint32_t height, uint32_t format);
 extern void 		 gdx2d_free (const gdx2d_pixmap* pixmap);
 

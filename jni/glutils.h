@@ -5,8 +5,10 @@
 
 #ifdef _WIN32
 #include <stdio.h>
-#	define  LOGI(...)  printf(__VA_ARGS__)
-#	define  LOGE(...)  printf(__VA_ARGS__)
+#include <Windows.h>
+void OutputDebugText(const char* sz, ...);
+#	define  LOGI(...)  OutputDebugText(__VA_ARGS__)
+#	define  LOGE(...)  OutputDebugText(__VA_ARGS__)
 #else
 #include <android/log.h>
 #	define  LOG_TAG    "libmagicjni"

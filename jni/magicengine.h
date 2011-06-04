@@ -19,7 +19,7 @@ class MagicEngine{
 	GLuint m_texCoordLoc;
 	GLuint m_viewprojLoc;
 
-	Texture m_PreviewTex;
+	Texture* m_PreviewTex;
 	MeshEngine*	m_Mesh;
 
 	GLfloat m_ViewWidth;

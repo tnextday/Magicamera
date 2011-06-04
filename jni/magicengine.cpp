@@ -29,12 +29,14 @@ static const char gFragmentShader[] =
 MagicEngine::MagicEngine()
 {
 	m_Mesh = NULL;
-	SafeDeleteArray(m_tmpImageData);
+	m_tmpImageData = NULL;
 }
 
 MagicEngine::~MagicEngine()
 {
+	SafeDeleteArray(m_tmpImageData);
 	SafeDelete(m_Mesh);
+	SafeDelete(m_PreviewTex);
 }
 
 
@@ -44,10 +46,10 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	printGLString("Renderer", GL_RENDERER);
 	printGLString("Extensions", GL_EXTENSIONS);
 	
-	LOGI("setupGraphics(%d, %d)", w, h);
+	LOGI("setupGraphics(%d, %d)\n", w, h);
 	m_Program = createProgram(gVertexShader, gFragmentShader);
 	if (!m_Program) {
-		LOGE("Could not create program.");
+		LOGE("Could not create program.\n");
 		return false;
 	}
 	glUseProgram(m_Program);
@@ -73,6 +75,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	}
 
 	glDisable(GL_DEPTH_TEST);
+	checkGlError("glDisable(GL_DEPTH_TEST)");
 // 	glCullFace(GL_BACK);
 // 	glEnable(GL_CULL_FACE);
 	//启用混合操作
@@ -83,6 +86,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	m_ViewHeight = h;
 
 	glViewport(0, 0, w, h);
+	checkGlError("glViewport");
 
 	//使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
 	GLfloat mat_p[16];
@@ -99,6 +103,8 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	//  	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);	
 	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 	checkGlError("glUniformMatrix4fv");
+
+	m_PreviewTex = new Texture();
 	return true;
 }
 
@@ -136,8 +142,8 @@ void MagicEngine::renderFrame() {
 
 	glUseProgram(m_Program);
 
-	drawTexture(&m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
-//  	m_PreviewTex.bind();
+	drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
+//  	m_PreviewTex->bind();
 //  	m_Mesh->draw();
 	checkGlError("renderFrame");
 }
@@ -145,12 +151,12 @@ void MagicEngine::renderFrame() {
 void MagicEngine::updatePreviewTex( char* data, long len )
 {
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
-		decodeYUV420SP(m_tmpImageData, data, m_PreviewTex.m_Width, m_PreviewTex.m_Height);
-		m_PreviewTex.uploadImageData((GLubyte*)m_tmpImageData);
+		decodeYUV420SP(m_tmpImageData, data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
+		m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
 	}else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
-		m_PreviewTex.uploadImageData((GLubyte*)data);
+		m_PreviewTex->uploadImageData((GLubyte*)data);
 	}else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
-		m_PreviewTex.uploadImageData((unsigned char*)data, len, GDX2D_FORMAT_RGB565);
+		m_PreviewTex->uploadImageData((unsigned char*)data, len);
 	}
 	
 	
@@ -158,18 +164,16 @@ void MagicEngine::updatePreviewTex( char* data, long len )
 
 void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 {
-	m_PreviewTex.setSize(w, h);
+	m_PreviewTex->setSize(w, h);
 	m_inputFortmat = imageFormat;
 
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
-		m_PreviewTex.setImageFormat(GL_RGB565);
+		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 		m_tmpImageData = new char[w*h*2];
 	}if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
-		m_PreviewTex.setImageFormat(GL_RGB565);
+		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 
-	if (m_Mesh){
-		SafeDelete(m_Mesh);
-	}
+	SafeDelete(m_Mesh);
 	int mw = MESH_WIDTH+1;
 	int mh = MESH_WIDTH*w/h + 1;
 	m_Mesh = new MeshEngine(mw, mh);

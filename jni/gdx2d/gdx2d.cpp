@@ -15,7 +15,8 @@
 #define STBI_HEADER_FILE_ONLY
 #define STBI_NO_FAILURE_STRINGS
 #include "stb_image.c"
-#include "stb_truetype.h"
+#include <malloc.h>
+#include <string.h>
 
 static uint32_t gdx2d_blend = GDX2D_BLEND_NONE;
 static uint32_t gdx2d_scale = GDX2D_SCALE_NEAREST;
@@ -220,12 +221,12 @@ inline get_pixel_func get_pixel_func_ptr(uint32_t format) {
 	}
 }
 
-gdx2d_pixmap* gdx2d_load(const unsigned char *buffer, uint32_t len, uint32_t req_format) {
+extern gdx2d_pixmap* gdx2d_load( const unsigned char *buffer, uint32_t len )
+{
 	int32_t width, height, format;
-	// TODO fix this! Add conversion to requested format
-	if(req_format > GDX2D_FORMAT_RGBA8888) 
-		req_format = GDX2D_FORMAT_RGBA8888;
-	const unsigned char* pixels = stbi_load_from_memory(buffer, len, &width, &height, &format, req_format);
+	//stbi_load_from_memory 的第4个参数会返回图片原始的format，但是最后输出的pixels是req_comp指定的format
+	//这里我们不需要对图片格式进行转换，可以将第5个参数设置为0
+	const unsigned char* pixels = stbi_load_from_memory(buffer, len, &width, &height, &format, 0);
 	if(pixels == NULL)
 		return NULL;
 

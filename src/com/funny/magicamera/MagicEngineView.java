@@ -2,17 +2,18 @@ package com.funny.magicamera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,35 +21,38 @@ import java.util.concurrent.locks.ReentrantLock;
  * User: tNextDay
  * Description:
  */
-public class MagicEngineView extends GL20SurfaceView
+public class MagicEngineView extends GLSurfaceView
         implements GLSurfaceView.Renderer, Camera.PreviewCallback{
 
     boolean m_bUseCamera = false;
 //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
-    byte[] m_frameBuffer = null;
-    boolean m_frameChanged = false;
+    final static int BufferCount = 3;
+    LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
     final ReentrantLock m_lock = new ReentrantLock();
     int     m_previewHeight = 480;
     int     m_previewWidth = 640;
 
     public MagicEngineView(Context context) {
         super(context);
-//        after api level 8 can do as that
-//        this.setEGLContextClientVersion(2);
+        this.setEGLContextClientVersion(2);
         setRenderer(this);
     }
+    
+    static final FPSLogger fps = new FPSLogger();
     public void onDrawFrame(GL10 gl) {
         checkFrameBuffer();
         MagicJNILib.step();
+        fps.log();
     }
 
 
     public void checkFrameBuffer(){
         m_lock.lock();
-        if (m_frameChanged){
-            MagicJNILib.uploadPreviewData(m_frameBuffer, m_frameBuffer.length);
-            m_frameChanged = false;
+        byte[] bytes = m_buffers.poll(); 
+        if (bytes != null){
+            MagicJNILib.uploadPreviewData(bytes, bytes.length);
+            m_Camera.addCallbackBuffer(bytes);
         }
         m_lock.unlock();
     }
@@ -87,7 +91,7 @@ public class MagicEngineView extends GL20SurfaceView
         int szRead = 0;
         try {
 //            inputStream = new FileInputStream(path);
-            inputStream = getResources().getAssets().open("test2.jpg");
+            inputStream = getResources().getAssets().open("test.jpg");
             buffer = new byte[inputStream.available()];
             szRead = inputStream.read(buffer);
         } catch (FileNotFoundException e) {
@@ -120,7 +124,7 @@ public class MagicEngineView extends GL20SurfaceView
 
     public void startCamera(){
         m_Camera = Camera.open();
-        m_Camera.setPreviewCallback(this);
+        
         // Now that the size is known, set up the camera parameters and begin
         // the preview.
         Camera.Parameters parameters = m_Camera.getParameters();
@@ -131,26 +135,31 @@ public class MagicEngineView extends GL20SurfaceView
 
         //formats  = parameters.getSupportedPictureFormats();
         Camera.Size optimalSize = getOptimalPreviewSize(sizes, 640, 480);
-        m_previewHeight = optimalSize.height;
-        m_previewWidth = optimalSize.width;
-        parameters.setPreviewSize(m_previewWidth, m_previewHeight);
-        int szBuffer;
+        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
         if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)){
             parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
-            szBuffer = m_previewWidth*m_previewHeight*2;
-        }else {
-            szBuffer = m_previewWidth*m_previewHeight*12/8;
         }
-        m_frameBuffer = new byte[szBuffer];
-        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
         m_Camera.setParameters(parameters);
+        
+        parameters = m_Camera.getParameters();
+        Camera.Size  previewSize = parameters.getPreviewSize();
+        m_previewWidth = previewSize.width;
+        m_previewHeight = previewSize.height;
+        int previewFormat = parameters.getPreviewFormat();
+        int szBuffer = previewSize.width*previewSize.height*ImageFormat.getBitsPerPixel(previewFormat)/8;
+        m_Camera.setPreviewCallbackWithBuffer(this);
+        for (int i = 0; i < BufferCount; i ++){
+        	m_Camera.addCallbackBuffer(new byte[szBuffer]);
+        }
+        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
+        
         m_Camera.startPreview();
     }
 
     public void stopCamera(){
         if (m_Camera == null) return;
         m_Camera.stopPreview();
-        m_Camera.setPreviewCallback(null);
+        m_Camera.setPreviewCallbackWithBuffer(null);
         m_Camera.release();
         m_Camera = null;
     }
@@ -189,11 +198,52 @@ public class MagicEngineView extends GL20SurfaceView
         return optimalSize;
     }
 
-        @Override
+    int frameCount = 0;
+    
+    public void Save2File(byte[] bytes){
+    	File texFile = new File(String.format("/sdcard/nv21/%03d.nv21", frameCount));
+    	frameCount++;
+    	try {
+			texFile.createNewFile();
+			FileOutputStream fos = new FileOutputStream(texFile);
+			fos.write(bytes);
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
         m_lock.lock();
-        System.arraycopy(bytes, 0, m_frameBuffer, 0, bytes.length);
-        m_frameChanged = true;
+        m_buffers.add(bytes);
+        Log.d("FPSLogger", "onPreviewFrame");
         m_lock.unlock();
+//    	Save2File(bytes);
+//    	m_Camera.addCallbackBuffer(bytes);
+    }
+        
+    public static class FPSLogger {
+    	long startTime;
+    	int frames;
+    	
+    	public FPSLogger() {
+    		startTime = System.nanoTime();
+    		frames = 0;
+    	}
+    	
+    	/**
+    	 * Logs the current frames per second to the console.
+    	 */
+    	public void log() {
+    		frames++;
+    		if(System.nanoTime()-startTime > 1000000000) {
+    			Log.i("FPSLogger", "fps: " + frames);
+    			frames = 0;
+    			startTime = System.nanoTime();
+    		}
+    	}
     }
 }

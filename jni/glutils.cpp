@@ -4,12 +4,21 @@
 #include <string.h>
 #include "glutils.h"
 
+#ifdef _WIN32
+void OutputDebugText(const char* sz, ...){
+	char szData[512] = {0};
+	va_list args;
+	va_start(args, sz);
+	_vsnprintf(szData, sizeof(szData)-1, sz, args);
+	va_end(args);
+	OutputDebugString(szData);
+}
+#endif
+
 void printGLString(const char *name, GLenum s) {
 	const char *v = (const char *) glGetString(s);
 	LOGI("GL %s = %s\n", name, v);
 }
-
-
 
 
 const char* glErrorString(GLenum errcode)

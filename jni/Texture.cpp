@@ -38,10 +38,10 @@ int getGLType(int format) {
 }
 
 
-Texture::Texture( const unsigned char *buffer, uint32_t len, uint32_t req_format /*= GDX2D_FORMAT_RGBA8888*/)
+Texture::Texture( const unsigned char *buffer, uint32_t len)
 {
 	init();
-	uploadImageData(buffer, len, req_format);
+	uploadImageData(buffer, len);
 }
 
 Texture::Texture( char* texFilePath )
@@ -89,8 +89,9 @@ void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum imag
 	m_Width = width;
 	m_Height = height;
 	m_imageFormat = imageFormat;
-	glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, width, height, 0, imageFormat, getGLType(m_imageFormat), data);
-	checkGlError("uploadImageData");
+	int glformat = getGLInternalFormat(m_imageFormat);
+	glTexImage2D(GL_TEXTURE_2D, 0, glformat, width, height, 0, glformat, getGLType(m_imageFormat), data);
+	checkGlError("glTexImage2D");
 }
 
 void Texture::uploadImageData( GLubyte* data )
@@ -98,13 +99,13 @@ void Texture::uploadImageData( GLubyte* data )
 	uploadImageData(data, m_Width, m_Height, m_imageFormat);
 }
 
-void Texture::uploadImageData( const unsigned char *buffer, uint32_t len, uint32_t req_format /*= GDX2D_FORMAT_RGBA8888*/ )
+void Texture::uploadImageData( const unsigned char *buffer, uint32_t len)
 {
-	gdx2d_pixmap* pixmap = gdx2d_load(buffer, len, req_format);
-	m_imageFormat = getGLInternalFormat(pixmap->format);
+	gdx2d_pixmap* pixmap = gdx2d_load(buffer, len);
+	m_imageFormat = pixmap->format;
 	m_Width = pixmap->width;
 	m_Height = pixmap->height;
-	LOGI("Decoder Image : %d,%d format:%d", pixmap->width, pixmap->height, pixmap->format);
+	LOGI("Decoder Image : %d,%d format:%d\n", pixmap->width, pixmap->height, pixmap->format);
 	uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, m_imageFormat);
 	gdx2d_free(pixmap);
 }
