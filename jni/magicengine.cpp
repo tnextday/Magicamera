@@ -201,7 +201,6 @@ bool MagicEngine::onTouchDown( float x, float y )
 	if (x > m_ViewWidth - 50 && y > m_ViewHeight -50){
 		m_Mesh->restore();
 	}
-	m_Mesh->stopAnimating();
 	m_lastX = x;
 	m_lastY = y;
 	return true;
@@ -211,7 +210,7 @@ bool MagicEngine::onTouchDrag( float x, float y )
 {
 	LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
 	y = m_ViewHeight - y;
-	m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 150);
+	m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 100);
 	m_lastX = x;
 	m_lastY = y;
 	return true;

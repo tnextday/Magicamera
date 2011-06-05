@@ -66,7 +66,9 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 {
 	if(mx == 0 && my == 0) return;
 	Vertex *vertexs = (Vertex *)mVertexBuffer;
-	Vertex *p;	//point
+	Vertex *overtexs = (Vertex *)m_OrgiVertex;
+	Vertex *p;	//point 当前点坐标
+	Vertex *op;	//原始点坐标
 	bool	bMeshChanged = false;
 	//遍历除了四边之外的所有点
 	for (int j = 1; j < mH-1; j++){
@@ -74,12 +76,20 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 		for(int i = 1; i < mW-1; i++){
 			int idx = baseidx + i;
 			p = vertexs+idx;
+			op = overtexs+idx;
 			//判断是否在目标范围内
 			float dx,dy; //当前点和圆心的距离差
 			dx = fabs(p->x - ox);
 			dy = fabs(p->y - oy);
 			if (dx <= r && dy <= r){
 				float rate = mapDeviationRate[(int)(dy*(nDeviationRate-1)/r)][(int)(dx*(nDeviationRate-1)/r )];
+				float dox,doy; //与原始坐标的差值
+				dox = p->x - op->x;
+				doy = p->y - op->y;
+				if(dox*dox + doy*doy <= 
+					(p->x+mx*rate - op->x)*(p->x+mx*rate - op->x) + (p->y+my*rate - op->y)*(p->y+my*rate - op->y)){
+					rate *= mapDeviationRate[(int)(doy*(nDeviationRate-1)/r)][(int)(dox*(nDeviationRate-1)/r )];
+				}
 				p->x += mx*rate;
 				p->y += my*rate;
 				bMeshChanged = true;
