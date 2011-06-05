@@ -64,6 +64,7 @@ void MeshEngine::startAnimating(float duration)
 
 void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 {
+	//TODO ±ß½ç¼ì²é
 	if(mx == 0 && my == 0) return;
 	Vertex *vertexs = (Vertex *)mVertexBuffer;
 	Vertex *overtexs = (Vertex *)m_OrgiVertex;
