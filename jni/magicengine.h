@@ -5,7 +5,7 @@
 #include "meshengine.h"
 #include "texture.h"
 
-const static int MESH_HEIGHT = 20;
+const static int MESH_HEIGHT = 50;
 
 const int IMAGE_FORMAT_RGB_565	= 0x00000004; //4
 const int IMAGE_FORMAT_NV21		= 0x00000011; //17
@@ -27,6 +27,10 @@ class MagicEngine{
 	
 	int		m_inputFortmat;
 	char*	m_tmpImageData;
+
+	//上次鼠标坐标
+	float	m_lastX;
+	float	m_lastY;
 
 public:
 	MagicEngine();

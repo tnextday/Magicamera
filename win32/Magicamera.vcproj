@@ -49,7 +49,7 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4244;4819"
+				DisableSpecificWarnings="4244;4819;4305"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -219,6 +219,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\jni\DeviationMap.h"
+				>
+			</File>
 			<File
 				RelativePath="..\jni\easing.h"
 				>

@@ -37,6 +37,23 @@ public:
 	//set destvertex then start animating
 	//Animated duration in sec
 	void startAnimating(float duration);
+	void stopAnimating();
+
+	//还原成原始图像
+	void restore();
+
+
+	//************************************
+	// Method:    moveMesh
+	// Description: 以ox,oy为圆心，在半径r范围内，进行mxy的大小的形变
+	// Parameter: float ox 圆心x坐标
+	// Parameter: float oy 圆心y坐标
+	// Parameter: float mx x轴偏移距离
+	// Parameter: float my y轴偏移距离
+	// Parameter: float r 范围半径
+	// Returns:   void
+	//************************************
+	void moveMesh(float ox, float oy, float mx, float my, float r);
 
 };
 #endif // _meshengine_h_

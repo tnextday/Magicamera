@@ -28,23 +28,30 @@ MagicEngine g_MagicEngine;
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
+	static bool bMouseDown = false;
 	POINTS vMousePt;
     switch( uMsg )
     {
 	case WM_LBUTTONDOWN:
-		vMousePt = MAKEPOINTS(lParam);
-		g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
-		break;
+		if(!bMouseDown){
+			vMousePt = MAKEPOINTS(lParam);
+			g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
+			bMouseDown = true;
+		}
+		return 0;
 	case WM_MOUSEMOVE:
 		if( wParam & MK_LBUTTON ) {
 			vMousePt = MAKEPOINTS(lParam);
 			g_MagicEngine.onTouchDrag(vMousePt.x, vMousePt.y);
 		}
-		break;
+		return 0;
 	case  WM_LBUTTONUP:
-		vMousePt = MAKEPOINTS(lParam);
-		g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
-		break;
+		if(bMouseDown){
+			vMousePt = MAKEPOINTS(lParam);
+			g_MagicEngine.onTouchUp(vMousePt.x, vMousePt.y);
+			bMouseDown = false;
+		}
+		return 0;
     case WM_CLOSE:
         PostQuitMessage( 0 );
         return 0;

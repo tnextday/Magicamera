@@ -125,7 +125,7 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
 	glEnableVertexAttribArray(m_texCoordLoc);
 	tex->bind();
 	glVertexAttribPointer(m_positionLoc, 3, GL_FLOAT, GL_FALSE, 0, texVertex);
-	glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, texCoord);
+	glVertexAttribPointer(m_texCoordLoc, 2, GL_INT, GL_FALSE, 0, texCoord);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
@@ -135,7 +135,9 @@ void MagicEngine::renderFrame( float delta )
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(m_Program);
-
+	
+	//LOGI("renderFrame delta time = %.6f\n", delta);
+	m_Mesh->update(delta);
 /*	drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
  	m_PreviewTex->bind();
  	m_Mesh->draw();
@@ -178,7 +180,7 @@ void MagicEngine::generateMesh( int w, int h )
 	m_Mesh = new MeshEngine(uSteps+1, vSteps+1);
 	m_Mesh->setPositionLoc(m_positionLoc);
 	m_Mesh->setTexCoordLoc(m_texCoordLoc);
-	GLfloat x, y,u, v;;
+	GLfloat x, y,u, v;
 	for(int j = 0;j <= vSteps; j++){
 		y = j*h/vSteps;
 		v = 1 - (GLfloat)j/vSteps;
@@ -194,22 +196,32 @@ void MagicEngine::generateMesh( int w, int h )
 
 bool MagicEngine::onTouchDown( float x, float y )
 {
+	LOGI("onTouchDown: %.1f, %.1f\n", x, y);
 	y = m_ViewHeight - y;
-	//TODO onTouchDown
+	if (x > m_ViewWidth - 50 && y > m_ViewHeight -50){
+		m_Mesh->restore();
+	}
+	m_lastX = x;
+	m_lastY = y;
 	return true;
 }
 
 bool MagicEngine::onTouchDrag( float x, float y )
 {
+	LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
 	y = m_ViewHeight - y;
-	//TODO onTouchDrag
+	m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 100);
+	m_lastX = x;
+	m_lastY = y;
 	return true;
 }
 
 bool MagicEngine::onTouchUp( float x, float y )
 {
-	y = m_ViewHeight - y;
-	//TODO onTouchUp
+	LOGI("onTouchUp: %.1f, %.1f\n", x, y);
+	//y = m_ViewHeight - y;
+	m_lastX = 0;
+	m_lastY = 0;
 	return true;
 }
 

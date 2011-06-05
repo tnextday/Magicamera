@@ -7,8 +7,8 @@ double easeOutCubic( double t )
 	return t*t*t + 1;
 }
 
-double easeShake(double t)
+double easeShake( double t, int round /*= 5*/ )
 {
 	// PI/2~PI*11/2
-	return cos(M_PI_2 + 5*M_PI*t)*(1.0f - t);
+	return cos(M_PI_2 + round*M_PI*t)*(1.0f - t);
 }
