@@ -46,6 +46,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	printGLString("Renderer", GL_RENDERER);
 	printGLString("Extensions", GL_EXTENSIONS);
 	
+	LOGI("\n");
 	LOGI("setupGraphics(%d, %d)\n", w, h);
 	m_Program = createProgram(gVertexShader, gFragmentShader);
 	if (!m_Program) {
@@ -75,34 +76,26 @@ bool MagicEngine::setupGraphics(int w, int h) {
 	}
 
 	glDisable(GL_DEPTH_TEST);
-	checkGlError("glDisable(GL_DEPTH_TEST)");
 // 	glCullFace(GL_BACK);
 // 	glEnable(GL_CULL_FACE);
 	//启用混合操作
-// 	glDisable(GL_BLEND);
+ 	glDisable(GL_BLEND);
 // 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA	glEnable(GL_TEXTURE_2D);
 
 	m_ViewWidth = w;
 	m_ViewHeight = h;
 
 	glViewport(0, 0, w, h);
-	checkGlError("glViewport");
 
 	//使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
-	GLfloat mat_p[16];
-	GLfloat mat_t[16];
-	GLfloat mvp[16];
+	GLfloat mvp[16];
 	matIdentity(mvp);
-	matIdentity(mat_p);
-	matIdentity(mat_t);
-
 	// 设置视口的大小
-	matOrtho(mvp, 0, w, 0, h, -1000, 1000);
+	matOrtho(mvp, 0, w, 0, h, -10, 10);
 	//设置镜头
 	//  	matLookAt((float*)mat_t, 0,0, -0.5, 0,0,0, 0,1,0);
 	//  	matMult((float*)mvp, (float*)mat_p, (float*)mat_t);	
 	glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
-	checkGlError("glUniformMatrix4fv");
 
 	m_PreviewTex = new Texture();
 	return true;
@@ -136,15 +129,16 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-void MagicEngine::renderFrame() {
-	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+void MagicEngine::renderFrame( float delta )
+{
+	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(m_Program);
 
-	drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
-//  	m_PreviewTex->bind();
-//  	m_Mesh->draw();
+/*	drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
+ 	m_PreviewTex->bind();
+ 	m_Mesh->draw();
 	checkGlError("renderFrame");
 }
 
@@ -173,22 +167,26 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 	}if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 
+	generateMesh(w, h);
+}
+
+void MagicEngine::generateMesh( int w, int h )
+{
 	SafeDelete(m_Mesh);
-	int mw = MESH_WIDTH+1;
-	int mh = MESH_WIDTH*w/h + 1;
-	m_Mesh = new MeshEngine(mw, mh);
+	int uSteps = MESH_HEIGHT*w/h;
+	int vSteps = MESH_HEIGHT;
+	m_Mesh = new MeshEngine(uSteps+1, vSteps+1);
 	m_Mesh->setPositionLoc(m_positionLoc);
 	m_Mesh->setTexCoordLoc(m_texCoordLoc);
-	GLfloat x = 0, y = 0;
-	GLfloat xStep = m_ViewWidth/(mw-1);
-	GLfloat yStep = m_ViewHeight/(mh-1);
-	for(int j = 0;j < mh; j++){
-		x = 0;
-		for(int i = 0; i < mw; i++){
-			m_Mesh->setVertex(i, j, x, y, 0);
-			x += xStep;
+	GLfloat x, y,u, v;;
+	for(int j = 0;j <= vSteps; j++){
+		y = j*h/vSteps;
+		v = 1 - (GLfloat)j/vSteps;
+		for(int i = 0; i <= uSteps; i++){
+			x = i*w/uSteps;
+			u = (GLfloat)i/uSteps;
+			m_Mesh->set(i,j,x,y,0,u,v);
 		}
-		y += yStep;
 	}
 	m_Mesh->backupOrigVertex();
 	m_Mesh->createBufferObjects();

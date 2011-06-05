@@ -5,7 +5,7 @@
 #include "meshengine.h"
 #include "texture.h"
 
-const static int MESH_WIDTH = 20;
+const static int MESH_HEIGHT = 20;
 
 const int IMAGE_FORMAT_RGB_565	= 0x00000004; //4
 const int IMAGE_FORMAT_NV21		= 0x00000011; //17
@@ -33,11 +33,12 @@ public:
 	~MagicEngine();
 
 	bool setupGraphics(int w, int h) ;
-	void renderFrame();
+	void renderFrame(float delta);
 
 	void updatePreviewTex(char* data, long len);
 	void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
 
+	void generateMesh( int w, int h );
 	bool onTouchDown(float x, float y);
 	bool onTouchDrag(float x, float y);
 	bool onTouchUp(float x, float y);

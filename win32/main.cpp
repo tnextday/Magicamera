@@ -211,6 +211,8 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 		delete[] imgBuffer;
 	}
 
+	long lastTime = timeGetTime();
+	long timenow;
     // Run the main loop until the user closes the window
     while( TRUE )
     {
@@ -224,6 +226,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         TranslateMessage( &msg );
         DispatchMessage( &msg );
 
+		timenow = timeGetTime();
         // Update and render the application
         g_MagicEngine.renderFrame();
 

@@ -15,7 +15,7 @@ public class MagicJNILib {
     * @param height the current view height
     */
     public static native void init(int width, int height);
-    public static native void step();
+    public static native void step(float delta);
     public static native void setPreviewDataInfo(int width, int height, int format);
     public static native void uploadPreviewData(byte[] buffer, long len);
     public static native boolean onTouchDown(float x, float y);

@@ -24,6 +24,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class MagicEngineView extends GLSurfaceView
         implements GLSurfaceView.Renderer, Camera.PreviewCallback{
 
+	private long lastFrameTime = System.nanoTime();
+	private float deltaTime = 0;
     boolean m_bUseCamera = false;
 //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
@@ -41,8 +43,11 @@ public class MagicEngineView extends GLSurfaceView
     
     static final FPSLogger fps = new FPSLogger();
     public void onDrawFrame(GL10 gl) {
+    	long time = System.nanoTime();
+    	deltaTime = (time - lastFrameTime) / 1000000000.0f;
+        lastFrameTime = time;
         checkFrameBuffer();
-        MagicJNILib.step();
+        MagicJNILib.step(deltaTime);
         fps.log();
     }
 
@@ -64,6 +69,7 @@ public class MagicEngineView extends GLSurfaceView
         }else{
             setLocalTexture("/sdcard/test/tex.jpg");
         }
+        this.lastFrameTime = System.nanoTime();
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
