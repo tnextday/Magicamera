@@ -28,11 +28,26 @@ MagicEngine g_MagicEngine;
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
+	POINTS vMousePt;
     switch( uMsg )
     {
-        case WM_CLOSE:
-            PostQuitMessage( 0 );
-            return 0;
+	case WM_LBUTTONDOWN:
+		vMousePt = MAKEPOINTS(lParam);
+		g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
+		break;
+	case WM_MOUSEMOVE:
+		if( wParam & MK_LBUTTON ) {
+			vMousePt = MAKEPOINTS(lParam);
+			g_MagicEngine.onTouchDrag(vMousePt.x, vMousePt.y);
+		}
+		break;
+	case  WM_LBUTTONUP:
+		vMousePt = MAKEPOINTS(lParam);
+		g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
+		break;
+    case WM_CLOSE:
+        PostQuitMessage( 0 );
+        return 0;
     }
 
     // Pass all unhandled messages to the default WndProc
@@ -65,6 +80,37 @@ char* readFile(char* filename, int &size){
 __end:
 	fclose(fp);
 	return buffer;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: FrmGetTime()
+// Desc: Platform-dependent function to get the current time (in seconds).
+//--------------------------------------------------------------------------------------
+float FrmGetTime()
+{
+	static BOOL     bInitialized = false;
+	static LONGLONG m_llQPFTicksPerSec;
+	static LONGLONG m_llBaseTime;
+	if( false == bInitialized )
+	{
+		LARGE_INTEGER qwTicksPerSec;
+		QueryPerformanceFrequency( &qwTicksPerSec );
+		m_llQPFTicksPerSec = qwTicksPerSec.QuadPart;
+
+		LARGE_INTEGER qwTime;
+		QueryPerformanceCounter( &qwTime );
+		m_llBaseTime = qwTime.QuadPart;
+
+		bInitialized = TRUE;
+		return 0.0f;
+	}
+
+	// Get the current time
+	LARGE_INTEGER qwTime;
+	QueryPerformanceCounter( &qwTime );
+	double fAppTime = (double)( qwTime.QuadPart - m_llBaseTime ) / (double) m_llQPFTicksPerSec;
+	return (float)fAppTime;
 }
 
 
@@ -211,8 +257,8 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 		delete[] imgBuffer;
 	}
 
-	long lastTime = timeGetTime();
-	long timenow;
+	float lastTime = FrmGetTime();
+	float timenow;
     // Run the main loop until the user closes the window
     while( TRUE )
     {
@@ -226,9 +272,11 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         TranslateMessage( &msg );
         DispatchMessage( &msg );
 
-		timenow = timeGetTime();
+		timenow = FrmGetTime();
+		float delta = timenow - lastTime;
+		lastTime = timenow;
         // Update and render the application
-        g_MagicEngine.renderFrame();
+        g_MagicEngine.renderFrame(delta);
 
         // Present the scene
         eglSwapBuffers( eglDisplay, eglSurface );

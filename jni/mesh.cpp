@@ -145,31 +145,20 @@ void Mesh::draw()
 		return;
 	}
 	glEnableVertexAttribArray(positionLoc);
-	checkGlError("Mesh::draw 0");
 	glEnableVertexAttribArray(texCoordLoc);
-	checkGlError("Mesh::draw 1");
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-	checkGlError("Mesh::draw 2");
 	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	checkGlError("Mesh::draw 3");
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-	checkGlError("Mesh::draw 4");
 	glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-	checkGlError("Mesh::draw 5");
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
-	checkGlError("Mesh::draw 6");
 	glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
-	checkGlError("Mesh::draw 7");
+	//glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
 	
 	glDisableVertexAttribArray(positionLoc);
-	checkGlError("Mesh::draw 8");
 	glDisableVertexAttribArray(texCoordLoc);
-	checkGlError("Mesh::draw 9");
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	checkGlError("Mesh::draw 10");
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	checkGlError("Mesh::draw 11");
 }
