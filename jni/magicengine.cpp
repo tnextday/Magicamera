@@ -6,6 +6,7 @@
 #include "magicengine.h"
 #include "glutils.h"
 #include "glHelpers.h"
+#include "yuv2rgb.h"
 
 
 static const char gVertexShader[] = 
@@ -163,6 +164,7 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 	m_PreviewTex->setSize(w, h);
 	m_inputFortmat = imageFormat;
 
+	//rgb565比rgb888快至少30%
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 		m_tmpImageData = new char[w*h*2];
@@ -229,7 +231,7 @@ bool MagicEngine::onTouchUp( float x, float y )
 
 void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height )
 {
-	decodeYUV420SPi(rgb565, yuv420sp, width, height);
+	decodeYUV420SPf(rgb565, yuv420sp, width, height);
 }
 
 void decodeYUV420SPi( char* rgb565, char* yuv420sp, int width, int height )
@@ -279,11 +281,10 @@ void decodeYUV420SPi( char* rgb565, char* yuv420sp, int width, int height )
 }
 
 
-
+//MARK 如果转换成rgb888是可以的
 void decodeYUV420SPf( char* rgb565, char* yuv420sp, int width, int height )
 {
 	int frameSize = width * height;
-	unsigned short* dest_ptr = (unsigned short* )rgb565;
 	for (int j = 0, yp = 0; j < height; j++) {
 		int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
 		for (int i = 0; i < width; i++, yp++) {
@@ -296,9 +297,29 @@ void decodeYUV420SPf( char* rgb565, char* yuv420sp, int width, int height )
 			int r = y + 1.4075*v;
 			int g = y-0.3455*u - 0.7169*v;
 			int b = y+1.779*u;
-			dest_ptr[yp] = (((unsigned short)(r) << 8) & 0xF800)
-					|(((unsigned short)(g) << 2) & 0x7E0) 
-					| ((unsigned short)(b) >> 3);
+// 			dest_ptr[yp] = (((unsigned short)(r) << 8) & 0xF800)
+// 				|(((unsigned short)(g) << 2) & 0x7E0) 
+// 				| ((unsigned short)(b) >> 3);
+			rgb565[yp*2] = ((r & 0xF8) | ( g>>5 ));
+			rgb565[yp*2] = (((g&0x1c)<<3)|(b>>3));
 		}
 	}
+}
+
+void decodeYUV420SPt( char* rgb565, char* yuv420sp, int width, int height ){
+	char* yuv = new char[width*height*12/8];
+	char* y = yuv;
+	char* u = yuv + width*height; 
+	char* v = u + width*height/4;
+	memcpy(y, yuv420sp, width*height);
+	char* tu = u;
+	char* tv = v;
+	char* uv = yuv420sp + width*height; 
+	for(int i = 0; i < width*height/4;i++){
+		*(tv++) = *(uv++);
+		*(tu++) = *(uv++);
+	}
+// 	yuv4202rgb565((uint8_t*)rgb565, (uint8_t*)y, (uint8_t*)u, (uint8_t*)v, 
+// 			width, height, width, width>>1, width<<2, yuv2rgb565_table, 0);
+	delete[] yuv;
 }
