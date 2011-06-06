@@ -227,16 +227,20 @@ bool MagicEngine::onTouchUp( float x, float y )
 	return true;
 }
 
+void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height )
+{
+	decodeYUV420SPi(rgb565, yuv420sp, width, height);
+}
 
-inline void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height )
+void decodeYUV420SPi( char* rgb565, char* yuv420sp, int width, int height )
 {
 	int frameSize = width * height;
-	unsigned short* dest_ptr = (unsigned short*)rgb565;
+	unsigned short* dest_ptr = (unsigned short* )rgb565;
 	//rgb全部左移8位，变成整数计算
 	for (int j = 0, yp = 0; j < height; j++) {
 		int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
 		for (int i = 0; i < width; i++, yp++) {
-			int y = (0xff & ((int) yuv420sp[yp])) - 16;
+			int y = yuv420sp[yp]- 16;
 			if (y < 0)
 				y = 0;
 			if ((i & 1) == 0) {
@@ -261,9 +265,40 @@ inline void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height 
 				b = 0;
 			else if (b > 262143)
 				b = 262143;
-
+				
 			//还原 rgb >> 8 位
-			dest_ptr[yp] = (unsigned(r) & 0xF800)|((unsigned(g) >> 5) & 0x7E0) | (unsigned(b) >> 11);
+			r >>= 8;
+			g >>= 8;
+			b >>= 8;
+			
+			dest_ptr[yp] = (((unsigned short)(r) << 8) & 0xF800)
+				|(((unsigned short)(g) << 2) & 0x7E0) 
+				| ((unsigned short)(b) >> 3);
+		}
+	}
+}
+
+
+
+void decodeYUV420SPf( char* rgb565, char* yuv420sp, int width, int height )
+{
+	int frameSize = width * height;
+	unsigned short* dest_ptr = (unsigned short* )rgb565;
+	for (int j = 0, yp = 0; j < height; j++) {
+		int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
+		for (int i = 0; i < width; i++, yp++) {
+			int y = yuv420sp[yp];
+			if ((i & 1) == 0) {
+				v = yuv420sp[uvp++] - 128;
+				u = yuv420sp[uvp++] - 128;
+			}
+
+			int r = y + 1.4075*v;
+			int g = y-0.3455*u - 0.7169*v;
+			int b = y+1.779*u;
+			dest_ptr[yp] = (((unsigned short)(r) << 8) & 0xF800)
+					|(((unsigned short)(g) << 2) & 0x7E0) 
+					| ((unsigned short)(b) >> 3);
 		}
 	}
 }
