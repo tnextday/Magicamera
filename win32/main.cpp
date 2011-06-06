@@ -21,23 +21,26 @@
 //--------------------------------------------------------------------------------------
 // Global variables
 //--------------------------------------------------------------------------------------
-const CHAR*  g_strWindowTitle = "SimpleTexture";
+const CHAR*  g_strWindowTitle = "MagicAmera";
 const UINT32 g_nWindowWidth   = 640;
 const UINT32 g_nWindowHeight  = 480;
+const bool g_useCamera = true;
+const int g_cameraFPSRate = 9;
+const int TIMER_UPDATE_NV21 = 1;
+const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
 MagicEngine g_MagicEngine;
+
+char* readFile(char* filename, int &size, char* preBuffer = NULL);
+void updateNV21();
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-	static bool bMouseDown = false;
 	POINTS vMousePt;
     switch( uMsg )
     {
 	case WM_LBUTTONDOWN:
-		if(!bMouseDown){
-			vMousePt = MAKEPOINTS(lParam);
-			g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
-			bMouseDown = true;
-		}
+		vMousePt = MAKEPOINTS(lParam);
+		g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
 		return 0;
 	case WM_MOUSEMOVE:
 		if( wParam & MK_LBUTTON ) {
@@ -46,10 +49,12 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 		}
 		return 0;
 	case  WM_LBUTTONUP:
-		if(bMouseDown){
-			vMousePt = MAKEPOINTS(lParam);
-			g_MagicEngine.onTouchUp(vMousePt.x, vMousePt.y);
-			bMouseDown = false;
+		vMousePt = MAKEPOINTS(lParam);
+		g_MagicEngine.onTouchUp(vMousePt.x, vMousePt.y);
+		return 0;
+	case WM_TIMER:
+		if (wParam == TIMER_UPDATE_NV21){
+			updateNV21();
 		}
 		return 0;
     case WM_CLOSE:
@@ -62,7 +67,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 }
 
 
-char* readFile(char* filename, int &size){
+char* readFile(char* filename, int &size, char* preBuffer /*= NULL*/){
 	TCHAR szPath[_MAX_PATH];
 	if (filename[1] != ':'){
 		GetCurrentDirectory(_MAX_PATH, szPath);
@@ -78,9 +83,16 @@ char* readFile(char* filename, int &size){
 	size = ftell(fp);			// determine file size so we can fill it in later if FileSize == 0
 	if (size <= 0) goto __end ;
 	fseek(fp, 0, SEEK_SET);
-	buffer = new char[size];
+	if (preBuffer){
+		buffer = preBuffer;
+	}else{
+		buffer = new char[size];
+	}
+	
 	if (fread(buffer, sizeof(char), size, fp) <= 0){
-		delete[] buffer;
+		if (!preBuffer){
+			delete[] buffer;
+		}
 		buffer = NULL;
 	}
 
@@ -89,6 +101,21 @@ __end:
 	return buffer;
 }
 
+int szFile;
+static char preBuffer[640*480*12/8];
+
+void updateNV21(){
+	static int idx = 0;
+	char path[_MAX_PATH];
+__REREAD:
+	_snprintf(path, _MAX_PATH-1, g_strNV21Path, idx);
+	if (!readFile(path, szFile, preBuffer)){
+		idx = 0;
+		goto __REREAD;
+	}
+	g_MagicEngine.updatePreviewTex(preBuffer, szFile);
+	idx++;
+}
 
 //--------------------------------------------------------------------------------------
 // Name: FrmGetTime()
@@ -254,16 +281,22 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 
     g_MagicEngine.setupGraphics(g_nWindowWidth, g_nWindowHeight);
 
-	int size;
-	char* imgBuffer = NULL;
-	imgBuffer = readFile("assets\\test.jpg", size);
-	if (imgBuffer)
-	{
-		g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_PACKET);
-		g_MagicEngine.updatePreviewTex(imgBuffer, size);
-		delete[] imgBuffer;
-	}
 
+	if(g_useCamera){
+		SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
+		g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_NV21);
+	}else{
+		int size;
+		char* imgBuffer = NULL;
+		imgBuffer = readFile("assets\\test.jpg", size);
+		if (imgBuffer)
+		{
+			g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_PACKET);
+			g_MagicEngine.updatePreviewTex(imgBuffer, size);
+			delete[] imgBuffer;
+		}
+	}
+	
 	float lastTime = FrmGetTime();
 	float timenow;
     // Run the main loop until the user closes the window
@@ -274,21 +307,21 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         {
             if( msg.message == WM_QUIT )
                 return FALSE;
-        }
+			TranslateMessage( &msg );
+			DispatchMessage( &msg );
+		}else{
+			timenow = FrmGetTime();
+			float delta = timenow - lastTime;
+			lastTime = timenow;
+			// Update and render the application
+			g_MagicEngine.renderFrame(delta);
 
-        TranslateMessage( &msg );
-        DispatchMessage( &msg );
-
-		timenow = FrmGetTime();
-		float delta = timenow - lastTime;
-		lastTime = timenow;
-        // Update and render the application
-        g_MagicEngine.renderFrame(delta);
-
-        // Present the scene
-        eglSwapBuffers( eglDisplay, eglSurface );
+			// Present the scene
+			eglSwapBuffers( eglDisplay, eglSurface );
+		}
     }
-
+	if(g_useCamera)
+		KillTimer(hWindow, TIMER_UPDATE_NV21);
 
     return TRUE;
 }
