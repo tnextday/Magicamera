@@ -200,6 +200,8 @@ bool MagicEngine::onTouchDown( float x, float y )
 	y = m_ViewHeight - y;
 	if (x > m_ViewWidth - 50 && y > m_ViewHeight -50){
 		m_Mesh->restore();
+	}else{
+		m_Mesh->stopAnimating();
 	}
 	m_lastX = x;
 	m_lastY = y;
@@ -238,8 +240,8 @@ inline void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height 
 			if (y < 0)
 				y = 0;
 			if ((i & 1) == 0) {
-				v = (0xff & yuv420sp[uvp++]) - 128;
-				u = (0xff & yuv420sp[uvp++]) - 128;
+				v = yuv420sp[uvp++] - 128;
+				u = yuv420sp[uvp++] - 128;
 			}
 
 			int y1192 = 1192 * y;

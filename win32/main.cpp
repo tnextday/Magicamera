@@ -22,7 +22,7 @@
 // Global variables
 //--------------------------------------------------------------------------------------
 const CHAR*  g_strWindowTitle = "SimpleTexture";
-const UINT32 g_nWindowWidth   = 800;
+const UINT32 g_nWindowWidth   = 640;
 const UINT32 g_nWindowHeight  = 480;
 MagicEngine g_MagicEngine;
 
