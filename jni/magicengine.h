@@ -4,6 +4,7 @@
 #include <GLES2/gl2.h>
 #include "meshengine.h"
 #include "texture.h"
+#include "glyuvtexture.h"
 
 const static int MESH_HEIGHT = 50;
 
@@ -34,6 +35,8 @@ class MagicEngine{
 	//上次鼠标坐标
 	float	m_lastX;
 	float	m_lastY;
+
+	glYUVTexture	m_glYUVTex;
 
 public:
 	MagicEngine();

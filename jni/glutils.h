@@ -16,6 +16,8 @@ void OutputDebugText(const char* sz, ...);
 #	define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 #endif // _WIN32
 
+#define  SafeDelete(p) {if(p) {delete p; p=NULL;}}			// for shorter code
+#define  SafeDeleteArray(p) {if(p) {delete[] p; p=NULL;}}	// for shorter code
 
 #ifdef __cplusplus
 extern "C" {

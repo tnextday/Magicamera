@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\jni\glyuvtexture.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\magicengine.cpp"
 				>
 			</File>
@@ -237,6 +241,10 @@
 			</File>
 			<File
 				RelativePath="..\jni\glutils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glyuvtexture.h"
 				>
 			</File>
 			<File

@@ -38,6 +38,7 @@ MagicEngine::~MagicEngine()
 	SafeDeleteArray(m_tmpImageData);
 	SafeDelete(m_Mesh);
 	SafeDelete(m_PreviewTex);
+	glDeleteProgram(m_Program);
 }
 
 
@@ -148,8 +149,9 @@ void MagicEngine::renderFrame( float delta )
 void MagicEngine::updatePreviewTex( char* data, long len )
 {
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
-		decodeYUV420SP(m_tmpImageData, data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
-		m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
+		//decodeYUV420SP(m_tmpImageData, data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
+		//m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
+		m_glYUVTex.uploadYUVTexImage(data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
 	}else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
 		m_PreviewTex->uploadImageData((GLubyte*)data);
 	}else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
@@ -166,8 +168,10 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 
 	//rgb565比rgb888快至少30%
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
-		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
-		m_tmpImageData = new char[w*h*2];
+		m_glYUVTex.init(w, h);
+		m_glYUVTex.setTargetTexId(m_PreviewTex->m_TexHandle);
+// 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
+// 		m_tmpImageData = new char[w*h*2];
 	}if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 
@@ -297,6 +301,14 @@ void decodeYUV420SPf( char* rgb565, char* yuv420sp, int width, int height )
 			int r = y + 1.4075*v;
 			int g = y-0.3455*u - 0.7169*v;
 			int b = y+1.779*u;
+
+			if(r > 255) r = 255;
+			if(g > 255) g = 255;
+			if(b > 255) b = 255;
+			if(r < 0) r = 0;
+			if(g < 0) g = 0;
+			if(b < 0) b = 0;
+
 // 			dest_ptr[yp] = (((unsigned short)(r) << 8) & 0xF800)
 // 				|(((unsigned short)(g) << 2) & 0x7E0) 
 // 				| ((unsigned short)(b) >> 3);

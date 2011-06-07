@@ -13,8 +13,7 @@ const GLuint VBO_TexCoord_Idx = 1;
 const GLuint VBO_Vertex_Idx = 2;
 const int VBO_Ids_Num = 3;
 
-#define  SafeDelete(p) {if(p) {delete p; p=NULL;}}			// for shorter code
-#define  SafeDeleteArray(p) {if(p) {delete[] p; p=NULL;}}	// for shorter code
+
 
 class Mesh
 {
