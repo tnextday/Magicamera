@@ -34,6 +34,8 @@ const char* glErrorString(GLenum errcode)
 		return "GL_INVALID_OPERATION";
 	else if (errcode == GL_OUT_OF_MEMORY)
 		return "GL_OUT_OF_MEMORY";
+	else if (errcode == GL_INVALID_FRAMEBUFFER_OPERATION)
+		return "GL_INVALID_FRAMEBUFFER_OPERATION";
 	else
 		return "Unknow Error Code";
 }

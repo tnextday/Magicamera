@@ -186,6 +186,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\jni\framebufferobject.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\glHelpers.cpp"
 				>
 			</File>
@@ -233,6 +237,10 @@
 			</File>
 			<File
 				RelativePath="..\jni\easing.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\framebufferobject.h"
 				>
 			</File>
 			<File
