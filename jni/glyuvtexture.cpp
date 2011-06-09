@@ -1,4 +1,5 @@
 #include "glyuvtexture.h"
+#include <string.h>
 
 static const char g_YUV_VShader[] = 
 		"uniform mat4 uMVPMatrix;\n"
@@ -13,17 +14,15 @@ static const char g_YUV_VShader[] =
 static const char g_YUV_FShader[] = 
 		"precision mediump float;\n"
 		"varying vec2 vTextureCoord;\n"
-		"uniform float texHeight;\n"
 		"uniform sampler2D Ytex;\n"
 		"uniform sampler2D Utex;\n"
 		"uniform sampler2D Vtex;\n"
 		"void main() {\n"
-		"	float nx,ny,r,g,b,y,u,v;\n"
-		"	nx = vTextureCoord.x;\n"
-		"	ny = texHeight - vTextureCoord.y;\n"
-		"	y = texture2D(Ytex, vTextureCoord).r;\n"
-		"	u = texture2D(Utex, vTextureCoord/2.0).r;\n"
-		"	v = texture2D(Vtex, vTextureCoord/2.0).r;\n"
+		"	float r,g,b,y,u,v;\n"
+		"	vec2 vtc = vec2(vTextureCoord.s, 1.0 - vTextureCoord.t);\n"
+		"	y = texture2D(Ytex, vtc).r;\n"
+		"	u = texture2D(Utex, vtc/2.0).r;\n"
+		"	v = texture2D(Vtex, vtc/2.0).r;\n"
 		"	y = 1.1643*(y-0.0625);\n"
 		"	u = u-0.5;\n"
 		"	v = v-0.5;\n"
@@ -98,11 +97,11 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
 
 	glGenTextures(3, m_YUVTexs);
 
-	glUniform1i(glGetUniformLocation(m_Program, "Ytex"), m_YUVTexs[YTexId_idx]);
+	glUniform1i(glGetUniformLocation(m_Program, "Ytex"), 0);
 	checkGlError("glUniform1i_0");
-	glUniform1i(glGetUniformLocation(m_Program, "Utex"), m_YUVTexs[UTexId_idx]);
+	glUniform1i(glGetUniformLocation(m_Program, "Utex"), 1);
 	checkGlError("glUniform1i_1");
-	glUniform1i(glGetUniformLocation(m_Program, "Vtex"), m_YUVTexs[VTexId_idx]);
+	glUniform1i(glGetUniformLocation(m_Program, "Vtex"), 2);
 	checkGlError("glUniform1i_2");
 
 	m_width = w;
@@ -137,33 +136,43 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 		return;
 	}
 	copyYUVBuffer(yuv420sp);
-	
-	//m_fbo->bind();
+	glUseProgram(m_Program); 
+	glDisable(GL_DEPTH_TEST);
+	m_fbo->bind();
 	glViewport(0, 0, m_width, m_Height);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	checkGlError("glYUVTexture::uploadYUVTexImage_4");
-	glUseProgram(m_Program);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_YUVTexs[YTexId_idx]);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w,h,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,m_YBuffer);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_YUVTexs[UTexId_idx]);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w/2,h/2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,m_UBuffer);
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, m_YUVTexs[VTexId_idx]);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w/2,h/2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,m_VBuffer);
+	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+	checkGlError("glYUVTexture::uploadYUVTexImage_4_0");
+	glClear(GL_COLOR_BUFFER_BIT);
+	checkGlError("glYUVTexture::uploadYUVTexImage_4_1");
 
-	checkGlError("glYUVTexture::uploadYUVTexImage_6");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_YUVTexs[YTexId_idx]);
+	glUniform1i(glGetUniformLocation(m_Program, "Ytex"), 0);
+	setDefaultTexParameter(m_YUVTexs[YTexId_idx]);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w,h,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,yuv420sp);
+
+	
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_YUVTexs[UTexId_idx]);
+	glUniform1i(glGetUniformLocation(m_Program, "Utex"), 1);
+	setDefaultTexParameter(m_YUVTexs[UTexId_idx]);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w/2,h/2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,m_UBuffer);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_YUVTexs[VTexId_idx]);
+	glUniform1i(glGetUniformLocation(m_Program, "Vtex"), 2);
+	setDefaultTexParameter(m_YUVTexs[VTexId_idx]);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w/2,h/2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,m_VBuffer);
+	checkGlError("glYUVTexture::uploadYUVTexImage_8");
+	
 	glEnableVertexAttribArray(m_aPositionLoc);
 	glEnableVertexAttribArray(m_aTexCoordLoc);
-	checkGlError("glYUVTexture::uploadYUVTexImage_7");
 	glVertexAttribPointer(m_aPositionLoc, 3, GL_FLOAT, GL_FALSE, 5*4, mTriangleVerticesData);
 	glVertexAttribPointer(m_aTexCoordLoc, 2, GL_FLOAT, GL_FALSE, 5*4, mTriangleVerticesData);
-	checkGlError("glYUVTexture::uploadYUVTexImage_8");
+	checkGlError("glYUVTexture::uploadYUVTexImage_9_0");
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	checkGlError("glYUVTexture::uploadYUVTexImage_9");
-	//m_fbo->unbind();
+	checkGlError("glYUVTexture::uploadYUVTexImage_9_1");
+	m_fbo->unbind();
 	checkGlError("glYUVTexture::uploadYUVTexImage");
 }
 
@@ -178,7 +187,7 @@ void glYUVTexture::setTargetTexId( GLuint texid )
 void glYUVTexture::copyYUVBuffer( char* yuv420sp )
 {
 	static int size = m_width*m_Height;
-	memcpy(m_YBuffer, yuv420sp, size);
+	//memcpy(m_YBuffer, yuv420sp, size);
 	char* tu = m_UBuffer;
 	char* tv = m_VBuffer;
 	char* uv = yuv420sp + size; 

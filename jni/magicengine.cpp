@@ -133,16 +133,16 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
 
 void MagicEngine::renderFrame( float delta )
 {
-// 	glViewport(0, 0, m_ViewWidth, m_ViewHeight);
-// 	glUseProgram(m_Program);
-//  	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-//  	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glViewport(0, 0, m_ViewWidth, m_ViewHeight);
+	glUseProgram(m_Program);
+	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
  	
 	//LOGI("renderFrame delta time = %.6f\n", delta);
-/*	m_Mesh->update(delta);*/
-//	drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
-//   	m_PreviewTex->bind();
-//   	m_Mesh->draw();
+	m_Mesh->update(delta);
+// 	drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
+  	m_PreviewTex->bind();
+  	m_Mesh->draw();
 	checkGlError("renderFrame");
 }
 

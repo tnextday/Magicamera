@@ -9,13 +9,14 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import com.funny.magicamera.utils.Pool;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * User: tNextDay
@@ -31,9 +32,15 @@ public class MagicEngineView extends GLSurfaceView
     Camera m_Camera = null;
     final static int BufferCount = 3;
     LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
-    final ReentrantLock m_lock = new ReentrantLock();
     int     m_previewHeight = 480;
     int     m_previewWidth = 640;
+    ArrayList<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
+    Pool<TouchEvent> usedTouchEvents = new Pool<TouchEvent>(16, 1000) {
+		protected TouchEvent newObject () {
+			return new TouchEvent();
+		}
+	};
+
 
     public MagicEngineView(Context context) {
         super(context);
@@ -53,13 +60,15 @@ public class MagicEngineView extends GLSurfaceView
 
 
     public void checkFrameBuffer(){
-        m_lock.lock();
-        byte[] bytes = m_buffers.poll(); 
+        byte[] bytes;
+        synchronized (m_buffers){
+            bytes = m_buffers.poll();
+        }
         if (bytes != null){
             MagicJNILib.uploadPreviewData(bytes, bytes.length);
             m_Camera.addCallbackBuffer(bytes);
         }
-        m_lock.unlock();
+
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -223,10 +232,10 @@ public class MagicEngineView extends GLSurfaceView
     
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
-        m_lock.lock();
-        m_buffers.add(bytes);
-        Log.d("FPSLogger", "onPreviewFrame");
-        m_lock.unlock();
+        synchronized (m_buffers){
+            m_buffers.add(bytes);
+        }
+        //Log.d("FPSLogger", "onPreviewFrame");
 //    	Save2File(bytes);
 //    	m_Camera.addCallbackBuffer(bytes);
     }
@@ -252,4 +261,16 @@ public class MagicEngineView extends GLSurfaceView
     		}
     	}
     }
+
+    class TouchEvent {
+		static final int TOUCH_DOWN = 0;
+		static final int TOUCH_UP = 1;
+		static final int TOUCH_DRAGGED = 2;
+
+//		long timeStamp;
+		int type;
+		int x;
+		int y;
+//		int pointer;
+	}
 }

@@ -12,7 +12,9 @@ LOCAL_SRC_FILES := jni_main.cpp \
 			mesh.cpp \
 			texture.cpp \
 			meshengine.cpp \
-			easing.cpp 
+			easing.cpp \
+			glyuvtexture.cpp \
+			framebufferobject.cpp
 
 include $(LOCAL_PATH)/gdx2d/Android.mk
 
