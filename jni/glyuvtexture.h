@@ -15,8 +15,6 @@ class glYUVTexture
     GLuint m_aPositionLoc;
     GLuint m_aTexCoordLoc;
 
-    //GLuint m_uTexHeightLoc;
-
     GLuint m_width;
     GLuint m_height;
 

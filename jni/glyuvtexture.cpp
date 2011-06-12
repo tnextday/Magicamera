@@ -55,7 +55,6 @@ glYUVTexture::~glYUVTexture(void)
 
 bool glYUVTexture::init( int w, int h, GLuint texid )
 {
-    LOGI("glYUVTexture::init() start\n");
     m_Program = createProgram(g_YUV_VShader, g_YUV_FShader);
     if (!m_Program) {
         LOGE("Could not create program.\n");
@@ -83,15 +82,7 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
     matOrtho(mvp, 0, 1.0, 0, 1.0, -10, 10);
     glUniformMatrix4fv(glGetUniformLocation(m_Program, "uMVPMatrix"), 1, GL_FALSE, (GLfloat*)mvp);
 
-    //m_uTexHeightLoc = glGetUniformLocation(m_Program, "texHeight");
-    
-
     glGenTextures(2, m_YUVTexs);
-
-    glUniform1i(glGetUniformLocation(m_Program, "Ytex"), 0);
-    checkGlError("glUniform1i_0");
-    glUniform1i(glGetUniformLocation(m_Program, "UVtex"), 1);
-    checkGlError("glUniform1i_1");
 
     m_width = w;
     m_height = h;
@@ -99,7 +90,6 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(texid);
     checkGlError("glYUVTexture::init");
-    LOGI("glYUVTexture::init() end\n");
     m_bInited = true;
     return true;
 }
@@ -111,7 +101,6 @@ void glYUVTexture::setDefaultTexParameter( GLuint texId )
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    checkGlError("setDefaultTexParameter");
 }
 
 void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
@@ -150,8 +139,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 
 void glYUVTexture::setTargetTexId( GLuint texid )
 {
-    if (m_bInited)
-    {
+    if (m_bInited){
         m_fbo->texture2d(texid);
     }
 }
