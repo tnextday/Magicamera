@@ -221,10 +221,6 @@
 				RelativePath="..\jni\texture.cpp"
 				>
 			</File>
-			<File
-				RelativePath="..\jni\yuv2rgb.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -273,14 +269,6 @@
 			</File>
 			<File
 				RelativePath="..\jni\texture.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\yuv2rgb.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\yuv2rgb16tab.h"
 				>
 			</File>
 		</Filter>

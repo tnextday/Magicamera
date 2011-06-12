@@ -1,6 +1,17 @@
 #include "glyuvtexture.h"
 #include <string.h>
 
+/*
+* 使用GL shader 来进行YUV420SP2RGB转换，利用GPU强悍的浮点运算，转换速度为CPU的3倍以上
+* 关于YUV420SP的储存结构，首先是w*h字节的y数据，然后为w*h/2字节的uv交替排列，每2个y公用一组UV
+* 使用两个Texture传递数据给GPU，一个传递Y数据，另一个专递UV数据
+* Y数据使用LUMINANCE传递，每个像素占一个字节，
+* UV使用GL_LUMINANCE_ALPHA传递，每个像素占用两字节，在shader中使用rgb.ra来使用数据
+* 这样可以直接使用GPU解析YUV420SP而不必进行内存拷贝
+*/
+
+
+
 static const char g_YUV_VShader[] = 
         "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
