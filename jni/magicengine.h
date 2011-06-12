@@ -12,11 +12,6 @@ const int IMAGE_FORMAT_RGB_565	= 0x00000004; //4
 const int IMAGE_FORMAT_NV21		= 0x00000011; //17
 const int IMAGE_FORMAT_PACKET	= 0x00000100; //256  打包压缩的数据，jpeg,png,tga,bitmap...
 
-void decodeYUV420SPi(char* rgb565, char* yuv420sp, int width, int height);
-void decodeYUV420SPf( char* rgb565, char* yuv420sp, int width, int height );
-void decodeYUV420SP( char* rgb565, char* yuv420sp, int width, int height );
-void decodeYUV420SPt( char* rgb565, char* yuv420sp, int width, int height );
-
 class MagicEngine{
 	GLuint m_Program;
 	GLuint m_positionLoc;
