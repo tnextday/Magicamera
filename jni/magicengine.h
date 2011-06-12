@@ -30,7 +30,6 @@ class MagicEngine{
 	GLfloat m_ViewHeight;
 	
 	int		m_inputFortmat;
-	char*	m_tmpImageData;
 
 	//上次鼠标坐标
 	float	m_lastX;

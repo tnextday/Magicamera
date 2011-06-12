@@ -19,10 +19,9 @@ static const char g_YUV_FShader[] =
 		"uniform sampler2D Vtex;\n"
 		"void main() {\n"
 		"	float r,g,b,y,u,v;\n"
-		"	vec2 vtc = vec2(vTextureCoord.s, 1.0 - vTextureCoord.t);\n"
-		"	y = texture2D(Ytex, vtc).r;\n"
-		"	u = texture2D(Utex, vtc/2.0).r;\n"
-		"	v = texture2D(Vtex, vtc/2.0).r;\n"
+		"	y = texture2D(Ytex, vTextureCoord).r;\n"
+		"	u = texture2D(Utex, vTextureCoord/2.0).r;\n"
+		"	v = texture2D(Vtex, vTextureCoord/2.0).r;\n"
 		"	y = 1.1643*(y-0.0625);\n"
 		"	u = u-0.5;\n"
 		"	v = v-0.5;\n"
@@ -105,7 +104,7 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
 	checkGlError("glUniform1i_2");
 
 	m_width = w;
-	m_Height = h;
+	m_height = h;
 	int size = w*h;
 	m_YBuffer = new char[size];
 	m_UBuffer = new char[size/4];
@@ -131,7 +130,7 @@ void glYUVTexture::setDefaultTexParameter( GLuint texId )
 
 void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 {
-	if (w != m_width || h != m_Height) {
+	if (w != m_width || h != m_height) {
 		LOGE("uploadYUVTexImage Error 0\n");
 		return;
 	}
@@ -139,7 +138,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 	glUseProgram(m_Program); 
 	glDisable(GL_DEPTH_TEST);
 	m_fbo->bind();
-	glViewport(0, 0, m_width, m_Height);
+	glViewport(0, 0, m_width, m_height);
 	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 	checkGlError("glYUVTexture::uploadYUVTexImage_4_0");
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -186,7 +185,7 @@ void glYUVTexture::setTargetTexId( GLuint texid )
 
 void glYUVTexture::copyYUVBuffer( char* yuv420sp )
 {
-	static int size = m_width*m_Height;
+	static int size = m_width*m_height;
 	//memcpy(m_YBuffer, yuv420sp, size);
 	char* tu = m_UBuffer;
 	char* tv = m_VBuffer;

@@ -59,6 +59,7 @@ Texture::~Texture()
 
 void Texture::bind()
 {
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_TexHandle);
 	checkGlError("glBindTexture");
 }
@@ -121,4 +122,12 @@ void Texture::init()
 	m_TexHandle = createGLHandle();
 	setWrap();
 	setFilter();
+}
+
+void Texture::setSize( int w, int h )
+{
+	m_Width = w; 
+	m_Height = h;
+	bind();
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 }

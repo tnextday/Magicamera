@@ -19,7 +19,7 @@ class glYUVTexture
 	//GLuint m_uTexHeightLoc;
 
 	GLuint m_width;
-	GLuint m_Height;
+	GLuint m_height;
 
 	char* m_YBuffer;
 	char* m_UBuffer;

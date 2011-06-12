@@ -106,15 +106,17 @@ static char preBuffer[640*480*12/8];
 
 void updateNV21(){
 	static int idx = 0;
+	static int step = 1;
 	char path[_MAX_PATH];
 __REREAD:
 	_snprintf(path, _MAX_PATH-1, g_strNV21Path, idx);
 	if (!readFile(path, szFile, preBuffer)){
-		idx = 0;
+		step = -step;
+		idx += step;
 		goto __REREAD;
 	}
 	g_MagicEngine.updatePreviewTex(preBuffer, szFile);
-	idx++;
+	idx += step;
 }
 
 //--------------------------------------------------------------------------------------

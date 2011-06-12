@@ -30,12 +30,10 @@ static const char gFragmentShader[] =
 MagicEngine::MagicEngine()
 {
 	m_Mesh = NULL;
-	m_tmpImageData = NULL;
 }
 
 MagicEngine::~MagicEngine()
 {
-	SafeDeleteArray(m_tmpImageData);
 	SafeDelete(m_Mesh);
 	SafeDelete(m_PreviewTex);
 	glDeleteProgram(m_Program);
@@ -170,7 +168,6 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
 		m_glYUVTex.init(w, h, m_PreviewTex->m_TexHandle);
 // 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
-// 		m_tmpImageData = new char[w*h*2];
 	}if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 
