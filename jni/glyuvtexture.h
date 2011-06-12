@@ -7,8 +7,7 @@
 #include "framebufferobject.h"
 
 const int YTexId_idx = 0;
-const int UTexId_idx = 1;
-const int VTexId_idx = 2;
+const int UVTexId_idx = 1;
 
 class glYUVTexture
 {
@@ -21,9 +20,6 @@ class glYUVTexture
     GLuint m_width;
     GLuint m_height;
 
-    char* m_YBuffer;
-    char* m_UBuffer;
-    char* m_VBuffer;
 
     GLuint m_YUVTexs[3];
 
@@ -38,7 +34,6 @@ public:
     bool init(int w, int h, GLuint texid);
     void setTargetTexId(GLuint texid);
     void uploadYUVTexImage(char* yuv420sp, int w, int h);
-    void copyUVBuffer(char* yuv420sp);
 
 private:
     void setDefaultTexParameter(GLuint texId);
