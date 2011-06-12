@@ -4,13 +4,12 @@
     <option name="TAB_LOG_LEVEL" value="INFO" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/Android.mk" afterPath="$PROJECT_DIR$/jni/Android.mk" />
+    <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="[fixed]android 输入线程同步问题">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glyuvtexture.cpp" afterPath="$PROJECT_DIR$/jni/glyuvtexture.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magicengine.cpp" afterPath="$PROJECT_DIR$/jni/magicengine.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/win32/main.cpp" afterPath="$PROJECT_DIR$/win32/main.cpp" />
     </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,8 +75,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -95,11 +94,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MagicEngineView.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MagicEngineView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="6" selection-start="1290" selection-end="1290" vertical-scroll-proportion="-6.3594546">
-              <folding />
+            <state line="172" column="29" selection-start="5713" selection-end="5713" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InputEvent.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="27" selection-start="603" selection-end="603" vertical-scroll-proportion="0.15345268">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -119,6 +131,7 @@
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" />
       </list>
     </option>
@@ -161,8 +174,8 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Favorites" />
       <pane id="Scope" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -255,8 +268,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Android Application.Magicamera">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -437,23 +450,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922825" sideWeight="0.81574804" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30708662" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25615764" sideWeight="0.62834644" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26190478" sideWeight="0.67086613" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37165356" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.51968503" sideWeight="0.49671593" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922825" sideWeight="0.81574804" order="4" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -547,45 +560,46 @@
         <state line="5" column="38" selection-start="246" selection-end="246" vertical-scroll-proportion="0.15332198" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="33" selection-start="770" selection-end="770" vertical-scroll-proportion="0.6" />
+      </provider>
+    </entry>
+    <entry file="jar://D:/android-sdk-windows/platforms/android-8/android.jar!/android/view/MotionEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="52" selection-start="530" selection-end="530" vertical-scroll-proportion="-1.9466193" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="255" column="5" selection-start="7416" selection-end="7416" vertical-scroll-proportion="0.30664396" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="22" selection-start="910" selection-end="910" vertical-scroll-proportion="0.6439523" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="31" selection-start="651" selection-end="651" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="33" selection-start="770" selection-end="770" vertical-scroll-proportion="0.6">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/android-sdk-windows/platforms/android-8/android.jar!/android/view/MotionEvent.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="52" selection-start="530" selection-end="530" vertical-scroll-proportion="-1.9466193">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="255" column="5" selection-start="7416" selection-end="7416" vertical-scroll-proportion="0.30664396">
+        <state line="172" column="29" selection-start="5713" selection-end="5713" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java">
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="22" selection-start="910" selection-end="910" vertical-scroll-proportion="0.6439523">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="6" selection-start="1290" selection-end="1290" vertical-scroll-proportion="-6.3594546">
-          <folding />
+        <state line="28" column="27" selection-start="603" selection-end="603" vertical-scroll-proportion="0.15345268">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

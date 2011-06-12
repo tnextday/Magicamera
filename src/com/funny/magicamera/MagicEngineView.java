@@ -9,21 +9,20 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import com.funny.magicamera.utils.Pool;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * User: tNextDay
  * Description:
  */
 public class MagicEngineView extends GLSurfaceView
-        implements GLSurfaceView.Renderer, Camera.PreviewCallback{
+        implements GLSurfaceView.Renderer, Camera.PreviewCallback, InputEvent.InputProcessor{
 
 	private long lastFrameTime = System.nanoTime();
 	private float deltaTime = 0;
@@ -34,18 +33,15 @@ public class MagicEngineView extends GLSurfaceView
     LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
     int     m_previewHeight = 480;
     int     m_previewWidth = 640;
-    ArrayList<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
-    Pool<TouchEvent> usedTouchEvents = new Pool<TouchEvent>(16, 1000) {
-		protected TouchEvent newObject () {
-			return new TouchEvent();
-		}
-	};
+
+    private InputEvent inputEvent = new InputEvent();
 
 
     public MagicEngineView(Context context) {
         super(context);
         this.setEGLContextClientVersion(2);
         setRenderer(this);
+        inputEvent.setInputProcessor(this);
     }
     
     static final FPSLogger fps = new FPSLogger();
@@ -53,6 +49,7 @@ public class MagicEngineView extends GLSurfaceView
     	long time = System.nanoTime();
     	deltaTime = (time - lastFrameTime) / 1000000000.0f;
         lastFrameTime = time;
+        inputEvent.processEvents();
         checkFrameBuffer();
         MagicJNILib.step(deltaTime);
         fps.log();
@@ -123,18 +120,20 @@ public class MagicEngineView extends GLSurfaceView
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        float x = e.getX();
-        float y = e.getY();
+        int x = (int) e.getX();
+        int y = (int) e.getY();
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                return MagicJNILib.onTouchDrag(x, y);
+                inputEvent.postTouchEvent(InputEvent.TouchEvent.TOUCH_DRAGGED, x, y, 0);
+                return true;
             case MotionEvent.ACTION_DOWN:
-                return MagicJNILib.onTouchDown(x, y);
+                inputEvent.postTouchEvent(InputEvent.TouchEvent.TOUCH_DOWN, x, y, 0);
+                return true;
             case MotionEvent.ACTION_UP:
-                return MagicJNILib.onTouchUp(x, y);
+                inputEvent.postTouchEvent(InputEvent.TouchEvent.TOUCH_UP, x, y, 0);
+                return true;
         }
-        return true;
-//        return super.onTouchEvent(e);
+        return super.onTouchEvent(e);
     }
 
     public void startCamera(){
@@ -145,7 +144,7 @@ public class MagicEngineView extends GLSurfaceView
         Camera.Parameters parameters = m_Camera.getParameters();
 
         List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-        List<Size> psizes = parameters.getSupportedPictureSizes();
+//        List<Size> psizes = parameters.getSupportedPictureSizes();
         List<Integer> formats = parameters.getSupportedPreviewFormats();
 
         //formats  = parameters.getSupportedPictureFormats();
@@ -239,7 +238,24 @@ public class MagicEngineView extends GLSurfaceView
 //    	Save2File(bytes);
 //    	m_Camera.addCallbackBuffer(bytes);
     }
-        
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer) {
+        return MagicJNILib.onTouchDown(x, y);
+    }
+
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer) {
+        return MagicJNILib.onTouchUp(x, y);
+    }
+
+
+    @Override
+    public boolean touchDragged(int x, int y, int pointer) {
+        return MagicJNILib.onTouchDrag(x, y);
+    }
+
     public static class FPSLogger {
     	long startTime;
     	int frames;
@@ -262,15 +278,5 @@ public class MagicEngineView extends GLSurfaceView
     	}
     }
 
-    class TouchEvent {
-		static final int TOUCH_DOWN = 0;
-		static final int TOUCH_UP = 1;
-		static final int TOUCH_DRAGGED = 2;
 
-//		long timeStamp;
-		int type;
-		int x;
-		int y;
-//		int pointer;
-	}
 }
