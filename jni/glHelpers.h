@@ -11,10 +11,10 @@
  */
 
 /**
- * @file	glHelpers.h
- * @brief	3D driver's helper library
- * @author	Yue Li
- * @version	1.0
+ * @file    glHelpers.h
+ * @brief    3D driver's helper library
+ * @author    Yue Li
+ * @version    1.0
  * 
  * @history
  *   - add matrix function for gles2.0 application

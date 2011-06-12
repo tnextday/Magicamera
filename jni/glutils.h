@@ -7,17 +7,17 @@
 #include <stdio.h>
 #include <Windows.h>
 void OutputDebugText(const char* sz, ...);
-#	define  LOGI(...)  OutputDebugText(__VA_ARGS__)
-#	define  LOGE(...)  OutputDebugText(__VA_ARGS__)
+#    define  LOGI(...)  OutputDebugText(__VA_ARGS__)
+#    define  LOGE(...)  OutputDebugText(__VA_ARGS__)
 #else
 #include <android/log.h>
-#	define  LOG_TAG    "libmagicjni"
-#	define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#	define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#    define  LOG_TAG    "libmagicjni"
+#    define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#    define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 #endif // _WIN32
 
-#define  SafeDelete(p) {if(p) {delete p; p=NULL;}}			// for shorter code
-#define  SafeDeleteArray(p) {if(p) {delete[] p; p=NULL;}}	// for shorter code
+#define  SafeDelete(p) {if(p) {delete p; p=NULL;}}            // for shorter code
+#define  SafeDeleteArray(p) {if(p) {delete[] p; p=NULL;}}    // for shorter code
 
 #ifdef __cplusplus
 extern "C" {

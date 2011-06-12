@@ -11,10 +11,10 @@
  */
 
 /**
- * @file	glHelpers.cpp
- * @brief	3D driver's helper library
- * @author	Yue Li
- * @version	1.0
+ * @file    glHelpers.cpp
+ * @brief    3D driver's helper library
+ * @author    Yue Li
+ * @version    1.0
  * 
  * @history
  *   - add matrix function for gles2.0 application
@@ -31,24 +31,24 @@
 
 void matIdentity(float m[16])
 {
-	for(int i=0; i<16; i++)
-	{
-		m[i] = (i%5==0)? 1.0f : 0.0f;  //The first and every fifth element after that is 1.0 other are 0.0
-	}
+    for(int i=0; i<16; i++)
+    {
+        m[i] = (i%5==0)? 1.0f : 0.0f;  //The first and every fifth element after that is 1.0 other are 0.0
+    }
 }
 
 /*
 #ifndef fabs
 float fabs(float f)
 {
-	return (f >0)? f : -f;
+    return (f >0)? f : -f;
 }
 #endif
 */
 
 bool matInverse(float inverse[16], const float src[16])
 {
-	float t;
+    float t;
     int i, j, k, swap;
     float tmp[4][4];
     
@@ -161,15 +161,15 @@ void matMult(float* m3, const float* m1, const float* m2)
 
 //transform the vector x,y,z  with the transformation matrix m
 void vecMult(const float* m, float x, float y, float z)
-{	
-	float xo,yo,zo;
-	   xo = m[0] * x + m[4] * y + m[8] * z + m[12];
+{    
+    float xo,yo,zo;
+       xo = m[0] * x + m[4] * y + m[8] * z + m[12];
        yo = m[1] * x + m[5] * y + m[9] * z + m[13];
        zo = m[2] * x + m[6] * y + m[10] * z + m[14];
-	   
-	   x=xo;
+       
+       x=xo;
        y=yo;
-	   z=zo;
+       z=zo;
 }
 
 //will update the current matrix' m' with the tranalation vector x,y,z
@@ -178,45 +178,45 @@ void matTranslate(float* m, const float x, const float y, const float z  )
        m[12] = m[0] * x + m[4] *y + m[8]* z + m[12];
        m[13] = m[1] * x + m[5] *y + m[9]* z + m[13];
        m[14] = m[2] * x + m[6] *y + m[10]* z + m[14];
-	   m[15] = m[3] * x + m[7] *y + m[11]* z + m[15];
+       m[15] = m[3] * x + m[7] *y + m[11]* z + m[15];
 }  
 
 //rotate about arbit axis
 bool matRotate(float* m, float DEGAngle, float x, float y, float z)
 {
-	    
-	   float Sq = (float) sqrt(x*x + y*y + z*z);
-	   float inv;
-	   if(Sq > -FLT_EPSILON && Sq < FLT_EPSILON) //chk for divide by zero......
-		   return false;
-	   inv = 1.0f/Sq;	
-	   x = x * inv;   
-	   y = y * inv;
-	   z = z * inv;
-	   float radian = (float)PI_OVER_180 * DEGAngle;
+        
+       float Sq = (float) sqrt(x*x + y*y + z*z);
+       float inv;
+       if(Sq > -FLT_EPSILON && Sq < FLT_EPSILON) //chk for divide by zero......
+           return false;
+       inv = 1.0f/Sq;    
+       x = x * inv;   
+       y = y * inv;
+       z = z * inv;
+       float radian = (float)PI_OVER_180 * DEGAngle;
        float f32c = (float)cos(radian); //TODO!! Optimize me
        float f32s = (float)sin(radian);
        float f32OneMinC = 1 - f32c;
-		
-		float RotMat[16];
+        
+        float RotMat[16];
        RotMat[0] = f32c + f32OneMinC * x * x;
        RotMat[1] = (f32OneMinC * x * y) + (z * f32s);
        RotMat[2] = (f32OneMinC * x * z) - (y * f32s);
-	   RotMat[3] = 0.0;
+       RotMat[3] = 0.0;
        RotMat[4] = (f32OneMinC * x * y) - (z * f32s);
        RotMat[5] = f32c + f32OneMinC * y * y;
        RotMat[6] = (f32OneMinC * y * z) + (x * f32s);
-	   RotMat[7] = 0.0;
+       RotMat[7] = 0.0;
        RotMat[8] = (f32OneMinC * x * z) + (y * f32s);
        RotMat[9] = (f32OneMinC * y * z) - (x * f32s);
        RotMat[10] = f32c + f32OneMinC * z * z;
-	   RotMat[11] = RotMat[12] =RotMat[13] = RotMat[14] = 0.0;RotMat[15] =1.0f;
-	   float t[16];
-	   matMult( &t[0] ,  m , &RotMat[0]);
-	   for(int i = 0; i < 16; ++i)
-		m[i] = t[i];
-		
-	  return true;
+       RotMat[11] = RotMat[12] =RotMat[13] = RotMat[14] = 0.0;RotMat[15] =1.0f;
+       float t[16];
+       matMult( &t[0] ,  m , &RotMat[0]);
+       for(int i = 0; i < 16; ++i)
+        m[i] = t[i];
+        
+      return true;
 }
 
 //will update the current matrix' m' with the tranalation vector x,y,z
@@ -225,31 +225,31 @@ void matTranslatel(float* m, const float x, const float y, const float z  )
        m[3] = m[0] * x + m[1] *y + m[2]* z + m[3];
        m[7] = m[4] * x + m[5] *y + m[6]* z + m[7];
        m[10] = m[8] * x + m[9] *y + m[10]* z + m[11];
-	   m[15] = m[12] * x + m[13] *y + m[14]* z + m[15];
+       m[15] = m[12] * x + m[13] *y + m[14]* z + m[15];
 }  
 
 void matScale(float*m, float x, float y, float z)
 {
-	m[0] *= x ; m[4] *= y ; m[8] *= z ;// m[12] *= x ;  
-	m[1] *= x ; m[5] *= y ; m[9] *= z ; //m[13] *= y ;  
-	m[2] *= x ; m[6] *= y ; m[10] *= z ; //m[14] *= z ;  
+    m[0] *= x ; m[4] *= y ; m[8] *= z ;// m[12] *= x ;  
+    m[1] *= x ; m[5] *= y ; m[9] *= z ; //m[13] *= y ;  
+    m[2] *= x ; m[6] *= y ; m[10] *= z ; //m[14] *= z ;  
 }
 
 //like glfrustum
 bool matFrustum(float* m,float f32Left, float f32Right,float f32Bottom, float f32Top, float f32ZNear, float f32ZFar)
 {
-	float diff = f32Right - f32Left;
-	if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-		return false;
-	
-	diff = f32Top - f32Bottom;
-	if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-		return false;
-		
-	diff = f32ZFar - f32ZNear;
-	if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-		return false;	   
-		
+    float diff = f32Right - f32Left;
+    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+        return false;
+    
+    diff = f32Top - f32Bottom;
+    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+        return false;
+        
+    diff = f32ZFar - f32ZNear;
+    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+        return false;       
+        
        m[0] = float(2.0*f32ZNear/(f32Right-f32Left));
        m[1] = m[2] = m[3] = 0;
 
@@ -265,15 +265,15 @@ bool matFrustum(float* m,float f32Left, float f32Right,float f32Bottom, float f3
        m[12] = m[13] =0;
        m[14] = -( (2*f32ZNear*f32ZFar) / (f32ZFar-f32ZNear));
        m[15] = 0;
-	   return true;
+       return true;
 }
 
-//like gluperspective matrix		 
+//like gluperspective matrix         
 bool matPerspective(float* m ,float fieldOfViewDegree, float aspectRatio, float zNear, float zFar)
 {
    if(fieldOfViewDegree <= 0.0f || fieldOfViewDegree >=180.0f)
       //fieldOfViewDegree = 45.0f;   //assign FOV to 45 deg if value passed is not in proper range 
-	   return false;
+       return false;
 
    float FOVrad = float(PI_OVER_180*fieldOfViewDegree*0.5f);//angle divided by 2 !!!
 
@@ -287,17 +287,17 @@ bool matPerspective(float* m ,float fieldOfViewDegree, float aspectRatio, float 
 bool matOrtho(float* m,float f32Left, float f32Right,float f32Bottom, float f32Top, float f32ZNear, float f32ZFar)
 {
     float diff = f32Right - f32Left;
-	if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-		return false;
-	
-	diff = f32Top - f32Bottom;
-	if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-		return false;
-		
-	diff = f32ZFar - f32ZNear;
-	if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-		return false;
-		
+    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+        return false;
+    
+    diff = f32Top - f32Bottom;
+    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+        return false;
+        
+    diff = f32ZFar - f32ZNear;
+    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+        return false;
+        
    m[0] = float(2.0/(f32Right-f32Left));
    m[1] = m[2] = m[3] = 0;
 
@@ -318,25 +318,25 @@ bool matOrtho(float* m,float f32Left, float f32Right,float f32Bottom, float f32T
 
 bool vecNormalize(float& x, float& y, float& z)
 {
-	   float Sq = (float) sqrt(x*x + y*y + z*z);
-	   float inv;
-	   if(Sq > -FLT_EPSILON && Sq < FLT_EPSILON) //chk for divide by zero......
-		   return false;
-	   inv = 1.0f/Sq;	
-	   x = x * inv;   
-	   y = y * inv;
-	   z = z * inv;
-	   return true;
+       float Sq = (float) sqrt(x*x + y*y + z*z);
+       float inv;
+       if(Sq > -FLT_EPSILON && Sq < FLT_EPSILON) //chk for divide by zero......
+           return false;
+       inv = 1.0f/Sq;    
+       x = x * inv;   
+       y = y * inv;
+       z = z * inv;
+       return true;
 }
 
 //vector x = x1 cross y1
 void vecCrossProduct(float& x,float& y, float& z , float x1,float y1, float z1 ,float x2,float y2, float z2)
 {
-	//x= y1*z2 - y1*z2;
-	x= y1*z2 - y2*z1;
-	y= z1*x2 - z2*x1;
-	z= x1*y2 - x2*y1;
-}		 
+    //x= y1*z2 - y1*z2;
+    x= y1*z2 - y2*z1;
+    y= z1*x2 - z2*x1;
+    z= x1*y2 - x2*y1;
+}         
 
 //like gluLookAt
 void matLookAt(float* m, float px, float py, float pz,float tx, float ty, float tz, float ux, float uy, float uz)
@@ -378,83 +378,83 @@ void matPrint(float* m)
     printf("\n");
 }
 */
-#define MOVESTEP	5.0
+#define MOVESTEP    5.0
 //rotate about arbit axis (reserve original matrix)
 int matRotate_res(float* o, float* i, float DEGAngle, float x, float y, float z)
 {
 
-	static float inx = 0.0;
-	static float iny = 0.0;
-	static bool bxInc = true;
-	static bool	byInc = true;
+    static float inx = 0.0;
+    static float iny = 0.0;
+    static bool bxInc = true;
+    static bool    byInc = true;
 
-	float Sq = (float) sqrt(x*x + y*y + z*z);
-	float inv;
-	if(Sq > -FLT_EPSILON && Sq < FLT_EPSILON) //chk for divide by zero......
-		return false;
-	inv = 1.0f/Sq;	
-	x = x * inv;   
-	y = y * inv;
-	z = z * inv;
-	float radian = (float)PI_OVER_180 * 0;
-	float f32c = (float)cos(radian); //TODO!! Optimize me
-	float f32s = (float)sin(radian);
-	float f32OneMinC = 1 - f32c;
+    float Sq = (float) sqrt(x*x + y*y + z*z);
+    float inv;
+    if(Sq > -FLT_EPSILON && Sq < FLT_EPSILON) //chk for divide by zero......
+        return false;
+    inv = 1.0f/Sq;    
+    x = x * inv;   
+    y = y * inv;
+    z = z * inv;
+    float radian = (float)PI_OVER_180 * 0;
+    float f32c = (float)cos(radian); //TODO!! Optimize me
+    float f32s = (float)sin(radian);
+    float f32OneMinC = 1 - f32c;
 
-	float RotMat[16];
-	RotMat[0] = f32c + f32OneMinC * x * x;
-	RotMat[1] = (f32OneMinC * x * y) + (z * f32s);
-	RotMat[2] = (f32OneMinC * x * z) - (y * f32s);
-	RotMat[3] = 0.0;
-	RotMat[4] = (f32OneMinC * x * y) - (z * f32s);
-	RotMat[5] = f32c + f32OneMinC * y * y;
-	RotMat[6] = (f32OneMinC * y * z) + (x * f32s);
-	RotMat[7] = 0.0;
-	RotMat[8] = (f32OneMinC * x * z) + (y * f32s);
-	RotMat[9] = (f32OneMinC * y * z) - (x * f32s);
-	RotMat[10] = f32c + f32OneMinC * z * z;
-	RotMat[11] = RotMat[12] =RotMat[13] = RotMat[14] = 0.0;RotMat[15] =1.0f;
+    float RotMat[16];
+    RotMat[0] = f32c + f32OneMinC * x * x;
+    RotMat[1] = (f32OneMinC * x * y) + (z * f32s);
+    RotMat[2] = (f32OneMinC * x * z) - (y * f32s);
+    RotMat[3] = 0.0;
+    RotMat[4] = (f32OneMinC * x * y) - (z * f32s);
+    RotMat[5] = f32c + f32OneMinC * y * y;
+    RotMat[6] = (f32OneMinC * y * z) + (x * f32s);
+    RotMat[7] = 0.0;
+    RotMat[8] = (f32OneMinC * x * z) + (y * f32s);
+    RotMat[9] = (f32OneMinC * y * z) - (x * f32s);
+    RotMat[10] = f32c + f32OneMinC * z * z;
+    RotMat[11] = RotMat[12] =RotMat[13] = RotMat[14] = 0.0;RotMat[15] =1.0f;
 
-	matMult(o, i, RotMat);
-	matTranslate(o, x + (inx),y + iny,z);
-	if(bxInc)
-	{
-		inx += MOVESTEP;
-	}
-	else
-	{
-		inx -= MOVESTEP;
-	}
-	
-	if(inx > 240)
-	{
-		bxInc = false;
-	}
+    matMult(o, i, RotMat);
+    matTranslate(o, x + (inx),y + iny,z);
+    if(bxInc)
+    {
+        inx += MOVESTEP;
+    }
+    else
+    {
+        inx -= MOVESTEP;
+    }
+    
+    if(inx > 240)
+    {
+        bxInc = false;
+    }
 
-	if(inx < -240)
-	{
-		bxInc = true;
-	}
+    if(inx < -240)
+    {
+        bxInc = true;
+    }
 
-	if(byInc)
-	{
-		iny += MOVESTEP;
-	}
-	else
-	{
-		iny -= MOVESTEP;
-	}
+    if(byInc)
+    {
+        iny += MOVESTEP;
+    }
+    else
+    {
+        iny -= MOVESTEP;
+    }
 
-	if(iny > 110)
-	{
-		byInc = false;
-	}
+    if(iny > 110)
+    {
+        byInc = false;
+    }
 
-	if(iny < -135)
-	{
-		byInc = true;
-	}
+    if(iny < -135)
+    {
+        byInc = true;
+    }
 
-	return true;
+    return true;
 }
 

@@ -35,28 +35,28 @@ void updateNV21();
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-	POINTS vMousePt;
+    POINTS vMousePt;
     switch( uMsg )
     {
-	case WM_LBUTTONDOWN:
-		vMousePt = MAKEPOINTS(lParam);
-		g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
-		return 0;
-	case WM_MOUSEMOVE:
-		if( wParam & MK_LBUTTON ) {
-			vMousePt = MAKEPOINTS(lParam);
-			g_MagicEngine.onTouchDrag(vMousePt.x, vMousePt.y);
-		}
-		return 0;
-	case  WM_LBUTTONUP:
-		vMousePt = MAKEPOINTS(lParam);
-		g_MagicEngine.onTouchUp(vMousePt.x, vMousePt.y);
-		return 0;
-	case WM_TIMER:
-		if (wParam == TIMER_UPDATE_NV21){
-			updateNV21();
-		}
-		return 0;
+    case WM_LBUTTONDOWN:
+        vMousePt = MAKEPOINTS(lParam);
+        g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
+        return 0;
+    case WM_MOUSEMOVE:
+        if( wParam & MK_LBUTTON ) {
+            vMousePt = MAKEPOINTS(lParam);
+            g_MagicEngine.onTouchDrag(vMousePt.x, vMousePt.y);
+        }
+        return 0;
+    case  WM_LBUTTONUP:
+        vMousePt = MAKEPOINTS(lParam);
+        g_MagicEngine.onTouchUp(vMousePt.x, vMousePt.y);
+        return 0;
+    case WM_TIMER:
+        if (wParam == TIMER_UPDATE_NV21){
+            updateNV21();
+        }
+        return 0;
     case WM_CLOSE:
         PostQuitMessage( 0 );
         return 0;
@@ -68,55 +68,55 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 
 
 char* readFile(char* filename, int &size, char* preBuffer /*= NULL*/){
-	TCHAR szPath[_MAX_PATH];
-	if (filename[1] != ':'){
-		GetCurrentDirectory(_MAX_PATH, szPath);
-		sprintf(szPath, "%s\\%s", szPath, filename);
-	}else{
-		sprintf(szPath, "%s", filename);
-	}
-	FILE *fp = fopen(szPath, "rb");
-	if (!fp) return NULL;
-	char* buffer = NULL;
+    TCHAR szPath[_MAX_PATH];
+    if (filename[1] != ':'){
+        GetCurrentDirectory(_MAX_PATH, szPath);
+        sprintf(szPath, "%s\\%s", szPath, filename);
+    }else{
+        sprintf(szPath, "%s", filename);
+    }
+    FILE *fp = fopen(szPath, "rb");
+    if (!fp) return NULL;
+    char* buffer = NULL;
 
-	fseek(fp, 0, SEEK_END);
-	size = ftell(fp);			// determine file size so we can fill it in later if FileSize == 0
-	if (size <= 0) goto __end ;
-	fseek(fp, 0, SEEK_SET);
-	if (preBuffer){
-		buffer = preBuffer;
-	}else{
-		buffer = new char[size];
-	}
-	
-	if (fread(buffer, sizeof(char), size, fp) <= 0){
-		if (!preBuffer){
-			delete[] buffer;
-		}
-		buffer = NULL;
-	}
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);            // determine file size so we can fill it in later if FileSize == 0
+    if (size <= 0) goto __end ;
+    fseek(fp, 0, SEEK_SET);
+    if (preBuffer){
+        buffer = preBuffer;
+    }else{
+        buffer = new char[size];
+    }
+    
+    if (fread(buffer, sizeof(char), size, fp) <= 0){
+        if (!preBuffer){
+            delete[] buffer;
+        }
+        buffer = NULL;
+    }
 
 __end:
-	fclose(fp);
-	return buffer;
+    fclose(fp);
+    return buffer;
 }
 
 int szFile;
 static char preBuffer[640*480*12/8];
 
 void updateNV21(){
-	static int idx = 0;
-	static int step = 1;
-	char path[_MAX_PATH];
+    static int idx = 0;
+    static int step = 1;
+    char path[_MAX_PATH];
 __REREAD:
-	_snprintf(path, _MAX_PATH-1, g_strNV21Path, idx);
-	if (!readFile(path, szFile, preBuffer)){
-		step = -step;
-		idx += step;
-		goto __REREAD;
-	}
-	g_MagicEngine.updatePreviewTex(preBuffer, szFile);
-	idx += step;
+    _snprintf(path, _MAX_PATH-1, g_strNV21Path, idx);
+    if (!readFile(path, szFile, preBuffer)){
+        step = -step;
+        idx += step;
+        goto __REREAD;
+    }
+    g_MagicEngine.updatePreviewTex(preBuffer, szFile);
+    idx += step;
 }
 
 //--------------------------------------------------------------------------------------
@@ -125,182 +125,182 @@ __REREAD:
 //--------------------------------------------------------------------------------------
 float FrmGetTime()
 {
-	static BOOL     bInitialized = false;
-	static LONGLONG m_llQPFTicksPerSec;
-	static LONGLONG m_llBaseTime;
-	if( false == bInitialized )
-	{
-		LARGE_INTEGER qwTicksPerSec;
-		QueryPerformanceFrequency( &qwTicksPerSec );
-		m_llQPFTicksPerSec = qwTicksPerSec.QuadPart;
+    static BOOL     bInitialized = false;
+    static LONGLONG m_llQPFTicksPerSec;
+    static LONGLONG m_llBaseTime;
+    if( false == bInitialized )
+    {
+        LARGE_INTEGER qwTicksPerSec;
+        QueryPerformanceFrequency( &qwTicksPerSec );
+        m_llQPFTicksPerSec = qwTicksPerSec.QuadPart;
 
-		LARGE_INTEGER qwTime;
-		QueryPerformanceCounter( &qwTime );
-		m_llBaseTime = qwTime.QuadPart;
+        LARGE_INTEGER qwTime;
+        QueryPerformanceCounter( &qwTime );
+        m_llBaseTime = qwTime.QuadPart;
 
-		bInitialized = TRUE;
-		return 0.0f;
-	}
+        bInitialized = TRUE;
+        return 0.0f;
+    }
 
-	// Get the current time
-	LARGE_INTEGER qwTime;
-	QueryPerformanceCounter( &qwTime );
-	double fAppTime = (double)( qwTime.QuadPart - m_llBaseTime ) / (double) m_llQPFTicksPerSec;
-	return (float)fAppTime;
+    // Get the current time
+    LARGE_INTEGER qwTime;
+    QueryPerformanceCounter( &qwTime );
+    double fAppTime = (double)( qwTime.QuadPart - m_llBaseTime ) / (double) m_llQPFTicksPerSec;
+    return (float)fAppTime;
 }
 
 
 int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 {
-	// Create the application window
-	NativeWindowType hWindow;
-	{
-		// The global instance
-		HINSTANCE hInstance  = GetModuleHandle( NULL );
+    // Create the application window
+    NativeWindowType hWindow;
+    {
+        // The global instance
+        HINSTANCE hInstance  = GetModuleHandle( NULL );
 
-		// Register the window class
-		WNDCLASS wc = {0};
-		wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // Window style
-		wc.lpfnWndProc    = (WNDPROC)WndProc;                    // WndProc message handler
-		wc.hInstance      = hInstance;                           // Instance
-		wc.lpszClassName  = "Adreno SDK Window";            // Set the class name
-		wc.hCursor        = LoadCursor( NULL, IDC_ARROW );       // Cursor
-		if( FALSE == RegisterClass(&wc) )
-			return FALSE;
+        // Register the window class
+        WNDCLASS wc = {0};
+        wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // Window style
+        wc.lpfnWndProc    = (WNDPROC)WndProc;                    // WndProc message handler
+        wc.hInstance      = hInstance;                           // Instance
+        wc.lpszClassName  = "Adreno SDK Window";            // Set the class name
+        wc.hCursor        = LoadCursor( NULL, IDC_ARROW );       // Cursor
+        if( FALSE == RegisterClass(&wc) )
+            return FALSE;
 
-		// Adjust the window size to fit our rectangle
-		DWORD dwWindowStyle = WS_SYSMENU | WS_MINIMIZEBOX | WS_CAPTION | WS_BORDER |
-			WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-		RECT rcWindow;
-		SetRect( &rcWindow, 0, 0, g_nWindowWidth, g_nWindowHeight );
-		AdjustWindowRect( &rcWindow, dwWindowStyle, FALSE );
+        // Adjust the window size to fit our rectangle
+        DWORD dwWindowStyle = WS_SYSMENU | WS_MINIMIZEBOX | WS_CAPTION | WS_BORDER |
+            WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+        RECT rcWindow;
+        SetRect( &rcWindow, 0, 0, g_nWindowWidth, g_nWindowHeight );
+        AdjustWindowRect( &rcWindow, dwWindowStyle, FALSE );
 
-		// Create the parent window
-		hWindow = CreateWindowEx(
-			WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,    // Extended style
-			"Adreno SDK Window",                   // Class
-			g_strWindowTitle,                      // Title
-			dwWindowStyle,                         // Style
-			50 + rcWindow.left, 50 + rcWindow.top, // Position
-			(rcWindow.right-rcWindow.left),        // Width
-			(rcWindow.bottom-rcWindow.top),        // Height
-			NULL, NULL, hInstance, NULL );
-		if( NULL == hWindow )
-			return FALSE;
+        // Create the parent window
+        hWindow = CreateWindowEx(
+            WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,    // Extended style
+            "Adreno SDK Window",                   // Class
+            g_strWindowTitle,                      // Title
+            dwWindowStyle,                         // Style
+            50 + rcWindow.left, 50 + rcWindow.top, // Position
+            (rcWindow.right-rcWindow.left),        // Width
+            (rcWindow.bottom-rcWindow.top),        // Height
+            NULL, NULL, hInstance, NULL );
+        if( NULL == hWindow )
+            return FALSE;
 
-		ShowWindow( hWindow, SW_SHOW );
-		SetForegroundWindow( hWindow );
-		SetFocus( hWindow );
-	}
+        ShowWindow( hWindow, SW_SHOW );
+        SetForegroundWindow( hWindow );
+        SetFocus( hWindow );
+    }
 
-	// Get the display
-	EGLDisplay eglDisplay = eglGetDisplay( EGL_DEFAULT_DISPLAY );
-	if( eglDisplay == EGL_NO_DISPLAY )
-		return FALSE;
+    // Get the display
+    EGLDisplay eglDisplay = eglGetDisplay( EGL_DEFAULT_DISPLAY );
+    if( eglDisplay == EGL_NO_DISPLAY )
+        return FALSE;
 
-	// Initialize EGL
-	EGLint nMajorVersion, nMinorVersion;
-	if( FALSE == eglInitialize( eglDisplay, &nMajorVersion, &nMinorVersion ) )
-		return FALSE;
+    // Initialize EGL
+    EGLint nMajorVersion, nMinorVersion;
+    if( FALSE == eglInitialize( eglDisplay, &nMajorVersion, &nMinorVersion ) )
+        return FALSE;
 
-	// Set our EGL API to OpenGL ES
-	if( FALSE == eglBindAPI( EGL_OPENGL_ES_API ) )
-		return FALSE;
+    // Set our EGL API to OpenGL ES
+    if( FALSE == eglBindAPI( EGL_OPENGL_ES_API ) )
+        return FALSE;
 
-	// Get total number of configs
-	EGLint nNumConfigs;
-	if( FALSE == eglGetConfigs( eglDisplay, NULL, 0, &nNumConfigs ) )
-		return FALSE;
+    // Get total number of configs
+    EGLint nNumConfigs;
+    if( FALSE == eglGetConfigs( eglDisplay, NULL, 0, &nNumConfigs ) )
+        return FALSE;
 
-	// Get the first config
-	EGLConfig configs[10];
-	if (FALSE == eglGetConfigs(eglDisplay, configs, 1, &nNumConfigs) )
-		return FALSE;
+    // Get the first config
+    EGLConfig configs[10];
+    if (FALSE == eglGetConfigs(eglDisplay, configs, 1, &nNumConfigs) )
+        return FALSE;
 
-	// Get the first config's Color buffer size
-	EGLint nBuffSize;
-	eglGetConfigAttrib(eglDisplay, configs[0], EGL_BUFFER_SIZE, &nBuffSize);
+    // Get the first config's Color buffer size
+    EGLint nBuffSize;
+    eglGetConfigAttrib(eglDisplay, configs[0], EGL_BUFFER_SIZE, &nBuffSize);
 
-	// Test the display configuration
-	EGLConfig eglConfig;
+    // Test the display configuration
+    EGLConfig eglConfig;
 
-	if (nBuffSize == 32)
-	{
-		// Build the attibute list
-		EGLint AttributeList[] = 
-		{ 
-			EGL_RED_SIZE,		8,
-			EGL_GREEN_SIZE,	    8,
-			EGL_BLUE_SIZE,	    8,
-			EGL_ALPHA_SIZE,	    8,
-			EGL_DEPTH_SIZE,	    24,
-			EGL_STENCIL_SIZE,   8,
-			EGL_SAMPLE_BUFFERS, 0,
-			EGL_SAMPLES,		0,
-			EGL_NONE
-		};
+    if (nBuffSize == 32)
+    {
+        // Build the attibute list
+        EGLint AttributeList[] = 
+        { 
+            EGL_RED_SIZE,        8,
+            EGL_GREEN_SIZE,        8,
+            EGL_BLUE_SIZE,        8,
+            EGL_ALPHA_SIZE,        8,
+            EGL_DEPTH_SIZE,        24,
+            EGL_STENCIL_SIZE,   8,
+            EGL_SAMPLE_BUFFERS, 0,
+            EGL_SAMPLES,        0,
+            EGL_NONE
+        };
 
-		// Choose config based on the requested attributes
-		if( FALSE == eglChooseConfig( eglDisplay, AttributeList, &eglConfig, 1, &nNumConfigs ) )
-			return FALSE;
-	}
-	else if (nBuffSize == 16)
-	{
-		// Build the attibute list
-		EGLint AttributeList[] = 
-		{ 
-			EGL_RED_SIZE,		5,
-			EGL_GREEN_SIZE,	    6,
-			EGL_BLUE_SIZE,	    5,
-			EGL_ALPHA_SIZE,	    0,
-			EGL_DEPTH_SIZE,	    24,
-			EGL_STENCIL_SIZE,   8,
-			EGL_SAMPLE_BUFFERS, 0,
-			EGL_SAMPLES,		0,
-			EGL_NONE
-		};
+        // Choose config based on the requested attributes
+        if( FALSE == eglChooseConfig( eglDisplay, AttributeList, &eglConfig, 1, &nNumConfigs ) )
+            return FALSE;
+    }
+    else if (nBuffSize == 16)
+    {
+        // Build the attibute list
+        EGLint AttributeList[] = 
+        { 
+            EGL_RED_SIZE,        5,
+            EGL_GREEN_SIZE,        6,
+            EGL_BLUE_SIZE,        5,
+            EGL_ALPHA_SIZE,        0,
+            EGL_DEPTH_SIZE,        24,
+            EGL_STENCIL_SIZE,   8,
+            EGL_SAMPLE_BUFFERS, 0,
+            EGL_SAMPLES,        0,
+            EGL_NONE
+        };
 
-		// Choose config based on the requested attributes
-		if( FALSE == eglChooseConfig( eglDisplay, AttributeList, &eglConfig, 1, &nNumConfigs ) )
-			return FALSE;
-	}
-	else return FALSE; // unsupported display
+        // Choose config based on the requested attributes
+        if( FALSE == eglChooseConfig( eglDisplay, AttributeList, &eglConfig, 1, &nNumConfigs ) )
+            return FALSE;
+    }
+    else return FALSE; // unsupported display
 
-	// Create a window surface
-	EGLSurface eglSurface = eglCreateWindowSurface( eglDisplay, eglConfig, hWindow, NULL );
-	if( EGL_NO_SURFACE == eglSurface )
-		return FALSE;
+    // Create a window surface
+    EGLSurface eglSurface = eglCreateWindowSurface( eglDisplay, eglConfig, hWindow, NULL );
+    if( EGL_NO_SURFACE == eglSurface )
+        return FALSE;
 
-	// Create a OpenGL ES 2.0 rendering context
-	EGLint ContextAttribList[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-	EGLContext eglContext = eglCreateContext( eglDisplay, eglConfig, EGL_NO_CONTEXT, ContextAttribList );
-	if( EGL_NO_CONTEXT == eglContext )
-		return FALSE;
+    // Create a OpenGL ES 2.0 rendering context
+    EGLint ContextAttribList[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+    EGLContext eglContext = eglCreateContext( eglDisplay, eglConfig, EGL_NO_CONTEXT, ContextAttribList );
+    if( EGL_NO_CONTEXT == eglContext )
+        return FALSE;
 
-	// Make the context current
-	if( FALSE == eglMakeCurrent( eglDisplay, eglSurface, eglSurface, eglContext ) )
-		return FALSE;
+    // Make the context current
+    if( FALSE == eglMakeCurrent( eglDisplay, eglSurface, eglSurface, eglContext ) )
+        return FALSE;
 
     g_MagicEngine.setupGraphics(g_nWindowWidth, g_nWindowHeight);
 
 
-	if(g_useCamera){
-		SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
-		g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_NV21);
-	}else{
-		int size;
-		char* imgBuffer = NULL;
-		imgBuffer = readFile("assets\\test.jpg", size);
-		if (imgBuffer)
-		{
-			g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_PACKET);
-			g_MagicEngine.updatePreviewTex(imgBuffer, size);
-			delete[] imgBuffer;
-		}
-	}
-	
-	float lastTime = FrmGetTime();
-	float timenow;
+    if(g_useCamera){
+        SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
+        g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_NV21);
+    }else{
+        int size;
+        char* imgBuffer = NULL;
+        imgBuffer = readFile("assets\\test.jpg", size);
+        if (imgBuffer)
+        {
+            g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_PACKET);
+            g_MagicEngine.updatePreviewTex(imgBuffer, size);
+            delete[] imgBuffer;
+        }
+    }
+    
+    float lastTime = FrmGetTime();
+    float timenow;
     // Run the main loop until the user closes the window
     while( TRUE )
     {
@@ -309,21 +309,21 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         {
             if( msg.message == WM_QUIT )
                 return FALSE;
-			TranslateMessage( &msg );
-			DispatchMessage( &msg );
-		}else{
-			timenow = FrmGetTime();
-			float delta = timenow - lastTime;
-			lastTime = timenow;
-			// Update and render the application
-			g_MagicEngine.renderFrame(delta);
+            TranslateMessage( &msg );
+            DispatchMessage( &msg );
+        }else{
+            timenow = FrmGetTime();
+            float delta = timenow - lastTime;
+            lastTime = timenow;
+            // Update and render the application
+            g_MagicEngine.renderFrame(delta);
 
-			// Present the scene
-			eglSwapBuffers( eglDisplay, eglSurface );
-		}
+            // Present the scene
+            eglSwapBuffers( eglDisplay, eglSurface );
+        }
     }
-	if(g_useCamera)
-		KillTimer(hWindow, TIMER_UPDATE_NV21);
+    if(g_useCamera)
+        KillTimer(hWindow, TIMER_UPDATE_NV21);
 
     return TRUE;
 }

@@ -8,15 +8,15 @@ class FramebufferObject
 {
 
 private:
-	GLuint m_fboId[1];
+    GLuint m_fboId[1];
 
 public:
-	FramebufferObject(void);
-	~FramebufferObject(void);
+    FramebufferObject(void);
+    ~FramebufferObject(void);
 
-	void bind();
-	void unbind();
-	void texture2d(GLuint texId);
-	bool check_status();
+    void bind();
+    void unbind();
+    void texture2d(GLuint texId);
+    bool check_status();
 };
 #endif // _framebufferobject_h_

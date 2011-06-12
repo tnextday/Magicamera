@@ -9,41 +9,41 @@
 class Texture
 {
 public:
-	GLuint m_TexHandle;
-	GLuint m_Width;
-	GLuint m_Height;
-	GLenum m_imageFormat;
+    GLuint m_TexHandle;
+    GLuint m_Width;
+    GLuint m_Height;
+    GLenum m_imageFormat;
 
 public:
-	Texture();
+    Texture();
 
-	//************************************
-	// Method: 内存解码并生成texture
-	// Description: 
-	// Parameter: const unsigned char * buffer
-	// Parameter: uint32_t len
-	// Parameter: uint32_t req_format
-	// Returns:   
-	//************************************
-	Texture(const unsigned char *buffer, uint32_t len);
-	Texture(char* texFilePath);
-	~Texture();
+    //************************************
+    // Method: 内存解码并生成texture
+    // Description: 
+    // Parameter: const unsigned char * buffer
+    // Parameter: uint32_t len
+    // Parameter: uint32_t req_format
+    // Returns:   
+    //************************************
+    Texture(const unsigned char *buffer, uint32_t len);
+    Texture(char* texFilePath);
+    ~Texture();
 
-	void bind();
-	void bind(int unit);
-	void setWrap(GLfloat wrap_s = GL_REPEAT, GLfloat wrap_t = GL_REPEAT);
-	void setFilter(GLfloat min = GL_LINEAR, GLfloat mag = GL_LINEAR);
-	void uploadImageData(GLubyte* data, int width, int height, GLenum imageFormat);
-	void uploadImageData(GLubyte* data);
-	//update压缩过的数据，jpeg,png,tga。。。
-	void uploadImageData(const unsigned char *buffer, uint32_t len);
-	void setSize(int w, int h);;
-	//GL Format
-	void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};
-	GLuint createGLHandle();
+    void bind();
+    void bind(int unit);
+    void setWrap(GLfloat wrap_s = GL_REPEAT, GLfloat wrap_t = GL_REPEAT);
+    void setFilter(GLfloat min = GL_LINEAR, GLfloat mag = GL_LINEAR);
+    void uploadImageData(GLubyte* data, int width, int height, GLenum imageFormat);
+    void uploadImageData(GLubyte* data);
+    //update压缩过的数据，jpeg,png,tga。。。
+    void uploadImageData(const unsigned char *buffer, uint32_t len);
+    void setSize(int w, int h);;
+    //GL Format
+    void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};
+    GLuint createGLHandle();
 
 private:
-	void init();
+    void init();
 };
 
 
