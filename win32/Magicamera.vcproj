@@ -218,7 +218,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\jni\Texture.cpp"
+				RelativePath="..\jni\texture.cpp"
 				>
 			</File>
 			<File
