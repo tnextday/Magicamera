@@ -38,7 +38,7 @@ public:
 	bool init(int w, int h, GLuint texid);
 	void setTargetTexId(GLuint texid);
 	void uploadYUVTexImage(char* yuv420sp, int w, int h);
-	void copyYUVBuffer(char* yuv420sp);
+	void copyUVBuffer(char* yuv420sp);
 
 private:
 	void setDefaultTexParameter(GLuint texId);

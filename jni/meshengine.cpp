@@ -13,6 +13,7 @@ MeshEngine::MeshEngine( int width, int height )
 	m_DeltaVertex = new GLfloat[m_BufferCount];
 	m_OrgiVertex = new GLfloat[m_BufferCount];
 	m_bAnimating = false;
+	m_bMeshChanged = false;
 }
 
 MeshEngine::~MeshEngine()
@@ -39,7 +40,7 @@ void MeshEngine::update( GLfloat delta )
 		m_bAnimating = false;
 		memcpy(mVertexBuffer, m_DestVertex, m_BufferCount*sizeof(GLfloat));
 	}
-	uploadBuffer(BT_VertexBuffer);
+	m_bMeshChanged = true;
 }
 
 void MeshEngine::backupOrigVertex()
@@ -68,7 +69,6 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 	if(mx == 0 && my == 0) return;
 	Vertex *vertexs = (Vertex *)mVertexBuffer;
 	Vertex *p;	//point 当前点坐标
-	bool	bMeshChanged = false;
 	//遍历除了四边之外的所有点
 	for (int j = 1; j < mH-1; j++){
 		int baseidx = j*mW;
@@ -86,23 +86,30 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 				rate *= 0.8;
 				p->x += mx*rate;
 				p->y += my*rate;
-				bMeshChanged = true;
+				m_bMeshChanged = true;
 			}
 		}
 	}
-	if (bMeshChanged){
-		uploadBuffer(BT_VertexBuffer);
-	}
+
 }
 
 void MeshEngine::restore()
 {
 	memcpy(m_DestVertex, m_OrgiVertex, m_BufferCount*sizeof(GLfloat));
-	startAnimating(1.5f);
+	startAnimating(1.6f);
 }
 
 void MeshEngine::stopAnimating()
 {
 	m_bAnimating = false;
 	m_Duration = 0.0f;
+}
+
+void MeshEngine::draw()
+{
+	if (m_bMeshChanged){
+		uploadBuffer(BT_VertexBuffer);
+		m_bMeshChanged = false;
+	}
+	Mesh::draw();
 }

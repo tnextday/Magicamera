@@ -24,6 +24,8 @@ private:
 	float		m_Duration;
 	float		m_Elapsed;	//逝去时间
 
+	bool		m_bMeshChanged;
+
 
 public:
 	MeshEngine(int width, int height);
@@ -41,6 +43,8 @@ public:
 
 	//还原成原始图像
 	void restore();
+
+	void draw();
 
 
 	//************************************

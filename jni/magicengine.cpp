@@ -167,7 +167,6 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 	//rgb565比rgb888快至少30%
 	if (m_inputFortmat == IMAGE_FORMAT_NV21){
 		m_glYUVTex.init(w, h, m_PreviewTex->m_TexHandle);
-// 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 	}if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
 		m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 
@@ -214,7 +213,7 @@ bool MagicEngine::onTouchDrag( float x, float y )
 {
 	LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
 	y = m_ViewHeight - y;
-	m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 100);
+	m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 120);
 	m_lastX = x;
 	m_lastY = y;
 	return true;
