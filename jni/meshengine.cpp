@@ -1,6 +1,6 @@
 #include "meshengine.h"
 #include "easing.h"
-#include "DeviationMap.h"
+#include "ratetables.h"
 #include "glutils.h"
 #include <string.h>
 #include <math.h>
@@ -79,11 +79,10 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
             float dx,dy; //当前点和圆心的距离差
             dx = fabs(p->x - ox);
             dy = fabs(p->y - oy);
-            float dr = sqrtf(pow(dx,2)+pow(dy,2));
-            if (dr <= r){
-                //float rate = mapDeviationRate[(int)(dy*(nDeviationRate-1)/r)][(int)(dx*(nDeviationRate-1)/r )];
-                float rate = 1.0f - dr/r;
-                rate *= 0.8;
+            if (dx <= r && dy <= r){
+                float rate = RateTables[(int)(dy*(RateTablesCount-1)/r)][(int)(dx*(RateTablesCount-1)/r )];
+                //float rate = 1.0f - dr/r;
+                //rate *= 0.8;
                 p->x += mx*rate;
                 p->y += my*rate;
                 m_bMeshChanged = true;

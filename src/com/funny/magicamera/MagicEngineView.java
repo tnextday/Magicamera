@@ -26,10 +26,10 @@ public class MagicEngineView extends GLSurfaceView
 
 	private long lastFrameTime = System.nanoTime();
 	private float deltaTime = 0;
-    boolean m_bUseCamera = true;
+    boolean m_bUseCamera = false;
 //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
-    final static int BufferCount = 3;
+    final static int BufferCount = 2;
     LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
     int     m_previewHeight = 480;
     int     m_previewWidth = 640;

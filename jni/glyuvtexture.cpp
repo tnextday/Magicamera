@@ -48,20 +48,17 @@ static const GLfloat mTriangleVerticesData[] = {
     1.0, 0.0, 0.0, 1.0, 0.0
 };
 
-glYUVTexture::glYUVTexture(void)
+glYUVTexture::glYUVTexture(int w, int h, GLuint texid)
 {
     m_fbo = NULL;
-    m_bInited = false;
+    init(w, h, texid);
 }
 
 glYUVTexture::~glYUVTexture(void)
 {
-    if(m_bInited){
-        glDeleteTextures(2, m_YUVTexs);
-        glDeleteProgram(m_Program);
-        SafeDelete(m_fbo);
-    }
-
+    glDeleteTextures(2, m_YUVTexs);
+    glDeleteProgram(m_Program);
+    SafeDelete(m_fbo);
 }
 
 bool glYUVTexture::init( int w, int h, GLuint texid )
@@ -101,7 +98,6 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(texid);
     checkGlError("glYUVTexture::init");
-    m_bInited = true;
     return true;
 }
 
@@ -150,7 +146,5 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 
 void glYUVTexture::setTargetTexId( GLuint texid )
 {
-    if (m_bInited){
-        m_fbo->texture2d(texid);
-    }
+    m_fbo->texture2d(texid);
 }

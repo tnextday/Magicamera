@@ -23,10 +23,8 @@ class glYUVTexture
 
     FramebufferObject* m_fbo;
 
-    bool  m_bInited;
-
 public:
-    glYUVTexture(void);
+    glYUVTexture(int w, int h, GLuint texid);
     ~glYUVTexture(void);
 
     bool init(int w, int h, GLuint texid);

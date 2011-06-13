@@ -18,8 +18,9 @@ class MagicEngine{
     GLuint m_texCoordLoc;
     GLuint m_viewprojLoc;
 
-    Texture* m_PreviewTex;
-    MeshEngine*    m_Mesh;
+    Texture*        m_PreviewTex;
+    glYUVTexture*   m_glYUVTex;
+    MeshEngine*     m_Mesh;
 
     GLfloat m_ViewWidth;
     GLfloat m_ViewHeight;
@@ -30,7 +31,7 @@ class MagicEngine{
     float    m_lastX;
     float    m_lastY;
 
-    glYUVTexture    m_glYUVTex;
+    
 
 public:
     MagicEngine();

@@ -29,12 +29,15 @@ static const char gFragmentShader[] =
 MagicEngine::MagicEngine()
 {
     m_Mesh = NULL;
+    m_glYUVTex = NULL;
+    m_PreviewTex = NULL;
 }
 
 MagicEngine::~MagicEngine()
 {
     SafeDelete(m_Mesh);
     SafeDelete(m_PreviewTex);
+    SafeDelete(m_glYUVTex);
     glDeleteProgram(m_Program);
 }
 
@@ -134,8 +137,7 @@ void MagicEngine::renderFrame( float delta )
     glUseProgram(m_Program);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-     
-    //LOGI("renderFrame delta time = %.6f\n", delta);
+
     m_Mesh->update(delta);
 //     drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
       m_PreviewTex->bind();
@@ -146,9 +148,8 @@ void MagicEngine::renderFrame( float delta )
 void MagicEngine::updatePreviewTex( char* data, long len )
 {
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        //decodeYUV420SP(m_tmpImageData, data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
         //m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
-        m_glYUVTex.uploadYUVTexImage(data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
+        m_glYUVTex->uploadYUVTexImage(data, m_PreviewTex->m_Width, m_PreviewTex->m_Height);
     }else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
         m_PreviewTex->uploadImageData((GLubyte*)data);
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
@@ -165,7 +166,7 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        m_glYUVTex.init(w, h, m_PreviewTex->m_TexHandle);
+        m_glYUVTex = new glYUVTexture(w, h, m_PreviewTex->m_TexHandle);
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
         m_PreviewTex->setImageFormat(GDX2D_FORMAT_RGB565);
 

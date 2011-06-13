@@ -228,10 +228,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\jni\DeviationMap.h"
-				>
-			</File>
-			<File
 				RelativePath="..\jni\easing.h"
 				>
 			</File>
@@ -261,6 +257,10 @@
 			</File>
 			<File
 				RelativePath="..\jni\meshengine.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\ratetables.h"
 				>
 			</File>
 			<File
