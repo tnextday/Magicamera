@@ -7,6 +7,26 @@ import math
 const_rate_count = 50
 const_filename = "ratetables.h"
 
+def easeInOutCubic(t):
+    t*=2.0
+    if(t < 1.0):
+        return 0.5*t*t*t;
+    else:
+        t -= 2.0;
+        return 0.5*(t*t*t + 2.0);
+
+def easeInOutQuad(t):
+    t*=2.0;
+    if (t < 1.0):
+        return t*t/2.0;
+    else :
+        --t;
+        return -0.5 * (t*(t-2.0) - 1.0);
+
+def easeInOutSine(t):
+    return -0.5 * (math.cos(math.pi*t) - 1.0);
+
+    
 def main(args):
     fh = open(const_filename, "w")
     fh.writelines("#ifndef _ratetables_h_\n")
@@ -22,8 +42,8 @@ def main(args):
             r = r/const_rate_count
             if (r > 1.0):
                 r = 1.0
-            r = 1.0 - r
-            r = r*0.8
+            #r = easeInOutSine(1.0 - r)*0.9
+            r = (1.0 - r)*0.9
             if (x < const_rate_count - 1):
                 linestr = "%s %0.4f," % (linestr, r)
             else:

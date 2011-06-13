@@ -83,6 +83,7 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
                 float rate = RateTables[(int)(dy*(RateTablesCount-1)/r)][(int)(dx*(RateTablesCount-1)/r )];
                 //float rate = 1.0f - dr/r;
                 //rate *= 0.8;
+                if (rate == 0) break;
                 p->x += mx*rate;
                 p->y += my*rate;
                 m_bMeshChanged = true;
