@@ -41,9 +41,10 @@ def main(args):
             r = math.sqrt(math.pow(x, 2) + math.pow(y, 2))
             r = r/const_rate_count
             if (r > 1.0):
-                r = 1.0
-            #r = easeInOutSine(1.0 - r)*0.9
-            r = (1.0 - r)*0.9
+                r = 0.0
+            else:
+                r = easeInOutSine(1.0 - r)*0.7
+                #r = (1.0 - r)
             if (x < const_rate_count - 1):
                 linestr = "%s %0.4f," % (linestr, r)
             else:
@@ -51,7 +52,7 @@ def main(args):
                 fh.writelines(linestr)
                 
     fh.writelines("};\n")    
-    fh.writelines("#endif _ratetables_h_\n")
+    fh.writelines("#endif //_ratetables_h_\n")
 
     print "finished!"
 

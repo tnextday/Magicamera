@@ -213,7 +213,7 @@ bool MagicEngine::onTouchDrag( float x, float y )
 {
     LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
     y = m_ViewHeight - y;
-    m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 120);
+    m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 150);
     m_lastX = x;
     m_lastY = y;
     return true;

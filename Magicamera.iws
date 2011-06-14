@@ -7,6 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/CreateTable.py" afterPath="$PROJECT_DIR$/jni/CreateTable.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magicengine.cpp" afterPath="$PROJECT_DIR$/jni/magicengine.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/meshengine.cpp" afterPath="$PROJECT_DIR$/jni/meshengine.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/ratetables.h" afterPath="$PROJECT_DIR$/jni/ratetables.h" />
     </list>
@@ -79,8 +80,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -101,7 +102,7 @@
       <file leaf-file-name="MagicEngineView.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="34" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.82051283">
+            <state line="28" column="32" selection-start="801" selection-end="801" vertical-scroll-proportion="0.5641026">
               <folding />
             </state>
           </provider>
@@ -164,9 +165,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -241,6 +240,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -259,8 +260,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.Magicamera">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -452,7 +453,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27504104" sideWeight="0.62834644" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2816092" sideWeight="0.62834644" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37165356" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.51968503" sideWeight="0.49671593" order="7" side_tool="true" content_ui="tabs" />
@@ -584,7 +585,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="34" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.82051283">
+        <state line="28" column="32" selection-start="801" selection-end="801" vertical-scroll-proportion="0.5641026">
           <folding />
         </state>
       </provider>
