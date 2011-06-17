@@ -4,9 +4,17 @@
 
 MagicEngine g_MagicEngine;
 
+JNIEnv*     g_JniEnv = NULL;
+jobject     g_JniObj;
+jclass      g_JniClass;
+jmethodID   g_JinMethod_playSound;
+jmethodID   g_JinMethod_playMusic;
+
+void initJavaCallBack(JNIEnv * env);
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
+    initJavaCallBack(env);
 	g_MagicEngine.setupGraphics(width, height);
 }
 
@@ -39,5 +47,23 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag( JN
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
 	return g_MagicEngine.onTouchUp(x, y);
+}
+
+void initJavaCallBack(JNIEnv * env){
+    g_JniEnv = env;
+    g_JniClass = env->FindClass("com/funny/magicamera/MagicJNILib");
+    jmethodID construction_id = env->GetMethodID(g_JniClass, "<init>", "()V"); 
+    g_JniObj = env->NewObject(g_JniClass, construction_id); 
+
+    g_JinMethod_playSound = env->GetMethodID(g_JniClass,"playSound","(I)V");
+    g_JinMethod_playMusic = env->GetMethodID(g_JniClass,"playMusic","(I)V");
+}
+
+void playSound(int soundId){
+    g_JniEnv->CallVoidMethod(g_JniObj, g_JinMethod_playSound, soundId); 
+}
+
+void playMusic(int musicId){
+    g_JniEnv->CallVoidMethod(g_JniObj, g_JinMethod_playMusic, musicId); 
 }
 

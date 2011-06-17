@@ -22,4 +22,12 @@ public class MagicJNILib {
     public static native boolean onTouchDrag(float x, float y);
     public static native boolean onTouchUp(float x, float y);
 
+    public void playSound(int soundId){
+        
+    }
+
+    public void playMusic(int Music){
+        
+    }
+
 }

@@ -2,10 +2,13 @@
 #define _jni_main_h_
 #include <jni.h>
 
+
+void playSound(int soundId);
+void playMusic(int musicId);
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta);
