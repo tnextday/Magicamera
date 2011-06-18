@@ -31,6 +31,7 @@ MagicEngine::MagicEngine()
     m_Mesh = NULL;
     m_glYUVTex = NULL;
     m_PreviewTex = NULL;
+    m_fbo = NULL;
 }
 
 MagicEngine::~MagicEngine()
@@ -38,6 +39,7 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_Mesh);
     SafeDelete(m_PreviewTex);
     SafeDelete(m_glYUVTex);
+    SafeDelete(m_fbo);
     glDeleteProgram(m_Program);
 }
 
@@ -81,13 +83,13 @@ bool MagicEngine::setupGraphics(int w, int h) {
 //      glCullFace(GL_FRONT);
 //      glEnable(GL_CULL_FACE);
     //启用混合操作
-     glDisable(GL_BLEND);
-//     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA    glEnable(GL_TEXTURE_2D);
+     glEnable(GL_BLEND);
+     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_ViewWidth = w;
     m_ViewHeight = h;
 
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
 
     //使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
     GLfloat mvp[16];
@@ -100,6 +102,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
     glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 
     m_PreviewTex = new Texture();
+    m_fbo = new FramebufferObject();
     return true;
 }
 
@@ -133,15 +136,10 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
 
 void MagicEngine::renderFrame( float delta )
 {
-    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
-    glUseProgram(m_Program);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-    m_Mesh->update(delta);
-//     drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);
-      m_PreviewTex->bind();
-      m_Mesh->draw();
+    drawImage(delta);
+    drawUI(delta);
     checkGlError("renderFrame");
 }
 
@@ -201,6 +199,8 @@ bool MagicEngine::onTouchDown( float x, float y )
     y = m_ViewHeight - y;
     if (x > m_ViewWidth - 50 && y > m_ViewHeight -50){
         m_Mesh->restore();
+    }else if(x > m_ViewWidth - 50 && y < 50){
+        makePicture(640, 480);
     }else{
         m_Mesh->stopAnimating();
     }
@@ -225,5 +225,93 @@ bool MagicEngine::onTouchUp( float x, float y )
     //y = m_ViewHeight - y;
     m_lastX = 0;
     m_lastY = 0;
+    return true;
+}
+
+void MagicEngine::makePicture( int w, int h )
+{
+    glDisable(GL_DEPTH_TEST);
+    m_fbo->resizeColorBuffer(w, h);
+    m_fbo->bind();
+    glViewport(0,0, w, h);
+    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+    checkGlError("makePicture_0");
+    glClear(GL_COLOR_BUFFER_BIT);
+    checkGlError("makePicture_1");
+    drawImage(0);
+    checkGlError("makePicture_2");
+    char* pixels = new char[w*h*2];
+    glReadPixels(0, 0, w, h, GL_RGB565, GL_UNSIGNED_SHORT, pixels);
+    saveImage(pixels, w, h, "f:\\test.tga");
+    delete[] pixels;
+    m_fbo->unbind();
+    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
+
+}
+
+void MagicEngine::drawUI( float delta )
+{
+
+}
+
+void MagicEngine::drawImage( float delta )
+{
+    glUseProgram(m_Program);
+    m_Mesh->update(delta);
+    m_PreviewTex->bind();
+    m_Mesh->draw();
+}
+
+bool MagicEngine::saveImage( char* buffer, int w, int h, char* filename )
+{
+    struct tgaheader_t
+    {
+        GLubyte   idLength;
+        GLubyte   colorMapType;
+        GLubyte   imageType;
+        GLubyte   colorMapSpec[5];
+        GLushort  xOrigin;
+        GLushort  yOrigin;
+        GLushort  width;
+        GLushort  height;
+        GLubyte   bpp;
+        GLubyte   imageDesc;
+    };
+    struct rgb565_t
+    {
+        GLushort
+            b : 5,
+            g : 6,
+            r : 5;
+    };
+
+#define TGA_RGB 2
+    FILE* pFile;
+
+    pFile = fopen(filename, "wb");
+    if (!pFile)	return false;
+
+    // read in the image type
+    tgaheader_t tga;		// TGA header
+    memset(&tga, 0, sizeof(tgaheader_t));
+    tga.bpp = 16;
+    tga.height = h;
+    tga.width = w;
+    tga.imageType = TGA_RGB;
+    long szData = w*h*2;
+
+//     GLubyte temp;
+//     int total = w * h;
+//     rgb565_t* source = (rgb565_t*)buffer;
+//     for (int pixel = 0; pixel < total; ++pixel)
+//     {
+//         temp = source[pixel].b;
+//         source[pixel].b = source[pixel].r;
+//         source[pixel].r = temp;
+//     }
+
+    fwrite(&tga, sizeof(tgaheader_t), 1, pFile);
+    fwrite(buffer, sizeof(GLubyte), szData, pFile);
+    if (pFile) fclose(pFile);
     return true;
 }

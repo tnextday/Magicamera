@@ -31,7 +31,7 @@ class MagicEngine{
     float    m_lastX;
     float    m_lastY;
 
-    
+    FramebufferObject *m_fbo;
 
 public:
     MagicEngine();
@@ -48,6 +48,13 @@ public:
     bool onTouchDrag(float x, float y);
     bool onTouchUp(float x, float y);
     void drawTexture( Texture *tex, GLint posX, GLint posY );
+
+    void makePicture(int w, int h);
+
+    void drawUI(float delta);
+    void drawImage(float delta);
+
+    bool saveImage(char* buffer, int w, int h, char* filename);
 };
 
 
