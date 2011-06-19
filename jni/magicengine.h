@@ -59,8 +59,10 @@ public:
 
     void makePicture(int w, int h);
 
-    void drawUI(float delta);
-    void drawImage(float delta);
+    void update(float delta);
+
+    void drawUI();
+    void drawImage();
 
     bool saveImage(GLubyte* buffer, int w, int h, char* filename);
 

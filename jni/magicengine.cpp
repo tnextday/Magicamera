@@ -44,6 +44,17 @@ MagicEngine::~MagicEngine()
     glDeleteProgram(m_Program);
 }
 
+void printGLInfo(){
+    GLint param;
+    glGetIntegerv(GL_RED_BITS, &param);//缓冲red位数
+    LOGI("Red bits: %d\n", param);
+    glGetIntegerv(GL_GREEN_BITS, &param);//缓冲green位数
+    LOGI("Green bits: %d\n", param);
+    glGetIntegerv(GL_BLUE_BITS, &param);
+    LOGI("Blue bits: %d\n", param);
+    glGetIntegerv(GL_ALPHA_BITS, &param);//缓冲Alpha位数
+    LOGI("Alpha bits: %d\n", param);
+}
 
 bool MagicEngine::setupGraphics(int w, int h) {
     printGLString("Version", GL_VERSION);
@@ -90,8 +101,6 @@ bool MagicEngine::setupGraphics(int w, int h) {
     m_ViewWidth = w;
     m_ViewHeight = h;
 
-    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
-
     //使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
     GLfloat mvp[16];
     matIdentity(mvp);
@@ -104,6 +113,8 @@ bool MagicEngine::setupGraphics(int w, int h) {
 
     m_PreviewTex = new Texture();
     m_fbo = new FramebufferObject();
+    printGLInfo();
+    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
     return true;
 }
 
@@ -137,10 +148,11 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
 
 void MagicEngine::renderFrame( float delta )
 {
+    update(delta);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    drawImage(delta);
-    drawUI(delta);
+    drawImage();
+    drawUI();
     checkGlError("renderFrame");
 }
 
@@ -196,7 +208,7 @@ void MagicEngine::generateMesh( int w, int h )
 
 bool MagicEngine::onTouchDown( float x, float y )
 {
-    LOGI("onTouchDown: %.1f, %.1f\n", x, y);
+    //LOGI("onTouchDown: %.1f, %.1f\n", x, y);
     y = m_ViewHeight - y;
     if (x > m_ViewWidth - 50 && y > m_ViewHeight -50){
         m_Mesh->restore();
@@ -212,7 +224,7 @@ bool MagicEngine::onTouchDown( float x, float y )
 
 bool MagicEngine::onTouchDrag( float x, float y )
 {
-    LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
+    //LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
     y = m_ViewHeight - y;
     m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 150);
     m_lastX = x;
@@ -222,59 +234,50 @@ bool MagicEngine::onTouchDrag( float x, float y )
 
 bool MagicEngine::onTouchUp( float x, float y )
 {
-    LOGI("onTouchUp: %.1f, %.1f\n", x, y);
+    //LOGI("onTouchUp: %.1f, %.1f\n", x, y);
     //y = m_ViewHeight - y;
     m_lastX = 0;
     m_lastY = 0;
     return true;
 }
 
-void printGLInfo(){
-    GLint param;
-    glGetIntegerv(GL_RED_BITS, &param);//缓冲red位数
-    LOGI("Red bits: %d\n", param);
-    glGetIntegerv(GL_GREEN_BITS, &param);//缓冲green位数
-    LOGI("Green bits: %d\n", param);
-     glGetIntegerv(GL_BLUE_BITS, &param);
-    LOGI("Blue bits: %d\n", param);
-    glGetIntegerv(GL_ALPHA_BITS, &param);//缓冲Alpha位数
-    LOGI("Alpha bits: %d\n", param);
-}
+
 
 void MagicEngine::makePicture( int w, int h )
 {
     char path[_MAX_PATH];
     glDisable(GL_DEPTH_TEST);
     m_fbo->resizeColorBuffer(w, h);
-    printGLInfo();
     m_fbo->bind();
-    printGLInfo();
     glViewport(0,0, w, h);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     checkGlError("makePicture_0");
     glClear(GL_COLOR_BUFFER_BIT);
     checkGlError("makePicture_1");
-    drawImage(0);
+    drawImage();
     checkGlError("makePicture_2");
     GLubyte* pixels = new GLubyte[w*h*2];
     glReadPixels(0, 0, w, h, GL_RGB565, GL_UNSIGNED_BYTE, pixels);
     snprintf(path, _MAX_PATH-1, "%s/test.tga", m_saveImagePath);
-    saveImage(pixels, w, h, path);
+    if (saveImage(pixels, w, h, path)){
+        LOGI("Save Image [%d,%d,%s]", w, h, path);
+    }else{
+        LOGE("Save Image [%d,%d,%s] failed", w, h, path);
+    }
     delete[] pixels;
     m_fbo->unbind();
     glViewport(0, 0, m_ViewWidth, m_ViewHeight);
 
 }
 
-void MagicEngine::drawUI( float delta )
+void MagicEngine::drawUI()
 {
 
 }
 
-void MagicEngine::drawImage( float delta )
+void MagicEngine::drawImage()
 {
     glUseProgram(m_Program);
-    m_Mesh->update(delta);
     m_PreviewTex->bind();
     m_Mesh->draw();
 }
@@ -294,12 +297,16 @@ bool MagicEngine::saveImage( GLubyte* buffer, int w, int h, char* filename )
         GLubyte   bpp;
         GLubyte   imageDesc;
     };
-    struct rgb565_t
-    {
+    struct rgb565_t{
         GLushort
             b : 5,
             g : 6,
             r : 5;
+    };
+    struct rgb_t{
+        GLubyte r;
+        GLubyte g;
+        GLubyte b;
     };
 
 #define TGA_RGB 2
@@ -311,29 +318,40 @@ bool MagicEngine::saveImage( GLubyte* buffer, int w, int h, char* filename )
     // read in the image type
     tgaheader_t tga;		// TGA header
     memset(&tga, 0, sizeof(tgaheader_t));
-    tga.bpp = 16;
+    tga.bpp = 24;
     tga.height = h;
     tga.width = w;
     tga.imageType = TGA_RGB;
-    long szData = w*h*2;
+    long szData = w*h*3;
+    GLubyte* rgbbuffer = new GLubyte[szData];
+    rgb_t* dst = (rgb_t*)rgbbuffer;
 
-//     GLubyte temp;
-//     int total = w * h;
-//     rgb565_t* source = (rgb565_t*)buffer;
-//     for (int pixel = 0; pixel < total; ++pixel)
-//     {
+    int total = w * h;
+    rgb565_t* source = (rgb565_t*)buffer;
+    for (int pixel = 0; pixel < total; ++pixel)
+    {
 //         temp = source[pixel].b;
 //         source[pixel].b = source[pixel].r;
 //         source[pixel].r = temp;
-//     }
+        dst[pixel].r = source[pixel].r;
+        dst[pixel].g = source[pixel].g;
+        dst[pixel].b = source[pixel].b;
+    }
 
     fwrite(&tga, sizeof(tgaheader_t), 1, pFile);
-    fwrite(buffer, sizeof(GLubyte), szData, pFile);
+    fwrite(rgbbuffer, sizeof(GLubyte), szData, pFile);
     if (pFile) fclose(pFile);
+    delete[] rgbbuffer;
     return true;
 }
 
 void MagicEngine::setSaveImagePath( char* path )
 {
     snprintf(m_saveImagePath, _MAX_PATH-1, "%s", path);
+    LOGI("setSaveImagePath : %s", path);
+}
+
+void MagicEngine::update( float delta )
+{
+    m_Mesh->update(delta);
 }

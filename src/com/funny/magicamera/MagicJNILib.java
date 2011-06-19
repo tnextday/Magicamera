@@ -21,6 +21,7 @@ public class MagicJNILib {
     public static native boolean onTouchDown(float x, float y);
     public static native boolean onTouchDrag(float x, float y);
     public static native boolean onTouchUp(float x, float y);
+    public static native void setSaveImagePath(byte[] path);
 
     public void playSound(int soundId){
         

@@ -67,11 +67,11 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIE
 
 
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( JNIEnv * env, jobject obj, jstring path )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( JNIEnv * env, jobject obj, jbyteArray path )
 {
     char* strPath;
-    strPath = (char*) env->GetStringChars(path, false);
+    strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
     g_MagicEngine.setSaveImagePath(strPath);
-    env->ReleaseStringChars(path, (jchar*)strPath);
+    env->ReleasePrimitiveArrayCritical(path, strPath, false);
 }
 

@@ -69,7 +69,8 @@ public class MagicEngineView extends GLSurfaceView
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-         MagicJNILib.init(width, height);
+        MagicJNILib.init(width, height);
+        MagicJNILib.setSaveImagePath("/sdcard".getBytes());
         if (m_bUseCamera){
             startCamera();
         }else{
