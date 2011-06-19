@@ -18,6 +18,8 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown(JNI
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath(JNIEnv * env, jobject obj,  jstring buffer);
+
 #ifdef __cplusplus
 }
 #endif

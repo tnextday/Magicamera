@@ -12,6 +12,13 @@ const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
 const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  打包压缩的数据，jpeg,png,tga,bitmap...
 
+#ifndef _MAX_PATH
+#define _MAX_PATH 260
+#endif
+#ifdef _WIN32
+#define snprintf _snprintf
+#endif
+
 class MagicEngine{
     GLuint m_Program;
     GLuint m_positionLoc;
@@ -32,6 +39,7 @@ class MagicEngine{
     float    m_lastY;
 
     FramebufferObject *m_fbo;
+    char    m_saveImagePath[_MAX_PATH];
 
 public:
     MagicEngine();
@@ -54,7 +62,9 @@ public:
     void drawUI(float delta);
     void drawImage(float delta);
 
-    bool saveImage(char* buffer, int w, int h, char* filename);
+    bool saveImage(GLubyte* buffer, int w, int h, char* filename);
+
+    void setSaveImagePath(char* path);
 };
 
 

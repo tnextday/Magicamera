@@ -28,6 +28,7 @@ const bool g_useCamera = false;
 const int g_cameraFPSRate = 15;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
+const char* g_strSaveImagePath = "f:\\";
 MagicEngine g_MagicEngine;
 
 char* readFile(char* filename, int &size, char* preBuffer = NULL);
@@ -282,7 +283,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         return FALSE;
 
     g_MagicEngine.setupGraphics(g_nWindowWidth, g_nWindowHeight);
-
+    g_MagicEngine.setSaveImagePath((char*)g_strSaveImagePath);
 
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);

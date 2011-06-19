@@ -32,6 +32,7 @@ MagicEngine::MagicEngine()
     m_glYUVTex = NULL;
     m_PreviewTex = NULL;
     m_fbo = NULL;
+    m_saveImagePath[0] = '\0';
 }
 
 MagicEngine::~MagicEngine()
@@ -228,11 +229,26 @@ bool MagicEngine::onTouchUp( float x, float y )
     return true;
 }
 
+void printGLInfo(){
+    GLint param;
+    glGetIntegerv(GL_RED_BITS, &param);//缓冲red位数
+    LOGI("Red bits: %d\n", param);
+    glGetIntegerv(GL_GREEN_BITS, &param);//缓冲green位数
+    LOGI("Green bits: %d\n", param);
+     glGetIntegerv(GL_BLUE_BITS, &param);
+    LOGI("Blue bits: %d\n", param);
+    glGetIntegerv(GL_ALPHA_BITS, &param);//缓冲Alpha位数
+    LOGI("Alpha bits: %d\n", param);
+}
+
 void MagicEngine::makePicture( int w, int h )
 {
+    char path[_MAX_PATH];
     glDisable(GL_DEPTH_TEST);
     m_fbo->resizeColorBuffer(w, h);
+    printGLInfo();
     m_fbo->bind();
+    printGLInfo();
     glViewport(0,0, w, h);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     checkGlError("makePicture_0");
@@ -240,9 +256,10 @@ void MagicEngine::makePicture( int w, int h )
     checkGlError("makePicture_1");
     drawImage(0);
     checkGlError("makePicture_2");
-    char* pixels = new char[w*h*2];
-    glReadPixels(0, 0, w, h, GL_RGB565, GL_UNSIGNED_SHORT, pixels);
-    saveImage(pixels, w, h, "f:\\test.tga");
+    GLubyte* pixels = new GLubyte[w*h*2];
+    glReadPixels(0, 0, w, h, GL_RGB565, GL_UNSIGNED_BYTE, pixels);
+    snprintf(path, _MAX_PATH-1, "%s/test.tga", m_saveImagePath);
+    saveImage(pixels, w, h, path);
     delete[] pixels;
     m_fbo->unbind();
     glViewport(0, 0, m_ViewWidth, m_ViewHeight);
@@ -262,7 +279,7 @@ void MagicEngine::drawImage( float delta )
     m_Mesh->draw();
 }
 
-bool MagicEngine::saveImage( char* buffer, int w, int h, char* filename )
+bool MagicEngine::saveImage( GLubyte* buffer, int w, int h, char* filename )
 {
     struct tgaheader_t
     {
@@ -314,4 +331,9 @@ bool MagicEngine::saveImage( char* buffer, int w, int h, char* filename )
     fwrite(buffer, sizeof(GLubyte), szData, pFile);
     if (pFile) fclose(pFile);
     return true;
+}
+
+void MagicEngine::setSaveImagePath( char* path )
+{
+    snprintf(m_saveImagePath, _MAX_PATH-1, "%s", path);
 }
