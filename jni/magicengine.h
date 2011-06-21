@@ -19,6 +19,15 @@ const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  打包压缩的数据，jpeg,png,t
 #define snprintf _snprintf
 #endif
 
+const int FORMAT_RGBA = 0;
+const int FORMAT_RGB = 1;
+const int FORMAT_RGB565 = 2;
+class SaveImageCallBack{
+public:
+
+    virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
+};
+
 class MagicEngine{
     GLuint m_Program;
     GLuint m_positionLoc;
@@ -40,12 +49,14 @@ class MagicEngine{
 
     FramebufferObject *m_fbo;
     char    m_saveImagePath[_MAX_PATH];
+    SaveImageCallBack      *m_saveImage;
 
 public:
     MagicEngine();
     ~MagicEngine();
 
     bool setupGraphics(int w, int h) ;
+    void resize(int w, int h);
     void renderFrame(float delta);
 
     void updatePreviewTex(char* data, long len);
@@ -64,9 +75,11 @@ public:
     void drawUI();
     void drawImage();
 
-    bool saveImage(GLubyte* buffer, int w, int h, char* filename);
+    void setCallBack(SaveImageCallBack* callback);
 
     void setSaveImagePath(char* path);
+
+    void swapRedAndBlue(GLubyte* buffer, int w, int h);
 };
 
 

@@ -33,6 +33,12 @@ MagicEngine::MagicEngine()
     m_PreviewTex = NULL;
     m_fbo = NULL;
     m_saveImagePath[0] = '\0';
+    m_Program = 0;
+    m_texCoordLoc = 0;
+    m_positionLoc = 0;
+    m_viewprojLoc = 0;
+    m_saveImage = NULL;
+
 }
 
 MagicEngine::~MagicEngine()
@@ -41,7 +47,10 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_PreviewTex);
     SafeDelete(m_glYUVTex);
     SafeDelete(m_fbo);
-    glDeleteProgram(m_Program);
+    if (m_Program != 0){
+        glDeleteProgram(m_Program);
+    }
+    
 }
 
 void printGLInfo(){
@@ -95,27 +104,28 @@ bool MagicEngine::setupGraphics(int w, int h) {
 //      glCullFace(GL_FRONT);
 //      glEnable(GL_CULL_FACE);
     //启用混合操作
-     glEnable(GL_BLEND);
-     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_ViewWidth = w;
     m_ViewHeight = h;
+    m_PreviewTex = new Texture();
+    m_fbo = new FramebufferObject(true);
+    printGLInfo();
+    resize(m_ViewWidth, m_ViewHeight);
+    return true;
+}
 
+
+void MagicEngine::resize( int w, int h )
+{
     //使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
     GLfloat mvp[16];
     matIdentity(mvp);
-    // 设置视口的大小
     matOrtho(mvp, 0, w, 0, h, -10, 10);
-    //设置镜头
-    //      matLookAt((float*)mat_t, 0,0, -0.5, 0,0,0, 0,1,0);
-    //      matMult((float*)mvp, (float*)mat_p, (float*)mat_t);    
     glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
-
-    m_PreviewTex = new Texture();
-    m_fbo = new FramebufferObject();
-    printGLInfo();
-    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
-    return true;
+    glViewport(0, 0, w, h);
+    checkGlError("matOrtho");
 }
 
 
@@ -241,33 +251,55 @@ bool MagicEngine::onTouchUp( float x, float y )
     return true;
 }
 
+void MagicEngine::setCallBack( SaveImageCallBack* callback )
+{
+    m_saveImage = callback;
+}
 
+void MagicEngine::swapRedAndBlue( GLubyte* buffer, int w, int h )
+{
+    struct rgba_t{
+        GLubyte r;
+        GLubyte g;
+        GLubyte b;
+        GLubyte a;
+    };
+    int total = w * h;
+    GLubyte temp;
+    rgba_t* source = (rgba_t*)buffer;
+    for (int pixel = 0; pixel < total; ++pixel)
+    {
+        temp = source->b;
+        source->b = source->r;
+        source->r = temp;
+        source++;
+    }
+}
 
 void MagicEngine::makePicture( int w, int h )
 {
-    char path[_MAX_PATH];
-    glDisable(GL_DEPTH_TEST);
-    m_fbo->resizeColorBuffer(w, h);
+    m_fbo->resizeBuffers(w, h);
     m_fbo->bind();
-    glViewport(0,0, w, h);
+    glDisable(GL_DEPTH_TEST);
+    resize(w, h);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     checkGlError("makePicture_0");
     glClear(GL_COLOR_BUFFER_BIT);
     checkGlError("makePicture_1");
     drawImage();
     checkGlError("makePicture_2");
-    GLubyte* pixels = new GLubyte[w*h*2];
-    glReadPixels(0, 0, w, h, GL_RGB565, GL_UNSIGNED_BYTE, pixels);
-    snprintf(path, _MAX_PATH-1, "%s/test.tga", m_saveImagePath);
-    if (saveImage(pixels, w, h, path)){
-        LOGI("Save Image [%d,%d,%s]", w, h, path);
-    }else{
-        LOGE("Save Image [%d,%d,%s] failed", w, h, path);
+    GLubyte* pixels = new GLubyte[w*h*4];
+    GLint format, type;
+//     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
+//     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
+    glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    //swapRedAndBlue(pixels, w, h);
+    if(m_saveImage){
+        m_saveImage->SaveImage((char*)pixels, w, h, FORMAT_RGBA);
     }
     delete[] pixels;
     m_fbo->unbind();
-    glViewport(0, 0, m_ViewWidth, m_ViewHeight);
-
+    resize(m_ViewWidth, m_ViewHeight);
 }
 
 void MagicEngine::drawUI()
@@ -280,78 +312,17 @@ void MagicEngine::drawImage()
     glUseProgram(m_Program);
     m_PreviewTex->bind();
     m_Mesh->draw();
-}
-
-bool MagicEngine::saveImage( GLubyte* buffer, int w, int h, char* filename )
-{
-    struct tgaheader_t
-    {
-        GLubyte   idLength;
-        GLubyte   colorMapType;
-        GLubyte   imageType;
-        GLubyte   colorMapSpec[5];
-        GLushort  xOrigin;
-        GLushort  yOrigin;
-        GLushort  width;
-        GLushort  height;
-        GLubyte   bpp;
-        GLubyte   imageDesc;
-    };
-    struct rgb565_t{
-        GLushort
-            b : 5,
-            g : 6,
-            r : 5;
-    };
-    struct rgb_t{
-        GLubyte r;
-        GLubyte g;
-        GLubyte b;
-    };
-
-#define TGA_RGB 2
-    FILE* pFile;
-
-    pFile = fopen(filename, "wb");
-    if (!pFile)	return false;
-
-    // read in the image type
-    tgaheader_t tga;		// TGA header
-    memset(&tga, 0, sizeof(tgaheader_t));
-    tga.bpp = 24;
-    tga.height = h;
-    tga.width = w;
-    tga.imageType = TGA_RGB;
-    long szData = w*h*3;
-    GLubyte* rgbbuffer = new GLubyte[szData];
-    rgb_t* dst = (rgb_t*)rgbbuffer;
-
-    int total = w * h;
-    rgb565_t* source = (rgb565_t*)buffer;
-    for (int pixel = 0; pixel < total; ++pixel)
-    {
-//         temp = source[pixel].b;
-//         source[pixel].b = source[pixel].r;
-//         source[pixel].r = temp;
-        dst[pixel].r = source[pixel].r;
-        dst[pixel].g = source[pixel].g;
-        dst[pixel].b = source[pixel].b;
-    }
-
-    fwrite(&tga, sizeof(tgaheader_t), 1, pFile);
-    fwrite(rgbbuffer, sizeof(GLubyte), szData, pFile);
-    if (pFile) fclose(pFile);
-    delete[] rgbbuffer;
-    return true;
+/*    drawTexture(m_PreviewTex, 0, 0);*/
 }
 
 void MagicEngine::setSaveImagePath( char* path )
 {
     snprintf(m_saveImagePath, _MAX_PATH-1, "%s", path);
-    LOGI("setSaveImagePath : %s", path);
+    LOGI("setSaveImagePath : %s\n", path);
 }
 
 void MagicEngine::update( float delta )
 {
     m_Mesh->update(delta);
 }
+

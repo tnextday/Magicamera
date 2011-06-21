@@ -1,10 +1,31 @@
 #ifndef _jni_main_h_
 #define _jni_main_h_
 #include <jni.h>
-
+#include "magicengine.h"
 
 void playSound(int soundId);
 void playMusic(int musicId);
+
+class AndroidCallBack : public SaveImageCallBack{
+public:
+    virtual bool SaveImage( char* buffer, int w, int h, int format);
+};
+
+class AndroidMethod{
+    JNIEnv*     m_JniEnv;
+    jobject     m_JniObj;
+    jclass      m_JniClass;
+    jmethodID   m_JniMethod_playSound;
+    jmethodID   m_JniMethod_playMusic;
+    jmethodID   m_JniMethod_saveImage;
+public:
+    AndroidMethod();
+    void initJavaCallBack(JNIEnv * env);
+    void playSound(int soundId);
+    void playMusic(int musicId);
+    bool saveImage(char* buffer, int w, int h, int format);
+
+};
 
 #ifdef __cplusplus
 extern "C" {

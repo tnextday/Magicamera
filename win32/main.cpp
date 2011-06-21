@@ -15,24 +15,74 @@
 #include <EGL/egl.h>
 #include <GLES2/GL2.h>
 #include <GLES2/gl2ext.h>
-
+#include "targa.h"
 #include "magicengine.h"
+#include "main.h"
+
 
 //--------------------------------------------------------------------------------------
 // Global variables
 //--------------------------------------------------------------------------------------
 const CHAR*  g_strWindowTitle = "MagicAmera";
-const UINT32 g_nWindowWidth   = 640;
+const UINT32 g_nWindowWidth   = 800;
 const UINT32 g_nWindowHeight  = 480;
 const bool g_useCamera = false;
 const int g_cameraFPSRate = 15;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
-const char* g_strSaveImagePath = "f:\\";
+const char* g_strSaveImagePath = "f:\\test.tga";
 MagicEngine g_MagicEngine;
+WinCallBack g_WinCallBack;
 
-char* readFile(char* filename, int &size, char* preBuffer = NULL);
-void updateNV21();
+
+bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
+{
+    struct tgaheader_t
+    {
+        GLubyte   idLength;
+        GLubyte   colorMapType;
+        GLubyte   imageType;
+        GLubyte   colorMapSpec[5];
+        GLushort  xOrigin;
+        GLushort  yOrigin;
+        GLushort  width;
+        GLushort  height;
+        GLubyte   bpp;
+        GLubyte   imageDesc;
+    };
+    struct rgb565_t{
+        GLushort
+        b : 5,
+        g : 6,
+        r : 5;
+    };
+    struct rgb_t{
+        GLubyte r;
+        GLubyte g;
+        GLubyte b;
+    };
+
+#define TGA_RGB 2
+    FILE* pFile;
+
+    pFile = fopen(g_strSaveImagePath, "wb");
+    if (!pFile)	return false;
+
+    // read in the image type
+    tgaheader_t tga;		// TGA header
+    memset(&tga, 0, sizeof(tgaheader_t));
+    tga.bpp = 32;
+    tga.height = h;
+    tga.width = w;
+    tga.imageType = TGA_RGB;
+    long szData = w*h*4;
+    fwrite(&tga, sizeof(tgaheader_t), 1, pFile);
+    fwrite(buffer, sizeof(GLubyte), szData, pFile);
+    if (pFile) fclose(pFile);
+    return true;
+
+}
+
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
@@ -234,7 +284,27 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
             EGL_GREEN_SIZE,        8,
             EGL_BLUE_SIZE,        8,
             EGL_ALPHA_SIZE,        8,
-            EGL_DEPTH_SIZE,        24,
+            EGL_DEPTH_SIZE,        16,
+            EGL_STENCIL_SIZE,   8,
+            EGL_SAMPLE_BUFFERS, 0,
+            EGL_SAMPLES,        0,
+            EGL_NONE
+        };
+
+        // Choose config based on the requested attributes
+        if( FALSE == eglChooseConfig( eglDisplay, AttributeList, &eglConfig, 1, &nNumConfigs ) )
+            return FALSE;
+    }
+    else if (nBuffSize == 24)
+    {
+        // Build the attibute list
+        EGLint AttributeList[] = 
+        { 
+            EGL_RED_SIZE,        8,
+            EGL_GREEN_SIZE,        8,
+            EGL_BLUE_SIZE,        8,
+            EGL_ALPHA_SIZE,        0,
+            EGL_DEPTH_SIZE,        16,
             EGL_STENCIL_SIZE,   8,
             EGL_SAMPLE_BUFFERS, 0,
             EGL_SAMPLES,        0,
@@ -254,7 +324,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
             EGL_GREEN_SIZE,        6,
             EGL_BLUE_SIZE,        5,
             EGL_ALPHA_SIZE,        0,
-            EGL_DEPTH_SIZE,        24,
+            EGL_DEPTH_SIZE,        16,
             EGL_STENCIL_SIZE,   8,
             EGL_SAMPLE_BUFFERS, 0,
             EGL_SAMPLES,        0,
@@ -284,6 +354,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 
     g_MagicEngine.setupGraphics(g_nWindowWidth, g_nWindowHeight);
     g_MagicEngine.setSaveImagePath((char*)g_strSaveImagePath);
+    g_MagicEngine.setCallBack(&g_WinCallBack);
 
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
@@ -328,4 +399,5 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 
     return TRUE;
 }
+
 

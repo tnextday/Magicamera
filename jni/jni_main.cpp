@@ -1,37 +1,15 @@
-#include <jni.h>
 #include "jni_main.h"
-#include "magicengine.h"
 
 MagicEngine g_MagicEngine;
+AndroidMethod g_AndroidMethod;
+AndroidCallBack g_CallBack;
 
-JNIEnv*     g_JniEnv = NULL;
-jobject     g_JniObj;
-jclass      g_JniClass;
-jmethodID   g_JinMethod_playSound;
-jmethodID   g_JinMethod_playMusic;
-
-void initJavaCallBack(JNIEnv * env){
-    g_JniEnv = env;
-    g_JniClass = env->FindClass("com/funny/magicamera/MagicJNILib");
-    jmethodID construction_id = env->GetMethodID(g_JniClass, "<init>", "()V"); 
-    g_JniObj = env->NewObject(g_JniClass, construction_id); 
-
-    g_JinMethod_playSound = env->GetMethodID(g_JniClass,"playSound","(I)V");
-    g_JinMethod_playMusic = env->GetMethodID(g_JniClass,"playMusic","(I)V");
-}
-
-void playSound(int soundId){
-    g_JniEnv->CallVoidMethod(g_JniObj, g_JinMethod_playSound, soundId); 
-}
-
-void playMusic(int musicId){
-    g_JniEnv->CallVoidMethod(g_JniObj, g_JinMethod_playMusic, musicId); 
-}
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
-    initJavaCallBack(env);
-	g_MagicEngine.setupGraphics(width, height);
+    g_MagicEngine.setupGraphics(width, height);
+    g_AndroidMethod.initJavaCallBack(env);
+    g_MagicEngine.setCallBack(&g_CallBack);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
@@ -65,8 +43,6 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIE
 	return g_MagicEngine.onTouchUp(x, y);
 }
 
-
-
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( JNIEnv * env, jobject obj, jbyteArray path )
 {
     char* strPath;
@@ -75,3 +51,45 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( J
     env->ReleasePrimitiveArrayCritical(path, strPath, false);
 }
 
+
+bool AndroidCallBack::SaveImage( char* buffer, int w, int h, int format )
+{
+    return g_AndroidMethod.saveImage(buffer, w, h, format);
+}
+
+
+AndroidMethod::AndroidMethod()
+{
+    m_JniEnv = NULL;
+}
+
+
+void AndroidMethod::initJavaCallBack(JNIEnv * env){
+    m_JniEnv = env;
+    m_JniClass = env->FindClass("com/funny/magicamera/MagicJNILib");
+    jmethodID construction_id = env->GetMethodID(m_JniClass, "<init>", "()V"); 
+    m_JniObj = env->NewObject(m_JniClass, construction_id); 
+
+    m_JniMethod_playSound = env->GetMethodID(m_JniClass,"playSound","(I)V");
+    m_JniMethod_playMusic = env->GetMethodID(m_JniClass,"playMusic","(I)V");
+    m_JniMethod_saveImage = env->GetMethodID(m_JniClass,"saveImage","([BIII)Z");
+}
+
+void AndroidMethod::playSound(int soundId){
+    m_JniEnv->CallVoidMethod(m_JniObj, m_JniMethod_playSound, soundId); 
+}
+
+void AndroidMethod::playMusic(int musicId){
+    m_JniEnv->CallVoidMethod(m_JniObj, m_JniMethod_playMusic, musicId); 
+}
+
+bool AndroidMethod::saveImage( char* buffer, int w, int h, int format )
+{
+    int szBuffer;
+    if (format == FORMAT_RGBA) {
+        szBuffer = w*h*4;
+    }
+    jbyteArray jBuffer = m_JniEnv->NewByteArray(szBuffer);
+    m_JniEnv->SetByteArrayRegion(jBuffer, 0, szBuffer, (jbyte*)buffer);
+    m_JniEnv->CallBooleanMethod(m_JniObj, m_JniMethod_saveImage, jBuffer, w, h, format);
+}

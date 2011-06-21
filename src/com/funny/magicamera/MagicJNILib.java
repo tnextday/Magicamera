@@ -1,5 +1,12 @@
 package com.funny.magicamera;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+
 public class MagicJNILib {
     static {
         System.loadLibrary("magicjni");
@@ -24,11 +31,24 @@ public class MagicJNILib {
     public static native void setSaveImagePath(byte[] path);
 
     public void playSound(int soundId){
-        
+        Log.i("lib",  String.format("playSound callback: %d", soundId));
     }
 
     public void playMusic(int Music){
         
+    }
+
+    public boolean saveImage(byte[] buffer, int w, int h, int format){
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(buffer));
+        try {
+            FileOutputStream fos = new FileOutputStream("/sdcard/test.jpg");
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

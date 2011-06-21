@@ -1,11 +1,15 @@
 #include "framebufferobject.h"
 #include "glutils.h"
 
-FramebufferObject::FramebufferObject(void)
+FramebufferObject::FramebufferObject(bool bColorBUffer /*= false*/, bool bDepthBuffer/* = false*/)
 {
     glGenFramebuffers(1, m_fboId);
     m_colorBuffer = 0;
     m_depthBuffer = 0;
+    m_height = 0;
+    m_width = 0;
+    m_bUseColorBuffer = bColorBUffer;
+    m_bUseDepthBuffer = bDepthBuffer;
 }
 
 FramebufferObject::~FramebufferObject(void)
@@ -60,16 +64,14 @@ bool FramebufferObject::check_status()
     return status == GL_FRAMEBUFFER_COMPLETE;
 }
 
-void FramebufferObject::resizeColorBuffer( int w, int h )
+void FramebufferObject::createColorBuffer()
 {
-    if (m_colorBuffer == 0){
-        m_colorBuffer = genRenderbuffer();
+    if (m_colorBuffer != 0){
+        deleteRenderBuffer(m_colorBuffer);   
     }
-
-
-    bind();
+    m_colorBuffer = genRenderbuffer();
     glBindRenderbuffer(GL_RENDERBUFFER, m_colorBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB565, w, h);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB5_A1, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,
         GL_COLOR_ATTACHMENT0,
         GL_RENDERBUFFER, m_colorBuffer);
@@ -77,18 +79,18 @@ void FramebufferObject::resizeColorBuffer( int w, int h )
     /*unbind();*/
 }
 
-void FramebufferObject::resizeDepthBuffer( int w, int h )
+void FramebufferObject::createDepthBuffer()
 {
-    if (m_depthBuffer == 0){
-        m_depthBuffer = genRenderbuffer();
+    if (m_depthBuffer != 0){
+        deleteRenderBuffer(m_depthBuffer);   
     }
-    bind();
+    m_depthBuffer = genRenderbuffer();
     glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, w, h);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,
         GL_DEPTH_ATTACHMENT,
         GL_RENDERBUFFER, m_depthBuffer);
-    checkGlError("createColorBuffer");
+    checkGlError("createDepthBuffer");
     /*unbind();*/
 }
 
@@ -104,4 +106,17 @@ void FramebufferObject::deleteRenderBuffer( GLuint bufferId )
     GLuint renderbuffers[1];
     renderbuffers[0] = bufferId;
     glDeleteRenderbuffers(1, renderbuffers);
+}
+
+void FramebufferObject::resizeBuffers( int w, int h )
+{
+    if(m_width == w && m_height == h) return;
+    m_width = w;
+    m_height = h;
+    bind();
+    if (m_bUseColorBuffer)
+        createColorBuffer();
+    if (m_bUseDepthBuffer)
+        createDepthBuffer();
+    unbind();
 }
