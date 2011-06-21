@@ -12,6 +12,8 @@ public:
 };
 
 class AndroidMethod{
+    JavaVM*     m_JavaVM;
+    pthread_t   m_JvmThread;
     JNIEnv*     m_JniEnv;
     jobject     m_JniObj;
     jclass      m_JniClass;

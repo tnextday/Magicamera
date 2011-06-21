@@ -78,8 +78,6 @@ public:
     void setCallBack(SaveImageCallBack* callback);
 
     void setSaveImagePath(char* path);
-
-    void swapRedAndBlue(GLubyte* buffer, int w, int h);
 };
 
 

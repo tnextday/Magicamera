@@ -8,6 +8,7 @@ float FrmGetTime();
 
 class WinCallBack: public SaveImageCallBack{
 public:
+    void swapRedAndBlue(char* buffer, int w, int h);
     virtual bool SaveImage( char* buffer, int w, int h, int format );
 };
 

@@ -43,7 +43,7 @@ public class MagicJNILib {
         bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(buffer));
         try {
             FileOutputStream fos = new FileOutputStream("/sdcard/test.jpg");
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;

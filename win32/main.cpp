@@ -1,21 +1,9 @@
-//--------------------------------------------------------------------------------------
-// File: main.cpp
-//
-// Desc: Tutorial to show how to render a simple textured triangle using OpenGL ES 2.0.
-//
-// Author:     QUALCOMM, Advanced Content Group - Adreno SDK
-//
-//               Copyright (c) 2009 QUALCOMM Incorporated. 
-//                         All Rights Reserved. 
-//                      QUALCOMM Proprietary/GTDR
-//--------------------------------------------------------------------------------------
 #define _WIN32_WINNT 0x0502
 #include <stdio.h>
 #include <stdlib.h>
 #include <EGL/egl.h>
 #include <GLES2/GL2.h>
 #include <GLES2/gl2ext.h>
-#include "targa.h"
 #include "magicengine.h"
 #include "main.h"
 
@@ -56,11 +44,6 @@ bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
         g : 6,
         r : 5;
     };
-    struct rgb_t{
-        GLubyte r;
-        GLubyte g;
-        GLubyte b;
-    };
 
 #define TGA_RGB 2
     FILE* pFile;
@@ -76,6 +59,7 @@ bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
     tga.width = w;
     tga.imageType = TGA_RGB;
     long szData = w*h*4;
+    swapRedAndBlue((char*)buffer, w, h);
     fwrite(&tga, sizeof(tgaheader_t), 1, pFile);
     fwrite(buffer, sizeof(GLubyte), szData, pFile);
     if (pFile) fclose(pFile);
@@ -83,6 +67,25 @@ bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
 
 }
 
+void WinCallBack::swapRedAndBlue( char* buffer, int w, int h )
+{
+    struct rgba_t{
+        GLubyte r;
+        GLubyte g;
+        GLubyte b;
+        GLubyte a;
+    };
+    int total = w * h;
+    GLubyte temp;
+    rgba_t* source = (rgba_t*)buffer;
+    for (int pixel = 0; pixel < total; ++pixel)
+    {
+        temp = source->b;
+        source->b = source->r;
+        source->r = temp;
+        source++;
+    }
+}
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {

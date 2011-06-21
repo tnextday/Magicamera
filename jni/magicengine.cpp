@@ -256,25 +256,6 @@ void MagicEngine::setCallBack( SaveImageCallBack* callback )
     m_saveImage = callback;
 }
 
-void MagicEngine::swapRedAndBlue( GLubyte* buffer, int w, int h )
-{
-    struct rgba_t{
-        GLubyte r;
-        GLubyte g;
-        GLubyte b;
-        GLubyte a;
-    };
-    int total = w * h;
-    GLubyte temp;
-    rgba_t* source = (rgba_t*)buffer;
-    for (int pixel = 0; pixel < total; ++pixel)
-    {
-        temp = source->b;
-        source->b = source->r;
-        source->r = temp;
-        source++;
-    }
-}
 
 void MagicEngine::makePicture( int w, int h )
 {
@@ -289,11 +270,10 @@ void MagicEngine::makePicture( int w, int h )
     drawImage();
     checkGlError("makePicture_2");
     GLubyte* pixels = new GLubyte[w*h*4];
-    GLint format, type;
+//    GLint format, type;
 //     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
 //     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
     glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-    //swapRedAndBlue(pixels, w, h);
     if(m_saveImage){
         m_saveImage->SaveImage((char*)pixels, w, h, FORMAT_RGBA);
     }
