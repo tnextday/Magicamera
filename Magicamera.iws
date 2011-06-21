@@ -4,18 +4,7 @@
     <option name="TAB_LOG_LEVEL" value="INFO" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/test.jpg" afterPath="$PROJECT_DIR$/assets/test.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/jni_main.cpp" afterPath="$PROJECT_DIR$/jni/jni_main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/jni_main.h" afterPath="$PROJECT_DIR$/jni/jni_main.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magicengine.cpp" afterPath="$PROJECT_DIR$/jni/magicengine.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magicengine.h" afterPath="$PROJECT_DIR$/jni/magicengine.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/win32/main.cpp" afterPath="$PROJECT_DIR$/win32/main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/win32/main.h" afterPath="$PROJECT_DIR$/win32/main.h" />
-    </list>
+    <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="" />
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -423,7 +412,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="776" extended-state="7" />
+    <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32840723" sideWeight="0.81574804" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
@@ -438,7 +427,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26518884" sideWeight="0.62992126" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37007874" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37007874" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="true" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="true" weight="0.51968503" sideWeight="0.49671593" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
