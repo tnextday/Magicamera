@@ -14,7 +14,7 @@
 const CHAR*  g_strWindowTitle = "MagicAmera";
 const UINT32 g_nWindowWidth   = 800;
 const UINT32 g_nWindowHeight  = 480;
-const bool g_useCamera = false;
+const bool g_useCamera = true;
 const int g_cameraFPSRate = 15;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";

@@ -161,6 +161,7 @@ void MagicEngine::renderFrame( float delta )
     update(delta);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glViewport(0,0, m_ViewWidth, m_ViewHeight);
     drawImage();
     drawUI();
     checkGlError("renderFrame");
