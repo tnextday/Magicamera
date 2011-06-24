@@ -68,25 +68,21 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( J
 bool AndroidCallBack::SaveImage( char* buffer, int w, int h, int format )
 {
     jmethodID jniMethod_saveImage = getMethodID("saveImage","([BIII)Z");
-    CheckException("AttachCurrentThread");
     if (!jniMethod_saveImage){
         return false;
     }
-
     int szBuffer = w*h*4;
     if (format == FORMAT_RGBA) {
         szBuffer = w*h*4;
     }
     jbyteArray jBuffer = env->NewByteArray(szBuffer);
-    CheckException("NewByteArray");
-    jbyte* p_buffer = (jbyte*)env->GetDirectBufferAddress(jBuffer);
-    CheckException("GetDirectBufferAddress");
+    jbyte* p_buffer = (jbyte*)env->GetPrimitiveArrayCritical(jBuffer, 0);
     int szLine = w*4;
     for (int j = 0; j < h; j++){
         memcpy(p_buffer+szLine*j, buffer+szLine*(h-j-1), szLine);
     }
+    env->ReleasePrimitiveArrayCritical(jBuffer, p_buffer, 0);
     bool result = env->CallStaticBooleanMethod(classOfMagicJNILib, jniMethod_saveImage, jBuffer, w, h, format);
-    CheckException("CallBooleanMethod");
     return result;
 }
 

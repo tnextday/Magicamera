@@ -34,8 +34,8 @@ public class MagicJNILib {
         Log.i("lib",  String.format("playSound callback: %d", soundId));
     }
 
-    public static void playMusic(int Music){
-        
+    public static void playMusic(int MusicId){
+        Log.i("lib",  String.format("playMusic callback: %d", MusicId));
     }
 
     public static boolean saveImage(byte[] buffer, int w, int h, int format){
