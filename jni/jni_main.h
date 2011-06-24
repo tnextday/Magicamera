@@ -12,23 +12,6 @@ public:
     virtual bool SaveImage( char* buffer, int w, int h, int format);
 };
 
-class AndroidMethod{
-    JavaVM*     m_JavaVM;
-    pthread_t   m_JvmThread;
-    JNIEnv*     m_JniEnv;
-    jclass      m_JniClass;
-    jmethodID   m_JniMethod_playSound;
-    jmethodID   m_JniMethod_playMusic;
-    jmethodID   m_JniMethod_saveImage;
-public:
-    AndroidMethod();
-    void initJavaCallBack(JNIEnv * env);
-    void playSound(int soundId);
-    void playMusic(int musicId);
-    bool saveImage(char* buffer, int w, int h, int format);
-    void CheckException(const char* methond);
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,6 +25,10 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag(JNI
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath(JNIEnv * env, jobject obj,  jbyteArray path);
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved);
+static jmethodID getMethodID(const char *methodName, const char *paramCode);
+void CheckException(const char* methond );
 
 #ifdef __cplusplus
 }
