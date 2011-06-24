@@ -30,15 +30,15 @@ public class MagicJNILib {
     public static native boolean onTouchUp(float x, float y);
     public static native void setSaveImagePath(byte[] path);
 
-    public void playSound(int soundId){
+    public static void playSound(int soundId){
         Log.i("lib",  String.format("playSound callback: %d", soundId));
     }
 
-    public void playMusic(int Music){
+    public static void playMusic(int Music){
         
     }
 
-    public boolean saveImage(byte[] buffer, int w, int h, int format){
+    public static boolean saveImage(byte[] buffer, int w, int h, int format){
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(buffer));
         try {

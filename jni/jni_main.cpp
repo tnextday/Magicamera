@@ -70,19 +70,17 @@ void AndroidMethod::initJavaCallBack(JNIEnv * env){
     m_JniEnv->GetJavaVM(&m_JavaVM);
     m_JvmThread = pthread_self(); //记住当前JNI环境的线程
     m_JniClass = env->FindClass("com/funny/magicamera/MagicJNILib");
-    jmethodID construction_id = env->GetMethodID(m_JniClass, "<init>", "()V"); 
-    m_JniObj = env->NewObject(m_JniClass, construction_id); 
-    m_JniMethod_playSound = env->GetMethodID(m_JniClass,"playSound","(I)V");
-    m_JniMethod_playMusic = env->GetMethodID(m_JniClass,"playMusic","(I)V");
-    m_JniMethod_saveImage = env->GetMethodID(m_JniClass,"saveImage","([BIII)Z");
+    m_JniMethod_playSound = env->GetStaticMethodID(m_JniClass,"playSound","(I)V");
+    m_JniMethod_playMusic = env->GetStaticMethodID(m_JniClass,"playMusic","(I)V");
+    m_JniMethod_saveImage = env->GetStaticMethodID(m_JniClass,"saveImage","([BIII)Z");
 }
 
 void AndroidMethod::playSound(int soundId){
-    m_JniEnv->CallVoidMethod(m_JniObj, m_JniMethod_playSound, soundId); 
+    m_JniEnv->CallStaticVoidMethod(m_JniClass, m_JniMethod_playSound, soundId); 
 }
 
 void AndroidMethod::playMusic(int musicId){
-    m_JniEnv->CallVoidMethod(m_JniObj, m_JniMethod_playMusic, musicId); 
+    m_JniEnv->CallStaticVoidMethod(m_JniClass, m_JniMethod_playMusic, musicId); 
 }
 
 bool AndroidMethod::saveImage( char* buffer, int w, int h, int format )
@@ -90,6 +88,7 @@ bool AndroidMethod::saveImage( char* buffer, int w, int h, int format )
     bool bAttachThread = false;
     if(m_JvmThread != pthread_self()){
         m_JavaVM->AttachCurrentThread(&m_JniEnv, NULL);
+        CheckException("AttachCurrentThread");
         bAttachThread = true;
     }
     int szBuffer = w*h*4;
@@ -97,14 +96,25 @@ bool AndroidMethod::saveImage( char* buffer, int w, int h, int format )
         szBuffer = w*h*4;
     }
     jbyteArray jBuffer = m_JniEnv->NewByteArray(szBuffer);
-    jbyte* p_buffer = (jbyte*)m_JniEnv->GetPrimitiveArrayCritical(jBuffer, 0);
+    CheckException("NewByteArray");
+    jbyte* p_buffer = (jbyte*)m_JniEnv->GetDirectBufferAddress(jBuffer);
+    CheckException("GetDirectBufferAddress");
     int szLine = w*4;
     for (int j = 0; j < h; j++){
         memcpy(p_buffer+szLine*j, buffer+szLine*(h-j-1), szLine);
     }
-    m_JniEnv->ReleasePrimitiveArrayCritical(jBuffer, (void*)p_buffer, 0);
-    bool result = m_JniEnv->CallBooleanMethod(m_JniObj, m_JniMethod_saveImage, jBuffer, w, h, format);
-    if (bAttachThread)
+    bool result = m_JniEnv->CallStaticBooleanMethod(m_JniClass, m_JniMethod_saveImage, jBuffer, w, h, format);
+    CheckException("CallBooleanMethod");
+    if (bAttachThread){
         m_JavaVM->DetachCurrentThread();
+        CheckException("DetachCurrentThread");
+    }
     return result;
+}
+
+void AndroidMethod::CheckException(const char* methond )
+{
+    if (m_JniEnv->ExceptionOccurred()){
+        LOGE("Jni Exception after %s\n", methond);
+    }
 }

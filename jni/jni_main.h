@@ -2,6 +2,7 @@
 #define _jni_main_h_
 #include <jni.h>
 #include "magicengine.h"
+#include <pthread.h>
 
 void playSound(int soundId);
 void playMusic(int musicId);
@@ -15,7 +16,6 @@ class AndroidMethod{
     JavaVM*     m_JavaVM;
     pthread_t   m_JvmThread;
     JNIEnv*     m_JniEnv;
-    jobject     m_JniObj;
     jclass      m_JniClass;
     jmethodID   m_JniMethod_playSound;
     jmethodID   m_JniMethod_playMusic;
@@ -26,7 +26,7 @@ public:
     void playSound(int soundId);
     void playMusic(int musicId);
     bool saveImage(char* buffer, int w, int h, int format);
-
+    void CheckException(const char* methond);
 };
 
 #ifdef __cplusplus
