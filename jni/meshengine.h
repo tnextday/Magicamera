@@ -6,7 +6,6 @@
 struct Vertex {
     GLfloat x;
     GLfloat y;
-    GLfloat z;
 };
 
 class MeshEngine : public Mesh{

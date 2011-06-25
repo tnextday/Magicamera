@@ -8,7 +8,7 @@
 MeshEngine::MeshEngine( int width, int height )
     :Mesh(width, height)
 {
-    m_BufferCount = width*height*3;
+    m_BufferCount = width*height*VertexSize;
     m_DestVertex = new GLfloat[m_BufferCount];
     m_DeltaVertex = new GLfloat[m_BufferCount];
     m_OrgiVertex = new GLfloat[m_BufferCount];

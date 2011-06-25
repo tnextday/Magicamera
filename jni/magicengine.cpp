@@ -138,20 +138,20 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
         1.0, 1.0,
         1.0, 0.0,
     };
-    GLfloat texVertex[12] = {0};
+    GLfloat texVertex[8] = {0};
     GLint w,h;
     w = tex->m_Width/2;
     h = tex->m_Height/2;
 
-    texVertex[0] = posX-w; texVertex[1] = posY+h; texVertex[2] = 0;
-    texVertex[3] = posX-w; texVertex[4] = posY-h; texVertex[5] = 0;
-    texVertex[6] = posX+w; texVertex[7] = posY-h; texVertex[8] = 0;
-    texVertex[9] = posX+w; texVertex[10] = posY+h; texVertex[11] = 0;
+    texVertex[0] = posX-w; texVertex[1] = posY+h; 
+    texVertex[2] = posX-w; texVertex[3] = posY-h; 
+    texVertex[4] = posX+w; texVertex[5] = posY-h; 
+    texVertex[6] = posX+w; texVertex[7] = posY+h;
     
     glEnableVertexAttribArray(m_positionLoc);
     glEnableVertexAttribArray(m_texCoordLoc);
-    tex->bind();
-    glVertexAttribPointer(m_positionLoc, 3, GL_FLOAT, GL_FALSE, 0, texVertex);
+    tex->bind(); 
+    glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 0, texVertex);
     glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, texCoord);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
@@ -210,7 +210,7 @@ void MagicEngine::generateMesh( int w, int h )
         for(int i = 0; i <= uSteps; i++){
             x = i*w/uSteps;
             u = (GLfloat)i/uSteps;
-            m_Mesh->set(i,j,x,y,0,u,v);
+            m_Mesh->set(i,j,x,y,u,v);
         }
     }
     m_Mesh->backupOrigVertex();
@@ -293,7 +293,7 @@ void MagicEngine::drawImage()
     glUseProgram(m_Program);
     m_PreviewTex->bind();
     m_Mesh->draw();
-/*    drawTexture(m_PreviewTex, 0, 0);*/
+/*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
 
 void MagicEngine::setSaveImagePath( char* path )

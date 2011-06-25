@@ -42,10 +42,10 @@ static const char g_YUV_FShader[] =
 
 static const GLfloat mTriangleVerticesData[] = {
     // X, Y, Z, U, V
-    0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0, 0.0, 1.0,
-    1.0, 1.0, 0.0, 1.0, 1.0,
-    1.0, 0.0, 0.0, 1.0, 0.0
+    0.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 1.0,
+    1.0, 1.0, 1.0, 1.0,
+    1.0, 0.0, 1.0, 0.0
 };
 
 glYUVTexture::glYUVTexture(int w, int h, GLuint texid)
@@ -137,8 +137,8 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 
     glEnableVertexAttribArray(m_aPositionLoc);
     glEnableVertexAttribArray(m_aTexCoordLoc);
-    glVertexAttribPointer(m_aPositionLoc, 3, GL_FLOAT, GL_FALSE, 5*4, mTriangleVerticesData);
-    glVertexAttribPointer(m_aTexCoordLoc, 2, GL_FLOAT, GL_FALSE, 5*4, mTriangleVerticesData);
+    glVertexAttribPointer(m_aPositionLoc, 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
+    glVertexAttribPointer(m_aTexCoordLoc, 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
     checkGlError("glYUVTexture::uploadYUVTexImage");

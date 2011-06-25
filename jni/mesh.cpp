@@ -16,8 +16,8 @@ Mesh::Mesh(int width, int height){
     int quadCount = quadW * quadH;
     mIndexCount = quadCount * 6;
     mIndexBuffer = new GLushort[mIndexCount];
-    mVertexBuffer = new GLfloat[size*3];
-    mTexCoordBuffer = new GLfloat[size*2];
+    mVertexBuffer = new GLfloat[size*VertexSize];
+    mTexCoordBuffer = new GLfloat[size*TexCoordSize];
 
     /*
     * Initialize triangle list mesh.
@@ -75,27 +75,26 @@ void Mesh::setIndexBuffer( GLushort* ib, int size, int offset /*= 0*/ )
     //TODO 有空写
 }
 
-void Mesh::set( int i, int j, float x, float y, float z, float u, float v )
+void Mesh::set( int i, int j, float x, float y, float u, float v )
 {
     if(i>=mW || j>=mH || i< 0 || j < 0)
         LOGE("Mesh::set error");
-    setVertex(i,j,x,y,z);
+    setVertex(i,j,x,y);
     setTexCoord(i,j,u,v);
 }
 
 void Mesh::setTexCoord( int i, int j, float u, float v )
 {
-    int index = (mW * j + i)*2;
+    int index = (mW * j + i)*TexCoordSize;
     mTexCoordBuffer[index++] = u;
     mTexCoordBuffer[index] = v;
 }
 
-void Mesh::setVertex( int i, int j, float x, float y, float z )
+void Mesh::setVertex( int i, int j, float x, float y )
 {
-    int index = (mW * j + i)*3;
+    int index = (mW * j + i)*VertexSize;
     mVertexBuffer[index++] = x;
     mVertexBuffer[index++] = y;
-    mVertexBuffer[index] = z;
 }
 
 bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
@@ -107,11 +106,11 @@ bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
         break;
     case BT_VertexBuffer:
         glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-        glBufferData(GL_ARRAY_BUFFER, mW*mH*3*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mW*mH*VertexSize*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
         break;
     case BT_TexCoordBuffer:
         glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-        glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mW*mH*TexCoordSize*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
         break;
     }
     return true;
@@ -124,10 +123,10 @@ bool Mesh::createBufferObjects()
 
     
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-    glBufferData(GL_ARRAY_BUFFER, mW*mH*3*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mW*mH*VertexSize*sizeof(GLfloat), mVertexBuffer, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-    glBufferData(GL_ARRAY_BUFFER, mW*mH*2*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mW*mH*TexCoordSize*sizeof(GLfloat), mTexCoordBuffer, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (mW-1)*(mH-1)*6*sizeof(GLushort), mIndexBuffer, GL_STATIC_DRAW);
@@ -148,9 +147,9 @@ void Mesh::draw()
     glEnableVertexAttribArray(texCoordLoc);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-    glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(positionLoc, VertexSize, GL_FLOAT, GL_FALSE, 0, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-    glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(texCoordLoc, TexCoordSize, GL_FLOAT, GL_FALSE, 0, NULL);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
     glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
