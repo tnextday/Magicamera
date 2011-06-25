@@ -43,7 +43,7 @@ public:
     //还原成原始图像
     void restore();
 
-    void draw();
+    void draw(BaseShader *shader);
 
 
     //************************************

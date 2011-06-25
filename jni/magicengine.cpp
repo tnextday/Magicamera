@@ -33,10 +33,6 @@ MagicEngine::MagicEngine()
     m_PreviewTex = NULL;
     m_fbo = NULL;
     m_saveImagePath[0] = '\0';
-    m_Program = 0;
-    m_texCoordLoc = 0;
-    m_positionLoc = 0;
-    m_viewprojLoc = 0;
     m_saveImage = NULL;
 
 }
@@ -47,10 +43,6 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_PreviewTex);
     SafeDelete(m_glYUVTex);
     SafeDelete(m_fbo);
-    if (m_Program != 0){
-        glDeleteProgram(m_Program);
-    }
-    
 }
 
 void printGLInfo(){
@@ -73,32 +65,14 @@ bool MagicEngine::setupGraphics(int w, int h) {
     
     LOGI("\n");
     LOGI("setupGraphics(%d, %d)\n", w, h);
-    m_Program = createProgram(gVertexShader, gFragmentShader);
-    if (!m_Program) {
+
+    m_shader.makeProgram(gVertexShader, gFragmentShader);
+    if (!m_shader.isCompiled()){
         LOGE("Could not create program.\n");
         return false;
     }
-    glUseProgram(m_Program);
-
-    m_positionLoc = glGetAttribLocation(m_Program, "aPosition");
-    checkGlError("glGetAttribLocation aPosition");
-    if (m_positionLoc == -1) {
-        LOGE("Could not get attrib location for aPosition");
-        return false;
-    }
-    m_texCoordLoc = glGetAttribLocation(m_Program, "aTextureCoord");
-    checkGlError("glGetAttribLocation aTextureCoord");
-    if (m_texCoordLoc == -1) {
-        LOGE("Could not get attrib location for aTextureCoord");
-        return false;
-    }
-
-    m_viewprojLoc = glGetUniformLocation(m_Program, "uMVPMatrix");
-    checkGlError("glGetUniformLocation uMVPMatrix");
-    if (m_viewprojLoc == -1) {
-        LOGE("Could not get attrib location for uMVPMatrix");
-        return false;
-    }
+    
+    m_shader.use();
 
     glDisable(GL_DEPTH_TEST);
 //      glCullFace(GL_FRONT);
@@ -120,10 +94,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 void MagicEngine::resize( int w, int h )
 {
     //使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
-    GLfloat mvp[16];
-    matIdentity(mvp);
-    matOrtho(mvp, 0, w, 0, h, -10, 10);
-    glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
+    m_shader.ortho(0, w, 0, h, -10, 10);
     glViewport(0, 0, w, h);
     checkGlError("matOrtho");
 }
@@ -148,11 +119,11 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
     texVertex[4] = posX+w; texVertex[5] = posY-h; 
     texVertex[6] = posX+w; texVertex[7] = posY+h;
     
-    glEnableVertexAttribArray(m_positionLoc);
-    glEnableVertexAttribArray(m_texCoordLoc);
+    glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
     tex->bind(); 
-    glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 0, texVertex);
-    glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, texCoord);
+    glVertexAttribPointer(m_shader.getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, texVertex);
+    glVertexAttribPointer(m_shader.getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, texCoord);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
@@ -201,8 +172,6 @@ void MagicEngine::generateMesh( int w, int h )
     int uSteps = MESH_HEIGHT*w/h;
     int vSteps = MESH_HEIGHT;
     m_Mesh = new MeshEngine(uSteps+1, vSteps+1);
-    m_Mesh->setPositionLoc(m_positionLoc);
-    m_Mesh->setTexCoordLoc(m_texCoordLoc);
     GLfloat x, y,u, v;
     for(int j = 0;j <= vSteps; j++){
         y = j*h/vSteps;
@@ -290,9 +259,9 @@ void MagicEngine::drawUI()
 
 void MagicEngine::drawImage()
 {
-    glUseProgram(m_Program);
+    m_shader.use();
     m_PreviewTex->bind();
-    m_Mesh->draw();
+    m_Mesh->draw(&m_shader);
 /*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
 

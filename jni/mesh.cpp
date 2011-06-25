@@ -137,26 +137,21 @@ bool Mesh::createBufferObjects()
     return true;
 }
 
-void Mesh::draw()
+void Mesh::draw(BaseShader *shader)
 {
     if(!m_bGenBuffers){
         LOGE("You must createBufferObjects before draw");
         return;
     }
-    glEnableVertexAttribArray(positionLoc);
-    glEnableVertexAttribArray(texCoordLoc);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
-    glVertexAttribPointer(positionLoc, VertexSize, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(shader->getPositionLoc(), VertexSize, GL_FLOAT, GL_FALSE, 0, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);
-    glVertexAttribPointer(texCoordLoc, TexCoordSize, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(shader->getTextureCoordLoc(), TexCoordSize, GL_FLOAT, GL_FALSE, 0, NULL);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboIds[VBO_Element_Idx]);
     glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
     //glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, NULL);
-    
-    glDisableVertexAttribArray(positionLoc);
-    glDisableVertexAttribArray(texCoordLoc);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -1,5 +1,7 @@
+#pragma once
 
 #include <GLES2/gl2.h>
+#include "baseshader.h"
 
 enum BufferType {
     BT_VertexBuffer = 0,
@@ -24,9 +26,6 @@ protected:
     GLfloat*    mTexCoordBuffer;
     GLushort*    mIndexBuffer;
 
-    GLuint        positionLoc;
-    GLuint        texCoordLoc;
-    
     GLuint        m_vboIds[VBO_Ids_Num];
 
     int            mW;
@@ -50,15 +49,13 @@ public:
     bool uploadBuffer(BufferType bt = BT_VertexBuffer);
 
     bool createBufferObjects();
-    void draw();
+    void draw(BaseShader *shader);
 
     //要遍历所有点
     //for(i=0;i<MW();i++){}
     int MW() const { return mW; }
     int MH() const { return mH; }
     int IndexCount() const { return mIndexCount; }
-    void setPositionLoc(GLuint val) { positionLoc = val; }
-    void setTexCoordLoc(GLuint val) { texCoordLoc = val; }
 
     GLuint getElementBufferObjectId() const { return m_vboIds[VBO_Element_Idx]; }
     GLuint getTexCoordBufferId() const { return m_vboIds[VBO_TexCoord_Idx]; }

@@ -27,11 +27,12 @@ public:
     void makeProgram(const char* pVertexSource, const char* pFragmentSource);
 
     GLuint getProgram();
-    void useProgram();
+    void use();
     GLuint getPositionLoc();
     GLuint getTextureCoordLoc();
     GLuint getViewPorjLoc();
     void setViewProject(GLfloat *mvp);
     bool isCompiled();
+    void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);
 };
 #endif // _baseshader_h_

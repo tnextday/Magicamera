@@ -107,11 +107,11 @@ void MeshEngine::stopAnimating()
     m_Duration = 0.0f;
 }
 
-void MeshEngine::draw()
+void MeshEngine::draw(BaseShader *shader)
 {
     if (m_bMeshChanged){
         uploadBuffer(BT_VertexBuffer);
         m_bMeshChanged = false;
     }
-    Mesh::draw();
+    Mesh::draw(shader);
 }

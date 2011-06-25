@@ -1,5 +1,6 @@
 #include "baseshader.h"
 #include "glutils.h"
+#include "glHelpers.h"
 
 BaseShader::BaseShader(void)
 {
@@ -58,7 +59,7 @@ GLuint BaseShader::getProgram()
     return m_program;
 }
 
-void BaseShader::useProgram()
+void BaseShader::use()
 {
     glUseProgram(m_program);
 }
@@ -86,4 +87,12 @@ void BaseShader::setViewProject( GLfloat *mvp )
 bool BaseShader::isCompiled()
 {
     return m_isCompiled;
+}
+
+void BaseShader::ortho( GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar )
+{
+    GLfloat mvp[16];
+    matIdentity(mvp);
+    matOrtho(mvp, left, right, bottom, top, znear, zfar);
+    glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 }

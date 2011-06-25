@@ -5,6 +5,7 @@
 #include "meshengine.h"
 #include "texture.h"
 #include "glyuvtexture.h"
+#include "baseshader.h"
 
 const static int MESH_HEIGHT = 50;
 
@@ -29,10 +30,7 @@ public:
 };
 
 class MagicEngine{
-    GLuint m_Program;
-    GLuint m_positionLoc;
-    GLuint m_texCoordLoc;
-    GLuint m_viewprojLoc;
+    BaseShader      m_shader;
 
     Texture*        m_PreviewTex;
     glYUVTexture*   m_glYUVTex;
