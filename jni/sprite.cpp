@@ -2,32 +2,33 @@
 
 Sprite::Sprite()
 {
-    scaleX = 0;
-    scaleY = 0;
-    dirty = true;
+    m_scaleX = 0;
+    m_scaleY = 0;
+    m_dirty = true;
 }
 
 float* Sprite::getVertices()
 {
-    if (dirty) {
-        dirty = false;
+    if (m_dirty) {
+        m_dirty = false;
 
-        float localX = -originX;
-        float localY = -originY;
-        float localX2 = localX + width;
-        float localY2 = localY + height;
-        float worldOriginX = x - localX;
-        float worldOriginY = y - localY;
-        if (scaleX != 1 || scaleY != 1) {
-            localX *= scaleX;
-            localY *= scaleY;
-            localX2 *= scaleX;
-            localY2 *= scaleY;
+        float localX = -m_originX;
+        float localY = -m_originY;
+        float localX2 = localX + m_width;
+        float localY2 = localY + m_height;
+        float worldOriginX = m_x - localX;
+        float worldOriginY = m_y - localY;
+        if (m_scaleX != 1 || m_scaleY != 1) {
+            localX *= m_scaleX;
+            localY *= m_scaleY;
+            localX2 *= m_scaleX;
+            localY2 *= m_scaleY;
         }
-        if (rotation != 0) {
+        if (m_rotation != 0) {
             float cos,sin;
 //             cos = MathUtils.cosDeg(rotation);
 //             sin = MathUtils.sinDeg(rotation);
+            //TODO 写一个快速的三角函数计算库
             float localXCos = localX * cos;
             float localXSin = localX * sin;
             float localYCos = localY * cos;
@@ -39,89 +40,197 @@ float* Sprite::getVertices()
 
             float x1 = localXCos - localYSin + worldOriginX;
             float y1 = localYCos + localXSin + worldOriginY;
-            vertices[X1] = x1;
-            vertices[Y1] = y1;
+            m_vertices[X1] = x1;
+            m_vertices[Y1] = y1;
 
             float x2 = localXCos - localY2Sin + worldOriginX;
             float y2 = localY2Cos + localXSin + worldOriginY;
-            vertices[X2] = x2;
-            vertices[Y2] = y2;
+            m_vertices[X2] = x2;
+            m_vertices[Y2] = y2;
 
             float x3 = localX2Cos - localY2Sin + worldOriginX;
             float y3 = localY2Cos + localX2Sin + worldOriginY;
-            vertices[X3] = x3;
-            vertices[Y3] = y3;
+            m_vertices[X3] = x3;
+            m_vertices[Y3] = y3;
 
-            vertices[X4] = x1 + (x3 - x2);
-            vertices[Y4] = y3 - (y2 - y1);
+            m_vertices[X4] = x1 + (x3 - x2);
+            m_vertices[Y4] = y3 - (y2 - y1);
         } else {
             float x1 = localX + worldOriginX;
             float y1 = localY + worldOriginY;
             float x2 = localX2 + worldOriginX;
             float y2 = localY2 + worldOriginY;
 
-            vertices[X1] = x1;
-            vertices[Y1] = y1;
+            m_vertices[X1] = x1;
+            m_vertices[Y1] = y1;
 
-            vertices[X2] = x1;
-            vertices[Y2] = y2;
+            m_vertices[X2] = x1;
+            m_vertices[Y2] = y2;
 
-            vertices[X3] = x2;
-            vertices[Y3] = y2;
+            m_vertices[X3] = x2;
+            m_vertices[Y3] = y2;
 
-            vertices[X4] = x2;
-            vertices[Y4] = y1;
+            m_vertices[X4] = x2;
+            m_vertices[Y4] = y1;
         }
     }
-    return vertices;
+    return m_vertices;
 }
 
 void Sprite::flip( bool x, bool y )
 {
-    float temp;
     if (x) {
-        u = vertices[U1];
-        u2 = vertices[U3];
-        vertices[U1] = u2;
-        vertices[U2] = u2;
-        vertices[U3] = u;
-        vertices[U4] = u;
+        m_u = m_vertices[U1];
+        m_u2 = m_vertices[U3];
+        m_vertices[U1] = m_u2;
+        m_vertices[U2] = m_u2;
+        m_vertices[U3] = m_u;
+        m_vertices[U4] = m_u;
     }
     if (y) {
-        v = vertices[V2];
-        v2 = vertices[V1];
-        vertices[V1] = v;
-        vertices[V2] = v2;
-        vertices[V3] = v2;
-        vertices[V4] = v;
+        m_v = m_vertices[V2];
+        m_v2 = m_vertices[V1];
+        m_vertices[V1] = m_v;
+        m_vertices[V2] = m_v2;
+        m_vertices[V3] = m_v2;
+        m_vertices[V4] = m_v;
     }
 }
 
 void Sprite::rotate90( bool clockwise )
 {
     if (clockwise) {
-        float temp = vertices[V1];
-        vertices[V1] = vertices[V4];
-        vertices[V4] = vertices[V3];
-        vertices[V3] = vertices[V2];
-        vertices[V2] = temp;
+        float temp = m_vertices[V1];
+        m_vertices[V1] = m_vertices[V4];
+        m_vertices[V4] = m_vertices[V3];
+        m_vertices[V3] = m_vertices[V2];
+        m_vertices[V2] = temp;
 
-        temp = vertices[U1];
-        vertices[U1] = vertices[U4];
-        vertices[U4] = vertices[U3];
-        vertices[U3] = vertices[U2];
-        vertices[U2] = temp;
+        temp = m_vertices[U1];
+        m_vertices[U1] = m_vertices[U4];
+        m_vertices[U4] = m_vertices[U3];
+        m_vertices[U3] = m_vertices[U2];
+        m_vertices[U2] = temp;
     } else {
-        float temp = vertices[V1];
-        vertices[V1] = vertices[V2];
-        vertices[V2] = vertices[V3];
-        vertices[V3] = vertices[V4];
-        vertices[V4] = temp;
+        float temp = m_vertices[V1];
+        m_vertices[V1] = m_vertices[V2];
+        m_vertices[V2] = m_vertices[V3];
+        m_vertices[V3] = m_vertices[V4];
+        m_vertices[V4] = temp;
 
-        temp = vertices[U1];
-        vertices[U1] = vertices[U2];
-        vertices[U2] = vertices[U3];
-        vertices[U3] = vertices[U4];
-        vertices[U4] = temp;
+        temp = m_vertices[U1];
+        m_vertices[U1] = m_vertices[U2];
+        m_vertices[U2] = m_vertices[U3];
+        m_vertices[U3] = m_vertices[U4];
+        m_vertices[U4] = temp;
     }
+}
+
+void Sprite::translate( float xAmount, float yAmount )
+{
+    m_x += xAmount;
+    m_y += yAmount;
+
+    if (m_dirty) return;
+
+    m_vertices[X1] += xAmount;
+    m_vertices[Y1] += yAmount;
+
+    m_vertices[X2] += xAmount;
+    m_vertices[Y2] += yAmount;
+
+    m_vertices[X3] += xAmount;
+    m_vertices[Y3] += yAmount;
+
+    m_vertices[X4] += xAmount;
+    m_vertices[Y4] += yAmount;
+}
+
+void Sprite::setOrigin( float originX, float originY )
+{
+    m_originX = originX;
+    m_originY = originY;
+    m_dirty = true;
+}
+
+void Sprite::setRotation( float degrees )
+{
+    m_rotation = degrees;
+    m_dirty = true;
+}
+
+void Sprite::rotate( float degrees )
+{
+    m_rotation += degrees;
+    m_dirty = true;
+}
+
+void Sprite::setScale( float scaleXY )
+{
+    m_scaleX = scaleXY;
+    m_scaleY = scaleXY;
+    m_dirty = true;
+}
+
+void Sprite::setScale( float scaleX, float scaleY )
+{
+    m_scaleX = scaleX;
+    m_scaleY = scaleY;
+    m_dirty = true;
+}
+
+void Sprite::scale( float amount )
+{
+    m_scaleX += amount;
+    m_scaleY += amount;
+    m_dirty = true;
+}
+
+void Sprite::draw()
+{
+
+}
+
+void Sprite::setPostion( float x, float y )
+{
+    translate(x - m_x - m_originX, y - m_y -m_originY);
+}
+
+float Sprite::getX()
+{
+    return m_x + m_originX;
+}
+
+float Sprite::getY()
+{
+    return m_y + m_originY;
+}
+
+void Sprite::getBoundingRect( rect_t &rect )
+{
+    float minx = m_vertices[X1];
+    float miny = m_vertices[Y1];
+    float maxx = m_vertices[X1];
+    float maxy = m_vertices[Y1];
+
+    minx = minx > m_vertices[X2]? m_vertices[X2]: minx;
+    minx = minx > m_vertices[X3]? m_vertices[X3]: minx;
+    minx = minx > m_vertices[X4]? m_vertices[X4]: minx;
+
+    maxx = maxx < m_vertices[X2]? m_vertices[X2]: maxx;
+    maxx = maxx < m_vertices[X3]? m_vertices[X3]: maxx;
+    maxx = maxx < m_vertices[X4]? m_vertices[X4]: maxx;
+
+    miny = miny > m_vertices[Y2]? m_vertices[Y2]: miny;
+    miny = miny > m_vertices[Y3]? m_vertices[Y3]: miny;
+    miny = miny > m_vertices[Y4]? m_vertices[Y4]: miny;
+
+    maxy = maxy < m_vertices[Y2]? m_vertices[Y2]: maxy;
+    maxy = maxy < m_vertices[Y3]? m_vertices[Y3]: maxy;
+    maxy = maxy < m_vertices[Y4]? m_vertices[Y4]: maxy;
+
+    rect.x = minx;
+    rect.y = miny;
+    rect.width = maxx - minx;
+    rect.height = maxy - miny;
 }

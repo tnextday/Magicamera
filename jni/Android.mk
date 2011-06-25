@@ -6,15 +6,18 @@ LOCAL_MODULE    := libmagicjni
 LOCAL_CFLAGS    := -Werror
 
 LOCAL_SRC_FILES := jni_main.cpp \
-			magicengine.cpp \
-			glHelpers.cpp \
-			glutils.cpp \
-			mesh.cpp \
-			texture.cpp \
-			meshengine.cpp \
-			easing.cpp \
-			glyuvtexture.cpp \
-			framebufferobject.cpp
+		magicengine.cpp \
+		meshengine.cpp \
+		easing.cpp \
+		glHelpers.cpp \
+		baseshader.cpp \
+		framebufferobject.cpp \
+		glutils.cpp \
+		glyuvtexture.cpp \
+		mesh.cpp \
+		sprite.cpp \
+		texture.cpp \
+		textureregion.cpp
 
 include $(LOCAL_PATH)/gdx2d/Android.mk
 

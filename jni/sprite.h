@@ -2,54 +2,64 @@
 #define sprite_h__
 
 #include "Texture.h"
+#include "textureregion.h"
+#include <GLES2/gl2.h>
 
 const int X1 = 0;
 const int Y1 = 1;
-const int C1 = 2;
-const int U1 = 3;
-const int V1 = 4;
-const int X2 = 5;
-const int Y2 = 6;
-const int C2 = 7;
-const int U2 = 8;
-const int V2 = 9;
-const int X3 = 10;
-const int Y3 = 11;
-const int C3 = 12;
-const int U3 = 13;
-const int V3 = 14;
-const int X4 = 15;
-const int Y4 = 16;
-const int C4 = 17;
-const int U4 = 18;
-const int V4 = 19;
+const int U1 = 2;
+const int V1 = 3;
+const int X2 = 4;
+const int Y2 = 5;
+const int U2 = 6;
+const int V2 = 7;
+const int X3 = 8;
+const int Y3 = 9;
+const int U3 = 10;
+const int V3 = 11;
+const int X4 = 12;
+const int Y4 = 13;
+const int U4 = 14;
+const int V4 = 15;
 
-class Sprite : public Texture{
+struct rect_t{
+    GLfloat x;
+    GLfloat y;
+    GLfloat width;
+    GLfloat height;
+};
+
+class Sprite : public TextureRegion{
 private:
-    float u, v;
-    float u2, v2;
-    float x, y;
-    float width, height;
-    float originX, originY;
-    float rotation;
-    float scaleX, scaleY;
-    bool dirty;
-    float vertices[20];
+    GLfloat     m_u, m_v;
+    GLfloat     m_u2, m_v2;
+    GLfloat     m_x, m_y;
+    GLfloat     m_width, m_height;
+    GLfloat     m_originX, m_originY;
+    GLfloat     m_rotation;
+    GLfloat     m_scaleX, m_scaleY;
+    bool        m_dirty;
+    GLfloat     m_vertices[16];
+    GLuint      m_positionLoc;
+    GLuint      m_texCoordLoc;
 public:
     Sprite();
     ~Sprite();
-    void setPostion(float x, float y);
-    void translate(float xAmount, float yAmount);
-    void setOrigin(float originX, float originY);
-    void setRotation (float degrees);
-    void rotate (float degrees);
-    void setScale (float scaleXY);
-    void setScale (float scaleX, float scaleY);
-    void scale (float amount);
+    void setPostion(GLfloat x, GLfloat y);
+    void translate(GLfloat xAmount, GLfloat yAmount);
+    void setOrigin(GLfloat originX, GLfloat originY);
+    void setRotation (GLfloat degrees);
+    void rotate (GLfloat degrees);
+    void setScale (GLfloat scaleXY);
+    void setScale (GLfloat scaleX, GLfloat scaleY);
+    void scale (GLfloat amount);
     void draw();
-    float* getVertices ();
+    GLfloat* getVertices ();
     void flip (bool x, bool y);
     void rotate90 (bool clockwise);
+    float getX();
+    float getY();
+    void getBoundingRect(rect_t &rect);
 };
 
 #endif // sprite_h__

@@ -38,6 +38,8 @@ public:
     //update压缩过的数据，jpeg,png,tga。。。
     void uploadImageData(const unsigned char *buffer, uint32_t len);
     void setSize(int w, int h);;
+    GLuint getWidth(){return m_Width;};
+    GLuint getHeight(){return m_Height;};
     //GL Format
     void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};
     GLuint createGLHandle();
