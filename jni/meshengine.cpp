@@ -98,7 +98,7 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 void MeshEngine::restore()
 {
     memcpy(m_DestVertex, m_OrgiVertex, m_BufferCount*sizeof(GLfloat));
-    startAnimating(1.6f);
+    startAnimating(2.0f);
 }
 
 void MeshEngine::stopAnimating()

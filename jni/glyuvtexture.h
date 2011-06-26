@@ -5,15 +5,16 @@
 #include "glutils.h"
 #include "glHelpers.h"
 #include "framebufferobject.h"
+#include "baseshader.h"
 
 const int YTexId_idx = 0;
 const int UVTexId_idx = 1;
 
 class glYUVTexture
 {
-    GLuint m_Program;
-    GLuint m_aPositionLoc;
-    GLuint m_aTexCoordLoc;
+    BaseShader  m_shader;
+    GLuint      m_uYtexLoc;
+    GLuint      m_uUVTexLoc;
 
     GLuint m_width;
     GLuint m_height;

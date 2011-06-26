@@ -1,7 +1,9 @@
 #include "textureregion.h"
+#include <stdio.h>
 
 TextureRegion::TextureRegion(void)
 {
+    m_texture = NULL;
 }
 
 TextureRegion::TextureRegion( Texture *tex )
@@ -12,20 +14,26 @@ TextureRegion::TextureRegion( Texture *tex )
 TextureRegion::TextureRegion( Texture *tex, float u, float v, float u2, float v2 )
 {
     m_texture = tex;
-    setRegionf(u, v, u2, v2);
+    setRegion(u, v, u2, v2);
+}
+
+TextureRegion::TextureRegion( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight )
+{
+    m_texture = tex;
+    setRegion(srcX, srcY, srcWidth, srcHeight);
 }
 TextureRegion::~TextureRegion(void)
 {
 }
 
-void TextureRegion::setRegioni( int x, int y, int width, int height )
+void TextureRegion::setRegion( int x, int y, int width, int height )
 {
     float invTexWidth = 1.0 / m_texture->getWidth();
     float invTexHeight = 1.0 / m_texture->getHeight();
-    setRegionf(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
+    setRegion(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
 }
 
-void TextureRegion::setRegionf( float u, float v, float u2, float v2 )
+void TextureRegion::setRegion( float u, float v, float u2, float v2 )
 {
     m_u = u;
     m_v = v;
@@ -36,7 +44,7 @@ void TextureRegion::setRegionf( float u, float v, float u2, float v2 )
 void TextureRegion::setRegion( Texture *tex )
 {
     m_texture = tex;
-    setRegioni(0, 0, tex->getWidth(), tex->getWidth());
+    setRegion(0, 0, tex->getWidth(), tex->getWidth());
 }
 
 Texture* TextureRegion::getTexture()

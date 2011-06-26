@@ -32,7 +32,7 @@ MagicEngine::MagicEngine()
     m_glYUVTex = NULL;
     m_PreviewTex = NULL;
     m_fbo = NULL;
-    m_saveImagePath[0] = '\0';
+    m_resPath[0] = '\0';
     m_saveImage = NULL;
 
 }
@@ -75,8 +75,8 @@ bool MagicEngine::setupGraphics(int w, int h) {
     m_shader.use();
 
     glDisable(GL_DEPTH_TEST);
-//      glCullFace(GL_FRONT);
-//      glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
     //启用混合操作
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -84,6 +84,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
     m_ViewWidth = w;
     m_ViewHeight = h;
     m_PreviewTex = new Texture();
+    m_PreviewTex->init();
     m_fbo = new FramebufferObject(true);
     printGLInfo();
     resize(m_ViewWidth, m_ViewHeight);
@@ -119,8 +120,6 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
     texVertex[4] = posX+w; texVertex[5] = posY-h; 
     texVertex[6] = posX+w; texVertex[7] = posY+h;
     
-    glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
     tex->bind(); 
     glVertexAttribPointer(m_shader.getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, texVertex);
     glVertexAttribPointer(m_shader.getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, texCoord);
@@ -133,6 +132,8 @@ void MagicEngine::renderFrame( float delta )
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ViewWidth, m_ViewHeight);
+    glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
     drawImage();
     drawUI();
     checkGlError("renderFrame");
@@ -252,6 +253,21 @@ void MagicEngine::makePicture( int w, int h )
     resize(m_ViewWidth, m_ViewHeight);
 }
 
+void MagicEngine::update( float delta )
+{
+    m_Mesh->update(delta);
+    static float rotateSpeed = 30;
+    static float scaleSpeed = 0.1;
+    m_testSprite.rotate(rotateSpeed*delta);
+    static float scale = 1.0;
+    
+    if (scale < 0.5 || scale > 1.5){
+        scaleSpeed = -scaleSpeed;
+    }
+    scale += scaleSpeed*delta;
+    m_testSprite.setScale(scale);
+}
+
 void MagicEngine::drawUI()
 {
 
@@ -262,17 +278,27 @@ void MagicEngine::drawImage()
     m_shader.use();
     m_PreviewTex->bind();
     m_Mesh->draw(&m_shader);
+    m_testSprite.draw(&m_shader);
 /*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
 
-void MagicEngine::setSaveImagePath( char* path )
+void MagicEngine::setResPath(const char* path )
 {
-    snprintf(m_saveImagePath, _MAX_PATH-1, "%s", path);
+    snprintf(m_resPath, _MAX_PATH-1, "%s", path);
     LOGI("setSaveImagePath : %s\n", path);
 }
 
-void MagicEngine::update( float delta )
+void MagicEngine::loadRes()
 {
-    m_Mesh->update(delta);
+    char path[_MAX_PATH];
+    m_testTexture.loadFromFile(makeResPath(path, "sprite.png"));
+    m_testSprite.setTexture(&m_testTexture);
+    m_testSprite.setPostion(m_ViewWidth/2, m_ViewHeight/2);
+}
+
+char* MagicEngine::makeResPath( char* path, const char* targetFile, int szBuffer/* = _MAX_PATH*/)
+{
+    snprintf(path, szBuffer, "%s/%s", m_resPath, targetFile);
+    return path;
 }
 

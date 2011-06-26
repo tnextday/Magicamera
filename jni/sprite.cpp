@@ -1,10 +1,22 @@
 #include "sprite.h"
+#include "fastmath.h"
+#include <math.h>
 
 Sprite::Sprite()
+    :TextureRegion()
 {
-    m_scaleX = 0;
-    m_scaleY = 0;
-    m_dirty = true;
+}
+
+Sprite::Sprite( Texture *tex )
+    :TextureRegion(tex)
+{
+    setTexture(tex);
+}
+
+Sprite::Sprite( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight)
+    :TextureRegion(tex, srcX, srcY, srcWidth, srcHeight)
+{
+    setTexture(tex, srcX, srcY, srcWidth, srcHeight);
 }
 
 float* Sprite::getVertices()
@@ -25,18 +37,17 @@ float* Sprite::getVertices()
             localY2 *= m_scaleY;
         }
         if (m_rotation != 0) {
-            float cos,sin;
-//             cos = MathUtils.cosDeg(rotation);
-//             sin = MathUtils.sinDeg(rotation);
-            //TODO 写一个快速的三角函数计算库
-            float localXCos = localX * cos;
-            float localXSin = localX * sin;
-            float localYCos = localY * cos;
-            float localYSin = localY * sin;
-            float localX2Cos = localX2 * cos;
-            float localX2Sin = localX2 * sin;
-            float localY2Cos = localY2 * cos;
-            float localY2Sin = localY2 * sin;
+            float cosv,sinv;
+            cosv = fastcosDeg(m_rotation);
+            sinv = fastsinDeg(m_rotation);
+            float localXCos = localX * cosv;
+            float localXSin = localX * sinv;
+            float localYCos = localY * cosv;
+            float localYSin = localY * sinv;
+            float localX2Cos = localX2 * cosv;
+            float localX2Sin = localX2 * sinv;
+            float localY2Cos = localY2 * cosv;
+            float localY2Sin = localY2 * sinv;
 
             float x1 = localXCos - localYSin + worldOriginX;
             float y1 = localYCos + localXSin + worldOriginY;
@@ -186,9 +197,14 @@ void Sprite::scale( float amount )
     m_dirty = true;
 }
 
-void Sprite::draw()
-{
 
+void Sprite::draw(BaseShader *shader)
+{
+    if (!m_texture) return;
+    m_texture->bind();
+    glVertexAttribPointer(shader->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getPosVertices());
+    glVertexAttribPointer(shader->getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, getTexCoords());
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 void Sprite::setPostion( float x, float y )
@@ -233,4 +249,84 @@ void Sprite::getBoundingRect( rect_t &rect )
     rect.y = miny;
     rect.width = maxx - minx;
     rect.height = maxy - miny;
+}
+
+GLfloat* Sprite::getPosVertices()
+{
+    return getVertices();
+}
+
+GLfloat* Sprite::getTexCoords()
+{
+    return getVertices() + U1;
+}
+
+void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
+{
+    m_scaleX = 1;
+    m_scaleY = 1;
+    m_dirty = true;
+    m_rotation = 0;
+    m_x = 0;
+    m_y = 0;
+    setRegion(srcX, srcY, srcWidth, srcHeight);
+    setSize(abs(srcWidth), abs(srcHeight));
+    setOrigin(m_width / 2, m_height / 2);
+}
+
+Sprite::~Sprite()
+{
+
+}
+
+void Sprite::setSize( GLfloat w, GLfloat h )
+{
+    m_width = w;
+    m_height = h;
+
+    if (m_dirty) return;
+
+    float x2 = m_x + m_width;
+    float y2 = m_y + m_height;
+    m_vertices[X1] = m_x;
+    m_vertices[Y1] = m_y;
+
+    m_vertices[X2] = m_x;
+    m_vertices[Y2] = y2;
+
+    m_vertices[X3] = x2;
+    m_vertices[Y3] = y2;
+
+    m_vertices[X4] = x2;
+    m_vertices[Y4] = m_y;
+
+    if (m_rotation != 0 || m_scaleX != 1 || m_scaleY != 1) m_dirty = true;
+}
+
+void Sprite::setTexture( Texture *tex )
+{
+    TextureRegion::setRegion(tex);
+    init(0,0,tex->getWidth(), tex->getHeight());
+}
+
+void Sprite::setTexture( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight )
+{
+    TextureRegion::setRegion(tex);
+    init(srcX, srcY, srcWidth, srcHeight);
+}
+
+void Sprite::setRegion( float u, float v, float u2, float v2 )
+{
+    TextureRegion::setRegion(u, v, u2, v2);
+    m_vertices[U1] = u;
+    m_vertices[V1] = v2;
+
+    m_vertices[U2] = u;
+    m_vertices[V2] = v;
+
+    m_vertices[U3] = u2;
+    m_vertices[V3] = v;
+
+    m_vertices[U4] = u2;
+    m_vertices[V4] = v2;
 }

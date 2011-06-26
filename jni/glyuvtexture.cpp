@@ -57,38 +57,20 @@ glYUVTexture::glYUVTexture(int w, int h, GLuint texid)
 glYUVTexture::~glYUVTexture(void)
 {
     glDeleteTextures(2, m_YUVTexs);
-    glDeleteProgram(m_Program);
     SafeDelete(m_fbo);
 }
 
 bool glYUVTexture::init( int w, int h, GLuint texid )
 {
-    m_Program = createProgram(g_YUV_VShader, g_YUV_FShader);
-    if (!m_Program) {
+    m_shader.makeProgram(g_YUV_VShader, g_YUV_FShader);
+    if (!m_shader.isCompiled()) {
         LOGE("Could not create program.\n");
         return false;
     }
-    glUseProgram(m_Program);
-
-    m_aPositionLoc = glGetAttribLocation(m_Program, "aPosition");
-    checkGlError("glGetAttribLocation aPosition");
-    if (m_aPositionLoc == -1) {
-        LOGE("Could not get attrib location for aPosition");
-        return false;
-    }
-
-    m_aTexCoordLoc = glGetAttribLocation(m_Program, "aTextureCoord");
-    checkGlError("glGetAttribLocation aTextureCoord");
-    if (m_aTexCoordLoc == -1) {
-        LOGE("Could not get attrib location for aTextureCoord");
-        return false;
-    }
-
-    GLfloat mvp[16];
-    matIdentity(mvp);
-    // 设置视口的大小
-    matOrtho(mvp, 0, 1.0, 0, 1.0, -10, 10);
-    glUniformMatrix4fv(glGetUniformLocation(m_Program, "uMVPMatrix"), 1, GL_FALSE, (GLfloat*)mvp);
+    m_shader.use();
+    m_shader.ortho(0, 1.0, 0, 1.0, -10, 10);
+    m_uYtexLoc = glGetUniformLocation(m_shader.getProgram(), "Ytex");
+    m_uUVTexLoc = glGetUniformLocation(m_shader.getProgram(), "UVtex");
 
     glGenTextures(2, m_YUVTexs);
 
@@ -116,7 +98,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
         LOGE("uploadYUVTexImage Error 0\n");
         return;
     }
-    glUseProgram(m_Program); 
+    m_shader.use();
     glDisable(GL_DEPTH_TEST);
     m_fbo->bind();
     glViewport(0, 0, m_width, m_height);
@@ -125,20 +107,20 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, m_YUVTexs[YTexId_idx]);
-    glUniform1i(glGetUniformLocation(m_Program, "Ytex"), 1);
+    glUniform1i(m_uYtexLoc, 1);
     setDefaultTexParameter(m_YUVTexs[YTexId_idx]);
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w,h,0,GL_LUMINANCE,GL_UNSIGNED_BYTE, yuv420sp);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_YUVTexs[UVTexId_idx]);
-    glUniform1i(glGetUniformLocation(m_Program, "UVtex"), 2);
+    glUniform1i(m_uUVTexLoc, 2);
     setDefaultTexParameter(m_YUVTexs[UVTexId_idx]);
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE_ALPHA,w/2,h/2,0,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE, yuv420sp+w*h);
 
-    glEnableVertexAttribArray(m_aPositionLoc);
-    glEnableVertexAttribArray(m_aTexCoordLoc);
-    glVertexAttribPointer(m_aPositionLoc, 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
-    glVertexAttribPointer(m_aTexCoordLoc, 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
+    glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
+    glVertexAttribPointer(m_shader.getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
+    glVertexAttribPointer(m_shader.getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
     checkGlError("glYUVTexture::uploadYUVTexImage");

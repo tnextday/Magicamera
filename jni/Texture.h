@@ -26,7 +26,7 @@ public:
     // Returns:   
     //************************************
     Texture(const unsigned char *buffer, uint32_t len);
-    Texture(char* texFilePath);
+    Texture(const char* texFilePath);
     ~Texture();
 
     void bind();
@@ -37,14 +37,14 @@ public:
     void uploadImageData(GLubyte* data);
     //update压缩过的数据，jpeg,png,tga。。。
     void uploadImageData(const unsigned char *buffer, uint32_t len);
+    bool loadFromFile(const char *filePath);
     void setSize(int w, int h);;
     GLuint getWidth(){return m_Width;};
     GLuint getHeight(){return m_Height;};
     //GL Format
     void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};
     GLuint createGLHandle();
-
-private:
+    void deleteGLHandle(GLuint id);
     void init();
 };
 

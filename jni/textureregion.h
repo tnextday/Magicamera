@@ -14,13 +14,14 @@ public:
     TextureRegion(void);
     TextureRegion(Texture *tex);
     TextureRegion(Texture *tex, float u, float v, float u2, float v2);
+    TextureRegion(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
     ~TextureRegion(void);
     /**
     * @param width The width of the texture region. May be negative to flip the sprite when drawn.
     * @param height The height of the texture region. May be negative to flip the sprite when drawn.
     */
-    void setRegioni(int x, int y, int width, int height);
-    void setRegionf(float u, float v, float u2, float v2);
+    void setRegion(int x, int y, int width, int height);
+    void setRegion(float u, float v, float u2, float v2);
     void setRegion(Texture *tex);
     Texture* getTexture();
     void setTexture(Texture *tex);

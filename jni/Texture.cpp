@@ -5,7 +5,7 @@
 
 Texture::Texture()
 {
-    init();
+    m_TexHandle = 0;
 }
 
 int getGLInternalFormat(int format) {
@@ -48,17 +48,15 @@ Texture::Texture( const unsigned char *buffer, uint32_t len)
     uploadImageData(buffer, len);
 }
 
-Texture::Texture( char* texFilePath )
+Texture::Texture(const char* texFilePath )
 {
     init();
-    //TODO load image from file
+    loadFromFile(texFilePath);
 }
 
 Texture::~Texture()
 {
-    GLuint texID[1];
-    texID[0] = m_TexHandle;
-    glDeleteTextures(1, texID);
+    deleteGLHandle(m_TexHandle);
 }
 
 void Texture::bind()
@@ -134,4 +132,48 @@ void Texture::setSize( int w, int h )
     m_Height = h;
     bind();
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+}
+
+bool Texture::loadFromFile( const char *filePath )
+{
+    if (!m_TexHandle){
+        init();
+    }
+    bool result = true;
+    FILE *fp = fopen(filePath, "rb");
+    if (!fp) {
+        LOGE("Can't open file: %s\n", filePath);
+        return false;
+    }
+    char* buffer = NULL;
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);            // determine file size so we can fill it in later if FileSize == 0
+    if (size <= 0) {
+        fclose(fp);
+        return false;
+    }
+    fseek(fp, 0, SEEK_SET);
+    buffer = new char[size];
+
+    if (fread(buffer, sizeof(char), size, fp) > 0){
+        uploadImageData((unsigned char*)buffer, size);
+    }else{
+        LOGE("Can't load texture: %s\n", filePath);
+        result = false;
+    }
+    fclose(fp);
+    if (buffer){
+        delete[] buffer;
+        buffer = NULL;
+    }
+    return result;
+}
+
+void Texture::deleteGLHandle( GLuint id )
+{
+    if (id){
+        GLuint texID[1];
+        texID[0] = id;
+        glDeleteTextures(1, texID);
+    }
 }

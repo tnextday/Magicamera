@@ -192,6 +192,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\jni\fastmath.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\framebufferobject.cpp"
 				>
 			</File>
@@ -247,6 +251,10 @@
 			</File>
 			<File
 				RelativePath="..\jni\easing.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\fastmath.h"
 				>
 			</File>
 			<File

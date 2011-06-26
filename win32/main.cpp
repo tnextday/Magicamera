@@ -14,11 +14,12 @@
 const CHAR*  g_strWindowTitle = "MagicAmera";
 const UINT32 g_nWindowWidth   = 800;
 const UINT32 g_nWindowHeight  = 480;
-const bool g_useCamera = true;
+const bool g_useCamera = false;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
 const char* g_strSaveImagePath = "f:\\test.tga";
+const char* g_resPath = "assets\\";
 MagicEngine g_MagicEngine;
 WinCallBack g_WinCallBack;
 
@@ -356,8 +357,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         return FALSE;
 
     g_MagicEngine.setupGraphics(g_nWindowWidth, g_nWindowHeight);
-    g_MagicEngine.setSaveImagePath((char*)g_strSaveImagePath);
+    g_MagicEngine.setResPath(g_resPath);
     g_MagicEngine.setCallBack(&g_WinCallBack);
+    g_MagicEngine.loadRes();
 
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
