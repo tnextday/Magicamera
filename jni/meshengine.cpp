@@ -8,7 +8,7 @@
 MeshEngine::MeshEngine( int width, int height )
     :Mesh(width, height)
 {
-    m_BufferCount = width*height*3;
+    m_BufferCount = width*height*VertexSize;
     m_DestVertex = new GLfloat[m_BufferCount];
     m_DeltaVertex = new GLfloat[m_BufferCount];
     m_OrgiVertex = new GLfloat[m_BufferCount];
@@ -98,7 +98,7 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 void MeshEngine::restore()
 {
     memcpy(m_DestVertex, m_OrgiVertex, m_BufferCount*sizeof(GLfloat));
-    startAnimating(1.6f);
+    startAnimating(2.0f);
 }
 
 void MeshEngine::stopAnimating()
@@ -107,11 +107,11 @@ void MeshEngine::stopAnimating()
     m_Duration = 0.0f;
 }
 
-void MeshEngine::draw()
+void MeshEngine::draw(BaseShader *shader)
 {
     if (m_bMeshChanged){
         uploadBuffer(BT_VertexBuffer);
         m_bMeshChanged = false;
     }
-    Mesh::draw();
+    Mesh::draw(shader);
 }

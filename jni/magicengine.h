@@ -5,6 +5,8 @@
 #include "meshengine.h"
 #include "texture.h"
 #include "glyuvtexture.h"
+#include "baseshader.h"
+#include "sprite.h"
 
 const static int MESH_HEIGHT = 50;
 
@@ -29,14 +31,14 @@ public:
 };
 
 class MagicEngine{
-    GLuint m_Program;
-    GLuint m_positionLoc;
-    GLuint m_texCoordLoc;
-    GLuint m_viewprojLoc;
+    BaseShader      m_shader;
 
     Texture*        m_PreviewTex;
     glYUVTexture*   m_glYUVTex;
     MeshEngine*     m_Mesh;
+
+    Sprite          m_testSprite;
+    Texture         m_testTexture;
 
     GLfloat m_ViewWidth;
     GLfloat m_ViewHeight;
@@ -48,7 +50,7 @@ class MagicEngine{
     float    m_lastY;
 
     FramebufferObject *m_fbo;
-    char    m_saveImagePath[_MAX_PATH];
+    char    m_resPath[_MAX_PATH];
     SaveImageCallBack      *m_saveImage;
 
 public:
@@ -77,7 +79,11 @@ public:
 
     void setCallBack(SaveImageCallBack* callback);
 
-    void setSaveImagePath(char* path);
+    void setResPath(const char* path);
+
+    void loadRes();
+
+    char* makeResPath(char* path, const char* targetFile, int szBuffer = _MAX_PATH);
 };
 
 

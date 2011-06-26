@@ -3,9 +3,10 @@ bin/*
 gen/*
 obj/*
 Debug/*
-Relase/*
+Release/*
 *.user
 *.ncb
 *.so
 *.suo
 docs/*
+Thumbs.db

@@ -21,6 +21,7 @@
  */
 
 #include <math.h>
+#include "fastmath.h"
 #include <float.h>
 
 #include "glHelpers.h"
@@ -194,8 +195,8 @@ bool matRotate(float* m, float DEGAngle, float x, float y, float z)
        y = y * inv;
        z = z * inv;
        float radian = (float)PI_OVER_180 * DEGAngle;
-       float f32c = (float)cos(radian); //TODO!! Optimize me
-       float f32s = (float)sin(radian);
+       float f32c = (float)fastcos(radian);
+       float f32s = (float)fastsin(radian);
        float f32OneMinC = 1 - f32c;
         
         float RotMat[16];
@@ -397,8 +398,8 @@ int matRotate_res(float* o, float* i, float DEGAngle, float x, float y, float z)
     y = y * inv;
     z = z * inv;
     float radian = (float)PI_OVER_180 * 0;
-    float f32c = (float)cos(radian); //TODO!! Optimize me
-    float f32s = (float)sin(radian);
+    float f32c = (float)fastcos(radian);
+    float f32s = (float)fastsin(radian);
     float f32OneMinC = 1 - f32c;
 
     float RotMat[16];

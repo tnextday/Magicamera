@@ -32,11 +32,7 @@ MagicEngine::MagicEngine()
     m_glYUVTex = NULL;
     m_PreviewTex = NULL;
     m_fbo = NULL;
-    m_saveImagePath[0] = '\0';
-    m_Program = 0;
-    m_texCoordLoc = 0;
-    m_positionLoc = 0;
-    m_viewprojLoc = 0;
+    m_resPath[0] = '\0';
     m_saveImage = NULL;
 
 }
@@ -47,10 +43,6 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_PreviewTex);
     SafeDelete(m_glYUVTex);
     SafeDelete(m_fbo);
-    if (m_Program != 0){
-        glDeleteProgram(m_Program);
-    }
-    
 }
 
 void printGLInfo(){
@@ -73,36 +65,18 @@ bool MagicEngine::setupGraphics(int w, int h) {
     
     LOGI("\n");
     LOGI("setupGraphics(%d, %d)\n", w, h);
-    m_Program = createProgram(gVertexShader, gFragmentShader);
-    if (!m_Program) {
+
+    m_shader.makeProgram(gVertexShader, gFragmentShader);
+    if (!m_shader.isCompiled()){
         LOGE("Could not create program.\n");
         return false;
     }
-    glUseProgram(m_Program);
-
-    m_positionLoc = glGetAttribLocation(m_Program, "aPosition");
-    checkGlError("glGetAttribLocation aPosition");
-    if (m_positionLoc == -1) {
-        LOGE("Could not get attrib location for aPosition");
-        return false;
-    }
-    m_texCoordLoc = glGetAttribLocation(m_Program, "aTextureCoord");
-    checkGlError("glGetAttribLocation aTextureCoord");
-    if (m_texCoordLoc == -1) {
-        LOGE("Could not get attrib location for aTextureCoord");
-        return false;
-    }
-
-    m_viewprojLoc = glGetUniformLocation(m_Program, "uMVPMatrix");
-    checkGlError("glGetUniformLocation uMVPMatrix");
-    if (m_viewprojLoc == -1) {
-        LOGE("Could not get attrib location for uMVPMatrix");
-        return false;
-    }
+    
+    m_shader.use();
 
     glDisable(GL_DEPTH_TEST);
-//      glCullFace(GL_FRONT);
-//      glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
     //启用混合操作
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -110,6 +84,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
     m_ViewWidth = w;
     m_ViewHeight = h;
     m_PreviewTex = new Texture();
+    m_PreviewTex->init();
     m_fbo = new FramebufferObject(true);
     printGLInfo();
     resize(m_ViewWidth, m_ViewHeight);
@@ -120,10 +95,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
 void MagicEngine::resize( int w, int h )
 {
     //使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
-    GLfloat mvp[16];
-    matIdentity(mvp);
-    matOrtho(mvp, 0, w, 0, h, -10, 10);
-    glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
+    m_shader.ortho(0, w, 0, h, -10, 10);
     glViewport(0, 0, w, h);
     checkGlError("matOrtho");
 }
@@ -138,21 +110,19 @@ void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
         1.0, 1.0,
         1.0, 0.0,
     };
-    GLfloat texVertex[12] = {0};
+    GLfloat texVertex[8] = {0};
     GLint w,h;
     w = tex->m_Width/2;
     h = tex->m_Height/2;
 
-    texVertex[0] = posX-w; texVertex[1] = posY+h; texVertex[2] = 0;
-    texVertex[3] = posX-w; texVertex[4] = posY-h; texVertex[5] = 0;
-    texVertex[6] = posX+w; texVertex[7] = posY-h; texVertex[8] = 0;
-    texVertex[9] = posX+w; texVertex[10] = posY+h; texVertex[11] = 0;
+    texVertex[0] = posX-w; texVertex[1] = posY+h; 
+    texVertex[2] = posX-w; texVertex[3] = posY-h; 
+    texVertex[4] = posX+w; texVertex[5] = posY-h; 
+    texVertex[6] = posX+w; texVertex[7] = posY+h;
     
-    glEnableVertexAttribArray(m_positionLoc);
-    glEnableVertexAttribArray(m_texCoordLoc);
-    tex->bind();
-    glVertexAttribPointer(m_positionLoc, 3, GL_FLOAT, GL_FALSE, 0, texVertex);
-    glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, texCoord);
+    tex->bind(); 
+    glVertexAttribPointer(m_shader.getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, texVertex);
+    glVertexAttribPointer(m_shader.getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, texCoord);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
@@ -161,6 +131,9 @@ void MagicEngine::renderFrame( float delta )
     update(delta);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glViewport(0,0, m_ViewWidth, m_ViewHeight);
+    glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
     drawImage();
     drawUI();
     checkGlError("renderFrame");
@@ -200,8 +173,6 @@ void MagicEngine::generateMesh( int w, int h )
     int uSteps = MESH_HEIGHT*w/h;
     int vSteps = MESH_HEIGHT;
     m_Mesh = new MeshEngine(uSteps+1, vSteps+1);
-    m_Mesh->setPositionLoc(m_positionLoc);
-    m_Mesh->setTexCoordLoc(m_texCoordLoc);
     GLfloat x, y,u, v;
     for(int j = 0;j <= vSteps; j++){
         y = j*h/vSteps;
@@ -209,7 +180,7 @@ void MagicEngine::generateMesh( int w, int h )
         for(int i = 0; i <= uSteps; i++){
             x = i*w/uSteps;
             u = (GLfloat)i/uSteps;
-            m_Mesh->set(i,j,x,y,0,u,v);
+            m_Mesh->set(i,j,x,y,u,v);
         }
     }
     m_Mesh->backupOrigVertex();
@@ -282,6 +253,21 @@ void MagicEngine::makePicture( int w, int h )
     resize(m_ViewWidth, m_ViewHeight);
 }
 
+void MagicEngine::update( float delta )
+{
+    m_Mesh->update(delta);
+    static float rotateSpeed = 30;
+    static float scaleSpeed = 0.1;
+    m_testSprite.rotate(rotateSpeed*delta);
+    static float scale = 1.0;
+    
+    if (scale < 0.5 || scale > 1.5){
+        scaleSpeed = -scaleSpeed;
+    }
+    scale += scaleSpeed*delta;
+    m_testSprite.setScale(scale);
+}
+
 void MagicEngine::drawUI()
 {
 
@@ -289,20 +275,30 @@ void MagicEngine::drawUI()
 
 void MagicEngine::drawImage()
 {
-    glUseProgram(m_Program);
+    m_shader.use();
     m_PreviewTex->bind();
-    m_Mesh->draw();
-/*    drawTexture(m_PreviewTex, 0, 0);*/
+    m_Mesh->draw(&m_shader);
+    m_testSprite.draw(&m_shader);
+/*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
 
-void MagicEngine::setSaveImagePath( char* path )
+void MagicEngine::setResPath(const char* path )
 {
-    snprintf(m_saveImagePath, _MAX_PATH-1, "%s", path);
+    snprintf(m_resPath, _MAX_PATH-1, "%s", path);
     LOGI("setSaveImagePath : %s\n", path);
 }
 
-void MagicEngine::update( float delta )
+void MagicEngine::loadRes()
 {
-    m_Mesh->update(delta);
+    char path[_MAX_PATH];
+    m_testTexture.loadFromFile(makeResPath(path, "sprite.png"));
+    m_testSprite.setTexture(&m_testTexture);
+    m_testSprite.setPostion(m_ViewWidth/2, m_ViewHeight/2);
+}
+
+char* MagicEngine::makeResPath( char* path, const char* targetFile, int szBuffer/* = _MAX_PATH*/)
+{
+    snprintf(path, szBuffer, "%s/%s", m_resPath, targetFile);
+    return path;
 }
 

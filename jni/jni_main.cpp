@@ -2,14 +2,26 @@
 #include <string.h>
 
 MagicEngine g_MagicEngine;
-AndroidMethod g_AndroidMethod;
 AndroidCallBack g_CallBack;
+
+static JavaVM *g_JavaVM = 0;
+static jclass classOfMagicJNILib = 0;
+JNIEnv *env = 0;
+/*
+* Set some test stuff up.
+*
+* Returns the JNI version on success, -1 on failure.
+*/
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
+{
+    g_JavaVM = vm;
+    return JNI_VERSION_1_4;
+}
 
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
     g_MagicEngine.setupGraphics(width, height);
-    g_AndroidMethod.initJavaCallBack(env);
     g_MagicEngine.setCallBack(&g_CallBack);
 }
 
@@ -52,59 +64,78 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( J
 }
 
 
+
 bool AndroidCallBack::SaveImage( char* buffer, int w, int h, int format )
 {
-    return g_AndroidMethod.saveImage(buffer, w, h, format);
-}
-
-
-AndroidMethod::AndroidMethod()
-{
-    m_JniEnv = NULL;
-    m_JavaVM = NULL;
-}
-
-
-void AndroidMethod::initJavaCallBack(JNIEnv * env){
-    m_JniEnv = env;
-    m_JniEnv->GetJavaVM(&m_JavaVM);
-    m_JvmThread = pthread_self(); //记住当前JNI环境的线程
-    m_JniClass = env->FindClass("com/funny/magicamera/MagicJNILib");
-    jmethodID construction_id = env->GetMethodID(m_JniClass, "<init>", "()V"); 
-    m_JniObj = env->NewObject(m_JniClass, construction_id); 
-    m_JniMethod_playSound = env->GetMethodID(m_JniClass,"playSound","(I)V");
-    m_JniMethod_playMusic = env->GetMethodID(m_JniClass,"playMusic","(I)V");
-    m_JniMethod_saveImage = env->GetMethodID(m_JniClass,"saveImage","([BIII)Z");
-}
-
-void AndroidMethod::playSound(int soundId){
-    m_JniEnv->CallVoidMethod(m_JniObj, m_JniMethod_playSound, soundId); 
-}
-
-void AndroidMethod::playMusic(int musicId){
-    m_JniEnv->CallVoidMethod(m_JniObj, m_JniMethod_playMusic, musicId); 
-}
-
-bool AndroidMethod::saveImage( char* buffer, int w, int h, int format )
-{
-    bool bAttachThread = false;
-    if(m_JvmThread != pthread_self()){
-        m_JavaVM->AttachCurrentThread(&m_JniEnv, NULL);
-        bAttachThread = true;
+    jmethodID jniMethod_saveImage = getMethodID("saveImage","([BIII)Z");
+    if (!jniMethod_saveImage){
+        return false;
     }
     int szBuffer = w*h*4;
     if (format == FORMAT_RGBA) {
         szBuffer = w*h*4;
     }
-    jbyteArray jBuffer = m_JniEnv->NewByteArray(szBuffer);
-    jbyte* p_buffer = (jbyte*)m_JniEnv->GetPrimitiveArrayCritical(jBuffer, 0);
+    jbyteArray jBuffer = env->NewByteArray(szBuffer);
+    jbyte* p_buffer = (jbyte*)env->GetPrimitiveArrayCritical(jBuffer, 0);
     int szLine = w*4;
     for (int j = 0; j < h; j++){
         memcpy(p_buffer+szLine*j, buffer+szLine*(h-j-1), szLine);
     }
-    m_JniEnv->ReleasePrimitiveArrayCritical(jBuffer, (void*)p_buffer, 0);
-    bool result = m_JniEnv->CallBooleanMethod(m_JniObj, m_JniMethod_saveImage, jBuffer, w, h, format);
-    if (bAttachThread)
-        m_JavaVM->DetachCurrentThread();
+    env->ReleasePrimitiveArrayCritical(jBuffer, p_buffer, 0);
+    bool result = env->CallStaticBooleanMethod(classOfMagicJNILib, jniMethod_saveImage, jBuffer, w, h, format);
     return result;
 }
+
+void CheckException(const char* methond )
+{
+    if (env->ExceptionOccurred()){
+        LOGE("Jni Exception after %s\n", methond);
+    }
+}
+
+
+static jmethodID getMethodID(const char *methodName, const char *paramCode)
+{
+    jmethodID ret = 0;
+    // get jni environment and java class for Cocos2dxActivity
+    if (g_JavaVM->GetEnv((void**)&env, JNI_VERSION_1_4) != JNI_OK){
+        LOGE("Failed to get the environment using GetEnv()");
+        return 0;
+    }
+
+    if (g_JavaVM->AttachCurrentThread(&env, 0) < 0){
+        LOGE("Failed to get the environment using AttachCurrentThread()");
+        return 0;
+    }
+
+    classOfMagicJNILib = env->FindClass("com/funny/magicamera/MagicJNILib");
+    if (! classOfMagicJNILib){
+        LOGE("Failed to find class of com/funny/magicamera/MagicJNILib");
+        return 0;
+    }
+
+    if (env != 0 && classOfMagicJNILib != 0){
+        ret = env->GetStaticMethodID(classOfMagicJNILib, methodName, paramCode);
+    }
+
+    if (! ret){
+        LOGE("get method id of %s error", methodName);
+    }
+
+    return ret;
+}
+
+
+
+void playSound(int soundId){
+    jmethodID jniMethod = getMethodID("playSound","(I)V");
+    env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, soundId); 
+}
+
+void playMusic(int musicId){
+    jmethodID jniMethod = getMethodID("playMusic","(I)V");
+    env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, musicId); 
+}
+
+
+

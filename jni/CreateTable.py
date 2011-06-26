@@ -46,9 +46,9 @@ def main(args):
                 r = easeInOutSine(1.0 - r)*0.7
                 #r = (1.0 - r)
             if (x < const_rate_count - 1):
-                linestr = "%s %0.4f," % (linestr, r)
+                linestr = "%s %f," % (linestr, r)
             else:
-                linestr = "%s %0.4f},\n" % (linestr, r)
+                linestr = "%s %f},\n" % (linestr, r)
                 fh.writelines(linestr)
                 
     fh.writelines("};\n")    
