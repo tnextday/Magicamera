@@ -277,7 +277,9 @@ void MagicEngine::drawImage()
 {
     m_shader.use();
     m_PreviewTex->bind();
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m_Mesh->draw(&m_shader);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     m_testSprite.draw(&m_shader);
 /*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
