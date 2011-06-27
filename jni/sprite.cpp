@@ -330,3 +330,19 @@ void Sprite::setRegion( float u, float v, float u2, float v2 )
     m_vertices[U4] = u2;
     m_vertices[V4] = v2;
 }
+
+void Sprite::setRegion( int x, int y, int width, int height )
+{
+    TextureRegion::setRegion(x, y, width, height);
+    m_vertices[U1] = m_u;
+    m_vertices[V1] = m_v2;
+
+    m_vertices[U2] = m_u;
+    m_vertices[V2] = m_v;
+
+    m_vertices[U3] = m_u2;
+    m_vertices[V3] = m_v;
+
+    m_vertices[U4] = m_u2;
+    m_vertices[V4] = m_v2;
+}

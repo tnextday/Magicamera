@@ -32,8 +32,6 @@ struct rect_t{
 
 class Sprite : public TextureRegion{
 private:
-    GLfloat     m_u, m_v;
-    GLfloat     m_u2, m_v2;
     GLfloat     m_x, m_y;
     GLfloat     m_width, m_height;
     GLfloat     m_originX, m_originY;
@@ -69,6 +67,7 @@ public:
     float getY();
     void getBoundingRect(rect_t &rect);
     void setRegion (float u, float v, float u2, float v2);
+    void setRegion(int x, int y, int width, int height);
 private:
     void init(int srcX, int srcY, int srcWidth, int srcHeight);
 };

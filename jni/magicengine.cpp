@@ -256,12 +256,12 @@ void MagicEngine::makePicture( int w, int h )
 void MagicEngine::update( float delta )
 {
     m_Mesh->update(delta);
-    static float rotateSpeed = 30;
-    static float scaleSpeed = 0.1;
+    static float rotateSpeed = 50;
+    static float scaleSpeed = 1;
     m_testSprite.rotate(rotateSpeed*delta);
-    static float scale = 1.0;
+    static float scale = 2.0;
     
-    if (scale < 0.5 || scale > 1.5){
+    if (scale < 0.5 || scale > 2.0){
         scaleSpeed = -scaleSpeed;
     }
     scale += scaleSpeed*delta;
