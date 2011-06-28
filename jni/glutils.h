@@ -28,7 +28,7 @@ GLuint createProgram(const char* pVertexSource, const char* pFragmentSource);
 void printGLString(const char *name, GLenum s);
 void checkGlError(const char* op);
 bool checkIfSupportsExtension(const char *extension);
-
+void printGLColorSpaceInfo();
 #ifdef __cplusplus
 }
 #endif

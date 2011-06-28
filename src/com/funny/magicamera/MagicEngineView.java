@@ -39,6 +39,7 @@ public class MagicEngineView extends GLSurfaceView
 
     public MagicEngineView(Context context) {
         super(context);
+        this.setEGLConfigChooser(8, 8, 8, 0, 16, 0);
         this.setEGLContextClientVersion(2);
         setRenderer(this);
         inputEvent.setInputProcessor(this);

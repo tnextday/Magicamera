@@ -23,9 +23,16 @@ public:
     void setRegion(int x, int y, int width, int height);
     void setRegion(float u, float v, float u2, float v2);
     void setRegion(Texture *tex);
+    int getRegionX ();
+    int getRegionY ();
+    int getRegionWidth ();
+    int getRegionHeight ();
     Texture* getTexture();
     void setTexture(Texture *tex);
     void flip(bool x, bool y);
-
+    
+    //返回一个TextureRegion数组，数组长度为count
+    TextureRegion* split(int tileWidth, int tileHeight, int *count);
+    static TextureRegion* split(Texture *tex, int tileWidth, int tileHeight, int *count);
 };
 #endif // _textureregion_h_

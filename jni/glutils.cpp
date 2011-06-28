@@ -21,6 +21,19 @@ void printGLString(const char *name, GLenum s) {
 }
 
 
+void printGLColorSpaceInfo(){
+    GLint param;
+    glGetIntegerv(GL_RED_BITS, &param);//缓冲red位数
+    LOGI("Red bits: %d\n", param);
+    glGetIntegerv(GL_GREEN_BITS, &param);//缓冲green位数
+    LOGI("Green bits: %d\n", param);
+    glGetIntegerv(GL_BLUE_BITS, &param);
+    LOGI("Blue bits: %d\n", param);
+    glGetIntegerv(GL_ALPHA_BITS, &param);//缓冲Alpha位数
+    LOGI("Alpha bits: %d\n", param);
+}
+
+
 const char* glErrorString(GLenum errcode)
 {
 

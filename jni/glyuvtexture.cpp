@@ -101,6 +101,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     m_shader.use();
     glDisable(GL_DEPTH_TEST);
     m_fbo->bind();
+    //printGLColorSpaceInfo();
     glViewport(0, 0, m_width, m_height);
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

@@ -52,6 +52,31 @@ Texture* TextureRegion::getTexture()
     return m_texture;
 }
 
+int TextureRegion::getRegionX () {
+        return (int)(m_u * m_texture->getWidth());
+}
+
+int TextureRegion::getRegionY () {
+        return (int)(m_v * m_texture->getHeight());
+}
+
+
+/**
+ * Returns the region's width. May be negative if the texture region is flipped horizontally.
+ */
+int TextureRegion::getRegionWidth () {
+        return (int)((m_u2 - m_u) * m_texture->getWidth());
+}
+
+/**
+ * Returns the region's height. May be negative if the texture region is flipped horizontally.
+ */
+int TextureRegion::getRegionHeight () {
+        return (int)((m_v2 - m_v) * m_texture->getHeight());
+}
+
+
+
 void TextureRegion::flip( bool x, bool y )
 {
     if (x) {
@@ -69,4 +94,47 @@ void TextureRegion::flip( bool x, bool y )
 void TextureRegion::setTexture( Texture *tex )
 {
     m_texture = tex;
+}
+
+TextureRegion* TextureRegion::split( int tileWidth, int tileHeight, int *count)
+{
+    int x = getRegionX();
+    int y = getRegionY();
+    int width = getRegionWidth();
+    int height = getRegionHeight();
+
+    if(width < 0) {
+        x = x - width;
+        width = -width;
+    }
+
+    if(height < 0) {
+        y = y - height;
+        height = -height;
+    }
+
+    int rows = height / tileHeight;
+    int cols = width / tileWidth;           
+
+    int startX = x;
+    int idx = 0;
+    TextureRegion *tiles = new TextureRegion[rows*cols];                
+    for(int row = 0; row < rows; row++, y += tileHeight) {
+        x = startX;
+        for(int col = 0; col < cols; col++, x += tileWidth) {
+            tiles[idx].setTexture(m_texture);
+            tiles[idx].setRegion(x, y, tileWidth, tileHeight);
+            idx++;
+        }
+    }
+    *count =  rows*cols;
+    return tiles;
+
+}
+
+TextureRegion* TextureRegion::split( Texture *tex, int tileWidth, int tileHeight, int *count)
+{
+    TextureRegion tr;
+    tr.setRegion(tex);
+    return tr.split(tileWidth, tileHeight, count);
 }

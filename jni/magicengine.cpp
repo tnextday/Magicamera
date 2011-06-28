@@ -45,17 +45,6 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_fbo);
 }
 
-void printGLInfo(){
-    GLint param;
-    glGetIntegerv(GL_RED_BITS, &param);//缓冲red位数
-    LOGI("Red bits: %d\n", param);
-    glGetIntegerv(GL_GREEN_BITS, &param);//缓冲green位数
-    LOGI("Green bits: %d\n", param);
-    glGetIntegerv(GL_BLUE_BITS, &param);
-    LOGI("Blue bits: %d\n", param);
-    glGetIntegerv(GL_ALPHA_BITS, &param);//缓冲Alpha位数
-    LOGI("Alpha bits: %d\n", param);
-}
 
 bool MagicEngine::setupGraphics(int w, int h) {
     printGLString("Version", GL_VERSION);
@@ -86,7 +75,7 @@ bool MagicEngine::setupGraphics(int w, int h) {
     m_PreviewTex = new Texture();
     m_PreviewTex->init();
     m_fbo = new FramebufferObject(true);
-    printGLInfo();
+    printGLColorSpaceInfo();
     resize(m_ViewWidth, m_ViewHeight);
     return true;
 }
@@ -230,10 +219,17 @@ void MagicEngine::setCallBack( SaveImageCallBack* callback )
 
 void MagicEngine::makePicture( int w, int h )
 {
+    w *= 2;
+    h *= 2;
+    //FBO只支持RGB565...
+    //TODO 支持RGB888
     m_fbo->resizeBuffers(w, h);
     m_fbo->bind();
+    glViewport(0,0,w, h);
+    //TODO 可变的大小
+    m_shader.ortho(0, 640, 0, 480, -10, 10);
+    printGLColorSpaceInfo();
     glDisable(GL_DEPTH_TEST);
-    resize(w, h);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     checkGlError("makePicture_0");
     glClear(GL_COLOR_BUFFER_BIT);
@@ -244,12 +240,13 @@ void MagicEngine::makePicture( int w, int h )
 //    GLint format, type;
 //     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
 //     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
+    
     glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     if(m_saveImage){
         m_saveImage->SaveImage((char*)pixels, w, h, FORMAT_RGBA);
     }
     delete[] pixels;
-    m_fbo->unbind();
+    //m_fbo->unbind();
     resize(m_ViewWidth, m_ViewHeight);
 }
 
@@ -257,15 +254,15 @@ void MagicEngine::update( float delta )
 {
     m_Mesh->update(delta);
     static float rotateSpeed = 50;
-    static float scaleSpeed = 1;
-    m_testSprite.rotate(rotateSpeed*delta);
-    static float scale = 2.0;
-    
-    if (scale < 0.5 || scale > 2.0){
-        scaleSpeed = -scaleSpeed;
-    }
-    scale += scaleSpeed*delta;
-    m_testSprite.setScale(scale);
+    static float scaleSpeed = 1.5;
+//     m_testSprite.rotate(rotateSpeed*delta);
+//     static float scale = 1.0;
+//     
+//     if (scale < 0.2 || scale > 1.0){
+//         scaleSpeed = -scaleSpeed;
+//     }
+//     scale += scaleSpeed*delta;
+//     m_testSprite.setScale(scale);
 }
 
 void MagicEngine::drawUI()
@@ -279,7 +276,7 @@ void MagicEngine::drawImage()
     m_PreviewTex->bind();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m_Mesh->draw(&m_shader);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_DST_COLOR);
     m_testSprite.draw(&m_shader);
 /*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
