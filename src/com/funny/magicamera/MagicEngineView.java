@@ -6,11 +6,16 @@ import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.opengl.GLSurfaceView;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 import java.io.*;
 import java.util.LinkedList;
@@ -23,14 +28,16 @@ import java.util.List;
  */
 public class MagicEngineView extends GLSurfaceView
         implements GLSurfaceView.Renderer, Camera.PreviewCallback, InputEvent.InputProcessor{
-
+    private static String TAG = "MagicEngineView";
+    public static int SDK_Version = Build.VERSION.SDK_INT;
 	private long lastFrameTime = System.nanoTime();
-	private float deltaTime = 0;
+	private float deltaTime = 0f;
     boolean m_bUseCamera = true ;
 //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
     final static int BufferCount = 2;
-    LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
+    //2.2及以上版本才用
+    LinkedList<byte[]> m_buffers = null;
     int     m_previewHeight = 480;
     int     m_previewWidth = 640;
 
@@ -39,8 +46,14 @@ public class MagicEngineView extends GLSurfaceView
 
     public MagicEngineView(Context context) {
         super(context);
-        this.setEGLConfigChooser(8, 8, 8, 0, 16, 0);
-        this.setEGLContextClientVersion(2);
+        //this.setEGLConfigChooser(8, 8, 8, 0, 16, 0);
+        if(SDK_Version >= 8 ){
+            this.setEGLContextClientVersion(2);
+            m_buffers = new LinkedList<byte[]>();
+        }else{
+            setEGLContextFactory(new ContextFactory20());
+        }
+
         setRenderer(this);
         inputEvent.setInputProcessor(this);
     }
@@ -64,7 +77,9 @@ public class MagicEngineView extends GLSurfaceView
         }
         if (bytes != null){
             MagicJNILib.uploadPreviewData(bytes, bytes.length);
-            m_Camera.addCallbackBuffer(bytes);
+            if (SDK_Version >= 8){
+                m_Camera.addCallbackBuffer(bytes);
+            }
         }
 
     }
@@ -116,7 +131,6 @@ public class MagicEngineView extends GLSurfaceView
         if (szRead > 0){
             MagicJNILib.uploadPreviewData(buffer, buffer.length);
         }
-        buffer = null;
     }
 
 
@@ -139,43 +153,78 @@ public class MagicEngineView extends GLSurfaceView
     }
 
     public void startCamera(){
-        m_Camera = Camera.open();
-        
-        // Now that the size is known, set up the camera parameters and begin
-        // the preview.
-        Camera.Parameters parameters = m_Camera.getParameters();
+        //TODO 设置使用前置摄像头
+        new OpenCameraTask().execute(0);
+    }
 
-        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-//        List<Size> psizes = parameters.getSupportedPictureSizes();
-        List<Integer> formats = parameters.getSupportedPreviewFormats();
+    private class OpenCameraTask extends AsyncTask<Integer, Void, Void>{
 
-        //formats  = parameters.getSupportedPictureFormats();
-        Camera.Size optimalSize = getOptimalPreviewSize(sizes, 640, 480);
-        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-        if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)){
-            parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
+
+        @Override
+        protected void onPreExecute() {
+            //显示等待画面
         }
-        m_Camera.setParameters(parameters);
-        
-        parameters = m_Camera.getParameters();
-        Camera.Size  previewSize = parameters.getPreviewSize();
-        m_previewWidth = previewSize.width;
-        m_previewHeight = previewSize.height;
-        int previewFormat = parameters.getPreviewFormat();
-        int szBuffer = previewSize.width*previewSize.height*ImageFormat.getBitsPerPixel(previewFormat)/8;
-        m_Camera.setPreviewCallbackWithBuffer(this);
-        for (int i = 0; i < BufferCount; i ++){
-        	m_Camera.addCallbackBuffer(new byte[szBuffer]);
+
+        protected Void doInBackground(Integer... ints) {
+            if(SDK_Version >= 9){
+                int cameraId = ints[0];
+                m_Camera.open(cameraId);
+            }else{
+                m_Camera = Camera.open();
+            }
+
+            // Now that the size is known, set up the camera parameters and begin
+            // the preview.
+            Camera.Parameters parameters = m_Camera.getParameters();
+
+            List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+    //        List<Size> psizes = parameters.getSupportedPictureSizes();
+            List<Integer> formats = parameters.getSupportedPreviewFormats();
+
+            //formats  = parameters.getSupportedPictureFormats();
+            Camera.Size optimalSize = getOptimalPreviewSize(sizes, 640, 480);
+            parameters.setPreviewSize(optimalSize.width, optimalSize.height);
+            if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)){
+                parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
+            }
+            m_Camera.setParameters(parameters);
+
+            parameters = m_Camera.getParameters();
+            Camera.Size  previewSize = parameters.getPreviewSize();
+            m_previewWidth = previewSize.width;
+            m_previewHeight = previewSize.height;
+            int previewFormat = parameters.getPreviewFormat();
+            int szBuffer = previewSize.width*previewSize.height*ImageFormat.getBitsPerPixel(previewFormat)/8;
+            //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
+            if(SDK_Version >= 8){
+                m_Camera.setPreviewCallbackWithBuffer(MagicEngineView.this);
+                for (int i = 0; i < BufferCount; i ++){
+                    m_Camera.addCallbackBuffer(new byte[szBuffer]);
+                }
+            }else{
+                m_Camera.setPreviewCallback(MagicEngineView.this);
+            }
+
+            MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
+
+            m_Camera.startPreview();
+            return null;
         }
-        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
-        
-        m_Camera.startPreview();
+
+        protected void onPostExecute(long result) {
+            //运行结束
+        }
     }
 
     public void stopCamera(){
         if (m_Camera == null) return;
         m_Camera.stopPreview();
-        m_Camera.setPreviewCallbackWithBuffer(null);
+        if (SDK_Version >= 8){
+            m_Camera.setPreviewCallbackWithBuffer(null);
+        }else{
+            m_Camera.setPreviewCallback(null);
+        }
+
         m_Camera.release();
         m_Camera = null;
     }
@@ -280,5 +329,26 @@ public class MagicEngineView extends GLSurfaceView
     	}
     }
 
+    private static class ContextFactory20 implements GLSurfaceView.EGLContextFactory {
+        private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
+        public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
+            Log.w(TAG, "creating OpenGL ES 2.0 context");
+            checkEglError("Before eglCreateContext", egl);
+            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE };
+            EGLContext context = egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, attrib_list);
+            checkEglError("After eglCreateContext", egl);
+            return context;
+        }
 
+        public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) {
+            egl.eglDestroyContext(display, context);
+        }
+    }
+
+    private static void checkEglError(String prompt, EGL10 egl) {
+        int error;
+        while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) {
+            Log.e(TAG, String.format("%s: EGL error: 0x%x", prompt, error));
+        }
+    }
 }
