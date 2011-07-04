@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="lib" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="Magic" />
     <option name="TAB_LOG_LEVEL" value="INFO" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="DELETED" beforePath="E:\workspace\Magicamera\src\com\funny\magicamera\GL20SurfaceView.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iml" afterPath="$PROJECT_DIR$/Magicamera.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.ipr" afterPath="$PROJECT_DIR$/Magicamera.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntMap.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntMap.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/utils/MathUtils.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/MathUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/utils/SoundEngine.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/utils/SoundEngine.java" />
     </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,8 +89,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -95,25 +102,63 @@
       <file leaf-file-name="MagicActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.0">
+            <state line="16" column="7" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MagicEngineView.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MagicEngineView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="27" selection-start="2245" selection-end="2245" vertical-scroll-proportion="0.33245382">
+            <state line="285" column="22" selection-start="9765" selection-end="9765" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Pool.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="76" column="16" selection-start="2445" selection-end="2445" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <file leaf-file-name="IntArray.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="19" selection-start="911" selection-end="911" vertical-scroll-proportion="0.0">
+            <state line="188" column="33" selection-start="6016" selection-end="6016" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Array.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="186" column="19" selection-start="6374" selection-end="6374" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MathUtils.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/MathUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="180" column="64" selection-start="6128" selection-end="6128" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InputEvent.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="16" selection-start="820" selection-end="820" vertical-scroll-proportion="0.33163264">
               <folding />
             </state>
           </provider>
@@ -122,7 +167,7 @@
       <file leaf-file-name="MagicJNILib.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="55" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.0">
+            <state line="40" column="54" selection-start="1253" selection-end="1253" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -138,17 +183,18 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntMap.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/SoundEngine.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/SoundEngine.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/GL20SurfaceView.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java" />
       </list>
     </option>
   </component>
@@ -192,8 +238,9 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -236,7 +283,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -255,8 +301,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Android Application.Magicamera">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -432,25 +478,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32755905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32755905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30645162" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3055118" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2684729" sideWeight="0.07874016" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27504104" sideWeight="0.41417322" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2684729" sideWeight="0.5811024" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27504104" sideWeight="0.67244095" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36850393" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.9401575" sideWeight="0.49671593" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32840723" sideWeight="0.81574804" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -481,7 +527,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[add]加入2.1版本支持，并且做了版本兼容&#10;[add]异步打开摄像头" />
+    <option name="LAST_COMMIT_MESSAGE" value="[add]多版本兼容初步完成（2.1,2.3并未测试）" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -497,6 +543,7 @@
     <MESSAGE value="[fixed]android 输入线程同步问题" />
     <MESSAGE value="[update]改用静态方法调用javacode，不用new boject了" />
     <MESSAGE value="[add]加入2.1版本支持，并且做了版本兼容&#10;[add]异步打开摄像头" />
+    <MESSAGE value="[add]多版本兼容初步完成（2.1,2.3并未测试）" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -509,31 +556,6 @@
     <entry file="file://$PROJECT_DIR$/default.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="255" column="5" selection-start="7416" selection-end="7416" vertical-scroll-proportion="0.30664396" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="36" selection-start="2770" selection-end="2770" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/MathUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="13" selection-start="960" selection-end="960" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="793" selection-end="793" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="27" selection-start="1177" selection-end="1177" vertical-scroll-proportion="0.28279388" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/IntMap.java">
@@ -556,33 +578,79 @@
         <state line="100" column="91" selection-start="4720" selection-end="4720" vertical-scroll-proportion="0.5960854" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="55" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="jar://D:/android-sdk-windows/platforms/android-8/android.jar!/android/os/Build.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="32" selection-start="1956" selection-end="1956" vertical-scroll-proportion="0.7930435">
+        <state line="47" column="32" selection-start="1956" selection-end="1956" vertical-scroll-proportion="0.7930435" />
+      </provider>
+    </entry>
+    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/view/View.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="282" column="41" selection-start="13402" selection-end="13402" vertical-scroll-proportion="0.3321976">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="54" selection-start="1253" selection-end="1253" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="47" selection-start="636" selection-end="636" vertical-scroll-proportion="0.5409836">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="19" selection-start="911" selection-end="911" vertical-scroll-proportion="0.0">
+        <state line="16" column="7" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicEngineView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="27" selection-start="2245" selection-end="2245" vertical-scroll-proportion="0.33245382">
+        <state line="285" column="22" selection-start="9765" selection-end="9765" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Pool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="16" selection-start="2445" selection-end="2445" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/IntArray.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="188" column="33" selection-start="6016" selection-end="6016" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/Array.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="186" column="19" selection-start="6374" selection-end="6374" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/utils/MathUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="64" selection-start="6128" selection-end="6128" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/InputEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="16" selection-start="820" selection-end="820" vertical-scroll-proportion="0.33163264">
           <folding />
         </state>
       </provider>

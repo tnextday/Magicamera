@@ -6,7 +6,6 @@ import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.opengl.GLSurfaceView;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,41 +26,44 @@ import java.util.List;
  * Description:
  */
 public class MagicEngineView extends GLSurfaceView
-        implements GLSurfaceView.Renderer, Camera.PreviewCallback, InputEvent.InputProcessor{
-    private static String TAG = "MagicEngineView";
+        implements GLSurfaceView.Renderer, Camera.PreviewCallback, InputEvent.InputProcessor {
     public static int SDK_Version = Build.VERSION.SDK_INT;
-	private long lastFrameTime = System.nanoTime();
-	private float deltaTime = 0f;
-    boolean m_bUseCamera = true ;
-//    int m_CameraId; //use above 2.3
+    private long lastFrameTime = System.nanoTime();
+    private float deltaTime = 0.0f;
+    boolean m_bUseCamera = true;
+    //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
     final static int BufferCount = 2;
     //2.2及以上版本才用
     LinkedList<byte[]> m_buffers = null;
-    int     m_previewHeight = 480;
-    int     m_previewWidth = 640;
+    int m_previewHeight = 480;
+    int m_previewWidth = 640;
 
     private InputEvent inputEvent = new InputEvent();
 
+    enum CameraType {
+        FACING_BACK, FACING_FRONT
+    }
 
     public MagicEngineView(Context context) {
         super(context);
         //this.setEGLConfigChooser(8, 8, 8, 0, 16, 0);
-        if(SDK_Version >= 8 ){
+        if (SDK_Version >= 8) {
             this.setEGLContextClientVersion(2);
             m_buffers = new LinkedList<byte[]>();
-        }else{
+        } else {
             setEGLContextFactory(new ContextFactory20());
         }
 
         setRenderer(this);
         inputEvent.setInputProcessor(this);
     }
-    
+
     static final FPSLogger fps = new FPSLogger();
+
     public void onDrawFrame(GL10 gl) {
-    	long time = System.nanoTime();
-    	deltaTime = (time - lastFrameTime) / 1000000000.0f;
+        long time = System.nanoTime();
+        deltaTime = (time - lastFrameTime) / 1000000000.0f;
         lastFrameTime = time;
         inputEvent.processEvents();
         checkFrameBuffer();
@@ -70,14 +72,14 @@ public class MagicEngineView extends GLSurfaceView
     }
 
 
-    public void checkFrameBuffer(){
+    public void checkFrameBuffer() {
         byte[] bytes;
-        synchronized (m_buffers){
+        synchronized (m_buffers) {
             bytes = m_buffers.poll();
         }
-        if (bytes != null){
+        if (bytes != null) {
             MagicJNILib.uploadPreviewData(bytes, bytes.length);
-            if (SDK_Version >= 8){
+            if (SDK_Version >= 8) {
                 m_Camera.addCallbackBuffer(bytes);
             }
         }
@@ -85,18 +87,19 @@ public class MagicEngineView extends GLSurfaceView
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+        Log.d(MagicActivity.TAG, String.format("onSurfaceChanged: %d,%d", width, height));
         MagicJNILib.init(width, height);
         MagicJNILib.setSaveImagePath("/sdcard".getBytes());
-        if (m_bUseCamera){
-            startCamera();
-        }else{
+        if (m_bUseCamera) {
+            startCamera(CameraType.FACING_FRONT);
+        } else {
             setLocalTexture("/sdcard/test/tex.jpg");
         }
         this.lastFrameTime = System.nanoTime();
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-
+        Log.d(MagicActivity.TAG, "onSurfaceCreated");
     }
 
 
@@ -107,14 +110,14 @@ public class MagicEngineView extends GLSurfaceView
         super.surfaceDestroyed(holder);
     }
 
-    public void setLocalTexture(String path){
+    public void setLocalTexture(String path) {
         Bitmap bitmap = null;
 //        bitmap = BitmapFactory.decodeFile(path);
 //        m_previewHeight = bitmap.getHeight();
 //        m_previewWidth = bitmap.getWidth();
 //        bitmap.recycle();
         MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, MagicJNILib.IMAGE_FORMAT_PACKET);
-        InputStream inputStream = null;
+        InputStream inputStream;
 
         byte[] buffer = null;
         int szRead = 0;
@@ -126,9 +129,9 @@ public class MagicEngineView extends GLSurfaceView
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-        if (szRead > 0){
+        if (szRead > 0) {
             MagicJNILib.uploadPreviewData(buffer, buffer.length);
         }
     }
@@ -152,24 +155,25 @@ public class MagicEngineView extends GLSurfaceView
         return super.onTouchEvent(e);
     }
 
-    public void startCamera(){
-        //TODO 设置使用前置摄像头
-        new OpenCameraTask().execute(0);
-    }
-
-    private class OpenCameraTask extends AsyncTask<Integer, Void, Void>{
-
-
-        @Override
-        protected void onPreExecute() {
-            //显示等待画面
+    public void startCamera(CameraType cameraType) {
+        int cameraId = 0;
+        if (SDK_Version >= 9) {
+            int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
+            if (cameraType == CameraType.FACING_FRONT){
+                facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
+            }
+            int numberOfCameras = Camera.getNumberOfCameras();
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            for (int i = 0; i < numberOfCameras; i++) {
+                Camera.getCameraInfo(i, cameraInfo);
+                if (cameraInfo.facing == facing) {
+                    cameraId = i;
+                }
+            }
         }
-
-        protected Void doInBackground(Integer... ints) {
-            if(SDK_Version >= 9){
-                int cameraId = ints[0];
-                m_Camera.open(cameraId);
-            }else{
+        if (SDK_Version >= 9) {
+                m_Camera = Camera.open(cameraId);
+            } else {
                 m_Camera = Camera.open();
             }
 
@@ -178,55 +182,52 @@ public class MagicEngineView extends GLSurfaceView
             Camera.Parameters parameters = m_Camera.getParameters();
 
             List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-    //        List<Size> psizes = parameters.getSupportedPictureSizes();
+            //        List<Size> psizes = parameters.getSupportedPictureSizes();
             List<Integer> formats = parameters.getSupportedPreviewFormats();
 
             //formats  = parameters.getSupportedPictureFormats();
             Camera.Size optimalSize = getOptimalPreviewSize(sizes, 640, 480);
             parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-            if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)){
+            if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
                 parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
             }
             m_Camera.setParameters(parameters);
 
             parameters = m_Camera.getParameters();
-            Camera.Size  previewSize = parameters.getPreviewSize();
+            Camera.Size previewSize = parameters.getPreviewSize();
             m_previewWidth = previewSize.width;
             m_previewHeight = previewSize.height;
             int previewFormat = parameters.getPreviewFormat();
-            int szBuffer = previewSize.width*previewSize.height*ImageFormat.getBitsPerPixel(previewFormat)/8;
+            int szBuffer = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8;
             //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
-            if(SDK_Version >= 8){
+            if (SDK_Version >= 8) {
                 m_Camera.setPreviewCallbackWithBuffer(MagicEngineView.this);
-                for (int i = 0; i < BufferCount; i ++){
+                for (int i = 0; i < BufferCount; i++) {
                     m_Camera.addCallbackBuffer(new byte[szBuffer]);
                 }
-            }else{
+            } else {
                 m_Camera.setPreviewCallback(MagicEngineView.this);
             }
-
             MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
-
             m_Camera.startPreview();
-            return null;
-        }
-
-        protected void onPostExecute(long result) {
-            //运行结束
-        }
     }
 
-    public void stopCamera(){
+    public void stopCamera() {
         if (m_Camera == null) return;
         m_Camera.stopPreview();
-        if (SDK_Version >= 8){
+        if (SDK_Version >= 8) {
             m_Camera.setPreviewCallbackWithBuffer(null);
-        }else{
+        } else {
             m_Camera.setPreviewCallback(null);
         }
 
         m_Camera.release();
         m_Camera = null;
+    }
+
+    public void switchCamera(CameraType cameraType){
+        stopCamera();
+        switchCamera(cameraType);
     }
 
 
@@ -264,25 +265,25 @@ public class MagicEngineView extends GLSurfaceView
     }
 
     int frameCount = 0;
-    
-    public void Save2File(byte[] bytes){
-    	File texFile = new File(String.format("/sdcard/nv21/%03d.nv21", frameCount));
-    	frameCount++;
-    	try {
-			texFile.createNewFile();
-			FileOutputStream fos = new FileOutputStream(texFile);
-			fos.write(bytes);
-			fos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+
+    public void Save2File(byte[] bytes) {
+        File texFile = new File(String.format("/sdcard/nv21/%03d.nv21", frameCount));
+        frameCount++;
+        try {
+            texFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(texFile);
+            fos.write(bytes);
+            fos.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
-    
+
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
-        synchronized (m_buffers){
+        synchronized (m_buffers) {
             m_buffers.add(bytes);
         }
         //Log.d("FPSLogger", "onPreviewFrame");
@@ -308,33 +309,34 @@ public class MagicEngineView extends GLSurfaceView
     }
 
     public static class FPSLogger {
-    	long startTime;
-    	int frames;
-    	
-    	public FPSLogger() {
-    		startTime = System.nanoTime();
-    		frames = 0;
-    	}
-    	
-    	/**
-    	 * Logs the current frames per second to the console.
-    	 */
-    	public void log() {
-    		frames++;
-    		if(System.nanoTime()-startTime > 1000000000) {
-    			Log.i("FPSLogger", "fps: " + frames);
-    			frames = 0;
-    			startTime = System.nanoTime();
-    		}
-    	}
+        long startTime;
+        int frames;
+
+        public FPSLogger() {
+            startTime = System.nanoTime();
+            frames = 0;
+        }
+
+        /**
+         * Logs the current frames per second to the console.
+         */
+        public void log() {
+            frames++;
+            if (System.nanoTime() - startTime > 1000000000) {
+                Log.i("FPSLogger", "fps: " + frames);
+                frames = 0;
+                startTime = System.nanoTime();
+            }
+        }
     }
 
     private static class ContextFactory20 implements GLSurfaceView.EGLContextFactory {
         private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
+
         public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
-            Log.w(TAG, "creating OpenGL ES 2.0 context");
+            Log.w(MagicActivity.TAG, "creating OpenGL ES 2.0 context");
             checkEglError("Before eglCreateContext", egl);
-            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE };
+            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE};
             EGLContext context = egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, attrib_list);
             checkEglError("After eglCreateContext", egl);
             return context;
@@ -348,7 +350,7 @@ public class MagicEngineView extends GLSurfaceView
     private static void checkEglError(String prompt, EGL10 egl) {
         int error;
         while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) {
-            Log.e(TAG, String.format("%s: EGL error: 0x%x", prompt, error));
+            Log.e(MagicActivity.TAG, String.format("%s: EGL error: 0x%x", prompt, error));
         }
     }
 }

@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, MagicActivity!</string>
     <string name="app_name">Magicamera</string>
+    <string name="msg_open_camera">正在打开摄像头</string>
 </resources>
