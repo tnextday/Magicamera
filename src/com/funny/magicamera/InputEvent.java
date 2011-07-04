@@ -30,8 +30,6 @@ public class InputEvent {
         synchronized (this) {
             if (processor != null) {
                 final InputProcessor processor = this.processor;
-
-                int len = touchEvents.size();
                 for (TouchEvent e : touchEvents) {
                     switch (e.type) {
                         case TouchEvent.TOUCH_DOWN:
@@ -46,7 +44,6 @@ public class InputEvent {
                     usedTouchEvents.free(e);
                 }
             } else {
-                int len = touchEvents.size();
                 for (TouchEvent e : touchEvents) {
                     usedTouchEvents.free(e);
                 }
