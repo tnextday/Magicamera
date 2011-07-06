@@ -4,12 +4,22 @@
 
 #include "texture.h"
 
+const int U1 = 0;
+const int V1 = 1;
+const int U2 = 2;
+const int V2 = 3;
+const int U3 = 4;
+const int V3 = 5;
+const int U4 = 6;
+const int V4 = 7;
+
 class TextureRegion
 {
 protected:
     Texture *m_texture;
     float m_u, m_v;
     float m_u2, m_v2;
+    GLfloat     m_texCoords[8];
 public:
     TextureRegion(void);
     TextureRegion(Texture *tex);
@@ -30,6 +40,11 @@ public:
     Texture* getTexture();
     void setTexture(Texture *tex);
     void flip(bool x, bool y);
+    void rotate90 (bool clockwise);
+
+    void copy(TextureRegion *tr);
+
+    GLfloat* getTexCoords();
     
     //返回一个TextureRegion数组，数组长度为count
     TextureRegion* split(int tileWidth, int tileHeight, int *count);

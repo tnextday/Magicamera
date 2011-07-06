@@ -14,14 +14,7 @@ const int X3 = 4;
 const int Y3 = 5;
 const int X4 = 6;
 const int Y4 = 7;
-const int U1 = 8;
-const int V1 = 9;
-const int U2 = 10;
-const int V2 = 11;
-const int U3 = 12;
-const int V3 = 13;
-const int U4 = 14;
-const int V4 = 15;
+
 
 struct rect_t{
     GLfloat x;
@@ -38,7 +31,7 @@ private:
     GLfloat     m_rotation;
     GLfloat     m_scaleX, m_scaleY;
     bool        m_dirty;
-    GLfloat     m_vertices[16];
+    GLfloat     m_vertices[8];
 public:
     Sprite();
     Sprite(Texture *tex);
@@ -59,15 +52,11 @@ public:
     void draw(BaseShader *shader);
     //Vertices的排列顺序为(x1y1x2y2x3y3x4y4u1v1u2v2u3v3u4v4),不是交替排列的
     GLfloat* getVertices ();
-    GLfloat* getPosVertices();
-    GLfloat* getTexCoords();
-    void flip (bool x, bool y);
-    void rotate90 (bool clockwise);
+    
     float getX();
     float getY();
     void getBoundingRect(rect_t &rect);
-    void setRegion (float u, float v, float u2, float v2);
-    void setRegion(int x, int y, int width, int height);
+
 private:
     void init(int srcX, int srcY, int srcWidth, int srcHeight);
 };

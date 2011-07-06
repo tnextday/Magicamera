@@ -1,5 +1,6 @@
 #include "textureregion.h"
 #include <stdio.h>
+#include <string.h>
 
 TextureRegion::TextureRegion(void)
 {
@@ -39,6 +40,18 @@ void TextureRegion::setRegion( float u, float v, float u2, float v2 )
     m_v = v;
     m_u2 = u2;
     m_v2 = v2;
+
+    m_texCoords[U1] = u;
+    m_texCoords[V1] = v2;
+
+    m_texCoords[U2] = u;
+    m_texCoords[V2] = v;
+
+    m_texCoords[U3] = u2;
+    m_texCoords[V3] = v;
+
+    m_texCoords[U4] = u2;
+    m_texCoords[V4] = v2;
 }
 
 void TextureRegion::setRegion( Texture *tex )
@@ -75,20 +88,26 @@ int TextureRegion::getRegionHeight () {
         return (int)((m_v2 - m_v) * m_texture->getHeight());
 }
 
-
-
 void TextureRegion::flip( bool x, bool y )
 {
     if (x) {
         float temp = m_u;
         m_u = m_u2;
         m_u2 = temp;
+        m_texCoords[U1] = m_u2;
+        m_texCoords[U2] = m_u2;
+        m_texCoords[U3] = m_u;
+        m_texCoords[U4] = m_u;
     }
     if (y) {
         float temp = m_v;
         m_v = m_v2;
         m_v2 = temp;
-    }	
+        m_texCoords[V1] = m_v;
+        m_texCoords[V2] = m_v2;
+        m_texCoords[V3] = m_v2;
+        m_texCoords[V4] = m_v;
+    }
 }
 
 void TextureRegion::setTexture( Texture *tex )
@@ -137,4 +156,48 @@ TextureRegion* TextureRegion::split( Texture *tex, int tileWidth, int tileHeight
     TextureRegion tr;
     tr.setRegion(tex);
     return tr.split(tileWidth, tileHeight, count);
+}
+
+void TextureRegion::rotate90( bool clockwise )
+{
+    if (clockwise) {
+        float temp = m_texCoords[V1];
+        m_texCoords[V1] = m_texCoords[V4];
+        m_texCoords[V4] = m_texCoords[V3];
+        m_texCoords[V3] = m_texCoords[V2];
+        m_texCoords[V2] = temp;
+
+        temp = m_texCoords[U1];
+        m_texCoords[U1] = m_texCoords[U4];
+        m_texCoords[U4] = m_texCoords[U3];
+        m_texCoords[U3] = m_texCoords[U2];
+        m_texCoords[U2] = temp;
+    } else {
+        float temp = m_texCoords[V1];
+        m_texCoords[V1] = m_texCoords[V2];
+        m_texCoords[V2] = m_texCoords[V3];
+        m_texCoords[V3] = m_texCoords[V4];
+        m_texCoords[V4] = temp;
+
+        temp = m_texCoords[U1];
+        m_texCoords[U1] = m_texCoords[U2];
+        m_texCoords[U2] = m_texCoords[U3];
+        m_texCoords[U3] = m_texCoords[U4];
+        m_texCoords[U4] = temp;
+    }
+}
+
+GLfloat* TextureRegion::getTexCoords()
+{
+    return m_texCoords;
+}
+
+void TextureRegion::copy( TextureRegion *tr )
+{
+    m_texture = tr->m_texture;
+    m_u = tr->m_u;
+    m_v = tr->m_v;
+    m_u2 = tr->m_u2;
+    m_v2 = tr->m_v2;
+    memcpy(m_texCoords, tr->m_texCoords, sizeof(m_texCoords));
 }

@@ -246,7 +246,7 @@ void MagicEngine::makePicture( int w, int h )
         m_saveImage->SaveImage((char*)pixels, w, h, FORMAT_RGBA);
     }
     delete[] pixels;
-    //m_fbo->unbind();
+    m_fbo->unbind();
     resize(m_ViewWidth, m_ViewHeight);
 }
 

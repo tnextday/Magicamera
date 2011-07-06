@@ -5,6 +5,7 @@
 Sprite::Sprite()
     :TextureRegion()
 {
+    m_dirty = true;
 }
 
 Sprite::Sprite( Texture *tex )
@@ -88,55 +89,6 @@ float* Sprite::getVertices()
     return m_vertices;
 }
 
-void Sprite::flip( bool x, bool y )
-{
-    if (x) {
-        m_u = m_vertices[U1];
-        m_u2 = m_vertices[U3];
-        m_vertices[U1] = m_u2;
-        m_vertices[U2] = m_u2;
-        m_vertices[U3] = m_u;
-        m_vertices[U4] = m_u;
-    }
-    if (y) {
-        m_v = m_vertices[V2];
-        m_v2 = m_vertices[V1];
-        m_vertices[V1] = m_v;
-        m_vertices[V2] = m_v2;
-        m_vertices[V3] = m_v2;
-        m_vertices[V4] = m_v;
-    }
-}
-
-void Sprite::rotate90( bool clockwise )
-{
-    if (clockwise) {
-        float temp = m_vertices[V1];
-        m_vertices[V1] = m_vertices[V4];
-        m_vertices[V4] = m_vertices[V3];
-        m_vertices[V3] = m_vertices[V2];
-        m_vertices[V2] = temp;
-
-        temp = m_vertices[U1];
-        m_vertices[U1] = m_vertices[U4];
-        m_vertices[U4] = m_vertices[U3];
-        m_vertices[U3] = m_vertices[U2];
-        m_vertices[U2] = temp;
-    } else {
-        float temp = m_vertices[V1];
-        m_vertices[V1] = m_vertices[V2];
-        m_vertices[V2] = m_vertices[V3];
-        m_vertices[V3] = m_vertices[V4];
-        m_vertices[V4] = temp;
-
-        temp = m_vertices[U1];
-        m_vertices[U1] = m_vertices[U2];
-        m_vertices[U2] = m_vertices[U3];
-        m_vertices[U3] = m_vertices[U4];
-        m_vertices[U4] = temp;
-    }
-}
-
 void Sprite::translate( float xAmount, float yAmount )
 {
     m_x += xAmount;
@@ -202,7 +154,7 @@ void Sprite::draw(BaseShader *shader)
 {
     if (!m_texture) return;
     m_texture->bind();
-    glVertexAttribPointer(shader->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getPosVertices());
+    glVertexAttribPointer(shader->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getVertices());
     glVertexAttribPointer(shader->getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, getTexCoords());
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
@@ -251,15 +203,6 @@ void Sprite::getBoundingRect( rect_t &rect )
     rect.height = maxy - miny;
 }
 
-GLfloat* Sprite::getPosVertices()
-{
-    return getVertices();
-}
-
-GLfloat* Sprite::getTexCoords()
-{
-    return getVertices() + U1;
-}
 
 void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
 {
@@ -305,44 +248,11 @@ void Sprite::setSize( GLfloat w, GLfloat h )
 
 void Sprite::setTexture( Texture *tex )
 {
-    TextureRegion::setRegion(tex);
-    init(0,0,tex->getWidth(), tex->getHeight());
+    setTexture(tex, 0,0,tex->getWidth(), tex->getHeight());
 }
 
 void Sprite::setTexture( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight )
 {
-    TextureRegion::setRegion(tex);
+    m_texture = tex;
     init(srcX, srcY, srcWidth, srcHeight);
-}
-
-void Sprite::setRegion( float u, float v, float u2, float v2 )
-{
-    TextureRegion::setRegion(u, v, u2, v2);
-    m_vertices[U1] = u;
-    m_vertices[V1] = v2;
-
-    m_vertices[U2] = u;
-    m_vertices[V2] = v;
-
-    m_vertices[U3] = u2;
-    m_vertices[V3] = v;
-
-    m_vertices[U4] = u2;
-    m_vertices[V4] = v2;
-}
-
-void Sprite::setRegion( int x, int y, int width, int height )
-{
-    TextureRegion::setRegion(x, y, width, height);
-    m_vertices[U1] = m_u;
-    m_vertices[V1] = m_v2;
-
-    m_vertices[U2] = m_u;
-    m_vertices[V2] = m_v;
-
-    m_vertices[U3] = m_u2;
-    m_vertices[V3] = m_v;
-
-    m_vertices[U4] = m_u2;
-    m_vertices[V4] = m_v2;
 }

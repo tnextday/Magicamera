@@ -10,3 +10,4 @@ Release/*
 *.suo
 docs/*
 Thumbs.db
+*.aps

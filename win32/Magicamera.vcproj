@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\button.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\easing.cpp"
 				>
 			</File>
@@ -247,6 +251,10 @@
 			>
 			<File
 				RelativePath="..\jni\baseshader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\button.h"
 				>
 			</File>
 			<File
