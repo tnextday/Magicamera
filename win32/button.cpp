@@ -3,6 +3,7 @@
 Button::Button(void)
 {
     m_status = ButtonNormal;
+    m_onClick = NULL;
 }
 
 Button::~Button(void)
