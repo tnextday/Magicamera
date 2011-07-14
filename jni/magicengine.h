@@ -7,6 +7,7 @@
 #include "glyuvtexture.h"
 #include "baseshader.h"
 #include "sprite.h"
+#include "button.h"
 
 const static int MESH_HEIGHT = 50;
 
@@ -24,13 +25,13 @@ const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  打包压缩的数据，jpeg,png,t
 const int FORMAT_RGBA = 0;
 const int FORMAT_RGB = 1;
 const int FORMAT_RGB565 = 2;
+
 class SaveImageCallBack{
 public:
-
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
 };
 
-class MagicEngine{
+class MagicEngine : public ButtonClick{
     BaseShader      m_shader;
 
     Texture*        m_PreviewTex;
@@ -84,6 +85,8 @@ public:
     void loadRes();
 
     char* makeResPath(char* path, const char* targetFile, int szBuffer = _MAX_PATH);
+
+    virtual void onButtonClick( Button *btn );
 };
 
 

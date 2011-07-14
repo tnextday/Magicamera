@@ -8,6 +8,7 @@
 #include "glHelpers.h"
 
 
+
 static const char gVertexShader[] = 
         "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
@@ -258,7 +259,11 @@ void MagicEngine::update( float delta )
     m_testSprite.rotate(rotateSpeed*delta);
     static float scale = 1.0;
     
-    if (scale < 0.2 || scale > 1.0){
+    if (scale < 0.2){
+        scaleSpeed = -scaleSpeed;
+        scale = 0.2;
+    }else if (scale > 1.0){
+        scale = 1.0;
         scaleSpeed = -scaleSpeed;
     }
     scale += scaleSpeed*delta;
@@ -299,5 +304,10 @@ char* MagicEngine::makeResPath( char* path, const char* targetFile, int szBuffer
 {
     snprintf(path, szBuffer, "%s/%s", m_resPath, targetFile);
     return path;
+}
+
+void MagicEngine::onButtonClick( Button *btn )
+{
+ //   throw std::exception("The method or operation is not implemented.");
 }
 

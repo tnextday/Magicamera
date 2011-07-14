@@ -2,10 +2,7 @@
 #include "baseshader.h"
 #include "sprite.h"
 
-enum ButtonStatus{
-    ButtonNormal,
-    ButtonDown
-};
+class Button;
 
 class ButtonClick{
 public:
@@ -14,11 +11,13 @@ public:
 
 class Button :public Sprite
 {
-    ButtonStatus    m_status;
-    TextureRegion   m_down;
+private:
+    TextureRegion   *m_down;
     ButtonClick     *m_onClick;
-public:
-    int             tag;
+    bool            m_bShow;
+    bool            m_bSelect;
+    bool            m_bDown;
+    int             m_tag;
 
 public:
     Button(void);
@@ -27,7 +26,17 @@ public:
     void update(float delta);
     void draw(BaseShader *bs);
 
+    void setOnClick(ButtonClick * val) { m_onClick = val; }
+    bool selected() const { return m_bSelect; }
+    void setSelected(bool val) { m_bSelect = val; }
+    bool visible() const { return m_bShow; }
+    void setVisible(bool val) { m_bShow = val; }
+    int tag() const { return m_tag; }
+    void setTag(int val) { m_tag = val; }
     bool onTouchDown(float x, float y);
-    bool onTouchDrag(float x, float y);
     bool onTouchUp(float x, float y);
+    
+private:
+    bool isContainPos(float x, float y);
+
 };
