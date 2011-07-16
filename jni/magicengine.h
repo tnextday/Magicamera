@@ -37,6 +37,7 @@ class MagicEngine : public ButtonClick{
     Texture*        m_PreviewTex;
     glYUVTexture*   m_glYUVTex;
     MeshEngine*     m_Mesh;
+    Button*         m_testBtn;
 
     Sprite          m_testSprite;
     Texture         m_testTexture;

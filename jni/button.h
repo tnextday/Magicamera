@@ -12,16 +12,22 @@ public:
 class Button :public Sprite
 {
 private:
-    TextureRegion   *m_down;
+    TextureRegion   m_down;
     ButtonClick     *m_onClick;
     bool            m_bShow;
     bool            m_bSelect;
     bool            m_bDown;
     int             m_tag;
+    Texture         *m_btnTexture;
 
 public:
-    Button(void);
+    //包含普通和按下状态的Texture,纵向排列
+    Button(Texture *tex, int tag = 0);
+    Button(const char* btnTexPath, int tag = 0);
+    //Button(TextureRegion *btnNormal, TextureRegion *btnDown);
     ~Button(void);
+
+    void setTexture(Texture *tex);
 
     void update(float delta);
     void draw(BaseShader *bs);

@@ -7,8 +7,6 @@
 #include "glutils.h"
 #include "glHelpers.h"
 
-
-
 static const char gVertexShader[] = 
         "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
@@ -190,6 +188,7 @@ bool MagicEngine::onTouchDown( float x, float y )
     }
     m_lastX = x;
     m_lastY = y;
+    m_testBtn->onTouchDown(x, y);
     return true;
 }
 
@@ -206,9 +205,10 @@ bool MagicEngine::onTouchDrag( float x, float y )
 bool MagicEngine::onTouchUp( float x, float y )
 {
     //LOGI("onTouchUp: %.1f, %.1f\n", x, y);
-    //y = m_ViewHeight - y;
+    y = m_ViewHeight - y;
     m_lastX = 0;
     m_lastY = 0;
+    m_testBtn->onTouchUp(x, y);
     return true;
 }
 
@@ -272,17 +272,21 @@ void MagicEngine::update( float delta )
 
 void MagicEngine::drawUI()
 {
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    m_testBtn->draw(&m_shader);
 }
 
 void MagicEngine::drawImage()
 {
     m_shader.use();
     m_PreviewTex->bind();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_BLEND);
     m_Mesh->draw(&m_shader);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_DST_COLOR);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     m_testSprite.draw(&m_shader);
+    
 /*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
 
@@ -295,7 +299,10 @@ void MagicEngine::setResPath(const char* path )
 void MagicEngine::loadRes()
 {
     char path[_MAX_PATH];
-    m_testTexture.loadFromFile(makeResPath(path, "sprite.png"));
+    m_testTexture.loadFromFile(makeResPath(path, "btn_04.png"));
+    m_testBtn = new Button(makeResPath(path, "btn_04.png"));
+    m_testBtn->setOnClick(this);
+    m_testBtn->setPostion(300, 300);
     m_testSprite.setTexture(&m_testTexture);
     m_testSprite.setPostion(m_ViewWidth/2, m_ViewHeight/2);
 }
@@ -308,6 +315,6 @@ char* MagicEngine::makeResPath( char* path, const char* targetFile, int szBuffer
 
 void MagicEngine::onButtonClick( Button *btn )
 {
- //   throw std::exception("The method or operation is not implemented.");
+    LOGI("onButtonClick : %d\n", btn->tag());
 }
 

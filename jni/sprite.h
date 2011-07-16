@@ -34,11 +34,13 @@ private:
     GLfloat     m_vertices[8];
 public:
     Sprite();
+    Sprite(TextureRegion *textureRegion);
     Sprite(Texture *tex);
     Sprite(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
     ~Sprite();
     void setTexture(Texture *tex);
     void setTexture(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
+    void setTextureRegion(TextureRegion *tr);
 
     void setPostion(GLfloat x, GLfloat y);
     void translate(GLfloat xAmount, GLfloat yAmount);

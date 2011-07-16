@@ -23,6 +23,12 @@ TextureRegion::TextureRegion( Texture *tex, int srcX, int srcY, int srcWidth, in
     m_texture = tex;
     setRegion(srcX, srcY, srcWidth, srcHeight);
 }
+
+TextureRegion::TextureRegion( TextureRegion *tr )
+{
+    setTextureRegion(tr);
+}
+
 TextureRegion::~TextureRegion(void)
 {
 }
@@ -57,7 +63,7 @@ void TextureRegion::setRegion( float u, float v, float u2, float v2 )
 void TextureRegion::setRegion( Texture *tex )
 {
     m_texture = tex;
-    setRegion(0, 0, tex->getWidth(), tex->getWidth());
+    setRegion(0, 0, tex->getWidth(), tex->getHeight());
 }
 
 Texture* TextureRegion::getTexture()
@@ -115,7 +121,7 @@ void TextureRegion::setTexture( Texture *tex )
     m_texture = tex;
 }
 
-TextureRegion* TextureRegion::split( int tileWidth, int tileHeight, int *count)
+TextureRegion* TextureRegion::split( int rows, int cols)
 {
     int x = getRegionX();
     int y = getRegionY();
@@ -132,8 +138,8 @@ TextureRegion* TextureRegion::split( int tileWidth, int tileHeight, int *count)
         height = -height;
     }
 
-    int rows = height / tileHeight;
-    int cols = width / tileWidth;           
+    int tileHeight = height / rows;
+    int tileWidth = width / cols;           
 
     int startX = x;
     int idx = 0;
@@ -146,16 +152,15 @@ TextureRegion* TextureRegion::split( int tileWidth, int tileHeight, int *count)
             idx++;
         }
     }
-    *count =  rows*cols;
     return tiles;
 
 }
 
-TextureRegion* TextureRegion::split( Texture *tex, int tileWidth, int tileHeight, int *count)
+TextureRegion* TextureRegion::split( Texture *tex, int rows, int cols)
 {
     TextureRegion tr;
     tr.setRegion(tex);
-    return tr.split(tileWidth, tileHeight, count);
+    return tr.split(rows, cols);
 }
 
 void TextureRegion::rotate90( bool clockwise )
@@ -192,7 +197,7 @@ GLfloat* TextureRegion::getTexCoords()
     return m_texCoords;
 }
 
-void TextureRegion::copy( TextureRegion *tr )
+void TextureRegion::setTextureRegion( TextureRegion *tr )
 {
     m_texture = tr->m_texture;
     m_u = tr->m_u;

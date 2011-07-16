@@ -188,7 +188,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\button.cpp"
+				RelativePath="..\jni\button.cpp"
 				>
 			</File>
 			<File
@@ -254,7 +254,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\button.h"
+				RelativePath="..\jni\button.h"
 				>
 			</File>
 			<File

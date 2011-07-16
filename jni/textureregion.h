@@ -22,6 +22,7 @@ protected:
     GLfloat     m_texCoords[8];
 public:
     TextureRegion(void);
+    TextureRegion(TextureRegion *tr);
     TextureRegion(Texture *tex);
     TextureRegion(Texture *tex, float u, float v, float u2, float v2);
     TextureRegion(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
@@ -42,12 +43,12 @@ public:
     void flip(bool x, bool y);
     void rotate90 (bool clockwise);
 
-    void copy(TextureRegion *tr);
+    void setTextureRegion(TextureRegion *tr);
 
     GLfloat* getTexCoords();
     
     //返回一个TextureRegion数组，数组长度为count
-    TextureRegion* split(int tileWidth, int tileHeight, int *count);
-    static TextureRegion* split(Texture *tex, int tileWidth, int tileHeight, int *count);
+    TextureRegion* split(int rows, int cols);
+    static TextureRegion* split(Texture *tex, int rows, int cols);
 };
 #endif // _textureregion_h_

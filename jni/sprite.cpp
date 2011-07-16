@@ -20,6 +20,12 @@ Sprite::Sprite( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight)
     setTexture(tex, srcX, srcY, srcWidth, srcHeight);
 }
 
+Sprite::Sprite( TextureRegion *textureRegion )
+        :TextureRegion(textureRegion)
+{
+    m_dirty = true;
+}
+
 float* Sprite::getVertices()
 {
     if (m_dirty) {
@@ -255,4 +261,10 @@ void Sprite::setTexture( Texture *tex, int srcX, int srcY, int srcWidth, int src
 {
     m_texture = tex;
     init(srcX, srcY, srcWidth, srcHeight);
+}
+
+void Sprite::setTextureRegion( TextureRegion *tr )
+{
+    TextureRegion::setTextureRegion(tr);
+    init(tr->getRegionX(), tr->getRegionY(), tr->getRegionWidth(), tr->getRegionHeight());
 }
