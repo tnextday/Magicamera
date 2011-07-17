@@ -179,9 +179,7 @@ bool MagicEngine::onTouchDown( float x, float y )
 {
     //LOGI("onTouchDown: %.1f, %.1f\n", x, y);
     y = m_ViewHeight - y;
-    if (x > m_ViewWidth - 50 && y > m_ViewHeight -50){
-        m_Mesh->restore();
-    }else if(x > m_ViewWidth - 50 && y < 50){
+    if(x > m_ViewWidth - 50 && y < 50){
         makePicture(640, 480);
     }else{
         m_Mesh->stopAnimating();
@@ -285,7 +283,7 @@ void MagicEngine::drawImage()
     m_Mesh->draw(&m_shader);
     glEnable(GL_BLEND);
     glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-    m_testSprite.draw(&m_shader);
+    //m_testSprite.draw(&m_shader);
     
 /*    drawTexture(m_PreviewTex, m_ViewWidth/2, m_ViewHeight/2);*/
 }
@@ -302,7 +300,7 @@ void MagicEngine::loadRes()
     m_testTexture.loadFromFile(makeResPath(path, "btn_04.png"));
     m_testBtn = new Button(makeResPath(path, "btn_04.png"));
     m_testBtn->setOnClick(this);
-    m_testBtn->setPostion(300, 300);
+    m_testBtn->setPostion(700, 400);
     m_testSprite.setTexture(&m_testTexture);
     m_testSprite.setPostion(m_ViewWidth/2, m_ViewHeight/2);
 }
@@ -315,6 +313,7 @@ char* MagicEngine::makeResPath( char* path, const char* targetFile, int szBuffer
 
 void MagicEngine::onButtonClick( Button *btn )
 {
+    m_Mesh->restore();
     LOGI("onButtonClick : %d\n", btn->tag());
 }
 

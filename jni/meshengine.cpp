@@ -70,9 +70,9 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
     Vertex *vertexs = (Vertex *)mVertexBuffer;
     Vertex *p;    //point 当前点坐标
     //遍历除了四边之外的所有点
-    for (int j = 1; j < mH-1; j++){
+    for (int j = 0; j < mH; j++){
         int baseidx = j*mW;
-        for(int i = 1; i < mW-1; i++){
+        for(int i = 0; i < mW; i++){
             int idx = baseidx + i;
             p = vertexs+idx;
             //判断是否在目标范围内
@@ -85,8 +85,10 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
                 if (rate != 0){
                 //if (dr <= r){
                     //float rate = (1.0f - dr/r)*0.8;
-                    p->x += mx*rate;
-                    p->y += my*rate;
+                    if (i != 0 && i != mW-1)
+                        p->x += mx*rate;
+                    if (j != 0 && j != mH-1)
+                        p->y += my*rate;
                     m_bMeshChanged = true;
                 }
             }
