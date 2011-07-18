@@ -4,7 +4,7 @@
 #include <EGL/egl.h>
 #include <GLES2/GL2.h>
 #include <GLES2/gl2ext.h>
-#include "magicengine.h"
+#include "magicmain.h"
 #include "main.h"
 
 
@@ -22,7 +22,7 @@ const int TIMER_UPDATE_NV21 = 1;
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
 const char* g_strSaveImagePath = "f:\\test.tga";
 const char* g_resPath = "assets\\";
-MagicEngine g_MagicEngine;
+MagicMain g_MagicMain;
 WinCallBack g_WinCallBack;
 
 
@@ -97,17 +97,17 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
     {
     case WM_LBUTTONDOWN:
         vMousePt = MAKEPOINTS(lParam);
-        g_MagicEngine.onTouchDown(vMousePt.x, vMousePt.y);
+        g_MagicMain.onTouchDown(vMousePt.x, vMousePt.y);
         return 0;
     case WM_MOUSEMOVE:
         if( wParam & MK_LBUTTON ) {
             vMousePt = MAKEPOINTS(lParam);
-            g_MagicEngine.onTouchDrag(vMousePt.x, vMousePt.y);
+            g_MagicMain.onTouchDrag(vMousePt.x, vMousePt.y);
         }
         return 0;
     case  WM_LBUTTONUP:
         vMousePt = MAKEPOINTS(lParam);
-        g_MagicEngine.onTouchUp(vMousePt.x, vMousePt.y);
+        g_MagicMain.onTouchUp(vMousePt.x, vMousePt.y);
         return 0;
     case WM_TIMER:
         if (wParam == TIMER_UPDATE_NV21){
@@ -172,7 +172,7 @@ __REREAD:
         idx += step;
         goto __REREAD;
     }
-    g_MagicEngine.updatePreviewTex(preBuffer, szFile);
+    g_MagicMain.updatePreviewTex(preBuffer, szFile);
     idx += step;
 }
 
@@ -358,22 +358,22 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     if( FALSE == eglMakeCurrent( eglDisplay, eglSurface, eglSurface, eglContext ) )
         return FALSE;
 
-    g_MagicEngine.setupGraphics(g_nWindowWidth, g_nWindowHeight);
-    g_MagicEngine.setResPath(g_resPath);
-    g_MagicEngine.setCallBack(&g_WinCallBack);
-    g_MagicEngine.loadRes();
+    g_MagicMain.setupGraphics(g_nWindowWidth, g_nWindowHeight);
+    g_MagicMain.setResPath(g_resPath);
+    g_MagicMain.setCallBack(&g_WinCallBack);
+    g_MagicMain.loadRes();
 
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
-        g_MagicEngine.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_NV21);
+        g_MagicMain.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_NV21);
     }else{
         int size;
         char* imgBuffer = NULL;
         imgBuffer = readFile("assets\\test.jpg", size);
         if (imgBuffer)
         {
-            g_MagicEngine.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_PACKET);
-            g_MagicEngine.updatePreviewTex(imgBuffer, size);
+            g_MagicMain.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_PACKET);
+            g_MagicMain.updatePreviewTex(imgBuffer, size);
             delete[] imgBuffer;
         }
     }
@@ -395,7 +395,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
             float delta = timenow - lastTime;
             lastTime = timenow;
             // Update and render the application
-            g_MagicEngine.renderFrame(delta);
+            g_MagicMain.renderFrame(delta);
 
             // Present the scene
             eglSwapBuffers( eglDisplay, eglSurface );

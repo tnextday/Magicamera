@@ -220,6 +220,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\jni\magicmain.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -283,6 +287,10 @@
 			</File>
 			<File
 				RelativePath="..\jni\magicengine.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\magicmain.h"
 				>
 			</File>
 			<File
