@@ -24,6 +24,9 @@ BaseShader::~BaseShader(void)
 
 void BaseShader::makeProgram( const char* pVertexSource, const char* pFragmentSource )
 {
+    if(m_program){
+        glDeleteProgram(m_program);
+    }
     m_isCompiled = false;
     m_program = ::createProgram(pVertexSource, pFragmentSource);
     if (!m_program) {
@@ -94,5 +97,10 @@ void BaseShader::ortho( GLfloat left, GLfloat right, GLfloat bottom, GLfloat top
     GLfloat mvp[16];
     matIdentity(mvp);
     matOrtho(mvp, left, right, bottom, top, znear, zfar);
+    glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
+}
+
+void BaseShader::setViewProj( GLfloat* mvp )
+{
     glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 }

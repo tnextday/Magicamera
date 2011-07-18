@@ -9,7 +9,11 @@
 #include "sprite.h"
 #include "button.h"
 
-const static int MESH_HEIGHT = 50;
+//宽高比为2:3
+const static int MESH_WIDTH = 50;
+const static int MESH_HEIGHT = MESH_WIDTH*3/2;
+
+const static int g_ViewWidth = 480;
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
@@ -42,25 +46,26 @@ class MagicEngine : public ButtonClick{
     Sprite          m_testSprite;
     Texture         m_testTexture;
 
-    GLfloat m_ViewWidth;
-    GLfloat m_ViewHeight;
+    GLfloat         m_ViewWidth;
+    GLfloat         m_ViewHeight;
+    GLfloat         m_ScreenWidth;
+    GLfloat         m_ScreenHeight;
     
-    int        m_inputFortmat;
+    int             m_inputFortmat;
 
     //上次鼠标坐标
     float    m_lastX;
     float    m_lastY;
 
-    FramebufferObject *m_fbo;
-    char    m_resPath[_MAX_PATH];
-    SaveImageCallBack      *m_saveImage;
+    FramebufferObject*      m_fbo;
+    char                    m_resPath[_MAX_PATH];
+    SaveImageCallBack*      m_saveImage;
 
 public:
     MagicEngine();
     ~MagicEngine();
 
     bool setupGraphics(int w, int h) ;
-    void resize(int w, int h);
     void renderFrame(float delta);
 
     void updatePreviewTex(char* data, long len);
@@ -70,7 +75,6 @@ public:
     bool onTouchDown(float x, float y);
     bool onTouchDrag(float x, float y);
     bool onTouchUp(float x, float y);
-    void drawTexture( Texture *tex, GLint posX, GLint posY );
 
     void makePicture(int w, int h);
 

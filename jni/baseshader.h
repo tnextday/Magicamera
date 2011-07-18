@@ -34,5 +34,6 @@ public:
     void setViewProject(GLfloat *mvp);
     bool isCompiled();
     void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);
+    void setViewProj(GLfloat* mvp);
 };
 #endif // _baseshader_h_

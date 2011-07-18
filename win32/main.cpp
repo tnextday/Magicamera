@@ -12,8 +12,10 @@
 // Global variables
 //--------------------------------------------------------------------------------------
 const CHAR*  g_strWindowTitle = "MagicAmera";
-const UINT32 g_nWindowWidth   = 800;
-const UINT32 g_nWindowHeight  = 480;
+const UINT32 g_nWindowWidth   = 480;
+const UINT32 g_nWindowHeight  = 720;
+const UINT32 g_PicWidth = 480;
+const UINT32 g_PicHeigth = 640;
 const bool g_useCamera = false;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
@@ -157,7 +159,7 @@ __end:
 }
 
 int szFile;
-static char preBuffer[640*480*12/8];
+static char preBuffer[g_PicWidth*g_PicHeigth*12/8];
 
 void updateNV21(){
     static int idx = 0;
@@ -363,14 +365,14 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
-        g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_NV21);
+        g_MagicEngine.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_NV21);
     }else{
         int size;
         char* imgBuffer = NULL;
         imgBuffer = readFile("assets\\test.jpg", size);
         if (imgBuffer)
         {
-            g_MagicEngine.setPreviewDataInfo(640, 480, IMAGE_FORMAT_PACKET);
+            g_MagicEngine.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_PACKET);
             g_MagicEngine.updatePreviewTex(imgBuffer, size);
             delete[] imgBuffer;
         }

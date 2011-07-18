@@ -53,6 +53,10 @@ bool MagicEngine::setupGraphics(int w, int h) {
     
     LOGI("\n");
     LOGI("setupGraphics(%d, %d)\n", w, h);
+    m_ScreenWidth = w;
+    m_ScreenHeight = h;
+    m_ViewWidth = g_ViewWidth;
+    m_ViewHeight = g_ViewWidth*h/w;
 
     m_shader.makeProgram(gVertexShader, gFragmentShader);
     if (!m_shader.isCompiled()){
@@ -69,50 +73,18 @@ bool MagicEngine::setupGraphics(int w, int h) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_ViewWidth = w;
-    m_ViewHeight = h;
+
     m_PreviewTex = new Texture();
     m_PreviewTex->init();
     m_fbo = new FramebufferObject(true);
     printGLColorSpaceInfo();
-    resize(m_ViewWidth, m_ViewHeight);
+
+    m_shader.ortho(0, m_ViewWidth, 0, m_ViewHeight, -10, 10);
+    glViewport(0, 0, m_ScreenWidth, m_ScreenHeight);
+
     return true;
 }
 
-
-void MagicEngine::resize( int w, int h )
-{
-    //使用2D投影,笛卡尔坐标系，宽高为屏幕宽高
-    m_shader.ortho(0, w, 0, h, -10, 10);
-    glViewport(0, 0, w, h);
-    checkGlError("matOrtho");
-}
-
-
-void MagicEngine::drawTexture( Texture *tex, GLint posX, GLint posY )
-{
-    static const GLfloat texCoord[] =
-    {
-        0.0, 0.0,
-        0.0, 1.0, 
-        1.0, 1.0,
-        1.0, 0.0,
-    };
-    GLfloat texVertex[8] = {0};
-    GLint w,h;
-    w = tex->m_Width/2;
-    h = tex->m_Height/2;
-
-    texVertex[0] = posX-w; texVertex[1] = posY+h; 
-    texVertex[2] = posX-w; texVertex[3] = posY-h; 
-    texVertex[4] = posX+w; texVertex[5] = posY-h; 
-    texVertex[6] = posX+w; texVertex[7] = posY+h;
-    
-    tex->bind(); 
-    glVertexAttribPointer(m_shader.getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, texVertex);
-    glVertexAttribPointer(m_shader.getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, texCoord);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-}
 
 void MagicEngine::renderFrame( float delta )
 {
@@ -158,8 +130,8 @@ void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
 void MagicEngine::generateMesh( int w, int h )
 {
     SafeDelete(m_Mesh);
-    int uSteps = MESH_HEIGHT*w/h;
-    int vSteps = MESH_HEIGHT;
+    int uSteps = MESH_HEIGHT;
+    int vSteps = MESH_WIDTH;
     m_Mesh = new MeshEngine(uSteps+1, vSteps+1);
     GLfloat x, y,u, v;
     for(int j = 0;j <= vSteps; j++){
@@ -180,7 +152,7 @@ bool MagicEngine::onTouchDown( float x, float y )
     //LOGI("onTouchDown: %.1f, %.1f\n", x, y);
     y = m_ViewHeight - y;
     if(x > m_ViewWidth - 50 && y < 50){
-        makePicture(640, 480);
+        makePicture(480, 640);
     }else{
         m_Mesh->stopAnimating();
     }
@@ -226,7 +198,7 @@ void MagicEngine::makePicture( int w, int h )
     m_fbo->bind();
     glViewport(0,0,w, h);
     //TODO 可变的大小
-    m_shader.ortho(0, 640, 0, 480, -10, 10);
+    m_shader.ortho(0, 480, 0, 640, -10, 10);
     printGLColorSpaceInfo();
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
@@ -246,7 +218,9 @@ void MagicEngine::makePicture( int w, int h )
     }
     delete[] pixels;
     m_fbo->unbind();
-    resize(m_ViewWidth, m_ViewHeight);
+
+    m_shader.ortho(0, m_ViewWidth, 0, m_ViewHeight, -10, 10);
+    glViewport(0, 0, m_ScreenWidth, m_ScreenHeight);
 }
 
 void MagicEngine::update( float delta )
@@ -300,7 +274,7 @@ void MagicEngine::loadRes()
     m_testTexture.loadFromFile(makeResPath(path, "btn_04.png"));
     m_testBtn = new Button(makeResPath(path, "btn_04.png"));
     m_testBtn->setOnClick(this);
-    m_testBtn->setPostion(700, 400);
+    m_testBtn->setPostion(m_testBtn->getRegionWidth()/2, m_testBtn->getRegionHeight()/2);
     m_testSprite.setTexture(&m_testTexture);
     m_testSprite.setPostion(m_ViewWidth/2, m_ViewHeight/2);
 }
