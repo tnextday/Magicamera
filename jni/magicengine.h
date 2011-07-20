@@ -13,22 +13,9 @@
 const static int MESH_WIDTH = 50;
 const static int MESH_HEIGHT = MESH_WIDTH*3/2;
 
-const static int g_ViewWidth = 480;
-
-const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
-const int IMAGE_FORMAT_NV21        = 0x00000011; //17
-const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  打包压缩的数据，jpeg,png,tga,bitmap...
-
-#ifndef _MAX_PATH
-#define _MAX_PATH 260
-#endif
-#ifdef _WIN32
-#define snprintf _snprintf
-#endif
-
-const int FORMAT_RGBA = 0;
-const int FORMAT_RGB = 1;
-const int FORMAT_RGB565 = 2;
+//MagicEngine 坐标系大小
+const static int g_CoordWidth = 480;
+const static int g_CoordHeight = 640;
 
 class SaveImageCallBack{
 public:
@@ -36,20 +23,17 @@ public:
 };
 
 class MagicEngine {
-    BaseShader      m_shader;
+    BaseShader*     m_shader;
 
-    Texture*        m_PreviewTex;
-    glYUVTexture*   m_glYUVTex;
+
+    Texture*        m_SrcTex;
+    Texture*        m_DestTex;
+
     MeshEngine*     m_Mesh;
 
-    Sprite          m_testSprite;
-    Texture         m_testTexture;
-
-    GLfloat         m_ViewWidth;
-    GLfloat         m_ViewHeight;
-    GLfloat         m_ScreenWidth;
-    GLfloat         m_ScreenHeight;
-    
+    GLfloat         m_width;
+    GLfloat         m_height;
+    GLfloat         m_vp[16]; 
 
     //上次鼠标坐标
     float    m_lastX;
@@ -61,17 +45,16 @@ public:
     MagicEngine();
     ~MagicEngine();
 
-    bool setupGraphics(int w, int h) ;
-    void renderFrame(float delta);
-
-    void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
+    bool init(BaseShader* shader, Texture* srcTex) ;
+    void setSize(int w, int h);
+    void setShader(BaseShader* val) { m_shader = val; }
+    void setSrcTex(Texture* val) { m_SrcTex = val; }
+    Texture* getOutTexture(){return m_DestTex;};
 
     void generateMesh( int w, int h );
     bool onTouchDown(float x, float y);
     bool onTouchDrag(float x, float y);
     bool onTouchUp(float x, float y);
-
-    void makePicture(int w, int h);
 
     void update(float delta);
 

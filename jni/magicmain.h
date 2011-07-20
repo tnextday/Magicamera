@@ -15,7 +15,7 @@
 const static int MESH_WIDTH = 50;
 const static int MESH_HEIGHT = MESH_WIDTH*3/2;
 
-const static int g_ViewWidth = 480;
+const static int g_CoordWidth = 480;
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
@@ -52,6 +52,7 @@ class MagicMain : public ButtonClick{
     GLfloat         m_ViewHeight;
     GLfloat         m_ScreenWidth;
     GLfloat         m_ScreenHeight;
+    GLfloat         m_vp[16];
 
     int             m_inputFortmat;
 

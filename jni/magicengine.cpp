@@ -28,8 +28,9 @@ static const char gFragmentShader[] =
 MagicEngine::MagicEngine()
 {
     m_Mesh = NULL;
-    m_glYUVTex = NULL;
-    m_PreviewTex = NULL;
+    m_SrcTex = NULL;
+    m_DestTex = NULL;
+    m_shader = NULL;
     m_fbo = NULL;
 
 }
@@ -37,71 +38,29 @@ MagicEngine::MagicEngine()
 MagicEngine::~MagicEngine()
 {
     SafeDelete(m_Mesh);
-    SafeDelete(m_PreviewTex);
-    SafeDelete(m_glYUVTex);
     SafeDelete(m_fbo);
+    SafeDelete(m_DestTex);
 }
 
 
-bool MagicEngine::setupGraphics(int w, int h) {
-    printGLString("Version", GL_VERSION);
-    printGLString("Vendor", GL_VENDOR);
-    printGLString("Renderer", GL_RENDERER);
-    printGLString("Extensions", GL_EXTENSIONS);
-    
-    LOGI("\n");
-    LOGI("setupGraphics(%d, %d)\n", w, h);
-    m_ScreenWidth = w;
-    m_ScreenHeight = h;
-    m_ViewWidth = g_ViewWidth;
-    m_ViewHeight = g_ViewWidth*h/w;
+bool MagicEngine::init(BaseShader* shader, Texture* srcTex) {
+    m_DestTex = new Texture();
+    m_DestTex->init();
 
-    m_shader.makeProgram(gVertexShader, gFragmentShader);
-    if (!m_shader.isCompiled()){
-        LOGE("Could not create program.\n");
-        return false;
-    }
-    
-    m_shader.use();
+    setSrcTex(srcTex);
+    setShader(shader);
+    setSize(g_CoordWidth, g_CoordHeight);
 
-    glDisable(GL_DEPTH_TEST);
-    glCullFace(GL_FRONT);
-    glEnable(GL_CULL_FACE);
-    //启用混合操作
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    m_fbo = new FramebufferObject();
+    m_fbo->texture2d(m_DestTex->m_TexHandle);
 
-
-    m_PreviewTex = new Texture();
-    m_PreviewTex->init();
-    m_fbo = new FramebufferObject(true);
-    printGLColorSpaceInfo();
-
-    m_shader.ortho(0, m_ViewWidth, 0, m_ViewHeight, -10, 10);
-    glViewport(0, 0, m_ScreenWidth, m_ScreenHeight);
-
+    //内建坐标系为480x640大小的坐标，此值为固定值
+    matIdentity(m_vp);
+    matOrtho(m_vp, 0, g_CoordWidth, 0, g_CoordHeight, -10, 10);
+    generateMesh(g_CoordWidth, g_CoordHeight);
     return true;
 }
 
-
-void MagicEngine::renderFrame( float delta )
-{
-    update(delta);
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glViewport(0,0, m_ViewWidth, m_ViewHeight);
-    glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
-    drawImage();
-    checkGlError("renderFrame");
-}
-
-void MagicEngine::setPreviewDataInfo( int w, int h, int imageFormat )
-{
-    m_PreviewTex->setSize(w, h);
-
-    generateMesh(w, h);
-}
 
 void MagicEngine::generateMesh( int w, int h )
 {
@@ -125,13 +84,7 @@ void MagicEngine::generateMesh( int w, int h )
 
 bool MagicEngine::onTouchDown( float x, float y )
 {
-    //LOGI("onTouchDown: %.1f, %.1f\n", x, y);
-    y = m_ViewHeight - y;
-    if(x > m_ViewWidth - 50 && y < 50){
-        makePicture(480, 640);
-    }else{
-        m_Mesh->stopAnimating();
-    }
+    m_Mesh->stopAnimating();
     m_lastX = x;
     m_lastY = y;
     return true;
@@ -139,8 +92,6 @@ bool MagicEngine::onTouchDown( float x, float y )
 
 bool MagicEngine::onTouchDrag( float x, float y )
 {
-    //LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
-    y = m_ViewHeight - y;
     m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 150);
     m_lastX = x;
     m_lastY = y;
@@ -149,69 +100,40 @@ bool MagicEngine::onTouchDrag( float x, float y )
 
 bool MagicEngine::onTouchUp( float x, float y )
 {
-    //LOGI("onTouchUp: %.1f, %.1f\n", x, y);
-    y = m_ViewHeight - y;
     m_lastX = 0;
     m_lastY = 0;
     return true;
 }
 
-
-void MagicEngine::makePicture( int w, int h )
-{
-    w *= 2;
-    h *= 2;
-    //FBO只支持RGB565...
-    //TODO 支持RGB888
-    m_fbo->resizeBuffers(w, h);
-    m_fbo->bind();
-    glViewport(0,0,w, h);
-    //TODO 可变的大小
-    m_shader.ortho(0, 480, 0, 640, -10, 10);
-    printGLColorSpaceInfo();
-    glDisable(GL_DEPTH_TEST);
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-    checkGlError("makePicture_0");
-    glClear(GL_COLOR_BUFFER_BIT);
-    checkGlError("makePicture_1");
-    drawImage();
-    checkGlError("makePicture_2");
-
-    m_fbo->unbind();
-
-    m_shader.ortho(0, m_ViewWidth, 0, m_ViewHeight, -10, 10);
-    glViewport(0, 0, m_ScreenWidth, m_ScreenHeight);
-}
-
 void MagicEngine::update( float delta )
 {
     m_Mesh->update(delta);
-    static float rotateSpeed = 50;
-    static float scaleSpeed = 1.5;
-    m_testSprite.rotate(rotateSpeed*delta);
-    static float scale = 1.0;
-    
-    if (scale < 0.2){
-        scaleSpeed = -scaleSpeed;
-        scale = 0.2;
-    }else if (scale > 1.0){
-        scale = 1.0;
-        scaleSpeed = -scaleSpeed;
-    }
-    scale += scaleSpeed*delta;
-    m_testSprite.setScale(scale);
 }
 
 
 void MagicEngine::drawImage()
 {
-    m_shader.use();
-    m_PreviewTex->bind();
+    m_fbo->bind();
+    m_shader->use();
+    m_shader->setViewProj(m_vp);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glViewport(0,0, m_width, m_height);
+    glEnableVertexAttribArray(m_shader->getPositionLoc());
+    glEnableVertexAttribArray(m_shader->getTextureCoordLoc());
+    m_SrcTex->bind();
     glDisable(GL_BLEND);
-    m_Mesh->draw(&m_shader);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-    //m_testSprite.draw(&m_shader);
-    
+    m_Mesh->draw(m_shader);
+    m_fbo->unbind();
+}
+
+//设置图片大小，不同于坐标
+void MagicEngine::setSize( int w, int h )
+{
+    m_width = w;
+    m_height = h;
+    if (m_DestTex){
+        m_DestTex->setSize(w, h);
+    }
 }
 

@@ -55,8 +55,8 @@ bool MagicMain::setupGraphics(int w, int h) {
     LOGI("setupGraphics(%d, %d)\n", w, h);
     m_ScreenWidth = w;
     m_ScreenHeight = h;
-    m_ViewWidth = g_ViewWidth;
-    m_ViewHeight = g_ViewWidth*h/w;
+    m_ViewWidth = g_CoordWidth;
+    m_ViewHeight = g_CoordWidth*h/w;
 
     m_shader.makeProgram(gVertexShader, gFragmentShader);
     if (!m_shader.isCompiled()){
@@ -78,8 +78,9 @@ bool MagicMain::setupGraphics(int w, int h) {
     m_PreviewTex->init();
     m_fbo = new FramebufferObject(true);
     printGLColorSpaceInfo();
-
-    m_shader.ortho(0, m_ViewWidth, 0, m_ViewHeight, -10, 10);
+    matIdentity(m_vp);
+    matOrtho(m_vp, 0, m_ViewWidth, 0, m_ViewHeight, -10, 10);
+    m_shader.setViewProj(m_vp);
     glViewport(0, 0, m_ScreenWidth, m_ScreenHeight);
 
     return true;
