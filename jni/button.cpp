@@ -47,22 +47,6 @@ void Button::draw( BaseShader *bs )
     
 }
 
-bool Button::onTouchDown( float x, float y )
-{
-    m_bDown = m_bShow && isContainPos(x, y);
-    return m_bDown;
-}
-
-bool Button::onTouchUp( float x, float y )
-{
-    bool bTouch = m_bShow && isContainPos(x, y);
-    if (m_bDown && bTouch && m_onClick){
-        m_onClick->onButtonClick(this);
-    }
-    m_bDown = false;
-    return bTouch;
-}
-
 bool Button::isContainPos( float x, float y )
 {
     rect_t r;
@@ -77,4 +61,25 @@ void Button::setTexture( Texture *tex )
     m_down.setTextureRegion(&btnTexs[1]);
     delete[] btnTexs;
 
+}
+
+bool Button::onTouchDrag( float x, float y )
+{
+    return false;
+}
+
+bool Button::onTouchDown( float x, float y )
+{
+    m_bDown = m_bShow && isContainPos(x, y);
+    return m_bDown;
+}
+
+bool Button::onTouchUp( float x, float y )
+{
+    bool bTouch = m_bShow && isContainPos(x, y);
+    if (m_bDown && bTouch && m_onClick){
+        m_onClick->onButtonClick(this);
+    }
+    m_bDown = false;
+    return bTouch;
 }

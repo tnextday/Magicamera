@@ -1,6 +1,7 @@
 #pragma once
 #include "baseshader.h"
 #include "sprite.h"
+#include "touchevent.h"
 
 class Button;
 
@@ -9,7 +10,7 @@ public:
     virtual void onButtonClick(Button *btn) = 0;
 };
 
-class Button :public Sprite
+class Button :public Sprite, TouchEvent
 {
 private:
     TextureRegion   m_down;
@@ -39,10 +40,13 @@ public:
     void setVisible(bool val) { m_bShow = val; }
     int tag() const { return m_tag; }
     void setTag(int val) { m_tag = val; }
-    bool onTouchDown(float x, float y);
-    bool onTouchUp(float x, float y);
+
+    virtual bool onTouchDown(float x, float y);
+    virtual bool onTouchUp(float x, float y);
+    virtual bool onTouchDrag( float x, float y );
     
 private:
     bool isContainPos(float x, float y);
 
+    
 };

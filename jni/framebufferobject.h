@@ -21,12 +21,14 @@ public:
     // Method:    FramebufferObject 构造函数
     // Parameter: bool bColorBUffer 是否创建color buffer
     // Parameter: bool bDepthBuffer 是否创建depth buffer
+    // ColorBuffer只支持16位色，如果想支持更高颜色，要使用texture2d纹理
     //************************************
     FramebufferObject(bool bColorBUffer = false, bool bDepthBuffer = false);
     ~FramebufferObject(void);
 
     void bind();
     void unbind();
+    //此函数的色深与egl环境色深相同
     void texture2d(GLuint texId);
     void resizeBuffers(int w, int h);
     bool check_status();

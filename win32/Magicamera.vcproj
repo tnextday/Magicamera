@@ -321,6 +321,10 @@
 				RelativePath="..\jni\textureregion.h"
 				>
 			</File>
+			<File
+				RelativePath="..\jni\touchevent.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="gdx2d"

@@ -1,13 +1,11 @@
-#ifndef _glengine_h_
-#define _glengine_h_
+#pragma once
 
 #include <GLES2/gl2.h>
 #include "meshengine.h"
 #include "texture.h"
-#include "glyuvtexture.h"
 #include "baseshader.h"
-#include "sprite.h"
-#include "button.h"
+#include "touchevent.h"
+#include "framebufferobject.h"
 
 //¿í¸ß±ÈÎª2:3
 const static int MESH_WIDTH = 50;
@@ -22,12 +20,11 @@ public:
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
 };
 
-class MagicEngine {
+class MagicEngine : public TouchEvent {
     BaseShader*     m_shader;
 
-
-    Texture*        m_SrcTex;
-    Texture*        m_DestTex;
+    Texture*        m_InTex;
+    Texture*        m_OutTex;
 
     MeshEngine*     m_Mesh;
 
@@ -41,26 +38,36 @@ class MagicEngine {
 
     FramebufferObject*      m_fbo;
 
+    SaveImageCallBack*      m_saveImage;
+    
+
 public:
     MagicEngine();
+    MagicEngine(BaseShader* shader, Texture* srcTex);
     ~MagicEngine();
 
     bool init(BaseShader* shader, Texture* srcTex) ;
     void setSize(int w, int h);
     void setShader(BaseShader* val) { m_shader = val; }
-    void setSrcTex(Texture* val) { m_SrcTex = val; }
-    Texture* getOutTexture(){return m_DestTex;};
+    void setInTexture(Texture* val) { m_InTex = val; }
+    Texture* getOutTexture(){return m_OutTex;};
+
+    void restore();
 
     void generateMesh( int w, int h );
-    bool onTouchDown(float x, float y);
-    bool onTouchDrag(float x, float y);
-    bool onTouchUp(float x, float y);
+
+    virtual bool onTouchDown(float x, float y);
+    virtual bool onTouchDrag(float x, float y);
+    virtual bool onTouchUp(float x, float y);
 
     void update(float delta);
 
     void drawImage();
 
+    void SaveImage(int w, int h);
+    void SetSaveImageCallBack(SaveImageCallBack* val) { m_saveImage = val; }
+
+private:
+    void draw();
+
 };
-
-
-#endif // _glengine_h_

@@ -1,21 +1,13 @@
 #pragma once
 
-#ifndef _glengine_h_
-#define _glengine_h_
-
 #include <GLES2/gl2.h>
-#include "meshengine.h"
 #include "texture.h"
 #include "glyuvtexture.h"
 #include "baseshader.h"
 #include "sprite.h"
 #include "button.h"
-
-//宽高比为2:3
-const static int MESH_WIDTH = 50;
-const static int MESH_HEIGHT = MESH_WIDTH*3/2;
-
-const static int g_CoordWidth = 480;
+#include "touchevent.h"
+#include "magicengine.h"
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
@@ -32,35 +24,28 @@ const int FORMAT_RGBA = 0;
 const int FORMAT_RGB = 1;
 const int FORMAT_RGB565 = 2;
 
-class SaveImageCallBack{
-public:
-    virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
-};
 
-class MagicMain : public ButtonClick{
+
+class MagicMain : public ButtonClick, TouchEvent{
     BaseShader      m_shader;
 
-    Texture*        m_PreviewTex;
+    Texture*        m_SrcTex;
     glYUVTexture*   m_glYUVTex;
-    MeshEngine*     m_Mesh;
-    Button*         m_testBtn;
+
+    MagicEngine*    m_Engine;
+    Button*         m_BtnRestore;
+    Button*         m_BtnSave;
 
     Sprite          m_testSprite;
-    Texture         m_testTexture;
 
-    GLfloat         m_ViewWidth;
-    GLfloat         m_ViewHeight;
+    GLfloat         m_CoordWidth;
+    GLfloat         m_CoordHeight;
     GLfloat         m_ScreenWidth;
     GLfloat         m_ScreenHeight;
     GLfloat         m_vp[16];
 
     int             m_inputFortmat;
 
-    //上次鼠标坐标
-    float    m_lastX;
-    float    m_lastY;
-
-    FramebufferObject*      m_fbo;
     char                    m_resPath[_MAX_PATH];
     SaveImageCallBack*      m_saveImage;
 
@@ -74,12 +59,9 @@ public:
     void updatePreviewTex(char* data, long len);
     void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
 
-    void generateMesh( int w, int h );
-    bool onTouchDown(float x, float y);
-    bool onTouchDrag(float x, float y);
-    bool onTouchUp(float x, float y);
-
-    void makePicture(int w, int h);
+    virtual bool onTouchDown(float x, float y);
+    virtual bool onTouchDrag(float x, float y);
+    virtual bool onTouchUp(float x, float y);
 
     void update(float delta);
 
@@ -96,6 +78,3 @@ public:
 
     virtual void onButtonClick( Button *btn );
 };
-
-
-#endif // _glengine_h_

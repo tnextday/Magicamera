@@ -28,31 +28,37 @@ static const char gFragmentShader[] =
 MagicEngine::MagicEngine()
 {
     m_Mesh = NULL;
-    m_SrcTex = NULL;
-    m_DestTex = NULL;
+    m_InTex = NULL;
+    m_OutTex = NULL;
     m_shader = NULL;
     m_fbo = NULL;
+}
 
+MagicEngine::MagicEngine( BaseShader* shader, Texture* srcTex )
+{
+    m_Mesh = NULL;
+    init(shader, srcTex);
 }
 
 MagicEngine::~MagicEngine()
 {
     SafeDelete(m_Mesh);
     SafeDelete(m_fbo);
-    SafeDelete(m_DestTex);
+    SafeDelete(m_OutTex);
 }
 
 
 bool MagicEngine::init(BaseShader* shader, Texture* srcTex) {
-    m_DestTex = new Texture();
-    m_DestTex->init();
+    m_OutTex = new Texture();
+    m_OutTex->init();
 
-    setSrcTex(srcTex);
+    setInTexture(srcTex);
     setShader(shader);
+    //默认纹理大小设置成480x640
     setSize(g_CoordWidth, g_CoordHeight);
 
     m_fbo = new FramebufferObject();
-    m_fbo->texture2d(m_DestTex->m_TexHandle);
+    m_fbo->texture2d(m_OutTex->m_TexHandle);
 
     //内建坐标系为480x640大小的坐标，此值为固定值
     matIdentity(m_vp);
@@ -114,16 +120,8 @@ void MagicEngine::update( float delta )
 void MagicEngine::drawImage()
 {
     m_fbo->bind();
-    m_shader->use();
-    m_shader->setViewProj(m_vp);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_width, m_height);
-    glEnableVertexAttribArray(m_shader->getPositionLoc());
-    glEnableVertexAttribArray(m_shader->getTextureCoordLoc());
-    m_SrcTex->bind();
-    glDisable(GL_BLEND);
-    m_Mesh->draw(m_shader);
+    draw();
     m_fbo->unbind();
 }
 
@@ -132,8 +130,47 @@ void MagicEngine::setSize( int w, int h )
 {
     m_width = w;
     m_height = h;
-    if (m_DestTex){
-        m_DestTex->setSize(w, h);
+    if (m_OutTex){
+        m_OutTex->setSize(w, h);
     }
+}
+
+void MagicEngine::restore()
+{
+    m_Mesh->restore();
+}
+
+void MagicEngine::SaveImage( int w, int h )
+{
+    int ow = m_width, oh = m_height;
+    setSize(w, h);
+
+    m_fbo->bind();
+    draw();
+
+    GLubyte* pixels = new GLubyte[w*h*4];
+
+    glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    if(m_saveImage){
+        m_saveImage->SaveImage((char*)pixels, w, h, 0);
+    }
+    delete[] pixels;
+    checkGlError("SavePicture");
+    m_fbo->unbind();
+
+    setSize(ow, oh);
+}
+
+void MagicEngine::draw()
+{
+    m_shader->use();
+    m_shader->setViewProj(m_vp);
+    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glEnableVertexAttribArray(m_shader->getPositionLoc());
+    glEnableVertexAttribArray(m_shader->getTextureCoordLoc());
+    m_InTex->bind();
+    glDisable(GL_BLEND);
+    m_Mesh->draw(m_shader);
 }
 
