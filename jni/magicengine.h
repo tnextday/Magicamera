@@ -6,6 +6,7 @@
 #include "baseshader.h"
 #include "touchevent.h"
 #include "framebufferobject.h"
+#include "sprite.h"
 
 //¿í¸ß±ÈÎª2:3
 const static int MESH_WIDTH = 50;
@@ -37,9 +38,9 @@ class MagicEngine : public TouchEvent {
     float    m_lastY;
 
     FramebufferObject*      m_fbo;
-
     SaveImageCallBack*      m_saveImage;
-    
+
+    Sprite          m_testSprite;
 
 public:
     MagicEngine();
@@ -56,16 +57,16 @@ public:
 
     void generateMesh( int w, int h );
 
-    virtual bool onTouchDown(float x, float y);
-    virtual bool onTouchDrag(float x, float y);
-    virtual bool onTouchUp(float x, float y);
-
     void update(float delta);
 
     void drawImage();
 
     void SaveImage(int w, int h);
     void SetSaveImageCallBack(SaveImageCallBack* val) { m_saveImage = val; }
+
+    virtual bool onTouchDown(float x, float y);
+    virtual bool onTouchDrag(float x, float y);
+    virtual bool onTouchUp(float x, float y);
 
 private:
     void draw();

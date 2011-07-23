@@ -100,19 +100,19 @@ void TextureRegion::flip( bool x, bool y )
         float temp = m_u;
         m_u = m_u2;
         m_u2 = temp;
-        m_texCoords[U1] = m_u2;
-        m_texCoords[U2] = m_u2;
-        m_texCoords[U3] = m_u;
-        m_texCoords[U4] = m_u;
+        m_texCoords[U1] = m_u;
+        m_texCoords[U2] = m_u;
+        m_texCoords[U3] = m_u2;
+        m_texCoords[U4] = m_u2;
     }
     if (y) {
         float temp = m_v;
         m_v = m_v2;
         m_v2 = temp;
-        m_texCoords[V1] = m_v;
-        m_texCoords[V2] = m_v2;
-        m_texCoords[V3] = m_v2;
-        m_texCoords[V4] = m_v;
+        m_texCoords[V1] = m_v2;
+        m_texCoords[V2] = m_v;
+        m_texCoords[V3] = m_v;
+        m_texCoords[V4] = m_v2;
     }
 }
 

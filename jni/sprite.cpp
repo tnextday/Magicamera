@@ -5,25 +5,42 @@
 Sprite::Sprite()
     :TextureRegion()
 {
+    m_spriteTexture = NULL;
     m_dirty = true;
 }
 
 Sprite::Sprite( Texture *tex )
     :TextureRegion(tex)
 {
+    m_spriteTexture = NULL;
     setTexture(tex);
 }
 
 Sprite::Sprite( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight)
     :TextureRegion(tex, srcX, srcY, srcWidth, srcHeight)
 {
+    m_spriteTexture = NULL;
     setTexture(tex, srcX, srcY, srcWidth, srcHeight);
 }
 
 Sprite::Sprite( TextureRegion *textureRegion )
         :TextureRegion(textureRegion)
 {
+    m_spriteTexture = NULL;
     m_dirty = true;
+}
+
+Sprite::Sprite( const char* texPath )
+:TextureRegion()
+{
+    m_dirty = true;
+    loadTexture(texPath);
+    
+}
+
+Sprite::~Sprite()
+{
+    SafeDelete(m_spriteTexture);
 }
 
 float* Sprite::getVertices()
@@ -223,10 +240,6 @@ void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
     setOrigin(m_width / 2, m_height / 2);
 }
 
-Sprite::~Sprite()
-{
-
-}
 
 void Sprite::setSize( GLfloat w, GLfloat h )
 {
@@ -267,4 +280,10 @@ void Sprite::setTextureRegion( TextureRegion *tr )
 {
     TextureRegion::setTextureRegion(tr);
     init(tr->getRegionX(), tr->getRegionY(), tr->getRegionWidth(), tr->getRegionHeight());
+}
+
+void Sprite::loadTexture( const char* texPath )
+{
+    m_spriteTexture = new Texture(texPath);
+    setTexture(m_spriteTexture);
 }

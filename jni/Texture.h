@@ -8,7 +8,7 @@
 
 class Texture
 {
-public:
+private:
     GLuint m_TexHandle;
     GLuint m_Width;
     GLuint m_Height;
@@ -41,11 +41,14 @@ public:
     void setSize(int w, int h);;
     GLuint getWidth(){return m_Width;};
     GLuint getHeight(){return m_Height;};
+    GLuint getTexHandle(){return m_TexHandle;};
     //GL Format
     void setImageFormat(GLenum imageFormat){ m_imageFormat = imageFormat;};
+    void init();
+
+private:
     GLuint createGLHandle();
     void deleteGLHandle(GLuint id);
-    void init();
 };
 
 

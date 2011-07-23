@@ -19,7 +19,6 @@ private:
     bool            m_bSelect;
     bool            m_bDown;
     int             m_tag;
-    Texture         *m_btnTexture;
 
 public:
     //包含普通和按下状态的Texture,纵向排列
@@ -29,6 +28,7 @@ public:
     ~Button(void);
 
     void setTexture(Texture *tex);
+    void loadTexture(const char* texPath);
 
     void update(float delta);
     void draw(BaseShader *bs);

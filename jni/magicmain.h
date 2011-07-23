@@ -36,7 +36,8 @@ class MagicMain : public ButtonClick, TouchEvent{
     Button*         m_BtnRestore;
     Button*         m_BtnSave;
 
-    Sprite          m_testSprite;
+    Sprite          m_magicSprite;
+    GLfloat         m_magicSpriteY;
 
     GLfloat         m_CoordWidth;
     GLfloat         m_CoordHeight;

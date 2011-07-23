@@ -32,12 +32,18 @@ private:
     GLfloat     m_scaleX, m_scaleY;
     bool        m_dirty;
     GLfloat     m_vertices[8];
+
+protected:
+    Texture     *m_spriteTexture;
+
 public:
     Sprite();
+    Sprite(const char* texPath);
     Sprite(TextureRegion *textureRegion);
     Sprite(Texture *tex);
     Sprite(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
     ~Sprite();
+    void loadTexture(const char* texPath);
     void setTexture(Texture *tex);
     void setTexture(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
     void setTextureRegion(TextureRegion *tr);

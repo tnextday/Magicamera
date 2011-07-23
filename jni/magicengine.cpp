@@ -58,12 +58,15 @@ bool MagicEngine::init(BaseShader* shader, Texture* srcTex) {
     setSize(g_CoordWidth, g_CoordHeight);
 
     m_fbo = new FramebufferObject();
-    m_fbo->texture2d(m_OutTex->m_TexHandle);
+    m_fbo->texture2d(m_OutTex->getTexHandle());
 
     //内建坐标系为480x640大小的坐标，此值为固定值
     matIdentity(m_vp);
     matOrtho(m_vp, 0, g_CoordWidth, 0, g_CoordHeight, -10, 10);
     generateMesh(g_CoordWidth, g_CoordHeight);
+    //TODO remove test
+    m_testSprite.loadTexture("f:\\btn_04.png");
+    m_testSprite.setPostion(240, 320);
     return true;
 }
 
@@ -172,5 +175,7 @@ void MagicEngine::draw()
     m_InTex->bind();
     glDisable(GL_BLEND);
     m_Mesh->draw(m_shader);
+    //TODO remove test
+    m_testSprite.draw(m_shader);
 }
 

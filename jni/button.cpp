@@ -2,30 +2,29 @@
 
 
 Button::Button( Texture *tex, int tag /*= 0*/)
+    :Sprite()
 {
     m_onClick = NULL;
-    m_btnTexture = NULL; 
     m_bDown = false;
     m_bSelect = false;
     m_bShow = true;
     m_tag = tag;
-    setTexture(m_btnTexture);
+    setTexture(tex);
 }
 
 Button::Button( const char* btnTexPath, int tag /*= 0*/ )
+    :Sprite()
 {
     m_onClick = NULL;
     m_bDown = false;
     m_bSelect = false;
     m_bShow = true;
     m_tag = tag;
-    m_btnTexture = new Texture(btnTexPath);
-    setTexture(m_btnTexture);
+    loadTexture(btnTexPath);
 }
 
 Button::~Button(void)
 {
-    SafeDelete(m_btnTexture);
 }
 
 void Button::update( float delta )
@@ -82,4 +81,10 @@ bool Button::onTouchUp( float x, float y )
     }
     m_bDown = false;
     return bTouch;
+}
+
+void Button::loadTexture( const char* texPath )
+{
+    m_spriteTexture = new Texture(texPath);
+    setTexture(m_spriteTexture);
 }
