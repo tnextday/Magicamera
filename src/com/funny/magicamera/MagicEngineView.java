@@ -54,8 +54,9 @@ public class MagicEngineView extends GLSurfaceView
         } else {
             setEGLContextFactory(new ContextFactory20());
         }
+        //设置EGL环境为32位真彩色，不过Android系统貌似只能显示16位色
         this.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        //如果色深设置成8888，必须设置这个~
+        //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
         getHolder().setFormat(PixelFormat.RGBA_8888);
         setRenderer(this);
         inputEvent.setInputProcessor(this);
