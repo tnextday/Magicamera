@@ -78,7 +78,7 @@ bool MagicMain::setupGraphics(int w, int h) {
     m_magicSprite.setTexture(m_Engine->getOutTexture());
     m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
     m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
-    //TODO 为什么要flip？？？？！！！！
+    //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
     
 
@@ -95,7 +95,7 @@ bool MagicMain::setupGraphics(int w, int h) {
 void MagicMain::renderFrame( float delta )
 {
     update(delta);
-    //这个的坐标系和其他的稍有不同，所以这个放在前面执行可以对其使用不同的Shader
+    //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
     m_Engine->drawImage();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
