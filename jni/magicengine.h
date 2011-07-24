@@ -31,6 +31,8 @@ class MagicEngine : public TouchEvent {
 
     GLfloat         m_width;
     GLfloat         m_height;
+    GLfloat         m_coordWidth;
+    GLfloat         m_coordHeight;
     GLfloat         m_vp[16]; 
 
     //上次鼠标坐标
@@ -39,8 +41,6 @@ class MagicEngine : public TouchEvent {
 
     FramebufferObject*      m_fbo;
     SaveImageCallBack*      m_saveImage;
-
-    Sprite          m_testSprite;
 
 public:
     MagicEngine();
@@ -61,7 +61,11 @@ public:
 
     void drawImage();
 
-    void SaveImage(int w, int h);
+    void tackPicture(Texture *texutre = NULL);
+    void tackPicture(const char* data, long len);
+    void tackPicture(const char* imagePath);
+    void tackPicture(const char* data, int w, int h, int format);
+
     void SetSaveImageCallBack(SaveImageCallBack* val) { m_saveImage = val; }
 
     virtual bool onTouchDown(float x, float y);
@@ -69,6 +73,6 @@ public:
     virtual bool onTouchUp(float x, float y);
 
 private:
-    void draw();
+    void draw(Texture *texutre = NULL);
 
 };

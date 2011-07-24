@@ -54,19 +54,18 @@ bool MagicEngine::init(BaseShader* shader, Texture* srcTex) {
 
     setInTexture(srcTex);
     setShader(shader);
-    //默认纹理大小设置成480x640
-    setSize(g_CoordWidth, g_CoordHeight);
+
+    m_coordWidth = g_CoordWidth;
+    m_coordHeight = m_coordWidth*srcTex->getHeight()/srcTex->getWidth();
+    setSize(m_coordWidth, m_coordHeight);
 
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex->getTexHandle());
 
     //内建坐标系为480x640大小的坐标，此值为固定值
     matIdentity(m_vp);
-    matOrtho(m_vp, 0, g_CoordWidth, 0, g_CoordHeight, -10, 10);
-    generateMesh(g_CoordWidth, g_CoordHeight);
-    //TODO remove test
-    m_testSprite.loadTexture("f:\\btn_04.png");
-    m_testSprite.setPostion(240, 320);
+    matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
+    generateMesh(m_coordWidth, m_coordHeight);
     return true;
 }
 
@@ -101,7 +100,7 @@ bool MagicEngine::onTouchDown( float x, float y )
 
 bool MagicEngine::onTouchDrag( float x, float y )
 {
-    m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 150);
+    m_Mesh->moveMesh(x, y, x - m_lastX, y - m_lastY, 100);
     m_lastX = x;
     m_lastY = y;
     return true;
@@ -123,7 +122,6 @@ void MagicEngine::update( float delta )
 void MagicEngine::drawImage()
 {
     m_fbo->bind();
-    glViewport(0,0, m_width, m_height);
     draw();
     m_fbo->unbind();
 }
@@ -143,19 +141,23 @@ void MagicEngine::restore()
     m_Mesh->restore();
 }
 
-void MagicEngine::SaveImage( int w, int h )
+void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
 {
     int ow = m_width, oh = m_height;
-    setSize(w, h);
-
     m_fbo->bind();
-    draw();
+    if (texutre){
+        setSize(texutre->getWidth(), texutre->getHeight());
+        draw(texutre);
+    }else{
+        setSize(m_InTex->getWidth(), m_InTex->getHeight());
+        draw();
+    }
 
-    GLubyte* pixels = new GLubyte[w*h*4];
+    GLubyte* pixels = new GLubyte[m_width*m_height*4];
 
-    glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    glReadPixels(0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     if(m_saveImage){
-        m_saveImage->SaveImage((char*)pixels, w, h, 0);
+        m_saveImage->SaveImage((char*)pixels, m_width, m_height, 0);
     }
     delete[] pixels;
     checkGlError("SavePicture");
@@ -164,18 +166,40 @@ void MagicEngine::SaveImage( int w, int h )
     setSize(ow, oh);
 }
 
-void MagicEngine::draw()
+void MagicEngine::tackPicture( const char* data, long len )
 {
+    Texture tex;
+    tex.uploadImageData((unsigned char*)data, len);
+    tackPicture(&tex);
+}
+
+void MagicEngine::tackPicture( const char* imagePath )
+{
+    Texture tex;
+    tex.loadFromFile(imagePath);
+    tackPicture(&tex);
+}
+
+void MagicEngine::tackPicture( const char* data, int w, int h, int format )
+{
+    //TODO 暂时用不到，有时间完善 
+}
+
+void MagicEngine::draw(Texture *texutre /*= NULL*/)
+{
+    glViewport(0,0, m_width, m_height);
     m_shader->use();
     m_shader->setViewProj(m_vp);
     //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glEnableVertexAttribArray(m_shader->getPositionLoc());
     glEnableVertexAttribArray(m_shader->getTextureCoordLoc());
-    m_InTex->bind();
+    if (texutre){
+        texutre->bind();
+    }else{
+        m_InTex->bind();
+    }
     glDisable(GL_BLEND);
     m_Mesh->draw(m_shader);
-    //TODO remove test
-    m_testSprite.draw(m_shader);
 }
 

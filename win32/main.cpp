@@ -19,6 +19,7 @@ const UINT32 g_PicHeigth = 640;
 const bool g_useCamera = false;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
+const char* g_testImagePath = "assets\\test.jpg";
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
 const char* g_strSaveImagePath = "f:\\test.tga";
 const char* g_resPath = "assets\\";
@@ -172,7 +173,7 @@ __REREAD:
         idx += step;
         goto __REREAD;
     }
-    g_MagicMain.updatePreviewTex(preBuffer, szFile);
+    g_MagicMain.updatePreviewData(preBuffer, szFile);
     idx += step;
 }
 
@@ -367,15 +368,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
         g_MagicMain.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_NV21);
     }else{
-        int size;
-        char* imgBuffer = NULL;
-        imgBuffer = readFile("assets\\test.jpg", size);
-        if (imgBuffer)
-        {
-            g_MagicMain.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_PACKET);
-            g_MagicMain.updatePreviewTex(imgBuffer, size);
-            delete[] imgBuffer;
-        }
+        g_MagicMain.setPreviewImage(g_testImagePath);
     }
     
     float lastTime = FrmGetTime();

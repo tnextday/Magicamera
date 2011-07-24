@@ -27,7 +27,6 @@ static const char gFragmentShader[] =
 
 MagicMain::MagicMain()
 {
-    m_Engine = NULL;
     m_glYUVTex = NULL;
     m_SrcTex = NULL;
     m_resPath[0] = '\0';
@@ -37,7 +36,6 @@ MagicMain::MagicMain()
 
 MagicMain::~MagicMain()
 {
-    SafeDelete(m_Engine);
     SafeDelete(m_SrcTex);
     SafeDelete(m_glYUVTex);
 }
@@ -74,12 +72,7 @@ bool MagicMain::setupGraphics(int w, int h) {
     m_SrcTex = new Texture();
     m_SrcTex->init();
 
-    m_Engine = new MagicEngine(&m_shader, m_SrcTex);
-    m_magicSprite.setTexture(m_Engine->getOutTexture());
-    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
-    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
-    //TODO 为什么需要flip？？？？！！！！
-    m_magicSprite.flip(false, true);
+
     
 
     printGLColorSpaceInfo();
@@ -96,7 +89,7 @@ void MagicMain::renderFrame( float delta )
 {
     update(delta);
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
-    m_Engine->drawImage();
+    m_Engine.drawImage();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
@@ -107,7 +100,7 @@ void MagicMain::renderFrame( float delta )
     checkGlError("renderFrame");
 }
 
-void MagicMain::updatePreviewTex( char* data, long len )
+void MagicMain::updatePreviewData( char* data, long len )
 {
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
         //m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
@@ -123,6 +116,8 @@ void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 {
     m_SrcTex->setSize(w, h);
     m_inputFortmat = imageFormat;
+
+    initEngine();
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
@@ -140,7 +135,7 @@ bool MagicMain::onTouchDown( float x, float y )
     y = m_CoordHeight - y;
     m_BtnRestore->onTouchDown(x, y);
     m_BtnSave->onTouchDown(x, y);
-    m_Engine->onTouchDown(x, y - m_magicSpriteY);
+    m_Engine.onTouchDown(x, y - m_magicSpriteY);
     return true;
 }
 
@@ -150,7 +145,7 @@ bool MagicMain::onTouchDrag( float x, float y )
     y = y*m_CoordHeight/m_ScreenHeight;
     //LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
     y = m_CoordHeight - y;
-    m_Engine->onTouchDrag(x, y - m_magicSpriteY);
+    m_Engine.onTouchDrag(x, y - m_magicSpriteY);
     return true;
 }
 
@@ -162,20 +157,20 @@ bool MagicMain::onTouchUp( float x, float y )
     y = m_CoordHeight - y;
     m_BtnRestore->onTouchUp(x, y);
     m_BtnSave->onTouchUp(x, y);
-    m_Engine->onTouchUp(x, y - m_magicSpriteY);
+    m_Engine.onTouchUp(x, y - m_magicSpriteY);
     return true;
 }
 
 void MagicMain::setCallBack( SaveImageCallBack* callback )
 {
     m_saveImage = callback;
-    m_Engine->SetSaveImageCallBack(callback);
+    m_Engine.SetSaveImageCallBack(callback);
 }
 
 
 void MagicMain::update( float delta )
 {
-    m_Engine->update(delta);
+    m_Engine.update(delta);
 //     static float rotateSpeed = 50;
 //     static float scaleSpeed = 1.5;
 //     m_testSprite.rotate(rotateSpeed*delta);
@@ -236,9 +231,31 @@ char* MagicMain::makeResPath( char* path, const char* targetFile, int szBuffer/*
 void MagicMain::onButtonClick( Button *btn )
 {
     if (btn->tag() == 1)
-        m_Engine->restore();
+        m_Engine.restore();
     else if (btn->tag() == 2)
-        m_Engine->SaveImage(480, 640);
+        m_Engine.tackPicture();
     LOGI("onButtonClick : %d\n", btn->tag());
+}
+
+void MagicMain::setPreviewImage( const char* data, long len )
+{
+    m_SrcTex->uploadImageData((unsigned char*)data, len);
+    initEngine();
+}
+
+void MagicMain::setPreviewImage( const char* imgPath )
+{
+    m_SrcTex->loadFromFile(imgPath);
+    initEngine();
+}
+
+void MagicMain::initEngine()
+{
+    m_Engine.init(&m_shader, m_SrcTex);
+    m_magicSprite.setTexture(m_Engine.getOutTexture());
+    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
+    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    //TODO 为什么需要flip？？？？！！！！
+    m_magicSprite.flip(false, true);
 }
 

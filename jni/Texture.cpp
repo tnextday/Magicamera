@@ -108,6 +108,7 @@ void Texture::uploadImageData( const unsigned char *buffer, uint32_t len)
     m_imageFormat = pixmap->format;
     m_Width = pixmap->width;
     m_Height = pixmap->height;
+    //TODO 貌似需要字节对齐 
     LOGI("Decoder Image : %d,%d format:%d\n", pixmap->width, pixmap->height, pixmap->format);
     uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, m_imageFormat);
     gdx2d_free(pixmap);

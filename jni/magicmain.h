@@ -32,7 +32,7 @@ class MagicMain : public ButtonClick, TouchEvent{
     Texture*        m_SrcTex;
     glYUVTexture*   m_glYUVTex;
 
-    MagicEngine*    m_Engine;
+    MagicEngine    m_Engine;
     Button*         m_BtnRestore;
     Button*         m_BtnSave;
 
@@ -57,25 +57,28 @@ public:
     bool setupGraphics(int w, int h) ;
     void renderFrame(float delta);
 
-    void updatePreviewTex(char* data, long len);
+    void updatePreviewData(char* data, long len);
     void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
+
+    void setPreviewImage(const char* data, long len);
+    void setPreviewImage(const char* imgPath);
 
     virtual bool onTouchDown(float x, float y);
     virtual bool onTouchDrag(float x, float y);
     virtual bool onTouchUp(float x, float y);
 
+    void setCallBack(SaveImageCallBack* callback);
+
+    void setResPath(const char* path);
+    void loadRes();
+    char* makeResPath(char* path, const char* targetFile, int szBuffer = _MAX_PATH);
+
+private:
+    void initEngine();
+    virtual void onButtonClick( Button *btn );
+
     void update(float delta);
 
     void drawUI();
     void drawImage();
-
-    void setCallBack(SaveImageCallBack* callback);
-
-    void setResPath(const char* path);
-
-    void loadRes();
-
-    char* makeResPath(char* path, const char* targetFile, int szBuffer = _MAX_PATH);
-
-    virtual void onButtonClick( Button *btn );
 };
