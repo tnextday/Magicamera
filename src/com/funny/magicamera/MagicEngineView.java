@@ -3,6 +3,7 @@ package com.funny.magicamera;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.opengl.GLSurfaceView;
@@ -30,7 +31,7 @@ public class MagicEngineView extends GLSurfaceView
     public static int SDK_Version = Build.VERSION.SDK_INT;
     private long lastFrameTime = System.nanoTime();
     private float deltaTime = 0.0f;
-    boolean m_bUseCamera = true;
+    boolean m_bUseCamera = false;
     //    int m_CameraId; //use above 2.3
     Camera m_Camera = null;
     final static int BufferCount = 2;
@@ -53,7 +54,9 @@ public class MagicEngineView extends GLSurfaceView
         } else {
             setEGLContextFactory(new ContextFactory20());
         }
-        //this.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        this.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        //如果色深设置成8888，必须设置这个~
+        getHolder().setFormat(PixelFormat.RGBA_8888);
         setRenderer(this);
         inputEvent.setInputProcessor(this);
     }
