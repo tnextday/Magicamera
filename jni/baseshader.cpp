@@ -17,16 +17,12 @@ BaseShader::BaseShader( const char* pVertexSource, const char* pFragmentSource )
 }
 BaseShader::~BaseShader(void)
 {
-    if(m_program){
-        glDeleteProgram(m_program);
-    }
+    deleteProgram();
 }
 
 void BaseShader::makeProgram( const char* pVertexSource, const char* pFragmentSource )
 {
-    if(m_program){
-        glDeleteProgram(m_program);
-    }
+    deleteProgram();
     m_isCompiled = false;
     m_program = ::createProgram(pVertexSource, pFragmentSource);
     if (!m_program) {
@@ -64,7 +60,8 @@ GLuint BaseShader::getProgram()
 
 void BaseShader::use()
 {
-    glUseProgram(m_program);
+    if (isCompiled())
+        glUseProgram(m_program);
 }
 
 GLuint BaseShader::getPositionLoc()
@@ -103,4 +100,13 @@ void BaseShader::ortho( GLfloat left, GLfloat right, GLfloat bottom, GLfloat top
 void BaseShader::setViewProj( GLfloat* mvp )
 {
     glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
+}
+
+void BaseShader::deleteProgram()
+{
+    if(m_program){
+        glDeleteProgram(m_program);
+        m_isCompiled = false;
+        m_program = 0;
+    }
 }

@@ -21,11 +21,22 @@ public:
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
 };
 
+class OutputSizeChangeCallBack{
+public:
+    virtual void OnOutputSizeChange(int w, int h) = 0;
+};
+
 class MagicEngine : public TouchEvent {
+private:
     BaseShader*     m_shader;
+    BaseShader      m_effectShader;
 
     Texture*        m_InTex;
-    Texture*        m_OutTex;
+
+    Texture         m_OutTex;
+    Texture         m_coverTex;
+    Sprite          m_srcImg;
+    
 
     MeshEngine*     m_Mesh;
 
@@ -35,12 +46,16 @@ class MagicEngine : public TouchEvent {
     GLfloat         m_coordHeight;
     GLfloat         m_vp[16]; 
 
+    GLenum          m_sfactor;
+    GLenum          m_dfactor;
+
     //上次鼠标坐标
     float    m_lastX;
     float    m_lastY;
 
     FramebufferObject*      m_fbo;
     SaveImageCallBack*      m_saveImage;
+    OutputSizeChangeCallBack* m_sizeChange;
 
 public:
     MagicEngine();
@@ -50,8 +65,8 @@ public:
     bool init(BaseShader* shader, Texture* srcTex) ;
     void setSize(int w, int h);
     void setShader(BaseShader* val) { m_shader = val; }
-    void setInTexture(Texture* val) { m_InTex = val; }
-    Texture* getOutTexture(){return m_OutTex;};
+    void setInputTexture(Texture* val) { m_InTex = val; }
+    Texture* getOutTexture();
 
     void restore();
 
@@ -67,6 +82,9 @@ public:
     void tackPicture(const char* data, int w, int h, int format);
 
     void SetSaveImageCallBack(SaveImageCallBack* val) { m_saveImage = val; }
+    void SetSizeChangeCallBack(OutputSizeChangeCallBack *val){ m_sizeChange = val;}
+
+    void setBlendFunc(GLenum sfactor, GLenum dfactor);
 
     virtual bool onTouchDown(float x, float y);
     virtual bool onTouchDrag(float x, float y);
@@ -74,5 +92,11 @@ public:
 
 private:
     void draw(Texture *texutre = NULL);
+    //变形
+    void drawMesh(Texture *texutre);
+    //相框
+    void drawCover(Texture *texutre);
+    //万花筒
+    void drawKaleidoscope(Texture *texutre);
 
 };

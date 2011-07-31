@@ -7,36 +7,25 @@
 #include "glutils.h"
 #include "glHelpers.h"
 
-static const char gVertexShader[] = 
-        "uniform mat4 uMVPMatrix;\n"
-        "attribute vec4 aPosition;\n"
-        "attribute vec2 aTextureCoord;\n"
-        "varying vec2 vTextureCoord;\n"
-        "void main() {\n"
-        "  gl_Position = uMVPMatrix * aPosition;\n" 
-        "  vTextureCoord = aTextureCoord;\n"
-        "}\n";
-
-static const char gFragmentShader[] = 
-        "precision mediump float;\n"
-        "varying vec2 vTextureCoord;\n"
-        "uniform sampler2D sTexture;\n"
-        "void main() {\n"
-        "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
-        "}\n";
-
 MagicEngine::MagicEngine()
 {
     m_Mesh = NULL;
     m_InTex = NULL;
-    m_OutTex = NULL;
     m_shader = NULL;
     m_fbo = NULL;
+    m_sfactor = GL_SRC_ALPHA;
+    m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+    m_saveImage = NULL;
+    m_sizeChange = NULL;
 }
 
 MagicEngine::MagicEngine( BaseShader* shader, Texture* srcTex )
 {
     m_Mesh = NULL;
+    m_sfactor = GL_SRC_ALPHA;
+    m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+    m_saveImage = NULL;
+    m_sizeChange = NULL;
     init(shader, srcTex);
 }
 
@@ -44,15 +33,14 @@ MagicEngine::~MagicEngine()
 {
     SafeDelete(m_Mesh);
     SafeDelete(m_fbo);
-    SafeDelete(m_OutTex);
 }
 
 
 bool MagicEngine::init(BaseShader* shader, Texture* srcTex) {
-    m_OutTex = new Texture();
-    m_OutTex->init();
+    m_OutTex.init();
+    m_coverTex.init();
 
-    setInTexture(srcTex);
+    setInputTexture(srcTex);
     setShader(shader);
 
     m_coordWidth = g_CoordWidth;
@@ -60,7 +48,7 @@ bool MagicEngine::init(BaseShader* shader, Texture* srcTex) {
     setSize(m_coordWidth, m_coordHeight);
 
     m_fbo = new FramebufferObject();
-    m_fbo->texture2d(m_OutTex->getTexHandle());
+    m_fbo->texture2d(m_OutTex.getTexHandle());
 
     //内建坐标系为480x640大小的坐标，此值为固定值
     matIdentity(m_vp);
@@ -131,8 +119,9 @@ void MagicEngine::setSize( int w, int h )
 {
     m_width = w;
     m_height = h;
-    if (m_OutTex){
-        m_OutTex->setSize(w, h);
+    m_OutTex.setSize(w, h);
+    if (m_sizeChange){
+        m_sizeChange->OnOutputSizeChange(w, h);
     }
 }
 
@@ -201,5 +190,18 @@ void MagicEngine::draw(Texture *texutre /*= NULL*/)
     }
     glDisable(GL_BLEND);
     m_Mesh->draw(m_shader);
+
+    glBlendFunc(m_sfactor, m_dfactor);
+}
+
+void MagicEngine::setBlendFunc( GLenum sfactor, GLenum dfactor )
+{
+    m_sfactor = sfactor;
+    m_dfactor = dfactor;
+}
+
+Texture* MagicEngine::getOutTexture()
+{
+    return &m_OutTex;
 }
 

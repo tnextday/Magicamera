@@ -19,16 +19,21 @@ private:
     bool            m_bSelect;
     bool            m_bDown;
     int             m_tag;
+    Sprite*         m_btnImg;
 
 public:
     //包含普通和按下状态的Texture,纵向排列
-    Button(Texture *tex, int tag = 0);
-    Button(const char* btnTexPath, int tag = 0);
+    Button(Texture *bgTex, Texture *imgTex = NULL, int tag = 0);
+    Button(const char* bgTexPath, const char* imgPath = NULL, int tag = 0);
     //Button(TextureRegion *btnNormal, TextureRegion *btnDown);
     ~Button(void);
 
-    void setTexture(Texture *tex);
-    void loadTexture(const char* texPath);
+    //设置按钮背景，包含普通和按下状态的Texture,纵向排列
+    void setBackground(Texture *bgTex);
+    void loadBackground(const char* bgTexPath);
+    //设置按钮图片
+    void setImage(Texture *imgTex);
+    void loadImage(const char* imgTexPath);
 
     void update(float delta);
     void draw(BaseShader *bs);

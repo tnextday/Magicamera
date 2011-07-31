@@ -72,9 +72,6 @@ bool MagicMain::setupGraphics(int w, int h) {
     m_SrcTex = new Texture();
     m_SrcTex->init();
 
-
-    
-
     printGLColorSpaceInfo();
     matIdentity(m_vp);
     matOrtho(m_vp, 0, m_CoordWidth, 0, m_CoordHeight, -10, 10);
@@ -214,10 +211,13 @@ void MagicMain::setResPath(const char* path )
 void MagicMain::loadRes()
 {
     char path[_MAX_PATH];
-    m_BtnRestore = new Button(makeResPath(path, "btn_restore.png"), 1);
+    char path1[_MAX_PATH];
+    m_BtnRestore = new Button(makeResPath(path, "ui/btn_bg.png"), 
+                              makeResPath(path1, "ui/btn_img_restore.png"), 1);
     m_BtnRestore->setOnClick(this);
     m_BtnRestore->setPostion(m_BtnRestore->getRegionWidth()/2, m_BtnRestore->getRegionHeight()/2);
-    m_BtnSave = new Button(makeResPath(path, "btn_save.png"), 2);
+    m_BtnSave = new Button(makeResPath(path, "ui/btn_bg.png"), 
+                           makeResPath(path1, "ui/btn_img_save.png"), 2);
     m_BtnSave->setOnClick(this);
     m_BtnRestore->setPostion(m_CoordWidth - m_BtnRestore->getRegionWidth()/2, m_BtnRestore->getRegionHeight()/2);
 }
@@ -257,5 +257,11 @@ void MagicMain::initEngine()
     m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
+    m_Engine.SetSizeChangeCallBack(this);
+}
+
+void MagicMain::OnOutputSizeChange( int w, int h )
+{
+    m_magicSpriteY = (m_CoordHeight - h)/2;
 }
 

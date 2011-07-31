@@ -1,30 +1,38 @@
 #include "button.h"
 
 
-Button::Button( Texture *tex, int tag /*= 0*/)
+Button::Button( Texture *bgTex, Texture *imgTex /*= NULL*/, int tag /*= 0*/)
     :Sprite()
 {
     m_onClick = NULL;
+    m_btnImg = NULL;
     m_bDown = false;
     m_bSelect = false;
     m_bShow = true;
     m_tag = tag;
-    setTexture(tex);
+    setBackground(bgTex);
+    if (imgTex){
+        setImage(imgTex);
+    }
 }
 
-Button::Button( const char* btnTexPath, int tag /*= 0*/ )
+Button::Button( const char* bgTexPath, const char* imgPath /*= NULL*/, int tag /*= 0*/ )
     :Sprite()
 {
     m_onClick = NULL;
+    m_btnImg = NULL;
     m_bDown = false;
     m_bSelect = false;
     m_bShow = true;
     m_tag = tag;
-    loadTexture(btnTexPath);
+    loadBackground(bgTexPath);
+    if (imgPath){
+        loadImage(imgPath);
+    }
 }
-
 Button::~Button(void)
 {
+    SafeDelete(m_btnImg);
 }
 
 void Button::update( float delta )
@@ -43,6 +51,10 @@ void Button::draw( BaseShader *bs )
     glVertexAttribPointer(bs->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getVertices());
     glVertexAttribPointer(bs->getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, tr->getTexCoords());
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    if (m_btnImg){
+        m_btnImg->setPostion(getX(), getY());
+        m_btnImg->draw(bs);
+    }
     
 }
 
@@ -53,13 +65,18 @@ bool Button::isContainPos( float x, float y )
     return x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.height;
 }
 
-void Button::setTexture( Texture *tex )
+void Button::setBackground( Texture *bgTex )
 {
-    TextureRegion* btnTexs = TextureRegion::split(tex, 2, 1);
+    TextureRegion* btnTexs = TextureRegion::split(bgTex, 2, 1);
     setTextureRegion(&btnTexs[0]);
     m_down.setTextureRegion(&btnTexs[1]);
     delete[] btnTexs;
+}
 
+void Button::loadBackground( const char* bgTexPath )
+{
+    m_spriteTexture = new Texture(bgTexPath);
+    setBackground(m_spriteTexture);
 }
 
 bool Button::onTouchDrag( float x, float y )
@@ -83,8 +100,14 @@ bool Button::onTouchUp( float x, float y )
     return bTouch;
 }
 
-void Button::loadTexture( const char* texPath )
+void Button::setImage( Texture *imgTex )
 {
-    m_spriteTexture = new Texture(texPath);
-    setTexture(m_spriteTexture);
+    SafeDelete(m_btnImg);
+    m_btnImg = new Sprite(imgTex);
+}
+
+void Button::loadImage( const char* imgTexPath )
+{
+    SafeDelete(m_btnImg);
+    m_btnImg = new Sprite(imgTexPath);
 }

@@ -57,7 +57,7 @@ public:
     void setScale (GLfloat scaleX, GLfloat scaleY);
     void setSize(GLfloat w, GLfloat h);
     void scale (GLfloat amount);
-    void draw(BaseShader *shader);
+    void draw(BaseShader *shader, Texture *otherTex = NULL);
     //Vertices的排列顺序为(x1y1x2y2x3y3x4y4u1v1u2v2u3v3u4v4),不是交替排列的
     GLfloat* getVertices ();
     

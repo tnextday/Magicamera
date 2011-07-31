@@ -26,7 +26,7 @@ const int FORMAT_RGB565 = 2;
 
 
 
-class MagicMain : public ButtonClick, TouchEvent{
+class MagicMain : public ButtonClick, TouchEvent, OutputSizeChangeCallBack{
     BaseShader      m_shader;
 
     Texture*        m_SrcTex;
@@ -81,4 +81,6 @@ private:
 
     void drawUI();
     void drawImage();
+
+    virtual void OnOutputSizeChange( int w, int h );
 };

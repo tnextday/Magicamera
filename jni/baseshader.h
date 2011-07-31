@@ -25,6 +25,7 @@ public:
     ~BaseShader(void);
 
     void makeProgram(const char* pVertexSource, const char* pFragmentSource);
+    void deleteProgram();
 
     GLuint getProgram();
     void use();

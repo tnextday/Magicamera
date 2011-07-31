@@ -114,6 +114,7 @@ float* Sprite::getVertices()
 
 void Sprite::translate( float xAmount, float yAmount )
 {
+    if (xAmount == 0 && yAmount == 0) return;
     m_x += xAmount;
     m_y += yAmount;
 
@@ -134,6 +135,7 @@ void Sprite::translate( float xAmount, float yAmount )
 
 void Sprite::setOrigin( float originX, float originY )
 {
+    if (m_originX == originX && m_originY == originY) return;
     m_originX = originX;
     m_originY = originY;
     m_dirty = true;
@@ -141,18 +143,21 @@ void Sprite::setOrigin( float originX, float originY )
 
 void Sprite::setRotation( float degrees )
 {
+    if (m_rotation == degrees) return;
     m_rotation = degrees;
     m_dirty = true;
 }
 
 void Sprite::rotate( float degrees )
 {
+    if (degrees == 0) return;
     m_rotation += degrees;
     m_dirty = true;
 }
 
 void Sprite::setScale( float scaleXY )
 {
+    if (m_scaleX == scaleXY && m_scaleY == scaleXY) return;
     m_scaleX = scaleXY;
     m_scaleY = scaleXY;
     m_dirty = true;
@@ -160,6 +165,7 @@ void Sprite::setScale( float scaleXY )
 
 void Sprite::setScale( float scaleX, float scaleY )
 {
+    if (m_scaleX == scaleX && m_scaleY == scaleY) return;
     m_scaleX = scaleX;
     m_scaleY = scaleY;
     m_dirty = true;
@@ -167,16 +173,23 @@ void Sprite::setScale( float scaleX, float scaleY )
 
 void Sprite::scale( float amount )
 {
+    if (amount == 0) return;
     m_scaleX += amount;
     m_scaleY += amount;
     m_dirty = true;
 }
 
 
-void Sprite::draw(BaseShader *shader)
+void Sprite::draw(BaseShader *shader, Texture *otherTex /*= NULL*/)
 {
-    if (!m_texture) return;
-    m_texture->bind();
+    Texture *dst = NULL;
+    if (otherTex){
+        dst = otherTex;
+    }else if (m_texture){
+        dst = m_texture;
+    }
+    if (!dst) return;
+    dst->bind();
     glVertexAttribPointer(shader->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getVertices());
     glVertexAttribPointer(shader->getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, getTexCoords());
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -243,6 +256,7 @@ void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
 
 void Sprite::setSize( GLfloat w, GLfloat h )
 {
+    if (m_width == w && m_height == h) return;
     m_width = w;
     m_height = h;
 
