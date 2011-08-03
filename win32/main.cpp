@@ -21,7 +21,7 @@ const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_testImagePath = "assets\\test.jpg";
 const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
-const char* g_strSaveImagePath = "f:\\test.tga";
+const char* g_strSaveImagePath = "test.tga";
 const char* g_resPath = "assets\\";
 MagicMain g_MagicMain;
 WinCallBack g_WinCallBack;

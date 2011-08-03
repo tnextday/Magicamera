@@ -34,10 +34,13 @@ protected:
     bool        m_bGenBuffers;
     
 public:
+    Mesh();
     //widtd与height分别为Mesh上横竖的点数，数值应设定为块数+1
     //如果把一个mesh分成10x20的块，那么width应设置为11，height=21
     Mesh(int width, int height);
     ~Mesh();
+
+    void init(int width, int height);
 
     void setVertexBuffer(GLfloat* vb, int size, int offset = 0);
     void setTexCoordBuffer(GLfloat* cb, int size, int offset = 0);

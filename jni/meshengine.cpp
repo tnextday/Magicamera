@@ -5,17 +5,14 @@
 #include <string.h>
 #include <math.h>
 
-MeshEngine::MeshEngine( int width, int height )
-    :Mesh(width, height)
+MeshEngine::MeshEngine()
 {
-    m_BufferCount = width*height*VertexSize;
-    m_DestVertex = new GLfloat[m_BufferCount];
-    m_DeltaVertex = new GLfloat[m_BufferCount];
-    m_OrgiVertex = new GLfloat[m_BufferCount];
+    m_DestVertex = NULL;
+    m_DeltaVertex = NULL;
+    m_OrgiVertex = NULL;
     m_bAnimating = false;
     m_bMeshChanged = false;
 }
-
 MeshEngine::~MeshEngine()
 {
     SafeDeleteArray(m_DestVertex);
@@ -109,11 +106,93 @@ void MeshEngine::stopAnimating()
     m_Duration = 0.0f;
 }
 
-void MeshEngine::draw(BaseShader *shader)
+void MeshEngine::onDraw(Texture *texutre)
 {
     if (m_bMeshChanged){
         uploadBuffer(BT_VertexBuffer);
         m_bMeshChanged = false;
     }
-    Mesh::draw(shader);
+    if (texutre){
+        texutre->bind();
+    }else{
+        m_InTex->bind();
+    }
+    glDisable(GL_BLEND);
+    Mesh::draw(m_shader);
+}
+
+bool MeshEngine::onInit()
+{
+    init(m_width, m_height);
+    generateMesh(m_width, m_height);
+    return true;
+}
+
+void MeshEngine::finish()
+{
+//    throw std::exception("The method or operation is not implemented.");
+}
+
+void MeshEngine::start()
+{
+//    throw std::exception("The method or operation is not implemented.");
+}
+
+bool MeshEngine::isFinished()
+{
+//    throw std::exception("The method or operation is not implemented.");
+    return false;
+}
+
+bool MeshEngine::onTouchDown( float x, float y )
+{
+    stopAnimating();
+    m_lastX = x;
+    m_lastY = y;
+    return true;
+}
+
+bool MeshEngine::onTouchDrag( float x, float y )
+{
+    moveMesh(x, y, x - m_lastX, y - m_lastY, 100);
+    m_lastX = x;
+    m_lastY = y;
+    return true;
+}
+
+bool MeshEngine::onTouchUp( float x, float y )
+{
+    m_lastX = 0;
+    m_lastY = 0;
+    return true;
+}
+
+void MeshEngine::generateMesh( int w, int h )
+{
+    int uSteps = MESH_HEIGHT;
+    int vSteps = MESH_WIDTH;
+    init(uSteps+1, vSteps+1);
+    GLfloat x, y,u, v;
+    for(int j = 0;j <= vSteps; j++){
+        y = j*h/vSteps;
+        v = 1 - (GLfloat)j/vSteps;
+        for(int i = 0; i <= uSteps; i++){
+            x = i*w/uSteps;
+            u = (GLfloat)i/uSteps;
+            set(i,j,x,y,u,v);
+        }
+    }
+    backupOrigVertex();
+    createBufferObjects();
+}
+
+void MeshEngine::init( int width, int height )
+{
+    Mesh::init(width, height);
+    m_BufferCount = width*height*VertexSize;
+    m_DestVertex = new GLfloat[m_BufferCount];
+    m_DeltaVertex = new GLfloat[m_BufferCount];
+    m_OrgiVertex = new GLfloat[m_BufferCount];
+    m_bAnimating = false;
+    m_bMeshChanged = false;
 }

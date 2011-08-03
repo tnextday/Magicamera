@@ -7,7 +7,7 @@
 #include "sprite.h"
 #include "button.h"
 #include "touchevent.h"
-#include "magicengine.h"
+#include "meshengine.h"
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
@@ -26,13 +26,13 @@ const int FORMAT_RGB565 = 2;
 
 
 
-class MagicMain : public ButtonClick, TouchEvent, OutputSizeChangeCallBack{
+class MagicMain : public ButtonClick, TouchEvent{
     BaseShader      m_shader;
 
     Texture*        m_SrcTex;
     glYUVTexture*   m_glYUVTex;
 
-    MagicEngine    m_Engine;
+    MagicEngine*    m_Engine;
     Button*         m_BtnRestore;
     Button*         m_BtnSave;
 

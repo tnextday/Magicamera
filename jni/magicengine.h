@@ -1,7 +1,6 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include "meshengine.h"
 #include "texture.h"
 #include "baseshader.h"
 #include "touchevent.h"
@@ -21,24 +20,15 @@ public:
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
 };
 
-class OutputSizeChangeCallBack{
-public:
-    virtual void OnOutputSizeChange(int w, int h) = 0;
-};
 
 class MagicEngine : public TouchEvent {
-private:
+protected:
     BaseShader*     m_shader;
     BaseShader      m_effectShader;
 
     Texture*        m_InTex;
 
     Texture         m_OutTex;
-    Texture         m_coverTex;
-    Sprite          m_srcImg;
-    
-
-    MeshEngine*     m_Mesh;
 
     GLfloat         m_width;
     GLfloat         m_height;
@@ -49,30 +39,25 @@ private:
     GLenum          m_sfactor;
     GLenum          m_dfactor;
 
-    //上次鼠标坐标
-    float    m_lastX;
-    float    m_lastY;
-
     FramebufferObject*      m_fbo;
     SaveImageCallBack*      m_saveImage;
-    OutputSizeChangeCallBack* m_sizeChange;
+
+protected:
+    void draw(Texture *texutre = NULL);
+    virtual bool onInit() = 0;
+    virtual void onDraw(Texture *texutre) = 0;
 
 public:
     MagicEngine();
     MagicEngine(BaseShader* shader, Texture* srcTex);
-    ~MagicEngine();
+    //声明为虚函数，确保子类可以被释放
+    virtual	~MagicEngine();
 
-    bool init(BaseShader* shader, Texture* srcTex) ;
+    bool initEngine(BaseShader* shader, Texture* srcTex) ;
     void setSize(int w, int h);
     void setShader(BaseShader* val) { m_shader = val; }
     void setInputTexture(Texture* val) { m_InTex = val; }
     Texture* getOutTexture();
-
-    void restore();
-
-    void generateMesh( int w, int h );
-
-    void update(float delta);
 
     void drawImage();
 
@@ -81,22 +66,20 @@ public:
     void tackPicture(const char* imagePath);
     void tackPicture(const char* data, int w, int h, int format);
 
-    void SetSaveImageCallBack(SaveImageCallBack* val) { m_saveImage = val; }
-    void SetSizeChangeCallBack(OutputSizeChangeCallBack *val){ m_sizeChange = val;}
+    void SetSaveImageCallBack(SaveImageCallBack* val);
+
+    GLfloat getWidth(){return m_width;}
+    GLfloat getHeigth(){return m_height;} 
 
     void setBlendFunc(GLenum sfactor, GLenum dfactor);
 
-    virtual bool onTouchDown(float x, float y);
-    virtual bool onTouchDrag(float x, float y);
-    virtual bool onTouchUp(float x, float y);
+    virtual void update(GLfloat delta) = 0;
+    virtual void start() = 0;
+    virtual void finish() = 0;
+    virtual bool isFinished() = 0;
 
-private:
-    void draw(Texture *texutre = NULL);
-    //变形
-    void drawMesh(Texture *texutre);
-    //相框
-    void drawCover(Texture *texutre);
-    //万花筒
-    void drawKaleidoscope(Texture *texutre);
+    virtual bool onTouchDown( float x, float y );
+    virtual bool onTouchDrag( float x, float y );
+    virtual bool onTouchUp( float x, float y );
 
 };

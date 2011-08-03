@@ -7,49 +7,15 @@
 
 
 Mesh::Mesh(int width, int height){
-    m_bGenBuffers = false;
-    mW = width;
-    mH = height;
-    int size =  mW * mH;
-    int quadW = mW - 1;
-    int quadH = mH - 1;
-    int quadCount = quadW * quadH;
-    mIndexCount = quadCount * 6;
-    mIndexBuffer = new GLushort[mIndexCount];
-    mVertexBuffer = new GLfloat[size*VertexSize];
-    mTexCoordBuffer = new GLfloat[size*TexCoordSize];
-
-    /*
-    * Initialize triangle list mesh.
-    *
-    *     [0]-----[  1] ...
-    *      |    /   |
-    *      |   /    |
-    *      |  /     |
-    *     [w]-----[w+1] ...
-    *      |       |
-    *
-    */
-
-    int i = 0;
-    for (int y = 0; y < quadH; y++) {
-        for (int x = 0; x < quadW; x++) {
-            GLushort a = (GLushort) (y * mW + x);
-            GLushort b = (GLushort) (y * mW + x + 1);
-            GLushort c = (GLushort) ((y + 1) * mW + x);
-            GLushort d = (GLushort) ((y + 1) * mW + x + 1);
-
-            mIndexBuffer[i++] = a;
-            mIndexBuffer[i++] = c;
-            mIndexBuffer[i++] = b;
-
-            mIndexBuffer[i++] = b;
-            mIndexBuffer[i++] = c;
-            mIndexBuffer[i++] = d;
-        }
-    }
+    init(width, height);
 }
 
+Mesh::Mesh()
+{
+    mIndexBuffer = NULL;
+    mVertexBuffer = NULL;
+    mTexCoordBuffer = NULL;
+}
 Mesh::~Mesh(){
 
     SafeDeleteArray(mIndexBuffer);
@@ -155,4 +121,49 @@ void Mesh::draw(BaseShader *shader)
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void Mesh::init( int width, int height )
+{
+    m_bGenBuffers = false;
+    mW = width;
+    mH = height;
+    int size =  mW * mH;
+    int quadW = mW - 1;
+    int quadH = mH - 1;
+    int quadCount = quadW * quadH;
+    mIndexCount = quadCount * 6;
+    mIndexBuffer = new GLushort[mIndexCount];
+    mVertexBuffer = new GLfloat[size*VertexSize];
+    mTexCoordBuffer = new GLfloat[size*TexCoordSize];
+
+    /*
+    * Initialize triangle list mesh.
+    *
+    *     [0]-----[  1] ...
+    *      |    /   |
+    *      |   /    |
+    *      |  /     |
+    *     [w]-----[w+1] ...
+    *      |       |
+    *
+    */
+
+    int i = 0;
+    for (int y = 0; y < quadH; y++) {
+        for (int x = 0; x < quadW; x++) {
+            GLushort a = (GLushort) (y * mW + x);
+            GLushort b = (GLushort) (y * mW + x + 1);
+            GLushort c = (GLushort) ((y + 1) * mW + x);
+            GLushort d = (GLushort) ((y + 1) * mW + x + 1);
+
+            mIndexBuffer[i++] = a;
+            mIndexBuffer[i++] = c;
+            mIndexBuffer[i++] = b;
+
+            mIndexBuffer[i++] = b;
+            mIndexBuffer[i++] = c;
+            mIndexBuffer[i++] = d;
+        }
+    }
 }
