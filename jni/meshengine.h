@@ -79,5 +79,7 @@ public:
     virtual void start();
 
     virtual bool isFinished();
+
+    virtual EngineType type();
 };
 #endif // _meshengine_h_

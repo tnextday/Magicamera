@@ -20,6 +20,12 @@ public:
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
 };
 
+enum EngineType {
+    EngineType_Mesh,
+    EngineType_Cover,
+    EngineType_Kaleidoscope
+};
+
 
 class MagicEngine : public TouchEvent {
 protected:
@@ -77,6 +83,7 @@ public:
     virtual void start() = 0;
     virtual void finish() = 0;
     virtual bool isFinished() = 0;
+    virtual EngineType type() = 0;
 
     virtual bool onTouchDown( float x, float y );
     virtual bool onTouchDrag( float x, float y );

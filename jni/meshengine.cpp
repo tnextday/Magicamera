@@ -196,3 +196,8 @@ void MeshEngine::init( int width, int height )
     m_bAnimating = false;
     m_bMeshChanged = false;
 }
+
+EngineType MeshEngine::type()
+{
+    return EngineType_Mesh;
+}

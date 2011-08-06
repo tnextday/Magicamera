@@ -192,6 +192,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\jni\coverengine.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\easing.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			</File>
 			<File
 				RelativePath="..\jni\button.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\coverengine.h"
 				>
 			</File>
 			<File
