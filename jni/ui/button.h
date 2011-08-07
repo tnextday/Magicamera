@@ -1,7 +1,7 @@
 #pragma once
-#include "baseshader.h"
-#include "sprite.h"
-#include "touchevent.h"
+#include "glutils/baseshader.h"
+#include "glutils/sprite.h"
+#include "ui/touchevent.h"
 
 class Button;
 

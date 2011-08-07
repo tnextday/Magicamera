@@ -52,7 +52,9 @@ bool CoverEngine::onTouchDrag( float x, float y )
 void CoverEngine::onDraw( Texture *texutre )
 {
     m_img->draw(m_shader, texutre);
-    m_conver->draw(m_shader);
+    if(m_conver){
+        m_conver->draw(m_shader);
+    }
 }
 
 bool CoverEngine::onTouchUp( float x, float y )
@@ -63,4 +65,9 @@ bool CoverEngine::onTouchUp( float x, float y )
 EngineType CoverEngine::type()
 {
     return EngineType_Cover;
+}
+
+void CoverEngine::setCover( const char* coverPath )
+{
+
 }

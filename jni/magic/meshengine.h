@@ -1,7 +1,7 @@
 #ifndef _meshengine_h_
 #define _meshengine_h_
 #include <GLES2/gl2.h>
-#include "mesh.h"
+#include "glutils/mesh.h"
 #include "magicengine.h"
 
 struct Vertex {

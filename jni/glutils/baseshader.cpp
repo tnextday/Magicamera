@@ -1,6 +1,6 @@
 #include "baseshader.h"
 #include "glutils.h"
-#include "glHelpers.h"
+#include "utils/mathelpers.h"
 
 BaseShader::BaseShader(void)
 {

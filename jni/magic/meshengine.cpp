@@ -1,7 +1,7 @@
 #include "meshengine.h"
-#include "easing.h"
+#include "utils/easing.h"
 #include "ratetables.h"
-#include "glutils.h"
+#include "glutils/glutils.h"
 #include <string.h>
 #include <math.h>
 

@@ -1,12 +1,12 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include "texture.h"
-#include "glyuvtexture.h"
-#include "baseshader.h"
-#include "sprite.h"
-#include "button.h"
-#include "touchevent.h"
+#include "glutils/texture.h"
+#include "glutils/glyuvtexture.h"
+#include "glutils/baseshader.h"
+#include "glutils/sprite.h"
+#include "ui/button.h"
+#include "ui/touchevent.h"
 #include "meshengine.h"
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4

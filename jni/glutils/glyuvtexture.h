@@ -3,7 +3,7 @@
 
 #include <GLES2/gl2.h>
 #include "glutils.h"
-#include "glHelpers.h"
+#include "utils/mathelpers.h"
 #include "framebufferobject.h"
 #include "baseshader.h"
 

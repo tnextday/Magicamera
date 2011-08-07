@@ -1,6 +1,6 @@
 #pragma once
 #include "magicengine.h"
-#include "sprite.h"
+#include "glutils/sprite.h"
 
 class CoverEngine :
     public MagicEngine
@@ -12,6 +12,8 @@ private:
 public:
     CoverEngine(void);
     ~CoverEngine(void);
+
+    void setCover(const char* coverPath);
 
     virtual void update( GLfloat delta );
     virtual void onDraw( Texture *texutre );

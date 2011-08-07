@@ -4,7 +4,7 @@
 #include <EGL/egl.h>
 #include <GLES2/GL2.h>
 #include <GLES2/gl2ext.h>
-#include "magicmain.h"
+#include "magic/magicmain.h"
 #include "main.h"
 
 

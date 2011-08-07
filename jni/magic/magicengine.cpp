@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include "magicengine.h"
-#include "glutils.h"
-#include "glHelpers.h"
+#include "glutils/glutils.h"
+#include "utils/mathelpers.h"
 
 MagicEngine::MagicEngine()
 {

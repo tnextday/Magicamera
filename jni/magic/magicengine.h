@@ -1,11 +1,11 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include "texture.h"
-#include "baseshader.h"
-#include "touchevent.h"
-#include "framebufferobject.h"
-#include "sprite.h"
+#include "glutils/texture.h"
+#include "glutils/baseshader.h"
+#include "ui/touchevent.h"
+#include "glutils/framebufferobject.h"
+#include "glutils/sprite.h"
 
 //¿í¸ß±ÈÎª2:3
 const static int MESH_WIDTH = 50;

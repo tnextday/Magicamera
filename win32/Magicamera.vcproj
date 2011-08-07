@@ -179,158 +179,58 @@
 	</References>
 	<Files>
 		<Filter
-			Name="源文件"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="ui"
 			>
 			<File
-				RelativePath="..\jni\baseshader.cpp"
+				RelativePath="..\jni\ui\button.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\button.cpp"
+				RelativePath="..\jni\ui\button.h"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\coverengine.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\easing.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\fastmath.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\framebufferobject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\glHelpers.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\glutils.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\glyuvtexture.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\magicengine.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\magicmain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\mesh.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\meshengine.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\sprite.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\texture.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\textureregion.cpp"
+				RelativePath="..\jni\ui\touchevent.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="头文件"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="magic"
 			>
 			<File
-				RelativePath="..\jni\baseshader.h"
+				RelativePath="..\jni\magic\coverengine.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\button.h"
+				RelativePath="..\jni\magic\coverengine.h"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\coverengine.h"
+				RelativePath="..\jni\magic\magicengine.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\easing.h"
+				RelativePath="..\jni\magic\magicengine.h"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\fastmath.h"
+				RelativePath="..\jni\magic\magicmain.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\framebufferobject.h"
+				RelativePath="..\jni\magic\magicmain.h"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\glHelpers.h"
+				RelativePath="..\jni\magic\meshengine.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\glutils.h"
+				RelativePath="..\jni\magic\meshengine.h"
 				>
 			</File>
 			<File
-				RelativePath="..\jni\glyuvtexture.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\magicengine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\magicmain.h"
-				>
-			</File>
-			<File
-				RelativePath=".\main.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\mesh.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\meshengine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\ratetables.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\sprite.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\texture.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\textureregion.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\touchevent.h"
+				RelativePath="..\jni\magic\ratetables.h"
 				>
 			</File>
 		</Filter>
@@ -350,6 +250,118 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="utils"
+			>
+			<File
+				RelativePath="..\jni\utils\easing.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\easing.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\fastmath.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\fastmath.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\list.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\list.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\mathelpers.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\mathelpers.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="glutils"
+			>
+			<File
+				RelativePath="..\jni\glutils\baseshader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\baseshader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\framebufferobject.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\framebufferobject.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\glutils.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\glutils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\glyuvtexture.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\glyuvtexture.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\mesh.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\mesh.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\sprite.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\texture.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\texture.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\textureregion.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\glutils\textureregion.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\main.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

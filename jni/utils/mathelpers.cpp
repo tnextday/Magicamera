@@ -24,7 +24,7 @@
 #include "fastmath.h"
 #include <float.h>
 
-#include "glHelpers.h"
+#include "utils/mathelpers.h"
 
 
 /*****************************************************************************************/

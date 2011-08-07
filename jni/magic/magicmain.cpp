@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include "magicmain.h"
-#include "glutils.h"
-#include "glHelpers.h"
+#include "glutils/glutils.h"
+#include "utils/mathelpers.h"
 
 static const char gVertexShader[] = 
         "uniform mat4 uMVPMatrix;\n"
@@ -231,7 +231,7 @@ char* MagicMain::makeResPath( char* path, const char* targetFile, int szBuffer/*
 
 void MagicMain::onButtonClick( Button *btn )
 {
-    if (btn->tag() == 1)
+    if (btn->tag() == 1 && m_Engine->type() == EngineType_Mesh)
         ((MeshEngine *)m_Engine)->restore();
     else if (btn->tag() == 2)
         m_Engine->tackPicture();

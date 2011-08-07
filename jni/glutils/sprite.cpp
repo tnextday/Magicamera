@@ -1,5 +1,5 @@
 #include "sprite.h"
-#include "fastmath.h"
+#include "utils/fastmath.h"
 #include <math.h>
 
 Sprite::Sprite()
