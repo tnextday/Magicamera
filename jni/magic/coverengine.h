@@ -7,7 +7,10 @@ class CoverEngine :
 {
 private:
     Sprite  *m_img;
-    Sprite  *m_conver;
+    Sprite  *m_cover;
+    Sprite  *m_nextCover;
+
+    bool    m_toFinish;
 
 public:
     CoverEngine(void);

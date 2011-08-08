@@ -354,6 +354,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="actions"
+			>
+			<File
+				RelativePath="..\jni\actions\action.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\action.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>

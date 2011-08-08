@@ -3,13 +3,16 @@
 CoverEngine::CoverEngine(void)
 {
     m_img = NULL;
-    m_conver = NULL;
+    m_cover = NULL;
+    m_nextCover = NULL;
+    m_toFinish = false;
 }
 
 CoverEngine::~CoverEngine(void)
 {
     SafeDelete(m_img);
-    SafeDelete(m_conver);
+    SafeDelete(m_cover);
+    SafeDelete(m_nextCover);
 }
 
 void CoverEngine::update( GLfloat delta )
@@ -52,8 +55,8 @@ bool CoverEngine::onTouchDrag( float x, float y )
 void CoverEngine::onDraw( Texture *texutre )
 {
     m_img->draw(m_shader, texutre);
-    if(m_conver){
-        m_conver->draw(m_shader);
+    if(m_cover){
+        m_cover->draw(m_shader);
     }
 }
 
