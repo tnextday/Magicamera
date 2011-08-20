@@ -1,18 +1,21 @@
 #include "sprite.h"
 #include "utils/fastmath.h"
 #include <math.h>
+#include "actions/action.h"
 
 Sprite::Sprite()
     :TextureRegion()
 {
     m_spriteTexture = NULL;
     m_dirty = true;
+    m_action = NULL;
 }
 
 Sprite::Sprite( Texture *tex )
     :TextureRegion(tex)
 {
     m_spriteTexture = NULL;
+    m_action = NULL;
     setTexture(tex);
 }
 
@@ -20,12 +23,14 @@ Sprite::Sprite( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight)
     :TextureRegion(tex, srcX, srcY, srcWidth, srcHeight)
 {
     m_spriteTexture = NULL;
+    m_action = NULL;
     setTexture(tex, srcX, srcY, srcWidth, srcHeight);
 }
 
 Sprite::Sprite( TextureRegion *textureRegion )
         :TextureRegion(textureRegion)
 {
+    m_action = NULL;
     m_spriteTexture = NULL;
     m_dirty = true;
 }
@@ -34,12 +39,15 @@ Sprite::Sprite( const char* texPath )
 :TextureRegion()
 {
     m_dirty = true;
+    m_action = NULL;
     loadTexture(texPath);
-    
 }
 
 Sprite::~Sprite()
 {
+    if (m_action && m_action->AutoFree){
+        SafeDelete(m_action);
+    }
     SafeDelete(m_spriteTexture);
 }
 
@@ -248,6 +256,7 @@ void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
     m_rotation = 0;
     m_x = 0;
     m_y = 0;
+    m_action = NULL;
     setRegion(srcX, srcY, srcWidth, srcHeight);
     setSize(abs(srcWidth), abs(srcHeight));
     setOrigin(m_width / 2, m_height / 2);
@@ -300,4 +309,34 @@ void Sprite::loadTexture( const char* texPath )
 {
     m_spriteTexture = new Texture(texPath);
     setTexture(m_spriteTexture);
+}
+
+void Sprite::doAction( Action* action, bool autoFree /*= true*/)
+{
+    if (m_action && m_action->AutoFree){
+        SafeDelete(m_action);
+    }
+    m_action = action;
+    m_action->AutoFree = autoFree;
+    m_action->setTarget(this);
+}
+
+void Sprite::update( float dt )
+{
+    if (m_action){
+        m_action->step(dt);
+    }
+}
+
+bool Sprite::isActionDone()
+{
+     if (m_action){
+         return m_action->isDone();
+     }
+     return false;
+}
+
+float Sprite::getRotation()
+{
+    return m_rotation;
 }

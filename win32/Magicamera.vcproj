@@ -254,6 +254,14 @@
 			Name="utils"
 			>
 			<File
+				RelativePath="..\jni\utils\arraylist.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\arraylist.h"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\utils\easing.cpp"
 				>
 			</File>
@@ -267,14 +275,6 @@
 			</File>
 			<File
 				RelativePath="..\jni\utils\fastmath.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\utils\list.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\utils\list.h"
 				>
 			</File>
 			<File
@@ -363,6 +363,38 @@
 			</File>
 			<File
 				RelativePath="..\jni\actions\action.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\moveto.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\moveto.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\parallel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\parallel.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\rotateto2d.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\rotateto2d.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\sequence.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\actions\sequence.h"
 				>
 			</File>
 		</Filter>

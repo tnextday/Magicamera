@@ -1,4 +1,6 @@
 #pragma once
+#include "glutils/sprite.h"
+#include "utils/easing.h"
 
 class Action
 {
@@ -6,22 +8,31 @@ private:
     int     m_tag;
 
 protected:
-    Sprite  *target;
+    Sprite  *m_target;
+    float   m_duration;
+    float   m_elapsed;
+    CEasing  *m_easing;
+public:
+    bool    AutoFree;
 
 public:
-    Action(void);
+    Action(float duration);
     virtual ~Action(void);
 
     int getTag() const;
     void setTag(int val);
 
     Sprite * getTarget() const;
-    void setTarget(Sprite * val);
+    virtual void setTarget(Sprite * val);
+
+    Action* setEasing(CEasing *easing, bool autoFree = true);
+
+    virtual void start(float duration);
 
     virtual bool isDone();
 
     //! called every frame with it's delta time. DON'T override unless you know what you are doing.
-    virtual void step(float dt) = 0;
+    virtual void step(float dt);
 
     //! called once per frame. time a value between 0 and 1
     //! For example: 

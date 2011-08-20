@@ -1,6 +1,5 @@
 #ifndef sprite_h__
 #define sprite_h__
-
 #include "Texture.h"
 #include "textureregion.h"
 #include <GLES2/gl2.h>
@@ -23,6 +22,8 @@ struct rect_t{
     GLfloat height;
 };
 
+class Action;
+
 class Sprite : public TextureRegion{
 private:
     GLfloat     m_x, m_y;
@@ -32,6 +33,7 @@ private:
     GLfloat     m_scaleX, m_scaleY;
     bool        m_dirty;
     GLfloat     m_vertices[8];
+    Action      *m_action;
 
 protected:
     Texture     *m_spriteTexture;
@@ -52,6 +54,7 @@ public:
     void translate(GLfloat xAmount, GLfloat yAmount);
     void setOrigin(GLfloat originX, GLfloat originY);
     void setRotation (GLfloat degrees);
+    float getRotation();
     void rotate (GLfloat degrees);
     void setScale (GLfloat scaleXY);
     void setScale (GLfloat scaleX, GLfloat scaleY);
@@ -64,6 +67,9 @@ public:
     float getX();
     float getY();
     void getBoundingRect(rect_t &rect);
+    void doAction(Action* action, bool autoFree = true);
+    void update(float dt);
+    bool isActionDone();
 
 private:
     void init(int srcX, int srcY, int srcWidth, int srcHeight);
