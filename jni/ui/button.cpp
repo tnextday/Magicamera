@@ -37,7 +37,7 @@ Button::~Button(void)
 
 void Button::update( float delta )
 {
-
+    Sprite::update(delta);
 }
 
 void Button::draw( BaseShader *bs )
