@@ -21,6 +21,7 @@ public:
 };
 
 enum EngineType {
+    EngineType_None,
     EngineType_Mesh,
     EngineType_Cover,
     EngineType_Kaleidoscope

@@ -406,6 +406,14 @@
 			RelativePath=".\main.h"
 			>
 		</File>
+		<File
+			RelativePath=".\uiscreen.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\uiscreen.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

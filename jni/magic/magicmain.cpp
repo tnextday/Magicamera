@@ -32,7 +32,7 @@ MagicMain::MagicMain()
     m_resPath[0] = '\0';
     m_saveImage = NULL;
     m_Engine = NULL;
-
+    m_nextEngine = NULL;
 }
 
 MagicMain::~MagicMain()
@@ -259,11 +259,16 @@ void MagicMain::initEngine()
     m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
-     m_Engine->SetSaveImageCallBack(m_saveImage);
+    m_Engine->SetSaveImageCallBack(m_saveImage);
 }
 
 void MagicMain::OnOutputSizeChange( int w, int h )
 {
     m_magicSpriteY = (m_CoordHeight - h)/2;
+}
+
+void MagicMain::switchEngine()
+{
+    
 }
 

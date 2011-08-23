@@ -18,9 +18,8 @@ void MoveTo::update( float time )
                          m_startY + m_deltaY*time);
 }
 
-void MoveTo::setTarget( Sprite * val )
+void MoveTo::onStart()
 {
-    m_target = val;
     m_startX = m_target->getX();
     m_startY = m_target->getY();
     m_deltaX = m_dstX - m_startX;

@@ -7,6 +7,7 @@ Action::Action(float duration)
     m_elapsed = 0;
     m_easing = NULL;
     AutoFree = true;
+    m_firstTick = true;
 }
 
 Action::~Action(void)
@@ -36,16 +37,19 @@ void Action::setTarget( Sprite * val )
     m_target = val;
 }
 
-void Action::start( float duration )
+void Action::onStart()
 {
-    m_duration = duration;
-    m_elapsed = 0;
+
 }
 
 void Action::step( float dt )
 {
-    if (m_elapsed < 0)
+        
+    if (m_firstTick){
         m_elapsed = 0;
+        onStart();
+        m_firstTick = false;
+    }
     m_elapsed += dt;
     if (m_easing){
         update(m_easing->update(min(1, m_elapsed/m_duration)));
@@ -68,4 +72,10 @@ Action* Action::setEasing( CEasing *easing, bool autoFree /*= true*/)
     m_easing = easing;
     m_easing->AutoFree = autoFree;
     return this;
+}
+
+void Action::restart()
+{
+    m_firstTick = true;
+    m_elapsed = 0;
 }

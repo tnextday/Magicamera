@@ -19,4 +19,6 @@ public:
     virtual void step( float dt );
 
     Parallel* operator<<(Action *action);
+
+    virtual void restart();
 };

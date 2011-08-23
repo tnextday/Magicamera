@@ -9,7 +9,7 @@ class RotateTo2D : public Action
 public:
     RotateTo2D(float ang, float duration);
 
-    virtual void setTarget( Sprite * val );
-
     virtual void update( float time );
+
+    virtual void onStart();
 };

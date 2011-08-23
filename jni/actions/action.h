@@ -12,6 +12,7 @@ protected:
     float   m_duration;
     float   m_elapsed;
     CEasing  *m_easing;
+    bool    m_firstTick;
 public:
     bool    AutoFree;
 
@@ -27,7 +28,7 @@ public:
 
     Action* setEasing(CEasing *easing, bool autoFree = true);
 
-    virtual void start(float duration);
+    virtual void restart();
 
     virtual bool isDone();
 
@@ -40,4 +41,8 @@ public:
     //! * 0.5 means that the action is in the middle
     //! * 1 means that the action is over
     virtual void update(float time) = 0;
+
+protected:
+    //call when first tick
+    virtual void onStart();
 };

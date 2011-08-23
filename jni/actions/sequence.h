@@ -20,4 +20,6 @@ public:
     virtual void step( float dt );
 
     Sequence* operator<<(Action *action);
+
+    virtual void restart();
 };

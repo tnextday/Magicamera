@@ -59,3 +59,12 @@ Parallel* Parallel::operator<<(Action *action )
     m_list<<action;
     return this;
 }
+
+void Parallel::restart()
+{
+    for (int i = 0; i < m_list.size(); i++)
+    {
+        m_list[i]->restart();
+    }
+    m_bDone = false;
+}

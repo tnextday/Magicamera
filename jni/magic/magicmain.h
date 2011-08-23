@@ -24,15 +24,20 @@ const int FORMAT_RGBA = 0;
 const int FORMAT_RGB = 1;
 const int FORMAT_RGB565 = 2;
 
+enum Status {
+    Status_Normal, Status_Changing_Engine, Status_Tack_Photo
+};
 
 
 class MagicMain : public ButtonClick, TouchEvent{
     BaseShader      m_shader;
+    Status          m_status;
 
     Texture*        m_SrcTex;
     glYUVTexture*   m_glYUVTex;
 
     MagicEngine*    m_Engine;
+    MagicEngine*    m_nextEngine;
     Button*         m_BtnRestore;
     Button*         m_BtnSave;
 
@@ -75,6 +80,7 @@ public:
 
 private:
     void initEngine();
+    void switchEngine();
     virtual void onButtonClick( Button *btn );
 
     void update(float delta);
