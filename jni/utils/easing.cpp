@@ -3,7 +3,24 @@
 
 float easeShake( float t, int round /*= 6*/ )
 {
-    return cos(M_PI_2 + round*M_PI*t)*(1.0f - t);
+    return 1.0 - cos(M_PI_2 + round*M_PI*t)*(1.0f - t);
+}
+
+static float easeOutBounce_helper(float t, float c, float a)
+{
+    if (t == 1.0) return c;
+    if (t < (4/11.0)) {
+        return c*(7.5625*t*t);
+    } else if (t < (8/11.0)) {
+        t -= (6/11.0);
+        return -a * (1. - (7.5625*t*t + .75)) + c;
+    } else if (t < (10/11.0)) {
+        t -= (9/11.0);
+        return -a * (1. - (7.5625*t*t + .9375)) + c;
+    } else {
+        t -= (21/22.0);
+        return -a * (1. - (7.5625*t*t + .984375)) + c;
+    }
 }
 
 float CEaseShake::update( float t )
@@ -34,3 +51,13 @@ float CEaseInOutCirc::update( float t )
     }
 }
 
+
+float CEaseOutBounce::update( float t )
+{
+    return easeOutBounce_helper(t, 1, m_amplitude);
+}
+
+CEaseOutBounce::CEaseOutBounce( float amplitude /*= 1.0*/ )
+{
+    m_amplitude = amplitude;
+}

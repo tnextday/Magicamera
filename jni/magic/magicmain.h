@@ -37,8 +37,9 @@ class MagicMain : public ButtonClick, TouchEvent{
     glYUVTexture*   m_glYUVTex;
 
     MagicEngine*    m_Engine;
-    MagicEngine*    m_nextEngine;
-    Button*         m_BtnRestore;
+    EngineType      m_nextEngine;
+    Button*         m_btn_func;
+    Button*         m_btn_switch;
     Button*         m_BtnSave;
 
     Sprite          m_magicSprite;
@@ -79,8 +80,8 @@ public:
     char* makeResPath(char* path, const char* targetFile, int szBuffer = _MAX_PATH);
 
 private:
-    void initEngine();
-    void switchEngine();
+    void initEngine(EngineType type = EngineType_Mesh);
+    void switchEngine(EngineType type);
     virtual void onButtonClick( Button *btn );
 
     void update(float delta);

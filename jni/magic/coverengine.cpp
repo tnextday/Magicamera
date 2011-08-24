@@ -27,7 +27,8 @@ bool CoverEngine::onTouchDown( float x, float y )
 
 void CoverEngine::finish()
 {
-    
+    m_toFinish = true;
+    m_finished = true;
 }
 
 bool CoverEngine::onInit()
@@ -39,12 +40,13 @@ bool CoverEngine::onInit()
 
 void CoverEngine::start()
 {
-
+    m_toFinish = false;
+    m_finished = false;
 }
 
 bool CoverEngine::isFinished()
 {
-    return false;
+    return m_finished;
 }
 
 bool CoverEngine::onTouchDrag( float x, float y )

@@ -3,6 +3,7 @@
 #include <GLES2/gl2.h>
 #include "glutils/mesh.h"
 #include "magicengine.h"
+#include "utils/easing.h"
 
 struct Vertex {
     GLfloat x;
@@ -26,7 +27,10 @@ private:
 
     bool            m_bMeshChanged;
 
+    bool            m_toFinish;
+    bool            m_finished;
 
+    CEasing         *m_easing;
     //上次鼠标坐标
     float    m_lastX;
     float    m_lastY;
@@ -50,14 +54,14 @@ private:
 
     //set destvertex then start animating
     //Animated duration in sec
-    void startAnimating(float duration);
+    void startAnimating(float duration, CEasing *easing = NULL);
     void stopAnimating();
 
     void generateMesh( int w, int h );
 
 public:
     MeshEngine();
-    ~MeshEngine();
+    virtual ~MeshEngine();
 
     void init(int width, int height);
 

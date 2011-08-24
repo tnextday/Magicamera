@@ -12,28 +12,31 @@ MeshEngine::MeshEngine()
     m_OrgiVertex = NULL;
     m_bAnimating = false;
     m_bMeshChanged = false;
+    m_easing = NULL;
 }
 MeshEngine::~MeshEngine()
 {
     SafeDeleteArray(m_DestVertex);
     SafeDeleteArray(m_DeltaVertex);
     SafeDeleteArray(m_OrgiVertex);
+    SafeDelete(m_easing);
 }
 
 void MeshEngine::update( GLfloat delta )
 {
     if (!m_bAnimating) return;
     m_Elapsed += delta;
-    
     if (m_Elapsed < m_Duration){
         float percent = m_Elapsed/m_Duration;
-        float p = easeShake(percent);
-        //LOGI("MeshEngine::update: percent:%.9f;p:%.9f \n", percent, p);
+        if (m_easing)
+            percent = 1 - m_easing->update(percent);
         for (int i = 0; i < m_BufferCount; i++){
             if (m_DeltaVertex[i] != 0.0f)
-                mVertexBuffer[i] = m_DestVertex[i] - m_DeltaVertex[i]*p;
+                mVertexBuffer[i] = m_DestVertex[i] - m_DeltaVertex[i]*percent;
         }
     }else{
+        if (m_toFinish)
+            m_finished = true;
         m_bAnimating = false;
         memcpy(mVertexBuffer, m_DestVertex, m_BufferCount*sizeof(GLfloat));
     }
@@ -46,8 +49,13 @@ void MeshEngine::backupOrigVertex()
 }
 
 
-void MeshEngine::startAnimating(float duration)
+void MeshEngine::startAnimating(float duration, CEasing *easing /*= NULL*/)
 {
+    if (easing){
+        SafeDelete(m_easing);
+        m_easing = easing;
+    }
+    
     for (int i = 0; i < m_BufferCount; i++){
         float delta = m_DestVertex[i] - mVertexBuffer[i];
         if (fabs(delta) >= 1.0f){
@@ -97,7 +105,7 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 void MeshEngine::restore()
 {
     memcpy(m_DestVertex, m_OrgiVertex, m_BufferCount*sizeof(GLfloat));
-    startAnimating(2.0f);
+    startAnimating(2.0f, new CEaseShake());
 }
 
 void MeshEngine::stopAnimating()
@@ -130,18 +138,20 @@ bool MeshEngine::onInit()
 
 void MeshEngine::finish()
 {
-//    throw std::exception("The method or operation is not implemented.");
+    m_toFinish = true;
+    memcpy(m_DestVertex, m_OrgiVertex, m_BufferCount*sizeof(GLfloat));
+    startAnimating(0.3f, new CEaseOutCubic());
 }
 
 void MeshEngine::start()
 {
-//    throw std::exception("The method or operation is not implemented.");
+    m_toFinish = false;
+    m_finished = false;
 }
 
 bool MeshEngine::isFinished()
 {
-//    throw std::exception("The method or operation is not implemented.");
-    return false;
+    return m_finished;
 }
 
 bool MeshEngine::onTouchDown( float x, float y )

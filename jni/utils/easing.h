@@ -34,7 +34,14 @@ public:
     virtual float update( float t );
 };
 
+class CEaseOutBounce:public CEasing{
+    float   m_amplitude;
+public:
+    CEaseOutBounce(float amplitude = 1.0);
+    virtual float update( float t );
+};
+
 
 inline float easeShake(float t, int round = 6);
-
+static float easeOutBounce_helper(float t, float c, float a);
 #endif // _easing_h_

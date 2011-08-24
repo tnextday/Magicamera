@@ -12,9 +12,11 @@ private:
 
     bool    m_toFinish;
 
+    bool    m_finished;
+
 public:
     CoverEngine(void);
-    ~CoverEngine(void);
+    virtual ~CoverEngine(void);
 
     void setCover(const char* coverPath);
 
