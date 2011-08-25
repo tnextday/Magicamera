@@ -16,12 +16,12 @@ Mesh::Mesh()
     mVertexBuffer = NULL;
     mTexCoordBuffer = NULL;
 }
-Mesh::~Mesh(){
-
+Mesh::~Mesh()
+{
+    glDeleteBuffers(VBO_Ids_Num, m_vboIds);
     SafeDeleteArray(mIndexBuffer);
     SafeDeleteArray(mVertexBuffer);
     SafeDeleteArray(mTexCoordBuffer);
-    glDeleteBuffers(VBO_Ids_Num, m_vboIds);
 }
 
 void Mesh::setVertexBuffer( GLfloat* vb, int size, int offset /*= 0*/ )
