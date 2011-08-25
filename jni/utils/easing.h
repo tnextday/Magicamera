@@ -22,6 +22,11 @@ public:
     virtual float update( float t );
 };
 
+class CEaseInCubic : public CEasing{
+public:
+    virtual float update( float t );
+};
+
 class CEaseShake :public CEasing{
     int m_round;
 public:
@@ -41,6 +46,16 @@ public:
     virtual float update( float t );
 };
 
+class CEaseOutQuart :public CEasing
+{
+public:
+    virtual float update( float t );
+};
+
+class CEaseInQuart : public CEasing{
+public:
+    virtual float update( float t );
+};
 
 inline float easeShake(float t, int round = 6);
 static float easeOutBounce_helper(float t, float c, float a);

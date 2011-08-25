@@ -38,6 +38,8 @@ template<typename T>
 ArrayList<T>::ArrayList( int capacity /*= 8*/, bool bOrdered /*= true*/ )
 {
     m_capacity = capacity;
+    m_size = 0;
+    ordered = bOrdered;
     m_values = new T[capacity];
 }
 

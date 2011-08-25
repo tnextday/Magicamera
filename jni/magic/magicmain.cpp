@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "magicmain.h"
 #include "glutils/glutils.h"
 #include "utils/mathelpers.h"
@@ -230,11 +231,14 @@ char* MagicMain::makeResPath( char* path, const char* targetFile, int szBuffer/*
 
 void MagicMain::onButtonClick( Button *btn )
 {
+    char path[_MAX_PATH];
     if (btn->tag() == 3) {
         if (m_Engine->type() == EngineType_Mesh)
             ((MeshEngine *)m_Engine)->restore();
         else if (m_Engine->type() == EngineType_Cover){
-        
+            srand(time(0));
+            snprintf(path, _MAX_PATH-1, "./assets/frame/%02d.png", rand()%4+1);
+            ((CoverEngine *)m_Engine)->setCover(path);
         }
     } else if (btn->tag() == 2){
         EngineType type;

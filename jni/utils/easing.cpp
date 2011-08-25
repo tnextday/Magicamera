@@ -61,3 +61,19 @@ CEaseOutBounce::CEaseOutBounce( float amplitude /*= 1.0*/ )
 {
     m_amplitude = amplitude;
 }
+
+float CEaseInCubic::update( float t )
+{
+    return t*t*t;
+}
+
+float CEaseOutQuart::update( float t )
+{
+    t -= 1.0;
+    return - (t*t*t*t- 1);
+}
+
+float CEaseInQuart::update( float t )
+{
+    return t*t*t*t;
+}

@@ -11,14 +11,18 @@ private:
     Sprite  *m_nextCover;
 
     bool    m_toFinish;
-
     bool    m_finished;
+
+    bool    m_bVisible;
 
 public:
     CoverEngine(void);
     virtual ~CoverEngine(void);
 
     void setCover(const char* coverPath);
+
+    void showCover();
+    void hideCover();
 
     virtual void update( GLfloat delta );
     virtual void onDraw( Texture *texutre );

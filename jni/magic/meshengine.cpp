@@ -140,7 +140,7 @@ void MeshEngine::finish()
 {
     m_toFinish = true;
     memcpy(m_DestVertex, m_OrgiVertex, m_BufferCount*sizeof(GLfloat));
-    startAnimating(0.3f, new CEaseOutCubic());
+    startAnimating(0.2f, new CEaseOutCubic());
 }
 
 void MeshEngine::start()

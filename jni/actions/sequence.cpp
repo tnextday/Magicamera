@@ -50,12 +50,12 @@ void Sequence::step( float dt )
     }
 }
 
-Sequence* Sequence::operator<<(Action *action )
+Sequence & Sequence::operator<<(Action *action )
 {
     if (m_target)
         action->setTarget(m_target);
     m_list<<action;
-    return this;
+    return *this;
 }
 
 void Sequence::restart()

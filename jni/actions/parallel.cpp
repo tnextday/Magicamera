@@ -52,12 +52,12 @@ void Parallel::step( float dt )
     }
 }
 
-Parallel* Parallel::operator<<(Action *action )
+Parallel & Parallel::operator<<(Action *action )
 {
     if (m_target)
         action->setTarget(m_target);
     m_list<<action;
-    return this;
+    return *this;
 }
 
 void Parallel::restart()
