@@ -33,6 +33,7 @@ Button::Button( const char* bgTexPath, const char* imgPath /*= NULL*/, int tag /
 Button::~Button(void)
 {
     SafeDelete(m_btnImg);
+    SafeDelete(m_spriteTexture);
 }
 
 void Button::update( float delta )

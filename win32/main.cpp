@@ -1,4 +1,5 @@
 #define _WIN32_WINNT 0x0502
+#include <vld.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <EGL/egl.h>
@@ -6,6 +7,8 @@
 #include <GLES2/gl2ext.h>
 #include "magic/magicmain.h"
 #include "main.h"
+
+
 
 
 //--------------------------------------------------------------------------------------
@@ -210,6 +213,7 @@ float FrmGetTime()
 
 int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 {
+
     // Create the application window
     NativeWindowType hWindow;
     {

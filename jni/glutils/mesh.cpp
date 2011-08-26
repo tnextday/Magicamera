@@ -84,6 +84,7 @@ bool Mesh::uploadBuffer( BufferType bt /*= BT_VertexBuffer*/ )
 
 bool Mesh::createBufferObjects()
 {
+    if (m_bGenBuffers) return true;
     m_bGenBuffers = true;
     glGenBuffers(VBO_Ids_Num, m_vboIds);
 
@@ -125,6 +126,7 @@ void Mesh::draw(BaseShader *shader)
 
 void Mesh::init( int width, int height )
 {
+    if (mW == width && mH == height) return;
     m_bGenBuffers = false;
     mW = width;
     mH = height;
@@ -133,6 +135,9 @@ void Mesh::init( int width, int height )
     int quadH = mH - 1;
     int quadCount = quadW * quadH;
     mIndexCount = quadCount * 6;
+    SafeDeleteArray(mIndexBuffer);
+    SafeDeleteArray(mVertexBuffer);
+    SafeDeleteArray(mTexCoordBuffer);
     mIndexBuffer = new GLushort[mIndexCount];
     mVertexBuffer = new GLfloat[size*VertexSize];
     mTexCoordBuffer = new GLfloat[size*TexCoordSize];

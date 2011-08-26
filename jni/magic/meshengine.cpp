@@ -132,7 +132,6 @@ void MeshEngine::onDraw(Texture *texutre)
 bool MeshEngine::onInit()
 {
     init(m_width, m_height);
-    generateMesh(m_width, m_height);
     return true;
 }
 
@@ -181,7 +180,7 @@ void MeshEngine::generateMesh( int w, int h )
 {
     int uSteps = MESH_HEIGHT;
     int vSteps = MESH_WIDTH;
-    init(uSteps+1, vSteps+1);
+    Mesh::init(uSteps+1, vSteps+1);
     GLfloat x, y,u, v;
     for(int j = 0;j <= vSteps; j++){
         y = j*h/vSteps;
@@ -192,19 +191,19 @@ void MeshEngine::generateMesh( int w, int h )
             set(i,j,x,y,u,v);
         }
     }
-    backupOrigVertex();
     createBufferObjects();
 }
 
 void MeshEngine::init( int width, int height )
 {
-    Mesh::init(width, height);
-    m_BufferCount = width*height*VertexSize;
+    generateMesh(width, height);
+    m_BufferCount = mW*mH*VertexSize;
     m_DestVertex = new GLfloat[m_BufferCount];
     m_DeltaVertex = new GLfloat[m_BufferCount];
     m_OrgiVertex = new GLfloat[m_BufferCount];
     m_bAnimating = false;
     m_bMeshChanged = false;
+    backupOrigVertex();
 }
 
 EngineType MeshEngine::type()

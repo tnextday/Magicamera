@@ -42,6 +42,9 @@ MagicMain::~MagicMain()
     SafeDelete(m_SrcTex);
     SafeDelete(m_glYUVTex);
     SafeDelete(m_Engine);
+    SafeDelete(m_BtnSave);
+    SafeDelete(m_btn_switch);
+    SafeDelete(m_btn_func);
 }
 
 
