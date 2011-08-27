@@ -7,8 +7,7 @@
 #include <GLES2/gl2ext.h>
 #include "magic/magicmain.h"
 #include "main.h"
-
-
+#include <zlib.h>
 
 
 //--------------------------------------------------------------------------------------

@@ -63,7 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/DelayLoad:LibEGL.dll&#x0D;&#x0A;/DelayLoad:LibGLESv2.dll"
-				AdditionalDependencies="libEGL.lib libGLESv2.lib DelayImp.lib"
+				AdditionalDependencies="libEGL.lib libGLESv2.lib DelayImp.lib zlib.lib"
 				OutputFile="bin\$(ProjectName).exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="./lib"
@@ -141,7 +141,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/DelayLoad:LibEGL.dll&#x0D;&#x0A;/DelayLoad:LibGLESv2.dll"
-				AdditionalDependencies="libEGL.lib libGLESv2.lib DelayImp.lib"
+				AdditionalDependencies="libEGL.lib libGLESv2.lib DelayImp.lib zlib.lib"
 				OutputFile="bin\$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="./lib"

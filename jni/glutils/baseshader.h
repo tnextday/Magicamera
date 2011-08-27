@@ -17,14 +17,16 @@ private:
 
 public:
     /**
-     * 简单的ShaderProgram类，目前只支持固定的关键字(uMVPMatrix, aPosition,aTextureCoord)
+     * 简单的ShaderProgram类，目前只支持固定的关键字(uMVPMatrix, aPosition,aTexCoord)
      * TODO 动态属性支持
      */
     BaseShader(void);
     BaseShader(const char* pVertexSource, const char* pFragmentSource);
     ~BaseShader(void);
 
-    void makeProgram(const char* pVertexSource, const char* pFragmentSource);
+    bool makeProgram(const char* pVertexSource, const char* pFragmentSource);
+    bool loadFromFile(const char* fileName);
+    bool loadFromMemory(const char* buf, int size);
     void deleteProgram();
 
     GLuint getProgram();

@@ -12,11 +12,11 @@
 static const char gVertexShader[] = 
         "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
-        "attribute vec2 aTextureCoord;\n"
+        "attribute vec2 aTexCoord;\n"
         "varying vec2 vTextureCoord;\n"
         "void main() {\n"
         "  gl_Position = uMVPMatrix * aPosition;\n" 
-        "  vTextureCoord = aTextureCoord;\n"
+        "  vTextureCoord = aTexCoord;\n"
         "}\n";
 
 static const char gFragmentShader[] = 

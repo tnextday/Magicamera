@@ -11,3 +11,5 @@ Release/*
 docs/*
 Thumbs.db
 *.aps
+__*
+zlib-1.2.4/*
