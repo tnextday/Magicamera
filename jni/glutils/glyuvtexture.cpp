@@ -41,7 +41,7 @@ static const char g_YUV_FShader[] =
         "}\n";
 
 static const GLfloat mTriangleVerticesData[] = {
-    // X, Y, Z, U, V
+    // X, Y, U, V
     0.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 1.0,
     1.0, 1.0, 1.0, 1.0,
@@ -73,6 +73,8 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
     m_uUVTexLoc = glGetUniformLocation(m_shader.getProgram(), "UVtex");
 
     glGenTextures(2, m_YUVTexs);
+    setDefaultTexParameter(m_YUVTexs[YTexId_idx]);
+    setDefaultTexParameter(m_YUVTexs[UVTexId_idx]);
 
     m_width = w;
     m_height = h;
@@ -109,13 +111,13 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, m_YUVTexs[YTexId_idx]);
     glUniform1i(m_uYtexLoc, 1);
-    setDefaultTexParameter(m_YUVTexs[YTexId_idx]);
+    
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w,h,0,GL_LUMINANCE,GL_UNSIGNED_BYTE, yuv420sp);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_YUVTexs[UVTexId_idx]);
     glUniform1i(m_uUVTexLoc, 2);
-    setDefaultTexParameter(m_YUVTexs[UVTexId_idx]);
+    
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE_ALPHA,w/2,h/2,0,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE, yuv420sp+w*h);
 
     glEnableVertexAttribArray(m_shader.getPositionLoc());

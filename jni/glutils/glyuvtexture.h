@@ -16,8 +16,8 @@ class glYUVTexture
     GLuint      m_uYtexLoc;
     GLuint      m_uUVTexLoc;
 
-    GLuint m_width;
-    GLuint m_height;
+    GLuint      m_width;
+    GLuint      m_height;
 
 
     GLuint m_YUVTexs[3];

@@ -25,17 +25,16 @@ public:
     virtual ~BaseShader(void);
 
     virtual bool makeProgram(const char* pVertexSource, const char* pFragmentSource);
-    bool loadFromFile(const char* fileName);
-    bool loadFromMemory(const char* buf, int size);
+
     void deleteProgram();
 
-    GLuint getProgram();
-    virtual void use();
-    inline GLuint getPositionLoc();
-    inline GLuint getTextureCoordLoc();
-    inline GLuint getViewPorjLoc();
+    virtual void use(){if (m_isCompiled) glUseProgram(m_program);};
+    GLuint getProgram(){return m_program;};
+    GLuint getPositionLoc(){return m_positionLoc;};
+    GLuint getTextureCoordLoc(){return m_texCoordLoc;};
+    GLuint getViewPorjLoc();
     void setViewProject(GLfloat *mvp);
-    inline bool isCompiled();
+    bool isCompiled(){ return m_isCompiled;};
     void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);
     void setViewProj(GLfloat* mvp);
 };

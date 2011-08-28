@@ -55,12 +55,13 @@ void MagicEngine::drawImage()
     m_fbo->unbind();
 }
 
-//设置图片大小，不同于坐标
+//设置输出图片大小，不同于坐标
 void MagicEngine::setSize( int w, int h )
 {
+    //输出图片的比例和坐标系相同 
     m_width = w;
-    m_height = h;
-    m_OutTex.setSize(w, h);
+    m_height = w*m_coordHeight/m_coordWidth;
+    m_OutTex.setSize(m_width, m_height);
 }
 
 
