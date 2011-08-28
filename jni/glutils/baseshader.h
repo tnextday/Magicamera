@@ -22,20 +22,20 @@ public:
      */
     BaseShader(void);
     BaseShader(const char* pVertexSource, const char* pFragmentSource);
-    ~BaseShader(void);
+    virtual ~BaseShader(void);
 
-    bool makeProgram(const char* pVertexSource, const char* pFragmentSource);
+    virtual bool makeProgram(const char* pVertexSource, const char* pFragmentSource);
     bool loadFromFile(const char* fileName);
     bool loadFromMemory(const char* buf, int size);
     void deleteProgram();
 
     GLuint getProgram();
-    void use();
-    GLuint getPositionLoc();
-    GLuint getTextureCoordLoc();
-    GLuint getViewPorjLoc();
+    virtual void use();
+    inline GLuint getPositionLoc();
+    inline GLuint getTextureCoordLoc();
+    inline GLuint getViewPorjLoc();
     void setViewProject(GLfloat *mvp);
-    bool isCompiled();
+    inline bool isCompiled();
     void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);
     void setViewProj(GLfloat* mvp);
 };

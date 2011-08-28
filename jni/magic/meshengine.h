@@ -59,6 +59,10 @@ private:
 
     void generateMesh( int w, int h );
 
+protected:
+    virtual void onDraw(Texture *texutre);
+    virtual bool onInit();
+
 public:
     MeshEngine();
     virtual ~MeshEngine();
@@ -70,15 +74,11 @@ public:
     //还原成原始图像
     void restore();
 
-    virtual void onDraw(Texture *texutre);
-
     virtual bool onTouchDown(float x, float y);
     virtual bool onTouchDrag(float x, float y);
     virtual bool onTouchUp(float x, float y);
 
     virtual void finish();
-
-    virtual bool onInit();
 
     virtual void start();
 

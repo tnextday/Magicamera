@@ -173,7 +173,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
             List<Integer> formats = parameters.getSupportedPreviewFormats();
 
             //formats  = parameters.getSupportedPictureFormats();
-            Camera.Size optimalSize = getOptimalPreviewSize(sizes, 640, 480);
+            Camera.Size optimalSize = getOptimalPreviewSize(sizes, m_previewWidth, m_previewHeight);
             parameters.setPreviewSize(optimalSize.width, optimalSize.height);
             if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
                 parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);

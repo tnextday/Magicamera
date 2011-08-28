@@ -1,5 +1,5 @@
 #define _WIN32_WINNT 0x0502
-#include <vld.h>
+//#include <vld.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <EGL/egl.h>
@@ -7,7 +7,6 @@
 #include <GLES2/gl2ext.h>
 #include "magic/magicmain.h"
 #include "main.h"
-#include <zlib.h>
 
 
 //--------------------------------------------------------------------------------------
@@ -16,13 +15,13 @@
 const CHAR*  g_strWindowTitle = "MagicAmera";
 const UINT32 g_nWindowWidth   = 480;
 const UINT32 g_nWindowHeight  = 720;
-const UINT32 g_PicWidth = 480;
-const UINT32 g_PicHeigth = 640;
+const UINT32 g_PicWidth = 640;
+const UINT32 g_PicHeigth = 480;
 const bool g_useCamera = false;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_testImagePath = "assets\\test.jpg";
-const char* g_strNV21Path = "f:\\nv21\\%03d.nv21";
+const char* g_strNV21Path = ".\\nv21\\%03d.nv21";
 const char* g_strSaveImagePath = "test.tga";
 const char* g_resPath = "assets\\";
 MagicMain g_MagicMain;

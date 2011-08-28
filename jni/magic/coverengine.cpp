@@ -3,6 +3,7 @@
 #include "actions/parallel.h"
 #include "actions/rotateto2d.h"
 #include "utils/easing.h"
+#include "utils/mathelpers.h"
 #include <time.h>
 
 CoverEngine::CoverEngine(void)
@@ -24,6 +25,7 @@ CoverEngine::~CoverEngine(void)
 
 void CoverEngine::update( GLfloat delta )
 {
+    if (m_img) m_img->update(delta);
     if (!m_cover) return;
     m_cover->update(delta);
     if (m_cover->isActionDone()){
@@ -98,6 +100,7 @@ EngineType CoverEngine::type()
 
 void CoverEngine::showCover()
 {
+    resizeCoord();
     m_cover->setPostion(m_width/2, m_cover->getRegionHeight()/2+m_height);
     m_cover->setRotation(0);
     MoveTo *mt = new MoveTo(m_width/2, m_height/2, 1.5);
@@ -120,6 +123,7 @@ void CoverEngine::hideCover()
     m_cover->doAction(parallel);
     m_bVisible = false;
 }
+
 void CoverEngine::setCover( const char* coverPath )
 {
     if (!coverPath){
@@ -132,5 +136,26 @@ void CoverEngine::setCover( const char* coverPath )
         SafeDelete(m_cover);
         m_cover = new Sprite(coverPath);
         showCover();
+    }
+}
+
+
+void CoverEngine::resizeCoord()
+{
+    if (m_cover)
+    {
+        m_coordWidth = g_CoordWidth;
+        m_coordHeight = m_coordWidth*m_cover->getRegionHeight()/m_cover->getRegionWidth();
+        setSize(m_coordWidth, m_coordHeight);
+        //重置坐标系
+        matIdentity(m_vp);
+        matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
+    }else{
+        MagicEngine::resizeCoord();
+    }
+    if (m_img){
+        //居中显示
+        m_img->setScale((float)m_cover->getRegionWidth()/(float)m_img->getRegionWidth());
+        m_img->setPostion(m_coordWidth/2, m_coordHeight/2);
     }
 }

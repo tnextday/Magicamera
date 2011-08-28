@@ -15,6 +15,11 @@ private:
 
     bool    m_bVisible;
 
+protected:
+    virtual void resizeCoord();
+    virtual bool onInit();
+    virtual void onDraw( Texture *texutre );
+
 public:
     CoverEngine(void);
     virtual ~CoverEngine(void);
@@ -25,11 +30,8 @@ public:
     void hideCover();
 
     virtual void update( GLfloat delta );
-    virtual void onDraw( Texture *texutre );
     
     virtual void finish();
-
-    virtual bool onInit();
 
     virtual void start();
 
@@ -40,4 +42,8 @@ public:
     virtual bool onTouchUp( float x, float y );
 
     virtual EngineType type();
+
+    
+    
+
 };

@@ -226,14 +226,15 @@ extern gdx2d_pixmap* gdx2d_load( const unsigned char *buffer, uint32_t len )
 	int32_t width, height, format;
 	//stbi_load_from_memory 的第4个参数会返回图片原始的format，但是最后输出的pixels是req_comp指定的format
 	//这里我们不需要对图片格式进行转换，可以将第5个参数设置为0
-	const unsigned char* pixels = stbi_load_from_memory(buffer, len, &width, &height, &format, 0);
+    //设置输出都为RGBA格式，这样可以方式因为字节对齐发生的问题
+	const unsigned char* pixels = stbi_load_from_memory(buffer, len, &width, &height, &format, STBI_rgb_alpha);
 	if(pixels == NULL)
 		return NULL;
 
 	gdx2d_pixmap* pixmap = (gdx2d_pixmap*)malloc(sizeof(gdx2d_pixmap));
 	pixmap->width = (uint32_t)width;
 	pixmap->height = (uint32_t)height;
-	pixmap->format = (uint32_t)format;
+	pixmap->format = (uint32_t)STBI_rgb_alpha;
 	pixmap->pixels = pixels;
 	return pixmap;
 }

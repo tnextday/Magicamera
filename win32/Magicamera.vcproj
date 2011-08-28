@@ -398,6 +398,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="effect"
+			>
+		</Filter>
+		<File
+			RelativePath=".\blureffect.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\blureffect.h"
+			>
+		</File>
+		<File
+			RelativePath=".\imageeffect.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\imageeffect.h"
+			>
+		</File>
 		<File
 			RelativePath=".\main.cpp"
 			>

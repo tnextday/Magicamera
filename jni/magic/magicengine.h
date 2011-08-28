@@ -31,10 +31,8 @@ enum EngineType {
 class MagicEngine : public TouchEvent {
 protected:
     BaseShader*     m_shader;
-    BaseShader      m_effectShader;
 
     Texture*        m_InTex;
-
     Texture         m_OutTex;
 
     GLfloat         m_width;
@@ -53,7 +51,7 @@ protected:
     void draw(Texture *texutre = NULL);
     virtual bool onInit() = 0;
     virtual void onDraw(Texture *texutre) = 0;
-
+    virtual void resizeCoord();
 public:
     MagicEngine();
     MagicEngine(BaseShader* shader, Texture* srcTex);

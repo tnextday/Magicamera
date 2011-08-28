@@ -35,17 +35,12 @@ bool MagicEngine::initEngine(BaseShader* shader, Texture* srcTex) {
 
     setInputTexture(srcTex);
     setShader(shader);
-
-    m_coordWidth = g_CoordWidth;
-    m_coordHeight = m_coordWidth*srcTex->getHeight()/srcTex->getWidth();
-    setSize(m_coordWidth, m_coordHeight);
+    
+    resizeCoord();
 
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
 
-    //内建坐标系为480x640大小的坐标，此值为固定值
-    matIdentity(m_vp);
-    matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
     onInit();
     return true;
 }
@@ -54,6 +49,8 @@ bool MagicEngine::initEngine(BaseShader* shader, Texture* srcTex) {
 void MagicEngine::drawImage()
 {
     m_fbo->bind();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     draw();
     m_fbo->unbind();
 }
@@ -152,5 +149,15 @@ void MagicEngine::draw( Texture *texutre /*= NULL*/ )
 void MagicEngine::SetSaveImageCallBack( SaveImageCallBack* val )
 {
     m_saveImage = val;
+}
+
+void MagicEngine::resizeCoord()
+{
+    m_coordWidth = g_CoordWidth;
+    m_coordHeight = m_coordWidth*m_InTex->getHeight()/m_InTex->getWidth();
+    setSize(m_coordWidth, m_coordHeight);
+    //重置坐标系
+    matIdentity(m_vp);
+    matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
 }
 

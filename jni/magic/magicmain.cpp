@@ -196,6 +196,14 @@ void MagicMain::drawImage()
     m_shader.use();
     m_SrcTex->bind();
     glDisable(GL_BLEND);
+    //TODO 由于还没有大小变化回调，所以会每次都重新回调
+    m_magicSprite.setTexture(m_Engine->getOutTexture());
+    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
+    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    //TODO 为什么需要flip？？？？！！！！
+    m_magicSprite.flip(false, true);
+
+
     m_magicSprite.draw(&m_shader);
 //     glEnable(GL_BLEND);
 //     glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
