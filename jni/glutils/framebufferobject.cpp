@@ -25,15 +25,6 @@ FramebufferObject::~FramebufferObject(void)
     glDeleteFramebuffers(1, m_fboId);
 }
 
-void FramebufferObject::bind()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, m_fboId[0]);
-}
-
-void FramebufferObject::unbind()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
 
 void FramebufferObject::texture2d( GLuint texId )
 {

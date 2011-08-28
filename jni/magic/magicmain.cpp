@@ -13,18 +13,18 @@ static const char gVertexShader[] =
         "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
         "attribute vec2 aTexCoord;\n"
-        "varying vec2 vTextureCoord;\n"
+        "varying vec2 vTexCoord;\n"
         "void main() {\n"
         "  gl_Position = uMVPMatrix * aPosition;\n" 
-        "  vTextureCoord = aTexCoord;\n"
+        "  vTexCoord = aTexCoord;\n"
         "}\n";
 
 static const char gFragmentShader[] = 
         "precision mediump float;\n"
-        "varying vec2 vTextureCoord;\n"
+        "varying vec2 vTexCoord;\n"
         "uniform sampler2D sTexture;\n"
         "void main() {\n"
-        "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
+        "  gl_FragColor = texture2D(sTexture, vTexCoord);\n"
         "}\n";
 
 MagicMain::MagicMain()

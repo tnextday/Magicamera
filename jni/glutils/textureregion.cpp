@@ -192,10 +192,6 @@ void TextureRegion::rotate90( bool clockwise )
     }
 }
 
-GLfloat* TextureRegion::getTexCoords()
-{
-    return m_texCoords;
-}
 
 void TextureRegion::setTextureRegion( TextureRegion *tr )
 {

@@ -29,7 +29,10 @@ public:
     Texture(const char* texFilePath);
     ~Texture();
 
-    void bind();
+    void bind(){
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_TexHandle);
+    };
     void bind(int unit);
     void setWrap(GLfloat wrap_s = GL_REPEAT, GLfloat wrap_t = GL_REPEAT);
     void setFilter(GLfloat min = GL_LINEAR, GLfloat mag = GL_LINEAR);

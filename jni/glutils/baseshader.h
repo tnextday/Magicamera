@@ -8,10 +8,10 @@
 class BaseShader
 {
 private:
-    GLuint  m_program;
-    GLuint  m_positionLoc;
-    GLuint  m_texCoordLoc;
-    GLuint  m_viewprojLoc;
+    GLuint m_program;
+    GLint  m_positionLoc;
+    GLint  m_texCoordLoc;
+    GLint  m_viewprojLoc;
 
     bool    m_isCompiled;
 

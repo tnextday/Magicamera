@@ -104,7 +104,7 @@ void CoverEngine::showCover()
     m_cover->setPostion(m_width/2, m_cover->getRegionHeight()/2+m_height);
     m_cover->setRotation(0);
     MoveTo *mt = new MoveTo(m_width/2, m_height/2, 1.5);
-    mt->setEasing(new CEaseOutBounce(0.8));
+    mt->setEasing(new CEaseOutBounce(0.6));
     m_cover->doAction(mt);
     m_bVisible = true;
 
@@ -130,6 +130,7 @@ void CoverEngine::setCover( const char* coverPath )
         return;
     }
     if (m_cover && m_bVisible){
+        SafeDelete(m_nextCover);
         m_nextCover = new Sprite(coverPath);
         hideCover();
     }else{

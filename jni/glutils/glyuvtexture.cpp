@@ -13,24 +13,22 @@
 
 
 static const char g_YUV_VShader[] = 
-        "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
-        "attribute vec2 aTexCoord;\n"
-        "varying vec2 vTextureCoord;\n"
+        "varying vec2 vTexCoord;\n"
         "void main() {\n"
-        "    gl_Position = uMVPMatrix * aPosition;\n" 
-        "    vTextureCoord = aTexCoord;\n"
+        "    gl_Position = vec4(aPosition.x, -aPosition.y, 0.0, 1.0);\n" 
+        "    vTexCoord = vec2(aPosition.z, aPosition.w );\n"
         "}\n";
 
 static const char g_YUV_FShader[] = 
         "precision mediump float;\n"
-        "varying vec2 vTextureCoord;\n"
+        "varying vec2 vTexCoord;\n"
         "uniform sampler2D Ytex;\n"
         "uniform sampler2D UVtex;\n"
         "void main() {\n"
         "    float r,g,b,y,u,v;\n"
-        "    y = texture2D(Ytex, vTextureCoord).r;\n"
-        "    vec4 uv = texture2D(UVtex, vTextureCoord);\n"
+        "    y = texture2D(Ytex, vTexCoord).r;\n"
+        "    vec4 uv = texture2D(UVtex, vTexCoord);\n"
         "    y = 1.1643*(y-0.0625);\n"
         "    u = uv.a-0.5;\n"
         "    v = uv.r-0.5;\n"
@@ -40,13 +38,6 @@ static const char g_YUV_FShader[] =
         "    gl_FragColor = vec4(r,g,b,1.0);\n"
         "}\n";
 
-static const GLfloat mTriangleVerticesData[] = {
-    // X, Y, U, V
-    0.0, 0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0, 1.0,
-    1.0, 1.0, 1.0, 1.0,
-    1.0, 0.0, 1.0, 0.0
-};
 
 glYUVTexture::glYUVTexture(int w, int h, GLuint texid)
 {
@@ -62,13 +53,13 @@ glYUVTexture::~glYUVTexture(void)
 
 bool glYUVTexture::init( int w, int h, GLuint texid )
 {
+
     m_shader.makeProgram(g_YUV_VShader, g_YUV_FShader);
     if (!m_shader.isCompiled()) {
         LOGE("Could not create program.\n");
         return false;
     }
     m_shader.use();
-    m_shader.ortho(0, 1.0, 0, 1.0, -10, 10);
     m_uYtexLoc = glGetUniformLocation(m_shader.getProgram(), "Ytex");
     m_uUVTexLoc = glGetUniformLocation(m_shader.getProgram(), "UVtex");
 
@@ -78,6 +69,26 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
 
     m_width = w;
     m_height = h;
+    GLfloat fAspectRatio = (GLfloat)m_width / (GLfloat)m_height;
+    GLfloat w_div_2 = ( fAspectRatio < 1.0f ) ? 1.0f : 1.0f / fAspectRatio;
+    GLfloat h_div_2 = ( fAspectRatio < 1.0f ) ? fAspectRatio : 1.0f;
+
+    m_Quad[0] = -w_div_2; 
+    m_Quad[1] = -h_div_2; 
+    m_Quad[2] = 0.0f; 
+    m_Quad[3] = 1.0f;
+    m_Quad[4] = +w_div_2; 
+    m_Quad[5] = -h_div_2; 
+    m_Quad[6] = 1.0f; 
+    m_Quad[7] = 1.0f;
+    m_Quad[8] = +w_div_2; 
+    m_Quad[9] = +h_div_2; 
+    m_Quad[10] = 1.0f; 
+    m_Quad[11] = 0.0f;
+    m_Quad[12] = -w_div_2; 
+    m_Quad[13] = +h_div_2; 
+    m_Quad[14] = 0.0f; 
+    m_Quad[15] = 0.0f;
 
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(texid);
@@ -100,6 +111,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
         LOGE("uploadYUVTexImage Error 0\n");
         return;
     }
+
     m_shader.use();
     glDisable(GL_DEPTH_TEST);
     m_fbo->bind();
@@ -121,9 +133,8 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE_ALPHA,w/2,h/2,0,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE, yuv420sp+w*h);
 
     glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
-    glVertexAttribPointer(m_shader.getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
-    glVertexAttribPointer(m_shader.getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 4*4, mTriangleVerticesData);
+    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_Quad);
+    checkGlError("glYUVTexture::uploadYUVTexImage");
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
     checkGlError("glYUVTexture::uploadYUVTexImage");

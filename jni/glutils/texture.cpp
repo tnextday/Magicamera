@@ -59,12 +59,6 @@ Texture::~Texture()
     deleteGLHandle(m_TexHandle);
 }
 
-void Texture::bind()
-{
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_TexHandle);
-    checkGlError("glBindTexture");
-}
 
 void Texture::bind( int unit )
 {

@@ -45,7 +45,7 @@ public:
 
     void setTextureRegion(TextureRegion *tr);
 
-    GLfloat* getTexCoords();
+    GLfloat* getTexCoords(){ return m_texCoords; };
     
     //返回一个TextureRegion数组，数组长度为count
     TextureRegion* split(int rows, int cols);
