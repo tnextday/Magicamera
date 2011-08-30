@@ -19,8 +19,6 @@ class glYUVTexture
     GLuint      m_width;
     GLuint      m_height;
 
-    GLfloat     m_Quad[16];
-
     GLuint      m_YUVTexs[2];
 
     FramebufferObject* m_fbo;

@@ -38,6 +38,13 @@ static const char g_YUV_FShader[] =
         "    gl_FragColor = vec4(r,g,b,1.0);\n"
         "}\n";
 
+static const GLfloat QuadData[] = {
+    // X, Y, U, V
+    -1.0f, -1.0f, 0.0f, 1.0f,
+    +1.0f, -1.0f, 1.0f, 1.0f,
+    +1.0f, +1.0f, 1.0f, 0.0f,
+    -1.0f, +1.0f, 0.0f, 0.0f,
+};
 
 glYUVTexture::glYUVTexture(int w, int h, GLuint texid)
 {
@@ -69,27 +76,6 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
 
     m_width = w;
     m_height = h;
-    GLfloat fAspectRatio = (GLfloat)m_width / (GLfloat)m_height;
-    GLfloat w_div_2 = ( fAspectRatio < 1.0f ) ? 1.0f : 1.0f / fAspectRatio;
-    GLfloat h_div_2 = ( fAspectRatio < 1.0f ) ? fAspectRatio : 1.0f;
-
-    m_Quad[0] = -w_div_2; 
-    m_Quad[1] = -h_div_2; 
-    m_Quad[2] = 0.0f; 
-    m_Quad[3] = 1.0f;
-    m_Quad[4] = +w_div_2; 
-    m_Quad[5] = -h_div_2; 
-    m_Quad[6] = 1.0f; 
-    m_Quad[7] = 1.0f;
-    m_Quad[8] = +w_div_2; 
-    m_Quad[9] = +h_div_2; 
-    m_Quad[10] = 1.0f; 
-    m_Quad[11] = 0.0f;
-    m_Quad[12] = -w_div_2; 
-    m_Quad[13] = +h_div_2; 
-    m_Quad[14] = 0.0f; 
-    m_Quad[15] = 0.0f;
-
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(texid);
     checkGlError("glYUVTexture::init");
@@ -132,8 +118,11 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE_ALPHA,w/2,h/2,0,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE, yuv420sp+w*h);
 
-    glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_Quad);
+    
+    //glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(0);
+    glDisableVertexAttribArray(1); //话说不关掉这个就会报错
+    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, QuadData);
     checkGlError("glYUVTexture::uploadYUVTexImage");
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
