@@ -5,6 +5,7 @@
 #include "utils/easing.h"
 #include "utils/mathelpers.h"
 #include <time.h>
+#include <stdlib.h>
 
 CoverEngine::CoverEngine(void)
 {

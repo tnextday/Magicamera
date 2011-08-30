@@ -76,7 +76,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
         m_SurfaceView.setRenderer(m_engine);
 
         Intent intent = getIntent();
-        String picPath =  intent.getStringExtra("PicturePath");
+        String picPath =  intent.getStringExtra("PicPath");
         if (picPath != null && new File(picPath).exists()){
             PicPath = picPath;
         }
@@ -103,6 +103,12 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopCamera();
+        super.onDestroy();
     }
 
     private boolean detectOpenGLES20() {

@@ -123,10 +123,9 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1); //话说不关掉这个就会报错
     glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, QuadData);
-    checkGlError("glYUVTexture::uploadYUVTexImage");
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
-    checkGlError("glYUVTexture::uploadYUVTexImage");
+    checkGlError("uploadYUVTexImage");
 }
 
 void glYUVTexture::setTargetTexId( GLuint texid )

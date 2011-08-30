@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 
 public class MagicJNILib {
     static {
-        System.loadLibrary("magicjni");
+        System.loadLibrary("magic");
     }
 
     public static final int IMAGE_FORMAT_PACKET = 0x00000100;
@@ -35,7 +35,7 @@ public class MagicJNILib {
 
     public static native boolean onTouchUp(float x, float y);
 
-    public static native void setSaveImagePath(byte[] path);
+    public static native void setResPath(byte[] path);
 
     public static void playSound(int soundId) {
         Log.i("lib", String.format("playSound callback: %d", soundId));

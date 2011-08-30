@@ -2,6 +2,10 @@
 #include <math.h>
 #include <assert.h>
 
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
 template<typename T> 
 class ArrayList
 {

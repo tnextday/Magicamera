@@ -20,6 +20,12 @@ public:
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
 };
 
+class SizeChange{
+public:
+    virtual void onSizeChange(float w, float h) = 0;
+};
+
+
 enum EngineType {
     EngineType_None,
     EngineType_Mesh,

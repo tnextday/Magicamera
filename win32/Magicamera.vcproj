@@ -285,6 +285,14 @@
 				RelativePath="..\jni\utils\mathelpers.h"
 				>
 			</File>
+			<File
+				RelativePath="..\jni\utils\resmanage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\resmanage.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="glutils"
@@ -401,23 +409,23 @@
 		<Filter
 			Name="effect"
 			>
+			<File
+				RelativePath="..\jni\effect\blureffect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\effect\blureffect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\effect\imageeffect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\effect\imageeffect.h"
+				>
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\blureffect.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\blureffect.h"
-			>
-		</File>
-		<File
-			RelativePath=".\imageeffect.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\imageeffect.h"
-			>
-		</File>
 		<File
 			RelativePath=".\main.cpp"
 			>

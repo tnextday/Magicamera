@@ -77,7 +77,8 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
         draw();
     }
 
-    GLubyte* pixels = new GLubyte[m_width*m_height*4];
+    int size = m_width*m_height*4;
+    char* pixels = new char[size];
 
     glReadPixels(0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     if(m_saveImage){

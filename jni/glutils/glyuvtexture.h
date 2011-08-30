@@ -13,8 +13,8 @@ const int UVTexId_idx = 1;
 class glYUVTexture
 {
     BaseShader  m_shader;
-    GLuint      m_uYtexLoc;
-    GLuint      m_uUVTexLoc;
+    GLint       m_uYtexLoc;
+    GLint       m_uUVTexLoc;
 
     GLuint      m_width;
     GLuint      m_height;

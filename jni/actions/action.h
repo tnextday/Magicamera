@@ -2,6 +2,10 @@
 #include "glutils/sprite.h"
 #include "utils/easing.h"
 
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
 class Action
 {
 private:

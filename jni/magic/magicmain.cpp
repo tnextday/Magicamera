@@ -31,7 +31,6 @@ MagicMain::MagicMain()
 {
     m_glYUVTex = NULL;
     m_SrcTex = NULL;
-    m_resPath[0] = '\0';
     m_saveImage = NULL;
     m_Engine = NULL;
     m_nextEngine = EngineType_None;
@@ -197,9 +196,7 @@ void MagicMain::drawImage()
     m_SrcTex->bind();
     glDisable(GL_BLEND);
     //TODO 由于还没有大小变化回调，所以会每次都重新回调
-    m_magicSprite.setTexture(m_Engine->getOutTexture());
-    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
-    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    OnOutputSizeChange();
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
 
@@ -207,12 +204,6 @@ void MagicMain::drawImage()
     m_magicSprite.draw(&m_shader);
 //     glEnable(GL_BLEND);
 //     glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void MagicMain::setResPath(const char* path )
-{
-    snprintf(m_resPath, _MAX_PATH-1, "%s", path);
-    LOGI("setSaveImagePath : %s\n", path);
 }
 
 void MagicMain::loadRes()
@@ -234,22 +225,17 @@ void MagicMain::loadRes()
     m_btn_func->setPostion(m_CoordWidth -  m_btn_func->getRegionWidth()/2, m_btn_func->getRegionHeight()/2);
 }
 
-char* MagicMain::makeResPath( char* path, const char* targetFile, int szBuffer/* = _MAX_PATH*/)
-{
-    snprintf(path, szBuffer, "%s/%s", m_resPath, targetFile);
-    return path;
-}
-
 void MagicMain::onButtonClick( Button *btn )
 {
+    char resName[30];
     char path[_MAX_PATH];
     if (btn->tag() == 3) {
         if (m_Engine->type() == EngineType_Mesh)
             ((MeshEngine *)m_Engine)->restore();
         else if (m_Engine->type() == EngineType_Cover){
             srand(time(0));
-            snprintf(path, _MAX_PATH-1, "./assets/frame/%02d.png", rand()%4+1);
-            ((CoverEngine *)m_Engine)->setCover(path);
+            snprintf(resName, 30-1, "frame/%02d.png", rand()%4+1);
+            ((CoverEngine *)m_Engine)->setCover(makeResPath(path, resName));
         }
     } else if (btn->tag() == 2){
         EngineType type;
@@ -288,18 +274,18 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     }
 
     m_Engine->initEngine(&m_shader, m_SrcTex);
-    m_magicSprite.setTexture(m_Engine->getOutTexture());
-    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
-    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    OnOutputSizeChange();
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
     m_Engine->SetSaveImageCallBack(m_saveImage);
     m_Engine->start();
 }
 
-void MagicMain::OnOutputSizeChange( int w, int h )
+void MagicMain::OnOutputSizeChange()
 {
-    m_magicSpriteY = (m_CoordHeight - h)/2;
+    m_magicSprite.setTexture(m_Engine->getOutTexture());
+    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
+    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
 }
 
 void MagicMain::switchEngine(EngineType type)

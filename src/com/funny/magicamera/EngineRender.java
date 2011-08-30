@@ -76,7 +76,7 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         Log.d(MagicActivity.TAG, String.format("onSurfaceChanged: %d,%d", width, height));
 
         MagicJNILib.init(width, height);
-        MagicJNILib.setSaveImagePath("/sdcard".getBytes());
+        MagicJNILib.setResPath("/sdcard/magic".getBytes());
         if (m_onInitComplete != null){
             m_onInitComplete.onEngineInitCompleted(this);
         }

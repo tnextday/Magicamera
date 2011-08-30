@@ -1,7 +1,7 @@
 #include "jni_main.h"
 #include <string.h>
 
-MagicEngine g_MagicEngine;
+MagicMain g_MagicEngine;
 AndroidCallBack g_CallBack;
 
 static JavaVM *g_JavaVM = 0;
@@ -36,7 +36,7 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer, jlong len){
 	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
-	g_MagicEngine.updatePreviewTex(p_buffer, len);
+	g_MagicEngine.updatePreviewData(p_buffer, len);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }
 
@@ -55,11 +55,11 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIE
 	return g_MagicEngine.onTouchUp(x, y);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setSaveImagePath( JNIEnv * env, jobject obj, jbyteArray path )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setResPath( JNIEnv * env, jobject obj, jbyteArray path )
 {
     char* strPath;
     strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
-    g_MagicEngine.setSaveImagePath(strPath);
+    g_MagicEngine.setResPath(strPath);
     env->ReleasePrimitiveArrayCritical(path, strPath, false);
 }
 

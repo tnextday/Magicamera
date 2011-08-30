@@ -8,17 +8,12 @@
 #include "ui/button.h"
 #include "ui/touchevent.h"
 #include "meshengine.h"
+#include "utils/resmanage.h"
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
 const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  打包压缩的数据，jpeg,png,tga,bitmap...
 
-#ifndef _MAX_PATH
-#define _MAX_PATH 260
-#endif
-#ifdef _WIN32
-#define snprintf _snprintf
-#endif
 
 const int FORMAT_RGBA = 0;
 const int FORMAT_RGB = 1;
@@ -53,7 +48,6 @@ class MagicMain : public ButtonClick, TouchEvent{
 
     int             m_inputFortmat;
 
-    char                    m_resPath[_MAX_PATH];
     SaveImageCallBack*      m_saveImage;
 
 public:
@@ -75,9 +69,8 @@ public:
 
     void setCallBack(SaveImageCallBack* callback);
 
-    void setResPath(const char* path);
+    void setResPath(const char* path){::setResPath(path);};
     void loadRes();
-    char* makeResPath(char* path, const char* targetFile, int szBuffer = _MAX_PATH);
 
 private:
     void initEngine(EngineType type = EngineType_Mesh);
@@ -89,5 +82,5 @@ private:
     void drawUI();
     void drawImage();
 
-    virtual void OnOutputSizeChange( int w, int h );
+    virtual void OnOutputSizeChange();
 };
