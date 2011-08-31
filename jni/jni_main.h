@@ -15,6 +15,8 @@ public:
 #ifdef __cplusplus
 extern "C" {
 #endif
+	
+
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta);
@@ -30,7 +32,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved);
 static jmethodID getMethodID(const char *methodName, const char *paramCode);
 void CheckException(const char* methond );
 
-void *__dso_handle = NULL;
+
 #ifdef __cplusplus
 }
 #endif

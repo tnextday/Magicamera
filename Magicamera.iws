@@ -6,28 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/Android.mk" afterPath="$PROJECT_DIR$/jni/Android.mk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/Application.mk" afterPath="$PROJECT_DIR$/jni/Application.mk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/GenMK.py" afterPath="$PROJECT_DIR$/jni/GenMK.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/win32/Magicamera.vcproj" afterPath="$PROJECT_DIR$/win32/Magicamera.vcproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/actions/action.h" afterPath="$PROJECT_DIR$/jni/actions/action.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/gdx2d/stb_image.c" afterPath="$PROJECT_DIR$/jni/gdx2d/stb_image.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/glyuvtexture.cpp" afterPath="$PROJECT_DIR$/jni/glutils/glyuvtexture.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/glyuvtexture.h" afterPath="$PROJECT_DIR$/jni/glutils/glyuvtexture.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/sprite.cpp" afterPath="$PROJECT_DIR$/jni/glutils/sprite.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/texture.cpp" afterPath="$PROJECT_DIR$/jni/glutils/texture.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/jni_main.cpp" afterPath="$PROJECT_DIR$/jni/jni_main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/jni_main.h" afterPath="$PROJECT_DIR$/jni/jni_main.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/coverengine.cpp" afterPath="$PROJECT_DIR$/jni/magic/coverengine.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicengine.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicengine.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicengine.h" afterPath="$PROJECT_DIR$/jni/magic/magicengine.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicmain.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.h" afterPath="$PROJECT_DIR$/jni/magic/magicmain.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/utils/arraylist.h" afterPath="$PROJECT_DIR$/jni/utils/arraylist.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/glutils.h" afterPath="$PROJECT_DIR$/jni/glutils/glutils.h" />
     </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,21 +30,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" line="87" class="com.funny.magicamera.MagicActivity" package="com.funny.magicamera">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_any>
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -113,8 +77,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -123,10 +87,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MagicActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MagicActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="0" selection-start="2499" selection-end="2499" vertical-scroll-proportion="0.0">
+            <state line="274" column="23" selection-start="9397" selection-end="9397" vertical-scroll-proportion="0.32027256">
               <folding />
             </state>
           </provider>
@@ -135,7 +99,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="36" selection-start="1818" selection-end="1825" vertical-scroll-proportion="0.0">
+            <state line="52" column="33" selection-start="1818" selection-end="1818" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -150,10 +114,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EngineRender.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="EngineRender.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="5" selection-start="1936" selection-end="1936" vertical-scroll-proportion="0.047493402">
+            <state line="66" column="5" selection-start="1801" selection-end="1801" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -182,9 +146,9 @@
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
       </list>
     </option>
   </component>
@@ -228,7 +192,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
@@ -318,6 +281,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -337,8 +301,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Android Application.Magicamera">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -519,20 +483,20 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27401575" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.272578" sideWeight="0.22677165" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27914613" sideWeight="0.5606299" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.272578" sideWeight="0.43307087" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27914613" sideWeight="0.42677164" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.7826772" sideWeight="0.49671593" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32840723" sideWeight="0.81574804" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -648,6 +612,18 @@
         <state line="10" column="43" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/app/Instrumentation.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="16" selection-start="6167" selection-end="6167" vertical-scroll-proportion="0.33171913" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="5" selection-start="1801" selection-end="1801" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="31" column="23" selection-start="916" selection-end="916" vertical-scroll-proportion="0.0">
@@ -657,28 +633,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="36" selection-start="1818" selection-end="1825" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/app/Instrumentation.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="16" selection-start="6167" selection-end="6167" vertical-scroll-proportion="0.33171913">
+        <state line="52" column="33" selection-start="1818" selection-end="1818" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="0" selection-start="2499" selection-end="2499" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="5" selection-start="1936" selection-end="1936" vertical-scroll-proportion="0.047493402">
+        <state line="274" column="23" selection-start="9397" selection-end="9397" vertical-scroll-proportion="0.32027256">
           <folding />
         </state>
       </provider>
