@@ -6,6 +6,7 @@
 #include "utils/mathelpers.h"
 #include <time.h>
 #include <stdlib.h>
+#include "utils/resmanage.h"
 
 CoverEngine::CoverEngine(void)
 {
@@ -68,7 +69,8 @@ void CoverEngine::start()
 {
     m_toFinish = false;
     m_finished = false;
-    setCover("./assets/frame/01.png");
+    char path[_MAX_PATH];
+    setCover(makeResPath(path, "frame/01.png"));
 }
 
 bool CoverEngine::isFinished()

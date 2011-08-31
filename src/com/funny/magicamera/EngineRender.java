@@ -1,17 +1,11 @@
 package com.funny.magicamera;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 
 
@@ -27,6 +21,8 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
     LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
     int m_previewHeight;
     int m_previewWidth;
+
+    String m_imagePath = "";
 
     private InputEvent inputEvent = new InputEvent();
 
@@ -80,6 +76,9 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         if (m_onInitComplete != null){
             m_onInitComplete.onEngineInitCompleted(this);
         }
+        if (!"".equals(m_imagePath)){
+            MagicJNILib.setPreviewImage(m_imagePath.getBytes());
+        }
         this.lastFrameTime = System.nanoTime();
     }
 
@@ -93,29 +92,8 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, format);
     }
 
-    public void setLocalTexture(String path) {
-        Bitmap bitmap = null;
-        bitmap = BitmapFactory.decodeFile(path);
-        m_previewHeight = bitmap.getHeight();
-        m_previewWidth = bitmap.getWidth();
-        bitmap.recycle();
-        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, MagicJNILib.IMAGE_FORMAT_PACKET);
-        InputStream inputStream;
-
-        byte[] buffer = null;
-        int szRead = 0;
-        try {
-            inputStream = new FileInputStream(path);
-            buffer = new byte[inputStream.available()];
-            szRead = inputStream.read(buffer);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (szRead > 0) {
-            MagicJNILib.uploadPreviewData(buffer, buffer.length);
-        }
+    public void setDestImage(String path) {
+        m_imagePath = path;
     }
 
 
@@ -179,7 +157,7 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         public void log() {
             frames++;
             if (System.nanoTime() - startTime > 1000000000) {
-                Log.i("FPSLogger", "fps: " + frames);
+                Log.i("Magic FPS", "fps: " + frames);
                 frames = 0;
                 startTime = System.nanoTime();
             }

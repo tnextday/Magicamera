@@ -36,13 +36,15 @@ public class MagicJNILib {
     public static native boolean onTouchUp(float x, float y);
 
     public static native void setResPath(byte[] path);
+    
+    public static native void setPreviewImage(byte[] path);
 
     public static void playSound(int soundId) {
-        Log.i("lib", String.format("playSound callback: %d", soundId));
+        Log.i("libmagic", String.format("playSound callback: %d", soundId));
     }
 
     public static void playMusic(int MusicId) {
-        Log.i("lib", String.format("playMusic callback: %d", MusicId));
+        Log.i("libmagic", String.format("playMusic callback: %d", MusicId));
     }
 
     public static boolean saveImage(byte[] buffer, int w, int h, int format) {

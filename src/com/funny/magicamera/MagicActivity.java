@@ -34,7 +34,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
     Camera m_Camera = null;
     final static int BufferCount = 2;
 
-    int m_previewHeight = 640;
+    int m_previewHeight = 320;
     int m_previewWidth = 480;
 
     public String PicPath = null;
@@ -69,14 +69,15 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
         //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
         m_SurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
 
+        Intent intent = getIntent();
+        String picPath =  intent.getStringExtra("PicPath");
+
         m_engine = new EngineRender();
         m_engine.setOnInitComplete(this);
         if (SDK_Version >= 8)
             m_engine.setOnCameraBufferRelease(this);
         m_SurfaceView.setRenderer(m_engine);
 
-        Intent intent = getIntent();
-        String picPath =  intent.getStringExtra("PicPath");
         if (picPath != null && new File(picPath).exists()){
             PicPath = picPath;
         }
@@ -85,7 +86,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
     @Override
     public void onEngineInitCompleted(EngineRender engine) {
         if (PicPath != null){
-            engine.setLocalTexture(PicPath);
+            engine.setDestImage(PicPath);
         }else{
             //TODO 异步执行
             startCamera(CameraType.FACING_FRONT);

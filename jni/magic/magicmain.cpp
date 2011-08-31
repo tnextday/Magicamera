@@ -53,7 +53,6 @@ bool MagicMain::setupGraphics(int w, int h) {
     printGLString("Renderer", GL_RENDERER);
     printGLString("Extensions", GL_EXTENSIONS);
 
-    LOGI("\n");
     LOGI("setupGraphics(%d, %d)\n", w, h);
     m_ScreenWidth = w;
     m_ScreenHeight = h;
@@ -127,6 +126,7 @@ void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
         m_glYUVTex = new glYUVTexture(w, h, m_SrcTex->getTexHandle());
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
         m_SrcTex->setImageFormat(GDX2D_FORMAT_RGB565);
+
 }
 
 
@@ -200,7 +200,6 @@ void MagicMain::drawImage()
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
 
-
     m_magicSprite.draw(&m_shader);
 //     glEnable(GL_BLEND);
 //     glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
@@ -257,12 +256,15 @@ void MagicMain::setPreviewImage( const char* data, long len )
 
 void MagicMain::setPreviewImage( const char* imgPath )
 {
+    LOGI("setPreviewImage : %s\n", imgPath);
     m_SrcTex->loadFromFile(imgPath);
     initEngine();
+    LOGI("setPreviewImage end: %s\n", imgPath);
 }
 
 void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
 {
+    LOGI("initEngine : %d\n", (int)type);
     SafeDelete(m_Engine);
     switch (type)
     {
@@ -279,6 +281,7 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     m_magicSprite.flip(false, true);
     m_Engine->SetSaveImageCallBack(m_saveImage);
     m_Engine->start();
+    LOGI("initEngine end [%d]\n", (int)type);
 }
 
 void MagicMain::OnOutputSizeChange()

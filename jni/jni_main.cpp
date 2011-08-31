@@ -1,7 +1,7 @@
 #include "jni_main.h"
 #include <string.h>
 
-MagicMain g_MagicEngine;
+MagicMain g_MagicMain;
 AndroidCallBack g_CallBack;
 
 static JavaVM *g_JavaVM = 0;
@@ -21,48 +21,56 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
-    g_MagicEngine.setupGraphics(width, height);
-    g_MagicEngine.setCallBack(&g_CallBack);
+    g_MagicMain.setupGraphics(width, height);
+    g_MagicMain.setCallBack(&g_CallBack);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
 {
-	g_MagicEngine.renderFrame(delta);
+	g_MagicMain.renderFrame(delta);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format){
-	g_MagicEngine.setPreviewDataInfo(width, height, format);
+	g_MagicMain.setPreviewDataInfo(width, height, format);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer, jlong len){
 	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
-	g_MagicEngine.updatePreviewData(p_buffer, len);
+	g_MagicMain.updatePreviewData(p_buffer, len);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JNIEnv * env, jobject obj, jbyteArray path )
+{
+    char* strPath;
+    strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
+    g_MagicMain.setPreviewImage(strPath);
+    env->ReleasePrimitiveArrayCritical(path, strPath, false);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
-	return g_MagicEngine.onTouchDown(x, y);
+	return g_MagicMain.onTouchDown(x, y);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
-	return g_MagicEngine.onTouchDrag(x, y);
+	return g_MagicMain.onTouchDrag(x, y);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
-	return g_MagicEngine.onTouchUp(x, y);
+	return g_MagicMain.onTouchUp(x, y);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setResPath( JNIEnv * env, jobject obj, jbyteArray path )
 {
     char* strPath;
     strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
-    g_MagicEngine.setResPath(strPath);
+    g_MagicMain.setResPath(strPath);
+    g_MagicMain.loadRes();
     env->ReleasePrimitiveArrayCritical(path, strPath, false);
 }
-
 
 
 bool AndroidCallBack::SaveImage( char* buffer, int w, int h, int format )
@@ -97,7 +105,7 @@ void CheckException(const char* methond )
 static jmethodID getMethodID(const char *methodName, const char *paramCode)
 {
     jmethodID ret = 0;
-    // get jni environment and java class for Cocos2dxActivity
+    // get jni environment and java class
     if (g_JavaVM->GetEnv((void**)&env, JNI_VERSION_1_4) != JNI_OK){
         LOGE("Failed to get the environment using GetEnv()");
         return 0;
