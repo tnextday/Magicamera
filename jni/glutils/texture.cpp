@@ -45,7 +45,7 @@ int getGLType(int format) {
 Texture::Texture( const unsigned char *buffer, uint32_t len)
 {
     init();
-    uploadImageData(buffer, len);
+    loadFromMemory(buffer, len);
 }
 
 Texture::Texture(const char* texFilePath )
@@ -96,7 +96,7 @@ void Texture::uploadImageData( GLubyte* data )
     uploadImageData(data, m_Width, m_Height, m_imageFormat);
 }
 
-void Texture::uploadImageData( const unsigned char *buffer, uint32_t len)
+void Texture::loadFromMemory( const unsigned char *buffer, uint32_t len)
 {
     gdx2d_pixmap* pixmap = gdx2d_load(buffer, len);
     m_imageFormat = pixmap->format;
@@ -151,7 +151,7 @@ bool Texture::loadFromFile( const char *filePath )
     buffer = new char[size];
 
     if (fread(buffer, sizeof(char), size, fp) > 0){
-        uploadImageData((unsigned char*)buffer, size);
+        loadFromMemory((unsigned char*)buffer, size);
     }else{
         LOGE("Can't load texture: %s\n", filePath);
         result = false;

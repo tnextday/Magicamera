@@ -426,12 +426,28 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Res"
+			>
+			<File
+				RelativePath=".\Magicamera.manifest"
+				>
+			</File>
+			<File
+				RelativePath=".\Magicamera.rc"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\main.h"
+			>
+		</File>
+		<File
+			RelativePath=".\resource.h"
 			>
 		</File>
 	</Files>

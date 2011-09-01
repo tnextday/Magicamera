@@ -2,6 +2,7 @@
 //#include <vld.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <Windows.h>
 #include <EGL/egl.h>
 #include <GLES2/GL2.h>
 #include <GLES2/gl2ext.h>
@@ -12,12 +13,16 @@
 //--------------------------------------------------------------------------------------
 // Global variables
 //--------------------------------------------------------------------------------------
+
 const CHAR*  g_strWindowTitle = "MagicAmera";
+const UINT32 g_nglWinWidth   = 480;
+const UINT32 g_nglWinHeight  = 640;
+const UINT32 g_nToolBarHeight = 32;
 const UINT32 g_nWindowWidth   = 480;
-const UINT32 g_nWindowHeight  = 720;
+const UINT32 g_nWindowHeight  = g_nglWinHeight + g_nToolBarHeight;
 const UINT32 g_PicWidth = 640;
 const UINT32 g_PicHeigth = 480;
-const bool g_useCamera = true;
+const bool g_useCamera = false;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_testImagePath = "assets\\test.jpg";
@@ -26,6 +31,13 @@ const char* g_strSaveImagePath = "test.tga";
 const char* g_resPath = "assets\\";
 MagicMain g_MagicMain;
 WinCallBack g_WinCallBack;
+
+EGLSurface g_eglSurface;
+EGLDisplay g_eglDisplay;
+HWND hbtn_save;
+HWND hbtn_change_engine;
+HWND hbtn_change_effect;
+HWND hbtn_change_func;
 
 
 bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
@@ -92,169 +104,16 @@ void WinCallBack::swapRedAndBlue( char* buffer, int w, int h )
     }
 }
 
-LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+char* WinCallBack::readRes( const char* resname, long* size )
 {
-    POINTS vMousePt;
-    switch( uMsg )
-    {
-    case WM_LBUTTONDOWN:
-        vMousePt = MAKEPOINTS(lParam);
-        g_MagicMain.onTouchDown(vMousePt.x, vMousePt.y);
-        return 0;
-    case WM_MOUSEMOVE:
-        if( wParam & MK_LBUTTON ) {
-            vMousePt = MAKEPOINTS(lParam);
-            g_MagicMain.onTouchDrag(vMousePt.x, vMousePt.y);
-        }
-        return 0;
-    case  WM_LBUTTONUP:
-        vMousePt = MAKEPOINTS(lParam);
-        g_MagicMain.onTouchUp(vMousePt.x, vMousePt.y);
-        return 0;
-    case WM_TIMER:
-        if (wParam == TIMER_UPDATE_NV21){
-            updateNV21();
-        }
-        return 0;
-    case WM_CLOSE:
-        PostQuitMessage( 0 );
-        return 0;
-    }
-
-    // Pass all unhandled messages to the default WndProc
-    return DefWindowProc( hWnd, uMsg, wParam, lParam );
+    return NULL;
 }
 
 
-char* readFile(char* filename, int &size, char* preBuffer /*= NULL*/){
-    TCHAR szPath[_MAX_PATH];
-    if (filename[1] != ':'){
-        GetCurrentDirectory(_MAX_PATH, szPath);
-        sprintf(szPath, "%s\\%s", szPath, filename);
-    }else{
-        sprintf(szPath, "%s", filename);
-    }
-    FILE *fp = fopen(szPath, "rb");
-    if (!fp) return NULL;
-    char* buffer = NULL;
-
-    fseek(fp, 0, SEEK_END);
-    size = ftell(fp);            // determine file size so we can fill it in later if FileSize == 0
-    if (size <= 0) goto __end ;
-    fseek(fp, 0, SEEK_SET);
-    if (preBuffer){
-        buffer = preBuffer;
-    }else{
-        buffer = new char[size];
-    }
-    
-    if (fread(buffer, sizeof(char), size, fp) <= 0){
-        if (!preBuffer){
-            delete[] buffer;
-        }
-        buffer = NULL;
-    }
-
-__end:
-    fclose(fp);
-    return buffer;
-}
-
-int szFile;
-static char preBuffer[g_PicWidth*g_PicHeigth*12/8];
-
-void updateNV21(){
-    static int idx = 0;
-    static int step = 1;
-    char path[_MAX_PATH];
-__REREAD:
-    _snprintf(path, _MAX_PATH-1, g_strNV21Path, idx);
-    if (!readFile(path, szFile, preBuffer)){
-        step = -step;
-        idx += step;
-        goto __REREAD;
-    }
-    g_MagicMain.updatePreviewData(preBuffer, szFile);
-    idx += step;
-}
-
-//--------------------------------------------------------------------------------------
-// Name: FrmGetTime()
-// Desc: Platform-dependent function to get the current time (in seconds).
-//--------------------------------------------------------------------------------------
-float FrmGetTime()
+int eglCreateSurface(HWND hWin, EGLSurface &eglSurface, EGLDisplay &eglDisplay)
 {
-    static BOOL     bInitialized = false;
-    static LONGLONG m_llQPFTicksPerSec;
-    static LONGLONG m_llBaseTime;
-    if( false == bInitialized )
-    {
-        LARGE_INTEGER qwTicksPerSec;
-        QueryPerformanceFrequency( &qwTicksPerSec );
-        m_llQPFTicksPerSec = qwTicksPerSec.QuadPart;
-
-        LARGE_INTEGER qwTime;
-        QueryPerformanceCounter( &qwTime );
-        m_llBaseTime = qwTime.QuadPart;
-
-        bInitialized = TRUE;
-        return 0.0f;
-    }
-
-    // Get the current time
-    LARGE_INTEGER qwTime;
-    QueryPerformanceCounter( &qwTime );
-    double fAppTime = (double)( qwTime.QuadPart - m_llBaseTime ) / (double) m_llQPFTicksPerSec;
-    return (float)fAppTime;
-}
-
-
-int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
-{
-
-    // Create the application window
-    NativeWindowType hWindow;
-    {
-        // The global instance
-        HINSTANCE hInstance  = GetModuleHandle( NULL );
-
-        // Register the window class
-        WNDCLASS wc = {0};
-        wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // Window style
-        wc.lpfnWndProc    = (WNDPROC)WndProc;                    // WndProc message handler
-        wc.hInstance      = hInstance;                           // Instance
-        wc.lpszClassName  = "Adreno SDK Window";            // Set the class name
-        wc.hCursor        = LoadCursor( NULL, IDC_ARROW );       // Cursor
-        if( FALSE == RegisterClass(&wc) )
-            return FALSE;
-
-        // Adjust the window size to fit our rectangle
-        DWORD dwWindowStyle = WS_SYSMENU | WS_MINIMIZEBOX | WS_CAPTION | WS_BORDER |
-            WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-        RECT rcWindow;
-        SetRect( &rcWindow, 0, 0, g_nWindowWidth, g_nWindowHeight );
-        AdjustWindowRect( &rcWindow, dwWindowStyle, FALSE );
-
-        // Create the parent window
-        hWindow = CreateWindowEx(
-            WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,    // Extended style
-            "Adreno SDK Window",                   // Class
-            g_strWindowTitle,                      // Title
-            dwWindowStyle,                         // Style
-            50 + rcWindow.left, 50 + rcWindow.top, // Position
-            (rcWindow.right-rcWindow.left),        // Width
-            (rcWindow.bottom-rcWindow.top),        // Height
-            NULL, NULL, hInstance, NULL );
-        if( NULL == hWindow )
-            return FALSE;
-
-        ShowWindow( hWindow, SW_SHOW );
-        SetForegroundWindow( hWindow );
-        SetFocus( hWindow );
-    }
-
     // Get the display
-    EGLDisplay eglDisplay = eglGetDisplay( EGL_DEFAULT_DISPLAY );
+    eglDisplay = eglGetDisplay( EGL_DEFAULT_DISPLAY );
     if( eglDisplay == EGL_NO_DISPLAY )
         return FALSE;
 
@@ -347,7 +206,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     else return FALSE; // unsupported display
 
     // Create a window surface
-    EGLSurface eglSurface = eglCreateWindowSurface( eglDisplay, eglConfig, hWindow, NULL );
+    eglSurface = eglCreateWindowSurface( eglDisplay, eglConfig, hWin, NULL );
     if( EGL_NO_SURFACE == eglSurface )
         return FALSE;
 
@@ -360,10 +219,224 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     // Make the context current
     if( FALSE == eglMakeCurrent( eglDisplay, eglSurface, eglSurface, eglContext ) )
         return FALSE;
+    return TRUE;
+}
 
-    g_MagicMain.setupGraphics(g_nWindowWidth, g_nWindowHeight);
+char* readFile(char* filename, int &size, char* preBuffer /*= NULL*/){
+    TCHAR szPath[_MAX_PATH];
+    if (filename[1] != ':'){
+        GetCurrentDirectory(_MAX_PATH, szPath);
+        sprintf(szPath, "%s\\%s", szPath, filename);
+    }else{
+        sprintf(szPath, "%s", filename);
+    }
+    FILE *fp = fopen(szPath, "rb");
+    if (!fp) return NULL;
+    char* buffer = NULL;
+
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);            // determine file size so we can fill it in later if FileSize == 0
+    if (size <= 0) goto __end ;
+    fseek(fp, 0, SEEK_SET);
+    if (preBuffer){
+        buffer = preBuffer;
+    }else{
+        buffer = new char[size];
+    }
+    
+    if (fread(buffer, sizeof(char), size, fp) <= 0){
+        if (!preBuffer){
+            delete[] buffer;
+        }
+        buffer = NULL;
+    }
+
+__end:
+    fclose(fp);
+    return buffer;
+}
+
+int szFile;
+static char preBuffer[g_PicWidth*g_PicHeigth*12/8];
+
+void updateNV21(){
+    static int idx = 0;
+    static int step = 1;
+    char path[_MAX_PATH];
+__REREAD:
+    _snprintf(path, _MAX_PATH-1, g_strNV21Path, idx);
+    if (!readFile(path, szFile, preBuffer)){
+        step = -step;
+        idx += step;
+        goto __REREAD;
+    }
+    g_MagicMain.updatePreviewData(preBuffer, szFile);
+    idx += step;
+}
+
+//--------------------------------------------------------------------------------------
+// Name: FrmGetTime()
+// Desc: Platform-dependent function to get the current time (in seconds).
+//--------------------------------------------------------------------------------------
+float FrmGetTime()
+{
+    static BOOL     bInitialized = false;
+    static LONGLONG m_llQPFTicksPerSec;
+    static LONGLONG m_llBaseTime;
+    if( false == bInitialized )
+    {
+        LARGE_INTEGER qwTicksPerSec;
+        QueryPerformanceFrequency( &qwTicksPerSec );
+        m_llQPFTicksPerSec = qwTicksPerSec.QuadPart;
+
+        LARGE_INTEGER qwTime;
+        QueryPerformanceCounter( &qwTime );
+        m_llBaseTime = qwTime.QuadPart;
+
+        bInitialized = TRUE;
+        return 0.0f;
+    }
+
+    // Get the current time
+    LARGE_INTEGER qwTime;
+    QueryPerformanceCounter( &qwTime );
+    double fAppTime = (double)( qwTime.QuadPart - m_llBaseTime ) / (double) m_llQPFTicksPerSec;
+    return (float)fAppTime;
+}
+
+LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+{
+    POINTS vMousePt;
+    switch( uMsg )
+    {
+    case WM_LBUTTONDOWN:
+        vMousePt = MAKEPOINTS(lParam);
+        g_MagicMain.onTouchDown(vMousePt.x, vMousePt.y);
+        return 0;
+    case WM_MOUSEMOVE:
+        if( wParam & MK_LBUTTON ) {
+            vMousePt = MAKEPOINTS(lParam);
+            g_MagicMain.onTouchDrag(vMousePt.x, vMousePt.y);
+        }
+        return 0;
+    case  WM_LBUTTONUP:
+        vMousePt = MAKEPOINTS(lParam);
+        g_MagicMain.onTouchUp(vMousePt.x, vMousePt.y);
+        return 0;
+    case WM_TIMER:
+        if (wParam == TIMER_UPDATE_NV21){
+            updateNV21();
+        }
+        return 0;
+    case WM_CLOSE:
+        PostQuitMessage( 0 );
+        return 0;
+    case WM_COMMAND:
+        if (lParam == (int)hbtn_save){
+            g_MagicMain.takePicture();
+        } else if(lParam == (int)hbtn_change_effect){
+
+        } else if(lParam == (int)hbtn_change_engine){
+            EngineType type;
+            if (g_MagicMain.getEngineType() == EngineType_Mesh){
+                SetWindowText(hbtn_change_func, "切换相框");
+                type = EngineType_Cover;
+            } else {
+                SetWindowText(hbtn_change_func, "复  原");
+                type = EngineType_Mesh;
+            }
+            g_MagicMain.switchEngine(type);
+        } else if(lParam == (int)hbtn_change_func){
+
+        } 
+        return 0;
+    }
+
+    // Pass all unhandled messages to the default WndProc
+    return DefWindowProc( hWnd, uMsg, wParam, lParam );
+}
+
+int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
+{
+
+    // Create the application window
+    HWND hGlWin;
+    NativeWindowType hWindow;
+    {
+        // The global instance
+        HINSTANCE hInstance  = GetModuleHandle( NULL );
+
+        // Register the window class
+        WNDCLASS wc = {0};
+        wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // Window style
+        wc.lpfnWndProc    = (WNDPROC)WndProc;                    // WndProc message handler
+        wc.hInstance      = hInstance;                           // Instance
+        wc.lpszClassName  = "MagicWindow";                       // Set the class name
+        wc.hbrBackground  = (HBRUSH)COLOR_WINDOW;                //背景颜色 
+        wc.hCursor        = LoadCursor( NULL, IDC_ARROW );       // Cursor
+        if( FALSE == RegisterClass(&wc) )
+            return FALSE;
+
+        // Adjust the window size to fit our rectangle
+        DWORD dwWindowStyle = WS_SYSMENU | WS_MINIMIZEBOX | WS_CAPTION | WS_BORDER |
+            WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+        RECT rcWindow;
+        SetRect( &rcWindow, 0, 0, g_nWindowWidth, g_nWindowHeight );
+        AdjustWindowRect( &rcWindow, dwWindowStyle, FALSE );
+
+        // Create the parent window
+        hWindow = CreateWindowEx(
+            WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,    // Extended style
+            "MagicWindow",                   // Class
+            g_strWindowTitle,                      // Title
+            dwWindowStyle,                         // Style
+            50 + rcWindow.left, 50 + rcWindow.top, // Position
+            (rcWindow.right-rcWindow.left),        // Width
+            (rcWindow.bottom-rcWindow.top),        // Height
+            NULL, NULL, hInstance, NULL );
+        if( NULL == hWindow )
+            return FALSE;
+        HWND hToolBar = CreateWindowEx(0,"MagicWindow","",WS_CHILD | WS_VISIBLE,
+            0,0,g_nWindowWidth,g_nToolBarHeight,
+            hWindow ,0,hInstance, NULL);
+        
+        hbtn_save = CreateWindowEx(0,"Button","保 存",WS_CHILD | WS_VISIBLE,
+            1,2,80,30,
+            hToolBar ,0,hInstance, NULL);
+        hbtn_change_effect = CreateWindowEx(0,"Button","切换特效",WS_CHILD | WS_VISIBLE,
+            90*1,2,80,30,
+            hToolBar ,0,hInstance, NULL);
+        hbtn_change_engine = CreateWindowEx(0,"Button","切换引擎",WS_CHILD | WS_VISIBLE,
+            90*2,2,80,30,
+            hToolBar ,0,hInstance, NULL);
+        hbtn_change_func = CreateWindowEx(0,"Button","复  原",WS_CHILD | WS_VISIBLE,
+            90*3,2,80,30,
+            hToolBar ,0,hInstance, NULL);
+        //--创建字体--
+        HFONT MyFont_Hanlde = CreateFont(-14, 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET,
+                   OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+                   DEFAULT_PITCH | FF_DONTCARE, "MS Sans Serif");
+
+        //--设置字体--
+        SendMessage(hbtn_save , WM_SETFONT, (WPARAM)MyFont_Hanlde, 0);
+        SendMessage(hbtn_change_effect, WM_SETFONT, (WPARAM)MyFont_Hanlde, 0);
+        SendMessage(hbtn_change_engine, WM_SETFONT, (WPARAM)MyFont_Hanlde, 0);
+        SendMessage(hbtn_change_func, WM_SETFONT, (WPARAM)MyFont_Hanlde, 0);
+
+        hGlWin = CreateWindowEx(0,"Static","",WS_CHILD | WS_VISIBLE,
+            0,g_nToolBarHeight, g_nglWinWidth,g_nglWinHeight,
+            hWindow ,0,hInstance, NULL);
+        ShowWindow( hWindow, SW_SHOW );
+        SetForegroundWindow( hWindow );
+        SetFocus( hWindow );
+    }
+
+    if (!eglCreateSurface(hGlWin, g_eglSurface, g_eglDisplay))
+        return FALSE;
+
+    g_MagicMain.setupGraphics(g_nglWinWidth, g_nglWinHeight);
     g_MagicMain.setResPath(g_resPath);
-    g_MagicMain.setCallBack(&g_WinCallBack);
+    g_MagicMain.setIOCallBack(&g_WinCallBack);
     g_MagicMain.loadRes();
 
     if(g_useCamera){
@@ -393,7 +466,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
             g_MagicMain.renderFrame(delta);
 
             // Present the scene
-            eglSwapBuffers( eglDisplay, eglSurface );
+            eglSwapBuffers( g_eglDisplay, g_eglSurface );
         }
     }
     if(g_useCamera)

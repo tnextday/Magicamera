@@ -45,7 +45,8 @@ public:
     Sprite(Texture *tex);
     Sprite(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
     ~Sprite();
-    void loadTexture(const char* texPath);
+    void loadFromFile(const char* texPath);
+    void loadFromMemory(const unsigned char* buffer, uint32_t size);
     void setTexture(Texture *tex);
     void setTexture(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);
     void setTextureRegion(TextureRegion *tr);

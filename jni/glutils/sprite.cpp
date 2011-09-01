@@ -41,7 +41,7 @@ Sprite::Sprite( const char* texPath )
 {
     m_dirty = true;
     m_action = NULL;
-    loadTexture(texPath);
+    loadFromFile(texPath);
 }
 
 Sprite::~Sprite()
@@ -306,11 +306,6 @@ void Sprite::setTextureRegion( TextureRegion *tr )
     init(tr->getRegionX(), tr->getRegionY(), tr->getRegionWidth(), tr->getRegionHeight());
 }
 
-void Sprite::loadTexture( const char* texPath )
-{
-    m_spriteTexture = new Texture(texPath);
-    setTexture(m_spriteTexture);
-}
 
 void Sprite::doAction( Action* action, bool autoFree /*= true*/)
 {
@@ -340,4 +335,17 @@ bool Sprite::isActionDone()
 float Sprite::getRotation()
 {
     return m_rotation;
+}
+
+void Sprite::loadFromMemory( const unsigned char* buffer, uint32_t size )
+{
+    m_spriteTexture = new Texture(buffer, size);
+    setTexture(m_spriteTexture);
+}
+
+
+void Sprite::loadFromFile( const char* texPath )
+{
+    m_spriteTexture = new Texture(texPath);
+    setTexture(m_spriteTexture);
 }

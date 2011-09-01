@@ -31,7 +31,7 @@ MagicMain::MagicMain()
 {
     m_glYUVTex = NULL;
     m_SrcTex = NULL;
-    m_saveImage = NULL;
+    m_ioCallBack = NULL;
     m_Engine = NULL;
     m_nextEngine = EngineType_None;
 }
@@ -110,7 +110,7 @@ void MagicMain::updatePreviewData( char* data, long len )
     }else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
         m_SrcTex->uploadImageData((GLubyte*)data);
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
-        m_SrcTex->uploadImageData((unsigned char*)data, len);
+        m_SrcTex->loadFromMemory((unsigned char*)data, len);
     }
 }
 
@@ -166,9 +166,9 @@ bool MagicMain::onTouchUp( float x, float y )
     return true;
 }
 
-void MagicMain::setCallBack( SaveImageCallBack* callback )
+void MagicMain::setIOCallBack( IOCallBack* callback )
 {
-    m_saveImage = callback;
+    m_ioCallBack = callback;
 }
 
 
@@ -250,7 +250,7 @@ void MagicMain::onButtonClick( Button *btn )
 
 void MagicMain::setPreviewImage( const char* data, long len )
 {
-    m_SrcTex->uploadImageData((unsigned char*)data, len);
+    m_SrcTex->loadFromMemory((unsigned char*)data, len);
     initEngine();
 }
 
@@ -279,7 +279,7 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     OnOutputSizeChange();
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
-    m_Engine->SetSaveImageCallBack(m_saveImage);
+    m_Engine->SetIOCallBack(m_ioCallBack);
     m_Engine->start();
     LOGI("initEngine end [%d]\n", (int)type);
 }
@@ -296,5 +296,18 @@ void MagicMain::switchEngine(EngineType type)
     if (m_Engine->type() == type) return;
     m_nextEngine = type;
     m_Engine->finish();
+}
+
+void MagicMain::takePicture()
+{
+    m_Engine->tackPicture();
+}
+
+EngineType MagicMain::getEngineType()
+{
+    if (m_Engine)
+        return m_Engine->type();
+    else
+        return EngineType_None;
 }
 

@@ -14,14 +14,14 @@ MagicEngine::MagicEngine()
     m_fbo = NULL;
     m_sfactor = GL_SRC_ALPHA;
     m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-    m_saveImage = NULL;
+    m_ioCallBack = NULL;
 }
 
 MagicEngine::MagicEngine( BaseShader* shader, Texture* srcTex )
 {
     m_sfactor = GL_SRC_ALPHA;
     m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-    m_saveImage = NULL;
+    m_ioCallBack = NULL;
     initEngine(shader, srcTex);
 }
 
@@ -81,8 +81,8 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
     char* pixels = new char[size];
 
     glReadPixels(0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-    if(m_saveImage){
-        m_saveImage->SaveImage((char*)pixels, m_width, m_height, 0);
+    if(m_ioCallBack){
+        m_ioCallBack->SaveImage((char*)pixels, m_width, m_height, 0);
     }
     delete[] pixels;
     checkGlError("SavePicture");
@@ -94,7 +94,7 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
 void MagicEngine::tackPicture( const char* data, long len )
 {
     Texture tex;
-    tex.uploadImageData((unsigned char*)data, len);
+    tex.loadFromMemory((unsigned char*)data, len);
     tackPicture(&tex);
 }
 
@@ -148,9 +148,9 @@ void MagicEngine::draw( Texture *texutre /*= NULL*/ )
     onDraw(texutre);
 }
 
-void MagicEngine::SetSaveImageCallBack( SaveImageCallBack* val )
+void MagicEngine::SetIOCallBack( IOCallBack* val )
 {
-    m_saveImage = val;
+    m_ioCallBack = val;
 }
 
 void MagicEngine::resizeCoord()

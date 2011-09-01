@@ -6,6 +6,7 @@
 #include "ui/touchevent.h"
 #include "glutils/framebufferobject.h"
 #include "glutils/sprite.h"
+#include "utils/resmanage.h"
 
 //宽高比为2:3
 const static int MESH_WIDTH = 50;
@@ -14,11 +15,6 @@ const static int MESH_HEIGHT = MESH_WIDTH*3/2;
 //MagicEngine 坐标系大小
 const static int g_CoordWidth = 480;
 const static int g_CoordHeight = 640;
-
-class SaveImageCallBack{
-public:
-    virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
-};
 
 class SizeChange{
 public:
@@ -51,7 +47,7 @@ protected:
     GLenum          m_dfactor;
 
     FramebufferObject*      m_fbo;
-    SaveImageCallBack*      m_saveImage;
+    IOCallBack*      m_ioCallBack;
 
 protected:
     void draw(Texture *texutre = NULL);
@@ -77,7 +73,7 @@ public:
     void tackPicture(const char* imagePath);
     void tackPicture(const char* data, int w, int h, int format);
 
-    void SetSaveImageCallBack(SaveImageCallBack* val);
+    void SetIOCallBack(IOCallBack* val);
 
     GLfloat getWidth(){return m_width;}
     GLfloat getHeigth(){return m_height;} 

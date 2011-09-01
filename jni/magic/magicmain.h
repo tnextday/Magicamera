@@ -48,7 +48,7 @@ class MagicMain : public ButtonClick, TouchEvent{
 
     int             m_inputFortmat;
 
-    SaveImageCallBack*      m_saveImage;
+    IOCallBack*      m_ioCallBack;
 
 public:
     MagicMain();
@@ -63,18 +63,23 @@ public:
     void setPreviewImage(const char* data, long len);
     void setPreviewImage(const char* imgPath);
 
+    void takePicture();
+
+    EngineType getEngineType();
+    void switchEngine(EngineType type);
+
     virtual bool onTouchDown(float x, float y);
     virtual bool onTouchDrag(float x, float y);
     virtual bool onTouchUp(float x, float y);
 
-    void setCallBack(SaveImageCallBack* callback);
+    void setIOCallBack(IOCallBack* callback);
 
     void setResPath(const char* path){::setResPath(path);};
     void loadRes();
 
 private:
     void initEngine(EngineType type = EngineType_Mesh);
-    void switchEngine(EngineType type);
+    
     virtual void onButtonClick( Button *btn );
 
     void update(float delta);
