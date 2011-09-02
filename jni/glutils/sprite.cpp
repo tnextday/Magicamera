@@ -44,6 +44,13 @@ Sprite::Sprite( const char* texPath )
     loadFromFile(texPath);
 }
 
+Sprite::Sprite( const unsigned char* buffer, uint32_t size )
+:TextureRegion()
+{
+    m_dirty = true;
+    m_action = NULL;
+    loadFromMemory(buffer, size);
+}
 Sprite::~Sprite()
 {
     if (m_action && m_action->AutoFree){

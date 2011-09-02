@@ -25,7 +25,7 @@ public:
     virtual ~CoverEngine(void);
 
     void setCover(const char* coverPath);
-
+    void setCover( const unsigned char* buffer, uint32_t size );
     void showCover();
     void hideCover();
 

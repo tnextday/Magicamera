@@ -41,6 +41,7 @@ protected:
 public:
     Sprite();
     Sprite(const char* texPath);
+    Sprite(const unsigned char* buffer, uint32_t size);
     Sprite(TextureRegion *textureRegion);
     Sprite(Texture *tex);
     Sprite(Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight);

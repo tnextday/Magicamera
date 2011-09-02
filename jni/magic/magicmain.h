@@ -5,7 +5,6 @@
 #include "glutils/glyuvtexture.h"
 #include "glutils/baseshader.h"
 #include "glutils/sprite.h"
-#include "ui/button.h"
 #include "ui/touchevent.h"
 #include "meshengine.h"
 #include "utils/resmanage.h"
@@ -24,7 +23,7 @@ enum Status {
 };
 
 
-class MagicMain : public ButtonClick, TouchEvent{
+class MagicMain : public TouchEvent{
     BaseShader      m_shader;
     Status          m_status;
 
@@ -33,9 +32,6 @@ class MagicMain : public ButtonClick, TouchEvent{
 
     MagicEngine*    m_Engine;
     EngineType      m_nextEngine;
-    Button*         m_btn_func;
-    Button*         m_btn_switch;
-    Button*         m_BtnSave;
 
     Sprite          m_magicSprite;
     GLfloat         m_magicSpriteY;
@@ -68,19 +64,17 @@ public:
     EngineType getEngineType();
     void switchEngine(EngineType type);
 
+    void setCover(const unsigned char* buffer, uint32_t size);
+    void restoreMesh();
+
     virtual bool onTouchDown(float x, float y);
     virtual bool onTouchDrag(float x, float y);
     virtual bool onTouchUp(float x, float y);
 
     void setIOCallBack(IOCallBack* callback);
 
-    void setResPath(const char* path){::setResPath(path);};
-    void loadRes();
-
 private:
     void initEngine(EngineType type = EngineType_Mesh);
-    
-    virtual void onButtonClick( Button *btn );
 
     void update(float delta);
 

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
 #include "magicmain.h"
 #include "glutils/glutils.h"
 #include "utils/mathelpers.h"
@@ -43,9 +42,6 @@ MagicMain::~MagicMain()
     SafeDelete(m_SrcTex);
     SafeDelete(m_glYUVTex);
     SafeDelete(m_Engine);
-    SafeDelete(m_BtnSave);
-    SafeDelete(m_btn_switch);
-    SafeDelete(m_btn_func);
 }
 
 
@@ -141,9 +137,6 @@ bool MagicMain::onTouchDown( float x, float y )
     y = y*m_CoordHeight/m_ScreenHeight;
     //LOGI("onTouchDown: %.1f, %.1f\n", x, y);
     y = m_CoordHeight - y;
-    m_btn_func->onTouchDown(x, y);
-    m_btn_switch->onTouchDown(x, y);
-    m_BtnSave->onTouchDown(x, y);
     m_Engine->onTouchDown(x, y - m_magicSpriteY);
     return true;
 }
@@ -164,9 +157,7 @@ bool MagicMain::onTouchUp( float x, float y )
     y = y*m_CoordHeight/m_ScreenHeight;
     //LOGI("onTouchUp: %.1f, %.1f\n", x, y);
     y = m_CoordHeight - y;
-    m_btn_func->onTouchUp(x, y);
-    m_BtnSave->onTouchUp(x, y);
-    m_btn_switch->onTouchUp(x, y);
+
     m_Engine->onTouchUp(x, y - m_magicSpriteY);
     return true;
 }
@@ -190,9 +181,6 @@ void MagicMain::drawUI()
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    m_btn_func->draw(&m_shader);
-    m_BtnSave->draw(&m_shader);
-    m_btn_switch->draw(&m_shader);
 }
 
 void MagicMain::drawImage()
@@ -210,48 +198,6 @@ void MagicMain::drawImage()
 //     glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void MagicMain::loadRes()
-{
-    char path[_MAX_PATH];
-    char path1[_MAX_PATH];
-
-    m_BtnSave = new Button(makeResPath(path, "ui/btn_bg.png"), 
-                           makeResPath(path1, "ui/btn_img_save.png"), 1);
-    m_BtnSave->setOnClick(this);
-    m_BtnSave->setPostion(m_BtnSave->getRegionWidth()/2, m_BtnSave->getRegionHeight()/2);
-
-    m_btn_switch = new Button(makeResPath(path, "ui/btn_bg.png"), NULL, 2);
-    m_btn_switch->setOnClick(this);
-    m_btn_switch->setPostion(m_CoordWidth/2, m_btn_switch->getRegionHeight()/2);
-
-    m_btn_func = new Button(makeResPath(path, "ui/btn_bg.png"), NULL, 3);
-    m_btn_func->setOnClick(this);
-    m_btn_func->setPostion(m_CoordWidth -  m_btn_func->getRegionWidth()/2, m_btn_func->getRegionHeight()/2);
-}
-
-void MagicMain::onButtonClick( Button *btn )
-{
-    char resName[30];
-    char path[_MAX_PATH];
-    if (btn->tag() == 3) {
-        if (m_Engine->type() == EngineType_Mesh)
-            ((MeshEngine *)m_Engine)->restore();
-        else if (m_Engine->type() == EngineType_Cover){
-            srand(time(0));
-            snprintf(resName, 30-1, "frame/%02d.png", rand()%4+1);
-            ((CoverEngine *)m_Engine)->setCover(makeResPath(path, resName));
-        }
-    } else if (btn->tag() == 2){
-        EngineType type;
-        if (m_Engine->type() == EngineType_Mesh)
-            type = EngineType_Cover;
-        else 
-            type = EngineType_Mesh;
-        switchEngine(type);
-    } else if (btn->tag() == 1)
-        m_Engine->tackPicture();
-    LOGI("onButtonClick : %d\n", btn->tag());
-}
 
 void MagicMain::setPreviewImage( const char* data, long len )
 {
@@ -314,5 +260,20 @@ EngineType MagicMain::getEngineType()
         return m_Engine->type();
     else
         return EngineType_None;
+}
+
+
+void MagicMain::setCover( const unsigned char* buffer, uint32_t size )
+{
+    if (m_Engine->type() != EngineType_Cover)
+        return;
+    ((CoverEngine *)m_Engine)->setCover(buffer, size);
+}
+
+void MagicMain::restoreMesh()
+{
+    if (m_Engine->type() != EngineType_Mesh)
+        return;
+    ((MeshEngine *)m_Engine)->restore();
 }
 

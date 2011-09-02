@@ -8,6 +8,7 @@
 #include <GLES2/gl2ext.h>
 #include "magic/magicmain.h"
 #include "main.h"
+#include <time.h>
 
 
 //--------------------------------------------------------------------------------------
@@ -104,9 +105,11 @@ void WinCallBack::swapRedAndBlue( char* buffer, int w, int h )
     }
 }
 
-char* WinCallBack::readRes( const char* resname, long* size )
+unsigned char* WinCallBack::readRes( const char* resname, uint32_t &size )
 {
-    return NULL;
+    char path[_MAX_PATH];
+    _snprintf(path, _MAX_PATH-1, "%s\\%s", g_resPath, resname);
+    return (unsigned char*)readFile(path, (uint32_t)size);
 }
 
 
@@ -222,7 +225,7 @@ int eglCreateSurface(HWND hWin, EGLSurface &eglSurface, EGLDisplay &eglDisplay)
     return TRUE;
 }
 
-char* readFile(char* filename, int &size, char* preBuffer /*= NULL*/){
+char* readFile(char* filename, uint32_t &size, char* preBuffer /*= NULL*/){
     TCHAR szPath[_MAX_PATH];
     if (filename[1] != ':'){
         GetCurrentDirectory(_MAX_PATH, szPath);
@@ -256,7 +259,7 @@ __end:
     return buffer;
 }
 
-int szFile;
+uint32_t szFile;
 static char preBuffer[g_PicWidth*g_PicHeigth*12/8];
 
 void updateNV21(){
@@ -347,7 +350,17 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
             }
             g_MagicMain.switchEngine(type);
         } else if(lParam == (int)hbtn_change_func){
-
+            if (g_MagicMain.getEngineType() == EngineType_Mesh){
+                g_MagicMain.restoreMesh();
+            }else{
+                srand(time(0));
+                char path[_MAX_PATH];
+                _snprintf(path, _MAX_PATH-1, "%s\\frame/%.2d.png", g_resPath, rand()%18+1);
+                uint32_t size;
+                unsigned char* buffer = (unsigned char*)readFile(path, size);
+                g_MagicMain.setCover(buffer, size);
+                delete [] buffer;
+            }
         } 
         return 0;
     }
@@ -438,9 +451,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         return FALSE;
 
     g_MagicMain.setupGraphics(g_nglWinWidth, g_nglWinHeight);
-    g_MagicMain.setResPath(g_resPath);
     g_MagicMain.setIOCallBack(&g_WinCallBack);
-    g_MagicMain.loadRes();
 
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);

@@ -69,8 +69,10 @@ void CoverEngine::start()
 {
     m_toFinish = false;
     m_finished = false;
-    char path[_MAX_PATH];
-    setCover(makeResPath(path, "frame/01.png"));
+    uint32_t size;
+    unsigned char* date = m_ioCallBack->readRes("frame/01.png", size);
+    setCover(date, size);
+    delete [] date;
 }
 
 bool CoverEngine::isFinished()
@@ -127,7 +129,23 @@ void CoverEngine::hideCover()
     m_bVisible = false;
 }
 
-void CoverEngine::setCover( const char* coverPath )
+void CoverEngine::setCover( const unsigned char* buffer, uint32_t size )
+{
+    if (!buffer || !size){
+        return;
+    }
+    if (m_cover && m_bVisible){
+        SafeDelete(m_nextCover);
+        m_nextCover = new Sprite(buffer, size);
+        hideCover();
+    }else{
+        SafeDelete(m_cover);
+        m_cover = new Sprite(buffer, size);
+        showCover();
+    }
+}
+
+void CoverEngine::setCover( const char* coverPath)
 {
     if (!coverPath){
         return;
