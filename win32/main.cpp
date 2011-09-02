@@ -396,8 +396,13 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
             NULL, NULL, hInstance, NULL );
         if( NULL == hWindow )
             return FALSE;
+
+        hGlWin = CreateWindowEx(0,"Static","",WS_CHILD | WS_VISIBLE,
+            0,0, g_nglWinWidth,g_nglWinHeight,
+            hWindow ,0,hInstance, NULL);
+
         HWND hToolBar = CreateWindowEx(0,"MagicWindow","",WS_CHILD | WS_VISIBLE,
-            0,0,g_nWindowWidth,g_nToolBarHeight,
+            0,g_nglWinHeight,g_nWindowWidth,g_nToolBarHeight,
             hWindow ,0,hInstance, NULL);
         
         hbtn_save = CreateWindowEx(0,"Button","±£ ´æ",WS_CHILD | WS_VISIBLE,
@@ -423,9 +428,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         SendMessage(hbtn_change_engine, WM_SETFONT, (WPARAM)MyFont_Hanlde, 0);
         SendMessage(hbtn_change_func, WM_SETFONT, (WPARAM)MyFont_Hanlde, 0);
 
-        hGlWin = CreateWindowEx(0,"Static","",WS_CHILD | WS_VISIBLE,
-            0,g_nToolBarHeight, g_nglWinWidth,g_nglWinHeight,
-            hWindow ,0,hInstance, NULL);
+
         ShowWindow( hWindow, SW_SHOW );
         SetForegroundWindow( hWindow );
         SetFocus( hWindow );

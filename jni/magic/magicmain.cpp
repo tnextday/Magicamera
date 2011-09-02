@@ -9,6 +9,8 @@
 #include "utils/mathelpers.h"
 #include "coverengine.h"
 
+const float MaxDeltaTime = 1.0/25.0;
+
 static const char gVertexShader[] = 
         "uniform mat4 uMVPMatrix;\n"
         "attribute vec4 aPosition;\n"
@@ -89,6 +91,9 @@ bool MagicMain::setupGraphics(int w, int h) {
 
 void MagicMain::renderFrame( float delta )
 {
+    if (delta > MaxDeltaTime)
+        delta = MaxDeltaTime;
+    
     update(delta);
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
     m_Engine->drawImage();
