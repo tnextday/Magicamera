@@ -65,6 +65,7 @@ void MagicEngine::setSize( int w, int h )
 }
 
 
+//保存图片会以输入图片的大小为准，但是会切割成处理后大小的比例
 void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
 {
     int ow = m_width, oh = m_height;

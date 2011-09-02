@@ -166,8 +166,8 @@ void CoverEngine::resizeCoord()
 {
     if (m_cover)
     {
-        m_coordWidth = g_CoordWidth;
-        m_coordHeight = m_coordWidth*m_cover->getRegionHeight()/m_cover->getRegionWidth();
+        m_coordWidth = m_cover->getRegionWidth();
+        m_coordHeight = m_cover->getRegionHeight();
         setSize(m_coordWidth, m_coordHeight);
         //ÖØÖÃ×ø±êÏµ
         matIdentity(m_vp);

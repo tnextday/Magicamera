@@ -239,6 +239,7 @@ void MagicMain::OnOutputSizeChange()
 {
     m_magicSprite.setTexture(m_Engine->getOutTexture());
     m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
+    m_magicSprite.setScale((float)g_CoordWidth/m_magicSprite.getRegionWidth());
     m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
 }
 
