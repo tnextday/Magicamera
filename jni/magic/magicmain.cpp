@@ -31,7 +31,6 @@ static const char gFragmentShader[] =
 MagicMain::MagicMain()
 {
     m_glYUVTex = NULL;
-    m_SrcTex = NULL;
     m_ioCallBack = NULL;
     m_Engine = NULL;
     m_nextEngine = EngineType_None;
@@ -39,7 +38,6 @@ MagicMain::MagicMain()
 
 MagicMain::~MagicMain()
 {
-    SafeDelete(m_SrcTex);
     SafeDelete(m_glYUVTex);
     SafeDelete(m_Engine);
 }
@@ -52,10 +50,6 @@ bool MagicMain::setupGraphics(int w, int h) {
     printGLString("Extensions", GL_EXTENSIONS);
 
     LOGI("setupGraphics(%d, %d)\n", w, h);
-    m_ScreenWidth = w;
-    m_ScreenHeight = h;
-    m_CoordWidth = g_CoordWidth;
-    m_CoordHeight = g_CoordWidth*h/w;
 
     m_shader.makeProgram(gVertexShader, gFragmentShader);
     if (!m_shader.isCompiled()){
@@ -72,14 +66,16 @@ bool MagicMain::setupGraphics(int w, int h) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_SrcTex = new Texture();
-    m_SrcTex->init();
+    m_SrcTex.init();
 
     printGLColorSpaceInfo();
-    matIdentity(m_vp);
-    matOrtho(m_vp, 0, m_CoordWidth, 0, m_CoordHeight, -10, 10);
+    resize(w, h);
+
     glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
+
+    m_adjust.init();
+    m_adjust.setOnOutputChange(this);
 
     return true;
 }
@@ -99,7 +95,7 @@ void MagicMain::renderFrame( float delta )
     m_shader.setViewProj(m_vp);
 
     drawImage();
-    drawUI();
+
     checkGlError("renderFrame");
 }
 
@@ -107,26 +103,27 @@ void MagicMain::updatePreviewData( char* data, long len )
 {
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
         //m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
-        m_glYUVTex->uploadYUVTexImage(data, m_SrcTex->getWidth(), m_SrcTex->getHeight());
+        m_glYUVTex->uploadYUVTexImage(data, m_SrcTex.getWidth(), m_SrcTex.getHeight());
     }else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
-        m_SrcTex->uploadImageData((GLubyte*)data);
+        m_SrcTex.uploadImageData((GLubyte*)data);
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
-        m_SrcTex->loadFromMemory((unsigned char*)data, len);
+        m_SrcTex.loadFromMemory((unsigned char*)data, len);
     }
+    m_adjust.drawImage();
 }
 
 void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 {
-    m_SrcTex->setSize(w, h);
+    m_SrcTex.setSize(w, h);
     m_inputFortmat = imageFormat;
-
+    m_adjust.setInputTexture(&m_SrcTex);
     initEngine();
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        m_glYUVTex = new glYUVTexture(w, h, m_SrcTex->getTexHandle());
+        m_glYUVTex = new glYUVTexture(w, h, m_SrcTex.getTexHandle());
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
-        m_SrcTex->setImageFormat(GDX2D_FORMAT_RGB565);
+        m_SrcTex.setImageFormat(GDX2D_FORMAT_RGB565);
 
 }
 
@@ -177,21 +174,11 @@ void MagicMain::update( float delta )
     }
 }
 
-void MagicMain::drawUI()
-{
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
 void MagicMain::drawImage()
 {
     m_shader.use();
-    m_SrcTex->bind();
+    m_SrcTex.bind();
     glDisable(GL_BLEND);
-    //TODO 由于还没有大小变化回调，所以会每次都重新回调
-    OnOutputSizeChange();
-    //TODO 为什么需要flip？？？？！！！！
-    m_magicSprite.flip(false, true);
 
     m_magicSprite.draw(&m_shader);
 //     glEnable(GL_BLEND);
@@ -201,16 +188,18 @@ void MagicMain::drawImage()
 
 void MagicMain::setPreviewImage( const char* data, long len )
 {
-    m_SrcTex->loadFromMemory((unsigned char*)data, len);
+    m_SrcTex.loadFromMemory((unsigned char*)data, len);
+    m_adjust.setInputTexture(&m_SrcTex);
+    m_adjust.drawImage();
     initEngine();
 }
 
 void MagicMain::setPreviewImage( const char* imgPath )
 {
-    LOGI("setPreviewImage : %s\n", imgPath);
-    m_SrcTex->loadFromFile(imgPath);
+    m_SrcTex.loadFromFile(imgPath);
+    m_adjust.setInputTexture(&m_SrcTex);
+    m_adjust.drawImage();
     initEngine();
-    LOGI("setPreviewImage end: %s\n", imgPath);
 }
 
 void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
@@ -226,21 +215,11 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
         m_Engine = (MagicEngine* )(new MeshEngine());
     }
 
-    m_Engine->initEngine(&m_shader, m_SrcTex);
-    OnOutputSizeChange();
-    //TODO 为什么需要flip？？？？！！！！
-    m_magicSprite.flip(false, true);
+    m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
+    m_Engine->initEngine(&m_shader, m_adjust.getOutTexture());
     m_Engine->start();
     LOGI("initEngine end [%d]\n", (int)type);
-}
-
-void MagicMain::OnOutputSizeChange()
-{
-    m_magicSprite.setTexture(m_Engine->getOutTexture());
-    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
-    m_magicSprite.setScale((float)g_CoordWidth/m_magicSprite.getRegionWidth());
-    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
 }
 
 void MagicMain::switchEngine(EngineType type)
@@ -278,3 +257,36 @@ void MagicMain::restoreMesh()
     ((MeshEngine *)m_Engine)->restore();
 }
 
+void MagicMain::rotate90Input( bool clockwise /*= true*/)
+{
+    //TODO Fix：貌似坐标系有点问题！~ 上下翻转的
+    m_adjust.rotate90(!clockwise);
+    m_adjust.drawImage();
+}
+
+void MagicMain::onEngineOutChange( Texture *tex )
+{
+    m_magicSprite.setTexture(tex);
+    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
+    m_magicSprite.setScale((float)g_CoordWidth/m_magicSprite.getRegionWidth());
+    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    //TODO 为什么需要flip？？？？！！！！
+    m_magicSprite.flip(false, true);
+}
+
+void MagicMain::onAdjustChange( Texture *tex )
+{
+    if (m_Engine)
+        m_Engine->setInputTexture(tex);
+}
+
+void MagicMain::resize( int w, int h )
+{
+    LOGI("Resize(%d, %d)\n", w, h);
+    m_ScreenWidth = w;
+    m_ScreenHeight = h;
+    m_CoordWidth = g_CoordWidth;
+    m_CoordHeight = g_CoordWidth*h/w;
+    matIdentity(m_vp);
+    matOrtho(m_vp, 0, m_CoordWidth, 0, m_CoordHeight, -10, 10);
+}

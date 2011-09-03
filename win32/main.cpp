@@ -23,7 +23,7 @@ const UINT32 g_nWindowWidth   = 480;
 const UINT32 g_nWindowHeight  = g_nglWinHeight + g_nToolBarHeight;
 const UINT32 g_PicWidth = 640;
 const UINT32 g_PicHeigth = 480;
-const bool g_useCamera = false;
+const bool g_useCamera = true;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_testImagePath = "assets\\test.jpg";
@@ -39,6 +39,8 @@ HWND hbtn_save;
 HWND hbtn_change_engine;
 HWND hbtn_change_effect;
 HWND hbtn_change_func;
+HWND hbtn_rotate_left;
+HWND hbtn_rotate_right;
 
 
 bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
@@ -361,7 +363,11 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
                 g_MagicMain.setCover(buffer, size);
                 delete [] buffer;
             }
-        } 
+        } else if(lParam == (int)hbtn_rotate_left){
+            g_MagicMain.rotate90Input(false);
+        } else if(lParam == (int)hbtn_rotate_right){
+            g_MagicMain.rotate90Input(true);
+        }
         return 0;
     }
 
@@ -417,18 +423,36 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
         HWND hToolBar = CreateWindowEx(0,"MagicWindow","",WS_CHILD | WS_VISIBLE,
             0,g_nglWinHeight,g_nWindowWidth,g_nToolBarHeight,
             hWindow ,0,hInstance, NULL);
-        
+
+        int btnTop = 2;
+        int btnWidth = 60;
+        int btnHeigth = 30;
+        int btnSpace = 5;
+        int left = 1;
         hbtn_save = CreateWindowEx(0,"Button","保 存",WS_CHILD | WS_VISIBLE,
-            1,2,80,30,
+            left,btnTop,btnWidth,btnHeigth,
             hToolBar ,0,hInstance, NULL);
+        left += btnWidth + btnSpace;
         hbtn_change_effect = CreateWindowEx(0,"Button","切换特效",WS_CHILD | WS_VISIBLE,
-            90*1,2,80,30,
+            left,btnTop,btnWidth,btnHeigth,
             hToolBar ,0,hInstance, NULL);
+        left += btnWidth + btnSpace;
         hbtn_change_engine = CreateWindowEx(0,"Button","切换引擎",WS_CHILD | WS_VISIBLE,
-            90*2,2,80,30,
+            left,btnTop,btnWidth,btnHeigth,
             hToolBar ,0,hInstance, NULL);
+        left += btnWidth + btnSpace;
         hbtn_change_func = CreateWindowEx(0,"Button","复  原",WS_CHILD | WS_VISIBLE,
-            90*3,2,80,30,
+            left,btnTop,btnWidth,btnHeigth,
+            hToolBar ,0,hInstance, NULL);
+
+        btnWidth = 40;
+        left = g_nWindowWidth - 41;
+        hbtn_rotate_right = CreateWindowEx(0,"Button",">>",WS_CHILD | WS_VISIBLE,
+            left,btnTop,btnWidth,btnHeigth,
+            hToolBar ,0,hInstance, NULL);
+        left -= btnWidth + btnSpace;
+        hbtn_rotate_left = CreateWindowEx(0,"Button","<<",WS_CHILD | WS_VISIBLE,
+            left,btnTop,btnWidth,btnHeigth,
             hToolBar ,0,hInstance, NULL);
         //--创建字体--
         HFONT MyFont_Hanlde = CreateFont(-14, 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET,
@@ -456,6 +480,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
         g_MagicMain.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_NV21);
+        g_MagicMain.rotate90Input();
     }else{
         g_MagicMain.setPreviewImage(g_testImagePath);
     }

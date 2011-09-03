@@ -2,6 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
+const int TRU1 = 0;
+const int TRV1 = 1;
+const int TRU2 = 2;
+const int TRV2 = 3;
+const int TRU3 = 4;
+const int TRV3 = 5;
+const int TRU4 = 6;
+const int TRV4 = 7;
+
 TextureRegion::TextureRegion(void)
 {
     m_texture = NULL;
@@ -47,21 +56,22 @@ void TextureRegion::setRegion( float u, float v, float u2, float v2 )
     m_u2 = u2;
     m_v2 = v2;
 
-    m_texCoords[U1] = u;
-    m_texCoords[V1] = v2;
+    m_texCoords[TRU1] = u;
+    m_texCoords[TRV1] = v2;
 
-    m_texCoords[U2] = u;
-    m_texCoords[V2] = v;
+    m_texCoords[TRU2] = u;
+    m_texCoords[TRV2] = v;
 
-    m_texCoords[U3] = u2;
-    m_texCoords[V3] = v;
+    m_texCoords[TRU3] = u2;
+    m_texCoords[TRV3] = v;
 
-    m_texCoords[U4] = u2;
-    m_texCoords[V4] = v2;
+    m_texCoords[TRU4] = u2;
+    m_texCoords[TRV4] = v2;
 }
 
 void TextureRegion::setRegion( Texture *tex )
 {
+    if (!tex) return;
     m_texture = tex;
     setRegion(0, 0, tex->getWidth(), tex->getHeight());
 }
@@ -100,19 +110,19 @@ void TextureRegion::flip( bool x, bool y )
         float temp = m_u;
         m_u = m_u2;
         m_u2 = temp;
-        m_texCoords[U1] = m_u;
-        m_texCoords[U2] = m_u;
-        m_texCoords[U3] = m_u2;
-        m_texCoords[U4] = m_u2;
+        m_texCoords[TRU1] = m_u;
+        m_texCoords[TRU2] = m_u;
+        m_texCoords[TRU3] = m_u2;
+        m_texCoords[TRU4] = m_u2;
     }
     if (y) {
         float temp = m_v;
         m_v = m_v2;
         m_v2 = temp;
-        m_texCoords[V1] = m_v2;
-        m_texCoords[V2] = m_v;
-        m_texCoords[V3] = m_v;
-        m_texCoords[V4] = m_v2;
+        m_texCoords[TRV1] = m_v2;
+        m_texCoords[TRV2] = m_v;
+        m_texCoords[TRV3] = m_v;
+        m_texCoords[TRV4] = m_v2;
     }
 }
 
@@ -166,29 +176,29 @@ TextureRegion* TextureRegion::split( Texture *tex, int rows, int cols)
 void TextureRegion::rotate90( bool clockwise )
 {
     if (clockwise) {
-        float temp = m_texCoords[V1];
-        m_texCoords[V1] = m_texCoords[V4];
-        m_texCoords[V4] = m_texCoords[V3];
-        m_texCoords[V3] = m_texCoords[V2];
-        m_texCoords[V2] = temp;
+        float temp = m_texCoords[TRV1];
+        m_texCoords[TRV1] = m_texCoords[TRV4];
+        m_texCoords[TRV4] = m_texCoords[TRV3];
+        m_texCoords[TRV3] = m_texCoords[TRV2];
+        m_texCoords[TRV2] = temp;
 
-        temp = m_texCoords[U1];
-        m_texCoords[U1] = m_texCoords[U4];
-        m_texCoords[U4] = m_texCoords[U3];
-        m_texCoords[U3] = m_texCoords[U2];
-        m_texCoords[U2] = temp;
+        temp = m_texCoords[TRU1];
+        m_texCoords[TRU1] = m_texCoords[TRU4];
+        m_texCoords[TRU4] = m_texCoords[TRU3];
+        m_texCoords[TRU3] = m_texCoords[TRU2];
+        m_texCoords[TRU2] = temp;
     } else {
-        float temp = m_texCoords[V1];
-        m_texCoords[V1] = m_texCoords[V2];
-        m_texCoords[V2] = m_texCoords[V3];
-        m_texCoords[V3] = m_texCoords[V4];
-        m_texCoords[V4] = temp;
+        float temp = m_texCoords[TRV1];
+        m_texCoords[TRV1] = m_texCoords[TRV2];
+        m_texCoords[TRV2] = m_texCoords[TRV3];
+        m_texCoords[TRV3] = m_texCoords[TRV4];
+        m_texCoords[TRV4] = temp;
 
-        temp = m_texCoords[U1];
-        m_texCoords[U1] = m_texCoords[U2];
-        m_texCoords[U2] = m_texCoords[U3];
-        m_texCoords[U3] = m_texCoords[U4];
-        m_texCoords[U4] = temp;
+        temp = m_texCoords[TRU1];
+        m_texCoords[TRU1] = m_texCoords[TRU2];
+        m_texCoords[TRU2] = m_texCoords[TRU3];
+        m_texCoords[TRU3] = m_texCoords[TRU4];
+        m_texCoords[TRU4] = temp;
     }
 }
 

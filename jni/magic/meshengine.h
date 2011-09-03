@@ -85,5 +85,7 @@ public:
     virtual bool isFinished();
 
     virtual EngineType type();
+
+    virtual void resizeCoord();
 };
 #endif // _meshengine_h_

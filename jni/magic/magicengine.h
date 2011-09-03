@@ -1,12 +1,11 @@
 #pragma once
-
 #include <GLES2/gl2.h>
 #include "glutils/texture.h"
 #include "glutils/baseshader.h"
 #include "ui/touchevent.h"
 #include "glutils/framebufferobject.h"
 #include "glutils/sprite.h"
-#include "utils/resmanage.h"
+#include "interface.h"
 
 //宽高比为2:3
 const static int MESH_WIDTH = 50;
@@ -16,11 +15,6 @@ const static int MESH_HEIGHT = MESH_WIDTH*3/2;
 const static int g_CoordWidth = 480;
 const static int g_CoordHeight = 640;
 
-class SizeChange{
-public:
-    virtual void onSizeChange(float w, float h) = 0;
-};
-
 
 enum EngineType {
     EngineType_None,
@@ -29,8 +23,12 @@ enum EngineType {
     EngineType_Kaleidoscope
 };
 
+class EngineOutChange{
+public:
+    virtual void onEngineOutChange(Texture *tex) = 0;
+};
 
-class MagicEngine : public TouchEvent {
+class MagicEngine : public TouchEvent{
 protected:
     BaseShader*     m_shader;
 
@@ -49,6 +47,8 @@ protected:
     FramebufferObject*      m_fbo;
     IOCallBack*      m_ioCallBack;
 
+    EngineOutChange* m_onOutputResize;
+
 protected:
     void draw(Texture *texutre = NULL);
     virtual bool onInit() = 0;
@@ -56,15 +56,15 @@ protected:
     virtual void resizeCoord();
 public:
     MagicEngine();
-    MagicEngine(BaseShader* shader, Texture* srcTex);
+    MagicEngine(BaseShader* shader, Texture* SrcTex);
     //声明为虚函数，确保子类可以被释放
     virtual	~MagicEngine();
 
-    bool initEngine(BaseShader* shader, Texture* srcTex) ;
+    bool initEngine(BaseShader* shader, Texture* SrcTex) ;
     void setSize(int w, int h);
     void setShader(BaseShader* val) { m_shader = val; }
-    void setInputTexture(Texture* val) { m_InTex = val; }
-    Texture* getOutTexture();
+    virtual void setInputTexture(Texture* val);
+    Texture* getOutTexture() {return &m_OutTex;};
 
     void drawImage();
 
@@ -74,6 +74,7 @@ public:
     void tackPicture(const char* data, int w, int h, int format);
 
     void SetIOCallBack(IOCallBack* val);
+    void setOutputResize(EngineOutChange* val) { m_onOutputResize = val; }
 
     GLfloat getWidth(){return m_width;}
     GLfloat getHeigth(){return m_height;} 
@@ -89,5 +90,4 @@ public:
     virtual bool onTouchDown( float x, float y );
     virtual bool onTouchDrag( float x, float y );
     virtual bool onTouchUp( float x, float y );
-
 };

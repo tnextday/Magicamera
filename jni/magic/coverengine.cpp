@@ -6,11 +6,9 @@
 #include "utils/mathelpers.h"
 #include <time.h>
 #include <stdlib.h>
-#include "utils/resmanage.h"
 
 CoverEngine::CoverEngine(void)
 {
-    m_img = NULL;
     m_cover = NULL;
     m_nextCover = NULL;
     m_toFinish = false;
@@ -20,14 +18,13 @@ CoverEngine::CoverEngine(void)
 
 CoverEngine::~CoverEngine(void)
 {
-    SafeDelete(m_img);
     SafeDelete(m_cover);
     SafeDelete(m_nextCover);
 }
 
 void CoverEngine::update( GLfloat delta )
 {
-    if (m_img) m_img->update(delta);
+    m_img.update(delta);
     if (!m_cover) return;
     m_cover->update(delta);
     if (m_cover->isActionDone()){
@@ -60,7 +57,7 @@ void CoverEngine::finish()
 
 bool CoverEngine::onInit()
 {
-    m_img = new Sprite(m_InTex);
+//    m_img.setTexture(m_InTex);
 //    m_conver = new Sprite();
     return true;
 }
@@ -87,7 +84,9 @@ bool CoverEngine::onTouchDrag( float x, float y )
 
 void CoverEngine::onDraw( Texture *texutre )
 {
-    m_img->draw(m_shader, texutre);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    m_img.draw(m_shader, texutre);
     if(m_cover){
         m_cover->draw(m_shader);
     }
@@ -172,12 +171,22 @@ void CoverEngine::resizeCoord()
         //重置坐标系
         matIdentity(m_vp);
         matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
+        if (m_onOutputResize){
+            m_onOutputResize->onEngineOutChange(&m_OutTex);
+        }
     }else{
         MagicEngine::resizeCoord();
     }
-    if (m_img){
+
+    if (m_cover){
         //居中显示
-        m_img->setScale((float)m_cover->getRegionWidth()/(float)m_img->getRegionWidth());
-        m_img->setPostion(m_coordWidth/2, m_coordHeight/2);
+        m_img.setScale((float)m_cover->getRegionWidth()/(float)m_img.getRegionWidth());
+        m_img.setPostion(m_coordWidth/2, m_coordHeight/2);
     }
+}
+
+void CoverEngine::setInputTexture( Texture* val )
+{
+    m_img.setTexture(val);
+    MagicEngine::setInputTexture(val);
 }

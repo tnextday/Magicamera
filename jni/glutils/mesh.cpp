@@ -126,7 +126,7 @@ void Mesh::draw(BaseShader *shader)
 
 void Mesh::init( int width, int height )
 {
-    if (mW == width && mH == height) return;
+    //if (mW == width && mH == height) return;
     m_bGenBuffers = false;
     mW = width;
     mH = height;

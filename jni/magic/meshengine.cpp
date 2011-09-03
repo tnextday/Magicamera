@@ -131,7 +131,7 @@ void MeshEngine::onDraw(Texture *texutre)
 
 bool MeshEngine::onInit()
 {
-    init(m_width, m_height);
+//    init(m_width, m_height);
     return true;
 }
 
@@ -196,8 +196,12 @@ void MeshEngine::generateMesh( int w, int h )
 
 void MeshEngine::init( int width, int height )
 {
+    if (mW == width && mH == height) return;
     generateMesh(width, height);
     m_BufferCount = mW*mH*VertexSize;
+    SafeDeleteArray(m_DestVertex);
+    SafeDeleteArray(m_DeltaVertex);
+    SafeDeleteArray(m_OrgiVertex);
     m_DestVertex = new GLfloat[m_BufferCount];
     m_DeltaVertex = new GLfloat[m_BufferCount];
     m_OrgiVertex = new GLfloat[m_BufferCount];
@@ -209,4 +213,10 @@ void MeshEngine::init( int width, int height )
 EngineType MeshEngine::type()
 {
     return EngineType_Mesh;
+}
+
+void MeshEngine::resizeCoord()
+{
+    MagicEngine::resizeCoord();
+    init(m_width, m_height);
 }

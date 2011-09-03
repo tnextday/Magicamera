@@ -206,6 +206,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\jni\magic\imageadjust.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\magic\imageadjust.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\magic\interface.h"
+				>
+			</File>
+			<File
 				RelativePath="..\jni\magic\magicengine.cpp"
 				>
 			</File>
@@ -283,10 +295,6 @@
 			</File>
 			<File
 				RelativePath="..\jni\utils\mathelpers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\utils\resmanage.h"
 				>
 			</File>
 		</Filter>
@@ -423,7 +431,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Res"
+			Name="res"
 			>
 			<File
 				RelativePath=".\Magicamera.manifest"

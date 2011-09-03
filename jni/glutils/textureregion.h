@@ -4,15 +4,6 @@
 
 #include "texture.h"
 
-const int U1 = 0;
-const int V1 = 1;
-const int U2 = 2;
-const int V2 = 3;
-const int U3 = 4;
-const int V3 = 5;
-const int U4 = 6;
-const int V4 = 7;
-
 class TextureRegion
 {
 protected:

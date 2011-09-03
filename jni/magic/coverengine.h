@@ -6,7 +6,7 @@ class CoverEngine :
     public MagicEngine
 {
 private:
-    Sprite  *m_img;
+    Sprite  m_img;
     Sprite  *m_cover;
     Sprite  *m_nextCover;
 
@@ -43,6 +43,7 @@ public:
 
     virtual EngineType type();
 
+    virtual void setInputTexture( Texture* val );
     
     
 

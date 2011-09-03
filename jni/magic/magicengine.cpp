@@ -15,14 +15,17 @@ MagicEngine::MagicEngine()
     m_sfactor = GL_SRC_ALPHA;
     m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
     m_ioCallBack = NULL;
+    m_onOutputResize = NULL;
 }
 
-MagicEngine::MagicEngine( BaseShader* shader, Texture* srcTex )
+MagicEngine::MagicEngine( BaseShader* shader, Texture* SrcTex)
 {
     m_sfactor = GL_SRC_ALPHA;
     m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
     m_ioCallBack = NULL;
-    initEngine(shader, srcTex);
+    m_onOutputResize = NULL;
+    m_InTex = NULL;
+    initEngine(shader, SrcTex);
 }
 
 MagicEngine::~MagicEngine()
@@ -30,14 +33,10 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_fbo);
 }
 
-bool MagicEngine::initEngine(BaseShader* shader, Texture* srcTex) {
+bool MagicEngine::initEngine(BaseShader* shader, Texture* SrcTex) {
     m_OutTex.init();
-
-    setInputTexture(srcTex);
     setShader(shader);
-    
-    resizeCoord();
-
+    setInputTexture(SrcTex);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
 
@@ -117,10 +116,6 @@ void MagicEngine::setBlendFunc( GLenum sfactor, GLenum dfactor )
     m_dfactor = dfactor;
 }
 
-Texture* MagicEngine::getOutTexture()
-{
-    return &m_OutTex;
-}
 
 bool MagicEngine::onTouchDown( float x, float y )
 {
@@ -162,5 +157,15 @@ void MagicEngine::resizeCoord()
     //重置坐标系
     matIdentity(m_vp);
     matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
+    if (m_onOutputResize){
+        m_onOutputResize->onEngineOutChange(&m_OutTex);
+    }
+}
+
+void MagicEngine::setInputTexture( Texture* val )
+{
+    if (!val) return;
+    m_InTex = val;
+    resizeCoord();
 }
 

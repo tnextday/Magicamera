@@ -298,11 +298,13 @@ void Sprite::setSize( GLfloat w, GLfloat h )
 
 void Sprite::setTexture( Texture *tex )
 {
+    if (!tex) return;
     setTexture(tex, 0,0,tex->getWidth(), tex->getHeight());
 }
 
 void Sprite::setTexture( Texture *tex, int srcX, int srcY, int srcWidth, int srcHeight )
 {
+    if (!tex) return;
     m_texture = tex;
     init(srcX, srcY, srcWidth, srcHeight);
 }

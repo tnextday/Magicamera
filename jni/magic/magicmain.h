@@ -7,7 +7,7 @@
 #include "glutils/sprite.h"
 #include "ui/touchevent.h"
 #include "meshengine.h"
-#include "utils/resmanage.h"
+#include "imageadjust.h"
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
@@ -23,11 +23,11 @@ enum Status {
 };
 
 
-class MagicMain : public TouchEvent{
+class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
     BaseShader      m_shader;
     Status          m_status;
 
-    Texture*        m_SrcTex;
+    Texture         m_SrcTex;
     glYUVTexture*   m_glYUVTex;
 
     MagicEngine*    m_Engine;
@@ -44,7 +44,9 @@ class MagicMain : public TouchEvent{
 
     int             m_inputFortmat;
 
-    IOCallBack*      m_ioCallBack;
+    IOCallBack*     m_ioCallBack;
+
+    ImageAdjust     m_adjust;
 
 public:
     MagicMain();
@@ -67,19 +69,25 @@ public:
     void setCover(const unsigned char* buffer, uint32_t size);
     void restoreMesh();
 
+    void rotate90Input(bool clockwise = true);
+
     virtual bool onTouchDown(float x, float y);
     virtual bool onTouchDrag(float x, float y);
     virtual bool onTouchUp(float x, float y);
 
     void setIOCallBack(IOCallBack* callback);
 
+    //Engine输出texture大小改变
+    virtual void onEngineOutChange( Texture *tex );
+
+    void resize(int w, int h);
+
 private:
     void initEngine(EngineType type = EngineType_Mesh);
 
     void update(float delta);
 
-    void drawUI();
     void drawImage();
 
-    virtual void OnOutputSizeChange();
+    virtual void onAdjustChange( Texture *tex );
 };
