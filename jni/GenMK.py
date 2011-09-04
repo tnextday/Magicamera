@@ -27,9 +27,10 @@ def writeMK(dir, srcs):
     fh = open(fName, "w")
     fh.seek(0, 2)
     fh.writelines("LOCAL_PATH:= $(call my-dir)\n")
+    fh.writelines("cmd-strip = $(TOOLCHAIN_PREFIX)strip --strip-debug -x $1\n")
     fh.writelines("include $(CLEAR_VARS)\n")
     fh.writelines("LOCAL_MODULE := "+g_module_name+"\n")
-    fh.writelines("LOCAL_CFLAGS := -Werror\n")
+    fh.writelines("LOCAL_CFLAGS := -Werror -fvisibility=hidden\n")
     fh.writelines("\n")
     fh.writelines("LOCAL_SRC_FILES :=")
     for src in srcs:

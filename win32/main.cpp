@@ -23,7 +23,7 @@ const UINT32 g_nWindowWidth   = 480;
 const UINT32 g_nWindowHeight  = g_nglWinHeight + g_nToolBarHeight;
 const UINT32 g_PicWidth = 640;
 const UINT32 g_PicHeigth = 480;
-const bool g_useCamera = false;
+const bool g_useCamera = true;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_testImagePath = "assets\\test3.jpg";
@@ -357,7 +357,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
             }else{
                 srand(time(0));
                 char path[_MAX_PATH];
-                _snprintf(path, _MAX_PATH-1, "%s\\frame/%.2d.png", g_resPath, rand()%18+1);
+                _snprintf(path, _MAX_PATH-1, "%s\\frames/%.2d.png", g_resPath, rand()%18);
                 uint32_t size;
                 unsigned char* buffer = (unsigned char*)readFile(path, size);
                 g_MagicMain.setCover(buffer, size);

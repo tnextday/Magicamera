@@ -290,7 +290,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\jni\magic\fileutils.h"
+				RelativePath="..\jni\utils\fileutils.h"
 				>
 			</File>
 			<File

@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -20,11 +22,13 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
-public class MagicActivity extends Activity implements Camera.PreviewCallback, EngineRender.InitCompleteListener, EngineRender.CameraBufferReleaseListener {
+public class MagicActivity extends Activity implements Camera.PreviewCallback, View.OnClickListener,
+        EngineRender.InitCompleteListener, EngineRender.CameraBufferReleaseListener {
     GLSurfaceView m_SurfaceView;
     EngineRender  m_engine;
     public static int SDK_Version = Build.VERSION.SDK_INT;
@@ -38,6 +42,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
     int m_previewWidth = 480;
 
     public String PicPath = null;
+
 
 
 
@@ -58,6 +63,12 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
             return;
         }
         setContentView(R.layout.magic);
+        ((Button)findViewById(R.id.btn_back)).setOnClickListener(this);
+        ((Button)findViewById(R.id.btn_set_cover)).setOnClickListener(this);
+        ((Button)findViewById(R.id.btn_engine)).setOnClickListener(this);
+        ((Button)findViewById(R.id.btn_restore)).setOnClickListener(this);
+        ((Button)findViewById(R.id.btn_take)).setOnClickListener(this);
+
         m_SurfaceView = (GLSurfaceView)findViewById(R.id.glsurfaceview);
         if (SDK_Version >= 8) {
             m_SurfaceView.setEGLContextClientVersion(2);
@@ -80,6 +91,37 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
 
         if (picPath != null && new File(picPath).exists()){
             PicPath = picPath;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_back){
+            finish();
+        } else if (view.getId() == R.id.btn_engine){
+            if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_MESH){
+                MagicJNILib.switchEngine(MagicJNILib.ENGINE_TYPE_COVER);
+            }else if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_COVER){
+                MagicJNILib.switchEngine(MagicJNILib.ENGINE_TYPE_MESH);
+            }
+        } else if (view.getId() == R.id.btn_set_cover){
+            Random random = new Random();
+            try {
+                InputStream is = getResources().getAssets().open(String.format("frames/%02d.png", random.nextInt(17)));
+                int size = is.available();
+                if (size > 0){
+                    byte[] buffer = new byte[size];
+                    is.read(buffer);
+                    MagicJNILib.setCover(buffer);
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (view.getId() == R.id.btn_restore){
+            MagicJNILib.restoreMesh();
+        } else if (view.getId() == R.id.btn_take){
+            MagicJNILib.takePicture();
         }
     }
 
@@ -120,22 +162,6 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
     }
 
 
-    int frameCount = 0;
-
-    public void Save2File(byte[] bytes) {
-        File texFile = new File(String.format("/sdcard/nv21/%03d.nv21", frameCount));
-        frameCount++;
-        try {
-            texFile.createNewFile();
-            FileOutputStream fos = new FileOutputStream(texFile);
-            fos.write(bytes);
-            fos.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-    }
 
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
@@ -203,6 +229,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, E
                 m_Camera.setPreviewCallback(this);
             }
             m_engine.setPreviewInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
+            MagicJNILib.rotate90Input(true);
             m_Camera.startPreview();
     }
 

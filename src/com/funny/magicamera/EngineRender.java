@@ -54,7 +54,7 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
             bytes = m_buffers.poll();
         }
         if (bytes != null) {
-            MagicJNILib.uploadPreviewData(bytes, bytes.length);
+            MagicJNILib.uploadPreviewData(bytes);
             if (m_onCameraBufferRelease != null){
                 m_onCameraBufferRelease.onCameraBufferRelease(bytes);
             }
@@ -70,9 +70,9 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         Log.d(MagicActivity.TAG, String.format("onSurfaceChanged: %d,%d", width, height));
-
         MagicJNILib.init(width, height);
-        MagicJNILib.setResPath("/sdcard/magic".getBytes());
+
+
         if (m_onInitComplete != null){
             m_onInitComplete.onEngineInitCompleted(this);
         }

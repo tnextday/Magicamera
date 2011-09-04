@@ -34,7 +34,6 @@ ImageAdjust::ImageAdjust(void)
     m_bNeedAdjust = false;
     m_bXfliped = false;
     m_bYfliped = false;
-    reset();
 }
 
 ImageAdjust::~ImageAdjust(void)
@@ -145,7 +144,9 @@ bool ImageAdjust::init()
         LOGE("Could not create program.\n");
         return false;
     }
+    reset();
     m_OutTex.init();
+    m_OutTex.setSize(1, 1);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
     return true;

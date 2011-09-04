@@ -204,7 +204,6 @@ void MagicMain::setPreviewImage( const char* imgPath )
 
 void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
 {
-    LOGI("initEngine : %d\n", (int)type);
     SafeDelete(m_Engine);
     switch (type)
     {
@@ -219,7 +218,6 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     m_Engine->SetIOCallBack(m_ioCallBack);
     m_Engine->initEngine(&m_shader, m_adjust.getOutTexture());
     m_Engine->start();
-    LOGI("initEngine end [%d]\n", (int)type);
 }
 
 void MagicMain::switchEngine(EngineType type)

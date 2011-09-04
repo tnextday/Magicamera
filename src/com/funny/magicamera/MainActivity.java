@@ -25,7 +25,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.main);
         findViewById(R.id.btn_pic).setOnClickListener(this);
         findViewById(R.id.btn_cam).setOnClickListener(this);
-        MagicJNILib.APK_PATH = getAPKPath();
+        MagicJNILib.setApkPath(getAPKPath().getBytes());
     }
 
     @Override

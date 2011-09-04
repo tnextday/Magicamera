@@ -17,28 +17,33 @@ public class MagicJNILib {
     public static final int IMAGE_FORMAT_NV21 = 0x00000011;
 //    public static final int IMAGE_FORMAT_RGBA8888   = 4;
 
-    public static String APK_PATH = "";
+    public static final int ENGINE_TYPE_NONE = 0;
+    public static final int ENGINE_TYPE_MESH = 1;
+    public static final int ENGINE_TYPE_COVER = 2;
+    //public static final int ENGINE_TYPE_Kaleidoscope = 3;
+
 
     /**
      * @param width  the current view width
      * @param height the current view height
      */
     public static native void init(int width, int height);
-
+    public static native void resize(int width, int height);
     public static native void step(float delta);
-
     public static native void setPreviewDataInfo(int width, int height, int format);
-
     public static native void uploadPreviewData(byte[] buffer);
-
     public static native boolean onTouchDown(float x, float y);
-
     public static native boolean onTouchDrag(float x, float y);
-
     public static native boolean onTouchUp(float x, float y);
-
-    
     public static native void setPreviewImage(byte[] path);
+    public static native void rotate90Input(boolean clockwise);
+    public static native void setApkPath(byte[] apkPath);
+    public static native void takePicture();
+    public static native void setCover(byte[] buffer);
+    public static native void restoreMesh();
+    public static native void switchEngine(int type);
+    public static native int getEngineType();
+
 
     public static void playSound(int soundId) {
         Log.i("libmagic", String.format("playSound callback: %d", soundId));

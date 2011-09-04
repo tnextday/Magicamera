@@ -2,7 +2,7 @@
 #include <string.h>
 
 MagicMain g_MagicMain;
-AndroidFileUtils g_CallBack;
+AndroidFileUtils g_androidFileUtils;
 
 static JavaVM *g_JavaVM = 0;
 static jclass classOfMagicJNILib = 0;
@@ -22,7 +22,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
     g_MagicMain.setupGraphics(width, height);
-    g_MagicMain.setIOCallBack(&g_CallBack);
+    g_MagicMain.setIOCallBack(&g_androidFileUtils);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
@@ -95,7 +95,16 @@ bool AndroidFileUtils::SaveImage( char* buffer, int w, int h, int format )
 
 unsigned char* AndroidFileUtils::readRes( const char* resname, uint32_t& size )
 {
-    return NULL;
+    char respath[MAX_PATH] = {0};
+    strcpy(respath, "assets/");
+    strncat(respath, resname, MAX_PATH - 8 );
+    return getFileDataFromZip(ApkPath, respath, size);
+}
+
+void AndroidFileUtils::setApkPath( const char * path )
+{
+    ApkPath[MAX_PATH-1] = '\0';
+    strncpy(ApkPath, path, MAX_PATH - 1);
 }
 
 void CheckException(const char* methond )
@@ -149,4 +158,43 @@ void playMusic(int musicId){
     env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, musicId); 
 }
 
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setApkPath( JNIEnv * env, jobject obj, jbyteArray path )
+{
+    char* strPath;
+    strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
+    g_androidFileUtils.setApkPath(strPath);
+    env->ReleasePrimitiveArrayCritical(path, strPath, false);
+}
 
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture( JNIEnv * env, jobject obj )
+{
+    g_MagicMain.takePicture();
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover( JNIEnv * env, jobject obj, jbyteArray buffer )
+{
+    unsigned char* p_buffer = (unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
+    long len = env->GetArrayLength(buffer);
+    g_MagicMain.setCover(p_buffer, len);
+    env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_switchEngine( JNIEnv * env, jobject obj, jint type )
+{
+    g_MagicMain.switchEngine((EngineType)type);
+}
+
+JNIEXPORT jint JNICALL Java_com_funny_magicamera_MagicJNILib_getEngineType( JNIEnv * env, jobject obj )
+{
+    return (int)g_MagicMain.getEngineType();
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh( JNIEnv * env, jobject obj )
+{
+    g_MagicMain.restoreMesh();
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_resize( JNIEnv * env, jobject obj, jint width, jint height )
+{
+    g_MagicMain.resize(width, height);
+}
