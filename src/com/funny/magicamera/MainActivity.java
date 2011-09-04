@@ -2,10 +2,13 @@ package com.funny.magicamera;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -22,6 +25,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.main);
         findViewById(R.id.btn_pic).setOnClickListener(this);
         findViewById(R.id.btn_cam).setOnClickListener(this);
+        MagicJNILib.APK_PATH = getAPKPath();
     }
 
     @Override
@@ -64,5 +68,21 @@ public class MainActivity extends Activity implements View.OnClickListener{
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    public String getAPKPath(){
+        String packageName = getApplication().getPackageName();
+        String apkFilePath = "";
+        ApplicationInfo appInfo = null;
+        PackageManager packMgmr = getApplication().getPackageManager();
+        try {
+            appInfo = packMgmr.getApplicationInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unable to locate assets, aborting...");
+        }
+        apkFilePath = appInfo.sourceDir;
+        Log.i("apk path", apkFilePath);
+        return  apkFilePath;
     }
 }

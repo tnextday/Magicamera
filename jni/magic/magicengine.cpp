@@ -144,7 +144,7 @@ void MagicEngine::draw( Texture *texutre /*= NULL*/ )
     onDraw(texutre);
 }
 
-void MagicEngine::SetIOCallBack( IOCallBack* val )
+void MagicEngine::SetIOCallBack( FileUtils* val )
 {
     m_ioCallBack = val;
 }

@@ -17,6 +17,8 @@ public class MagicJNILib {
     public static final int IMAGE_FORMAT_NV21 = 0x00000011;
 //    public static final int IMAGE_FORMAT_RGBA8888   = 4;
 
+    public static String APK_PATH = "";
+
     /**
      * @param width  the current view width
      * @param height the current view height
@@ -27,7 +29,7 @@ public class MagicJNILib {
 
     public static native void setPreviewDataInfo(int width, int height, int format);
 
-    public static native void uploadPreviewData(byte[] buffer, long len);
+    public static native void uploadPreviewData(byte[] buffer);
 
     public static native boolean onTouchDown(float x, float y);
 
@@ -35,7 +37,6 @@ public class MagicJNILib {
 
     public static native boolean onTouchUp(float x, float y);
 
-    public static native void setResPath(byte[] path);
     
     public static native void setPreviewImage(byte[] path);
 

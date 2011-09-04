@@ -214,10 +214,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\jni\magic\interface.h"
-				>
-			</File>
-			<File
 				RelativePath="..\jni\magic\magicengine.cpp"
 				>
 			</File>
@@ -287,6 +283,14 @@
 			</File>
 			<File
 				RelativePath="..\jni\utils\fastmath.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\utils\fileutils.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\magic\fileutils.h"
 				>
 			</File>
 			<File
@@ -439,6 +443,26 @@
 			</File>
 			<File
 				RelativePath=".\Magicamera.rc"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="zip"
+			>
+			<File
+				RelativePath="..\jni\zip\ioapi.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\zip\ioapi.h"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\zip\unzip.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\jni\zip\unzip.h"
 				>
 			</File>
 		</Filter>

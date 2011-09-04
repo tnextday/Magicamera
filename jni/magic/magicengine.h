@@ -5,7 +5,7 @@
 #include "ui/touchevent.h"
 #include "glutils/framebufferobject.h"
 #include "glutils/sprite.h"
-#include "interface.h"
+#include "utils/fileutils.h"
 
 //¿í¸ß±ÈÎª2:3
 const static int MESH_WIDTH = 50;
@@ -45,7 +45,7 @@ protected:
     GLenum          m_dfactor;
 
     FramebufferObject*      m_fbo;
-    IOCallBack*      m_ioCallBack;
+    FileUtils*      m_ioCallBack;
 
     EngineOutChange* m_onOutputResize;
 
@@ -73,7 +73,7 @@ public:
     void tackPicture(const char* imagePath);
     void tackPicture(const char* data, int w, int h, int format);
 
-    void SetIOCallBack(IOCallBack* val);
+    void SetIOCallBack(FileUtils* val);
     void setOutputResize(EngineOutChange* val) { m_onOutputResize = val; }
 
     GLfloat getWidth(){return m_width;}

@@ -22,6 +22,7 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	glutils/texture.cpp \
 	glutils/textureregion.cpp \
 	magic/coverengine.cpp \
+	magic/imageadjust.cpp \
 	magic/magicengine.cpp \
 	magic/magicmain.cpp \
 	magic/meshengine.cpp \
@@ -29,8 +30,10 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	utils/arraylist.cpp \
 	utils/easing.cpp \
 	utils/fastmath.cpp \
+	utils/fileutils.cpp \
 	utils/mathelpers.cpp \
-	utils/resmanage.cpp \
+	zip/ioapi.cpp \
+	zip/unzip.cpp \
 
-LOCAL_LDLIBS    := -llog -lGLESv2 -lz
+LOCAL_LDLIBS    := -llog -lGLESv2 -lz 
 include $(BUILD_SHARED_LIBRARY)

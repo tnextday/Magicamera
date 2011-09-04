@@ -2,7 +2,7 @@
 #include <string.h>
 
 MagicMain g_MagicMain;
-AndroidCallBack g_CallBack;
+AndroidFileUtils g_CallBack;
 
 static JavaVM *g_JavaVM = 0;
 static jclass classOfMagicJNILib = 0;
@@ -22,7 +22,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
 {
     g_MagicMain.setupGraphics(width, height);
-    g_MagicMain.setCallBack(&g_CallBack);
+    g_MagicMain.setIOCallBack(&g_CallBack);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
@@ -34,8 +34,9 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(
 	g_MagicMain.setPreviewDataInfo(width, height, format);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer, jlong len){
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer){
 	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
+    long len = env->GetArrayLength(buffer);
 	g_MagicMain.updatePreviewData(p_buffer, len);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }
@@ -63,17 +64,14 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIE
 	return g_MagicMain.onTouchUp(x, y);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setResPath( JNIEnv * env, jobject obj, jbyteArray path )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90Input( JNIEnv * env, jobject obj, jboolean clockwise )
 {
-    char* strPath;
-    strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
-    g_MagicMain.setResPath(strPath);
-    g_MagicMain.loadRes();
-    env->ReleasePrimitiveArrayCritical(path, strPath, false);
+    g_MagicMain.rotate90Input(clockwise);
 }
 
 
-bool AndroidCallBack::SaveImage( char* buffer, int w, int h, int format )
+
+bool AndroidFileUtils::SaveImage( char* buffer, int w, int h, int format )
 {
     jmethodID jniMethod_saveImage = getMethodID("saveImage","([BIII)Z");
     if (!jniMethod_saveImage){
@@ -91,7 +89,13 @@ bool AndroidCallBack::SaveImage( char* buffer, int w, int h, int format )
     }
     env->ReleasePrimitiveArrayCritical(jBuffer, p_buffer, 0);
     bool result = env->CallStaticBooleanMethod(classOfMagicJNILib, jniMethod_saveImage, jBuffer, w, h, format);
+    env->ReleaseByteArrayElements(jBuffer, p_buffer, szBuffer);
     return result;
+}
+
+unsigned char* AndroidFileUtils::readRes( const char* resname, uint32_t& size )
+{
+    return NULL;
 }
 
 void CheckException(const char* methond )
@@ -144,6 +148,5 @@ void playMusic(int musicId){
     jmethodID jniMethod = getMethodID("playMusic","(I)V");
     env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, musicId); 
 }
-
 
 

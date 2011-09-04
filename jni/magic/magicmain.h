@@ -44,7 +44,7 @@ class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
 
     int             m_inputFortmat;
 
-    IOCallBack*     m_ioCallBack;
+    FileUtils*     m_ioCallBack;
 
     ImageAdjust     m_adjust;
 
@@ -75,7 +75,7 @@ public:
     virtual bool onTouchDrag(float x, float y);
     virtual bool onTouchUp(float x, float y);
 
-    void setIOCallBack(IOCallBack* callback);
+    void setIOCallBack(FileUtils* callback);
 
     //Engine输出texture大小改变
     virtual void onEngineOutChange( Texture *tex );

@@ -1,5 +1,5 @@
 #include "imageadjust.h"
-
+#include <string.h>
 
 static const char g_Adjust_VShader[] = 
     "attribute vec4 aPosition;\n"

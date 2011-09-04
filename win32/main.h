@@ -6,7 +6,7 @@ void updateNV21();
 LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 float FrmGetTime();
 
-class WinCallBack: public IOCallBack{
+class WinCallBack: public FileUtils{
 public:
     void swapRedAndBlue(char* buffer, int w, int h);
     virtual bool SaveImage( char* buffer, int w, int h, int format );

@@ -2,7 +2,7 @@
 #include "glutils/texture.h"
 #include "glutils/baseshader.h"
 #include "glutils/framebufferobject.h"
-#include "interface.h"
+#include "utils/fileutils.h"
 
 class AdjustChange{
 public:
