@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -25,7 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.main);
         findViewById(R.id.btn_pic).setOnClickListener(this);
         findViewById(R.id.btn_cam).setOnClickListener(this);
-        MagicJNILib.setApkPath(getAPKPath().getBytes());
+        MagicJNILib.setApkPath(getAPKPath());
     }
 
     @Override
@@ -82,7 +81,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
             throw new RuntimeException("Unable to locate assets, aborting...");
         }
         apkFilePath = appInfo.sourceDir;
-        Log.i("apk path", apkFilePath);
         return  apkFilePath;
     }
 }

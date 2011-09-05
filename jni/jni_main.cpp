@@ -7,67 +7,6 @@ AndroidFileUtils g_androidFileUtils;
 static JavaVM *g_JavaVM = 0;
 static jclass classOfMagicJNILib = 0;
 JNIEnv *env = 0;
-/*
-* Set some test stuff up.
-*
-* Returns the JNI version on success, -1 on failure.
-*/
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
-{
-    g_JavaVM = vm;
-    return JNI_VERSION_1_4;
-}
-
-
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
-{
-    g_MagicMain.setupGraphics(width, height);
-    g_MagicMain.setIOCallBack(&g_androidFileUtils);
-}
-
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
-{
-	g_MagicMain.renderFrame(delta);
-}
-
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format){
-	g_MagicMain.setPreviewDataInfo(width, height, format);
-}
-
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer){
-	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
-    long len = env->GetArrayLength(buffer);
-	g_MagicMain.updatePreviewData(p_buffer, len);
-	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
-}
-
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JNIEnv * env, jobject obj, jbyteArray path )
-{
-    char* strPath;
-    strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
-    g_MagicMain.setPreviewImage(strPath);
-    env->ReleasePrimitiveArrayCritical(path, strPath, false);
-}
-
-JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown( JNIEnv * env, jobject obj, jfloat x, jfloat y )
-{
-	return g_MagicMain.onTouchDown(x, y);
-}
-
-JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag( JNIEnv * env, jobject obj, jfloat x, jfloat y )
-{
-	return g_MagicMain.onTouchDrag(x, y);
-}
-
-JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIEnv * env, jobject obj, jfloat x, jfloat y )
-{
-	return g_MagicMain.onTouchUp(x, y);
-}
-
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90Input( JNIEnv * env, jobject obj, jboolean clockwise )
-{
-    g_MagicMain.rotate90Input(clockwise);
-}
 
 
 
@@ -98,6 +37,7 @@ unsigned char* AndroidFileUtils::readRes( const char* resname, uint32_t& size )
     char respath[MAX_PATH] = {0};
     strcpy(respath, "assets/");
     strncat(respath, resname, MAX_PATH - 8 );
+    LOGI("LoadRes:[%s][%s]", ApkPath, respath);
     return getFileDataFromZip(ApkPath, respath, size);
 }
 
@@ -158,12 +98,86 @@ void playMusic(int musicId){
     env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, musicId); 
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setApkPath( JNIEnv * env, jobject obj, jbyteArray path )
+/*
+* Set some test stuff up.
+*
+* Returns the JNI version on success, -1 on failure.
+*/
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 {
-    char* strPath;
-    strPath = (char*) env->GetPrimitiveArrayCritical(path, false);
-    g_androidFileUtils.setApkPath(strPath);
-    env->ReleasePrimitiveArrayCritical(path, strPath, false);
+    g_JavaVM = vm;
+    return JNI_VERSION_1_4;
+}
+
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
+{
+    g_MagicMain.setupGraphics(width, height);
+    g_MagicMain.setIOCallBack(&g_androidFileUtils);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
+{
+	g_MagicMain.renderFrame(delta);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format)
+{
+	g_MagicMain.setPreviewDataInfo(width, height, format);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer)
+{
+	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
+    long len = env->GetArrayLength(buffer);
+	g_MagicMain.updatePreviewData(p_buffer, len);
+	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JNIEnv * env, jobject obj, jstring path )
+{
+    const char* str;
+    jboolean isCopy;
+    str = env->GetStringUTFChars(path, &isCopy);
+    if (isCopy) {
+        //pthread_mutex_lock(&g_lock);
+        g_MagicMain.setPreviewImage(str);
+        //pthread_mutex_unlock(&g_lock);
+        env->ReleaseStringUTFChars(path, str);
+    }
+}
+
+JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown( JNIEnv * env, jobject obj, jfloat x, jfloat y )
+{
+	return g_MagicMain.onTouchDown(x, y);
+}
+
+JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag( JNIEnv * env, jobject obj, jfloat x, jfloat y )
+{
+	return g_MagicMain.onTouchDrag(x, y);
+}
+
+JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIEnv * env, jobject obj, jfloat x, jfloat y )
+{
+	return g_MagicMain.onTouchUp(x, y);
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90Input( JNIEnv * env, jobject obj, jboolean clockwise )
+{
+    g_MagicMain.rotate90Input(clockwise);
+}
+
+
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setApkPath( JNIEnv * env, jobject obj, jstring apkPath )
+{
+    const char* str;
+    jboolean isCopy;
+    str = env->GetStringUTFChars(apkPath, &isCopy);
+    if (isCopy) {
+        g_androidFileUtils.setApkPath(str);
+        env->ReleaseStringUTFChars(apkPath, str);
+    }
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture( JNIEnv * env, jobject obj )

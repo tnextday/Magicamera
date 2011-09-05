@@ -112,7 +112,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
                 if (size > 0){
                     byte[] buffer = new byte[size];
                     is.read(buffer);
-                    MagicJNILib.setCover(buffer);
+                    m_SurfaceView.queueEvent(new SetCover(buffer));
                     is.close();
                 }
             } catch (IOException e) {
@@ -121,6 +121,25 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         } else if (view.getId() == R.id.btn_restore){
             MagicJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take){
+            m_SurfaceView.queueEvent(new TakePicture());
+        }
+    }
+
+    private class SetCover implements Runnable {
+        byte[] buffer;
+        private SetCover(byte[] buffer) {
+            this.buffer = buffer;
+        }
+
+        @Override
+        public void run() {
+            MagicJNILib.setCover(buffer);
+        }
+    }
+
+    private class TakePicture implements Runnable{
+        @Override
+        public void run() {
             MagicJNILib.takePicture();
         }
     }

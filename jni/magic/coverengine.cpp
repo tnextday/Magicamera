@@ -67,7 +67,7 @@ void CoverEngine::start()
     m_toFinish = false;
     m_finished = false;
     uint32_t size;
-    unsigned char* date = m_ioCallBack->readRes("frame/01.png", size);
+    unsigned char* date = m_ioCallBack->readRes("frames/01.png", size);
     setCover(date, size);
     delete [] date;
 }
@@ -133,6 +133,7 @@ void CoverEngine::setCover( const unsigned char* buffer, uint32_t size )
     if (!buffer || !size){
         return;
     }
+    
     if (m_cover && m_bVisible){
         SafeDelete(m_nextCover);
         m_nextCover = new Sprite(buffer, size);

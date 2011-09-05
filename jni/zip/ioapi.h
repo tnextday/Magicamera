@@ -21,7 +21,6 @@
 #ifndef _ZLIBIOAPI64_H
 #define _ZLIBIOAPI64_H
 
-
 #if (!defined(_WIN32)) && (!defined(WIN32))
 
   // Linux needs this to support file operation on files larger then 4+GB
@@ -44,6 +43,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "zlib.h"
+
+#define USE_FILE32API
 
 #if defined(USE_FILE32API)
 #define fopen64 fopen
@@ -95,6 +96,11 @@ typedef unsigned long long int ZPOS64_T;
 #endif
 #endif
 
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 #define ZLIB_FILEFUNC_SEEK_CUR (1)
@@ -189,5 +195,8 @@ void    fill_zlib_filefunc64_32_def_from_filefunc32(zlib_filefunc64_32_def* p_fi
 #define ZTELL64(filefunc,filestream)            (call_ztell64((&(filefunc)),(filestream)))
 #define ZSEEK64(filefunc,filestream,pos,mode)   (call_zseek64((&(filefunc)),(filestream),(pos),(mode)))
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

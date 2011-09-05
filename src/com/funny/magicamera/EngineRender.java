@@ -72,12 +72,11 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         Log.d(MagicActivity.TAG, String.format("onSurfaceChanged: %d,%d", width, height));
         MagicJNILib.init(width, height);
 
-
         if (m_onInitComplete != null){
             m_onInitComplete.onEngineInitCompleted(this);
         }
         if (!"".equals(m_imagePath)){
-            MagicJNILib.setPreviewImage(m_imagePath.getBytes());
+            MagicJNILib.setPreviewImage(m_imagePath);
         }
         this.lastFrameTime = System.nanoTime();
     }
@@ -157,7 +156,7 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         public void log() {
             frames++;
             if (System.nanoTime() - startTime > 1000000000) {
-                Log.i("Magic FPS", "fps: " + frames);
+                //Log.i("Magic FPS", "fps: " + frames);
                 frames = 0;
                 startTime = System.nanoTime();
             }

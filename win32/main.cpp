@@ -109,9 +109,9 @@ void WinCallBack::swapRedAndBlue( char* buffer, int w, int h )
 
 unsigned char* WinCallBack::readRes( const char* resname, uint32_t &size )
 {
-    char path[_MAX_PATH];
-    _snprintf(path, _MAX_PATH-1, "%s\\%s", g_resPath, resname);
-    return (unsigned char*)readFile(path, (uint32_t)size);
+     char path[_MAX_PATH];
+     _snprintf(path, _MAX_PATH-1, "%s\\%s", g_resPath, resname);
+     return (unsigned char*)readFile(path, (uint32_t)size);
 }
 
 
