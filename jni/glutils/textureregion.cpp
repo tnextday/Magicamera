@@ -44,6 +44,7 @@ TextureRegion::~TextureRegion(void)
 
 void TextureRegion::setRegion( int x, int y, int width, int height )
 {
+    if (!m_texture) return;
     float invTexWidth = 1.0 / m_texture->getWidth();
     float invTexHeight = 1.0 / m_texture->getHeight();
     setRegion(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
@@ -82,11 +83,13 @@ Texture* TextureRegion::getTexture()
 }
 
 int TextureRegion::getRegionX () {
-        return (int)(m_u * m_texture->getWidth());
+    if (!m_texture) return 1;
+    return (int)(m_u * m_texture->getWidth());
 }
 
 int TextureRegion::getRegionY () {
-        return (int)(m_v * m_texture->getHeight());
+    if (!m_texture) return 1;
+    return (int)(m_v * m_texture->getHeight());
 }
 
 
@@ -94,14 +97,16 @@ int TextureRegion::getRegionY () {
  * Returns the region's width. May be negative if the texture region is flipped horizontally.
  */
 int TextureRegion::getRegionWidth () {
-        return (int)((m_u2 - m_u) * m_texture->getWidth());
+    if (!m_texture) return 1;
+    return (int)((m_u2 - m_u) * m_texture->getWidth());
 }
 
 /**
  * Returns the region's height. May be negative if the texture region is flipped horizontally.
  */
 int TextureRegion::getRegionHeight () {
-        return (int)((m_v2 - m_v) * m_texture->getHeight());
+    if (!m_texture) return 1;
+    return (int)((m_v2 - m_v) * m_texture->getHeight());
 }
 
 void TextureRegion::flip( bool x, bool y )
@@ -205,6 +210,7 @@ void TextureRegion::rotate90( bool clockwise )
 
 void TextureRegion::setTextureRegion( TextureRegion *tr )
 {
+    if (!tr) return;
     m_texture = tr->m_texture;
     m_u = tr->m_u;
     m_v = tr->m_v;

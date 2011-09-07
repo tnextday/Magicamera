@@ -30,7 +30,8 @@ public:
 extern "C" {
 #endif
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_init(JNIEnv * env, jobject obj,  jint width, jint height);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_create(JNIEnv * env, jobject obj);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_destory(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_resize(JNIEnv * env, jobject obj,  jint width, jint height);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_switchEngine(JNIEnv * env, jobject obj, jint type);

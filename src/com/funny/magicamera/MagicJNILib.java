@@ -23,11 +23,8 @@ public class MagicJNILib {
     //public static final int ENGINE_TYPE_Kaleidoscope = 3;
 
 
-    /**
-     * @param width  the current view width
-     * @param height the current view height
-     */
-    public static native void init(int width, int height);
+    public static native void create();
+    public static native void destory();
     public static native void resize(int width, int height);
     public static native void step(float delta);
     public static native void setPreviewDataInfo(int width, int height, int format);

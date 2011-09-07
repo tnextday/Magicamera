@@ -52,7 +52,7 @@ public:
     MagicMain();
     ~MagicMain();
 
-    bool setupGraphics(int w, int h) ;
+    bool setupGraphics() ;
     void renderFrame(float delta);
 
     void updatePreviewData(char* data, long len);

@@ -43,13 +43,11 @@ MagicMain::~MagicMain()
 }
 
 
-bool MagicMain::setupGraphics(int w, int h) {
+bool MagicMain::setupGraphics() {
     printGLString("Version", GL_VERSION);
     printGLString("Vendor", GL_VENDOR);
     printGLString("Renderer", GL_RENDERER);
     printGLString("Extensions", GL_EXTENSIONS);
-
-    LOGI("setupGraphics(%d, %d)\n", w, h);
 
     m_shader.makeProgram(gVertexShader, gFragmentShader);
     if (!m_shader.isCompiled()){
@@ -69,7 +67,6 @@ bool MagicMain::setupGraphics(int w, int h) {
     m_SrcTex.init();
 
     printGLColorSpaceInfo();
-    resize(w, h);
 
     glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
@@ -83,6 +80,7 @@ bool MagicMain::setupGraphics(int w, int h) {
 
 void MagicMain::renderFrame( float delta )
 {
+    if (!m_Engine) return;
     if (delta > MaxDeltaTime)
         delta = MaxDeltaTime;
     
@@ -287,4 +285,9 @@ void MagicMain::resize( int w, int h )
     m_CoordHeight = g_CoordWidth*h/w;
     matIdentity(m_vp);
     matOrtho(m_vp, 0, m_CoordWidth, 0, m_CoordHeight, -10, 10);
+    if (m_magicSprite.isAvailable()){
+        m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
+        m_magicSprite.setScale((float)g_CoordWidth/m_magicSprite.getRegionWidth());
+        m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    }
 }

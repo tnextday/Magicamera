@@ -74,4 +74,5 @@ void BaseShader::deleteProgram()
         m_isCompiled = false;
         m_program = 0;
     }
+    checkGlError("deleteProgram");
 }

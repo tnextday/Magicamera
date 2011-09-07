@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Random;
 
 public class MagicActivity extends Activity implements Camera.PreviewCallback, View.OnClickListener,
-        EngineRender.InitCompleteListener, EngineRender.CameraBufferReleaseListener {
+            EngineRender.InitCompleteListener, EngineRender.CameraBufferReleaseListener {
     GLSurfaceView m_SurfaceView;
-    EngineRender  m_engine;
+    EngineRender m_engine;
     public static int SDK_Version = Build.VERSION.SDK_INT;
     public static String TAG = "MagicEngine";
 
@@ -45,10 +45,10 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
 
 
-
     enum CameraType {
         FACING_BACK, FACING_FRONT
     }
+
     /**
      * Called when the activity is first created.
      */
@@ -56,20 +56,20 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!detectOpenGLES20()){
+        if (!detectOpenGLES20()) {
             //TODO 不支持gles 2.0
             Toast.makeText(this, "不支持OpenglEs 2.0,程序将退出！", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
         setContentView(R.layout.magic);
-        ((Button)findViewById(R.id.btn_back)).setOnClickListener(this);
-        ((Button)findViewById(R.id.btn_set_cover)).setOnClickListener(this);
-        ((Button)findViewById(R.id.btn_engine)).setOnClickListener(this);
-        ((Button)findViewById(R.id.btn_restore)).setOnClickListener(this);
-        ((Button)findViewById(R.id.btn_take)).setOnClickListener(this);
+        ((Button) findViewById(R.id.btn_back)).setOnClickListener(this);
+        ((Button) findViewById(R.id.btn_set_cover)).setOnClickListener(this);
+        ((Button) findViewById(R.id.btn_engine)).setOnClickListener(this);
+        ((Button) findViewById(R.id.btn_restore)).setOnClickListener(this);
+        ((Button) findViewById(R.id.btn_take)).setOnClickListener(this);
 
-        m_SurfaceView = (GLSurfaceView)findViewById(R.id.glsurfaceview);
+        m_SurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
         if (SDK_Version >= 8) {
             m_SurfaceView.setEGLContextClientVersion(2);
         } else {
@@ -81,7 +81,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         m_SurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
 
         Intent intent = getIntent();
-        String picPath =  intent.getStringExtra("PicPath");
+        String picPath = intent.getStringExtra("PicPath");
 
         m_engine = new EngineRender();
         m_engine.setOnInitComplete(this);
@@ -89,27 +89,28 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             m_engine.setOnCameraBufferRelease(this);
         m_SurfaceView.setRenderer(m_engine);
 
-        if (picPath != null && new File(picPath).exists()){
+        if (picPath != null && new File(picPath).exists()) {
             PicPath = picPath;
         }
+
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_back){
+        if (view.getId() == R.id.btn_back) {
             finish();
-        } else if (view.getId() == R.id.btn_engine){
-            if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_MESH){
+        } else if (view.getId() == R.id.btn_engine) {
+            if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_MESH) {
                 MagicJNILib.switchEngine(MagicJNILib.ENGINE_TYPE_COVER);
-            }else if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_COVER){
+            } else if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_COVER) {
                 MagicJNILib.switchEngine(MagicJNILib.ENGINE_TYPE_MESH);
             }
-        } else if (view.getId() == R.id.btn_set_cover){
+        } else if (view.getId() == R.id.btn_set_cover) {
             Random random = new Random();
             try {
                 InputStream is = getResources().getAssets().open(String.format("frames/%02d.png", random.nextInt(17)));
                 int size = is.available();
-                if (size > 0){
+                if (size > 0) {
                     byte[] buffer = new byte[size];
                     is.read(buffer);
                     m_SurfaceView.queueEvent(new SetCover(buffer));
@@ -118,15 +119,16 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (view.getId() == R.id.btn_restore){
+        } else if (view.getId() == R.id.btn_restore) {
             MagicJNILib.restoreMesh();
-        } else if (view.getId() == R.id.btn_take){
+        } else if (view.getId() == R.id.btn_take) {
             m_SurfaceView.queueEvent(new TakePicture());
         }
     }
 
     private class SetCover implements Runnable {
         byte[] buffer;
+
         private SetCover(byte[] buffer) {
             this.buffer = buffer;
         }
@@ -137,18 +139,48 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         }
     }
 
-    private class TakePicture implements Runnable{
+    private class TakePicture implements Runnable {
         @Override
         public void run() {
             MagicJNILib.takePicture();
         }
     }
 
+    private class SetImage implements Runnable {
+        String img_path;
+
+        private SetImage(String img_path) {
+            this.img_path = img_path;
+        }
+
+        @Override
+        public void run() {
+            MagicJNILib.setPreviewImage(img_path);
+        }
+    }
+
+    private class SetPreviewInfo implements Runnable {
+        int width;
+        int height;
+        int format;
+
+        private SetPreviewInfo(int width, int height, int format) {
+            this.width = width;
+            this.height = height;
+            this.format = format;
+        }
+
+        @Override
+        public void run() {
+            MagicJNILib.setPreviewDataInfo(width, height, format);
+        }
+    }
+
     @Override
     public void onEngineInitCompleted(EngineRender engine) {
-        if (PicPath != null){
-            engine.setDestImage(PicPath);
-        }else{
+        if (PicPath != null) {
+            m_SurfaceView.queueEvent(new SetImage(PicPath));
+        } else {
             //TODO 异步执行
             startCamera(CameraType.FACING_FRONT);
         }
@@ -157,6 +189,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
     @Override
     protected void onPause() {
+        stopCamera();
         super.onPause();
         Log.d(TAG, "OnPause");
     }
@@ -167,12 +200,6 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         Log.d(TAG, "onResume");
     }
 
-    @Override
-    protected void onDestroy() {
-        stopCamera();
-        super.onDestroy();
-    }
-
     private boolean detectOpenGLES20() {
         ActivityManager am =
                 (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -181,11 +208,10 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     }
 
 
-
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
         m_engine.addCameraBuffer(bytes);
-    //    	m_Camera.addCallbackBuffer(bytes);
+        //    	m_Camera.addCallbackBuffer(bytes);
     }
 
     @Override
@@ -198,7 +224,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         int cameraId = 0;
         if (SDK_Version >= 9) {
             int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
-            if (cameraType == CameraType.FACING_FRONT){
+            if (cameraType == CameraType.FACING_FRONT) {
                 facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
             }
             int numberOfCameras = Camera.getNumberOfCameras();
@@ -211,45 +237,45 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             }
         }
         if (SDK_Version >= 9) {
-                m_Camera = Camera.open(cameraId);
-            } else {
-                m_Camera = Camera.open();
+            m_Camera = Camera.open(cameraId);
+        } else {
+            m_Camera = Camera.open();
+        }
+
+        // Now that the size is known, set up the camera parameters and begin
+        // the preview.
+        Camera.Parameters parameters = m_Camera.getParameters();
+
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+        //        List<Size> psizes = parameters.getSupportedPictureSizes();
+        List<Integer> formats = parameters.getSupportedPreviewFormats();
+
+        //formats  = parameters.getSupportedPictureFormats();
+        Camera.Size optimalSize = getOptimalPreviewSize(sizes, m_previewWidth, m_previewHeight);
+        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
+        if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
+            parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
+        }
+        m_Camera.setParameters(parameters);
+
+        parameters = m_Camera.getParameters();
+        Camera.Size previewSize = parameters.getPreviewSize();
+        m_previewWidth = previewSize.width;
+        m_previewHeight = previewSize.height;
+        int previewFormat = parameters.getPreviewFormat();
+        int szBuffer = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8;
+        //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
+        if (SDK_Version >= 8) {
+            m_Camera.setPreviewCallbackWithBuffer(this);
+            for (int i = 0; i < BufferCount; i++) {
+                m_Camera.addCallbackBuffer(new byte[szBuffer]);
             }
-
-            // Now that the size is known, set up the camera parameters and begin
-            // the preview.
-            Camera.Parameters parameters = m_Camera.getParameters();
-
-            List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-            //        List<Size> psizes = parameters.getSupportedPictureSizes();
-            List<Integer> formats = parameters.getSupportedPreviewFormats();
-
-            //formats  = parameters.getSupportedPictureFormats();
-            Camera.Size optimalSize = getOptimalPreviewSize(sizes, m_previewWidth, m_previewHeight);
-            parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-            if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
-                parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
-            }
-            m_Camera.setParameters(parameters);
-
-            parameters = m_Camera.getParameters();
-            Camera.Size previewSize = parameters.getPreviewSize();
-            m_previewWidth = previewSize.width;
-            m_previewHeight = previewSize.height;
-            int previewFormat = parameters.getPreviewFormat();
-            int szBuffer = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8;
-            //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
-            if (SDK_Version >= 8) {
-                m_Camera.setPreviewCallbackWithBuffer(this);
-                for (int i = 0; i < BufferCount; i++) {
-                    m_Camera.addCallbackBuffer(new byte[szBuffer]);
-                }
-            } else {
-                m_Camera.setPreviewCallback(this);
-            }
-            m_engine.setPreviewInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat());
-            MagicJNILib.rotate90Input(true);
-            m_Camera.startPreview();
+        } else {
+            m_Camera.setPreviewCallback(this);
+        }
+        m_SurfaceView.queueEvent(new SetPreviewInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat()));
+        MagicJNILib.rotate90Input(true);
+        m_Camera.startPreview();
     }
 
     public void stopCamera() {
@@ -265,7 +291,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         m_Camera = null;
     }
 
-    public void switchCamera(CameraType cameraType){
+    public void switchCamera(CameraType cameraType) {
         stopCamera();
         switchCamera(cameraType);
     }
@@ -307,7 +333,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (m_engine.onTouchEvent(event))
-           return true;
+            return true;
         return super.onTouchEvent(event);
     }
 

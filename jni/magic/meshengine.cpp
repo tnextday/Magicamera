@@ -70,18 +70,18 @@ void MeshEngine::startAnimating(float duration, CEasing *easing /*= NULL*/)
 
 void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
 {
-    //TODO ±ß½ç¼ì²é
+    //TODO è¾¹ç•Œæ£€æŸ¥
     if(mx == 0 && my == 0) return;
     Vertex *vertexs = (Vertex *)mVertexBuffer;
-    Vertex *p;    //point µ±Ç°µã×ø±ê
-    //±éÀú³ıÁËËÄ±ßÖ®ÍâµÄËùÓĞµã
+    Vertex *p;    //point å½“å‰ç‚¹åæ ‡
+    //éå†é™¤äº†å››è¾¹ä¹‹å¤–çš„æ‰€æœ‰ç‚¹
     for (int j = 0; j < mH; j++){
         int baseidx = j*mW;
         for(int i = 0; i < mW; i++){
             int idx = baseidx + i;
             p = vertexs+idx;
-            //ÅĞ¶ÏÊÇ·ñÔÚÄ¿±ê·¶Î§ÄÚ
-            float dx,dy; //µ±Ç°µãºÍÔ²ĞÄµÄ¾àÀë²î
+            //åˆ¤æ–­æ˜¯å¦åœ¨ç›®æ ‡èŒƒå›´å†…
+            float dx,dy; //å½“å‰ç‚¹å’Œåœ†å¿ƒçš„è·ç¦»å·®
             dx = fabs(p->x - ox);
             dy = fabs(p->y - oy);
             if (dx <= r && dy <= r){
@@ -131,7 +131,7 @@ void MeshEngine::onDraw(Texture *texutre)
 
 bool MeshEngine::onInit()
 {
-//    init(m_width, m_height);
+//    create(m_width, m_height);
     return true;
 }
 

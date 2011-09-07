@@ -19,16 +19,14 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
     private float deltaTime = 0.0f;
 
     LinkedList<byte[]> m_buffers = new LinkedList<byte[]>();
-    int m_previewHeight;
-    int m_previewWidth;
-
-    String m_imagePath = "";
 
     private InputEvent inputEvent = new InputEvent();
 
-    private InitCompleteListener m_onInitComplete = null;
     private CameraBufferReleaseListener m_onCameraBufferRelease = null;
 
+    private InitCompleteListener m_onInitComplete = null;
+
+    private static final long fps_time = 1000000000/35;
 
     public EngineRender() {
         super();
@@ -45,6 +43,14 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         checkFrameBuffer();
         MagicJNILib.step(deltaTime);
         fps.log();
+        long render_time = System.nanoTime() - time;
+        if (render_time < fps_time){
+            try {
+                Thread.sleep((fps_time-render_time)/1000000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -70,32 +76,17 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         Log.d(MagicActivity.TAG, String.format("onSurfaceChanged: %d,%d", width, height));
-        MagicJNILib.init(width, height);
-
-        if (m_onInitComplete != null){
-            m_onInitComplete.onEngineInitCompleted(this);
-        }
-        if (!"".equals(m_imagePath)){
-            MagicJNILib.setPreviewImage(m_imagePath);
-        }
+        MagicJNILib.resize(width, height);
         this.lastFrameTime = System.nanoTime();
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         Log.d(MagicActivity.TAG, "onSurfaceCreated");
+        MagicJNILib.create();
+        if (m_onInitComplete != null){
+            m_onInitComplete.onEngineInitCompleted(this);
+        }
     }
-
-    public void setPreviewInfo(int width, int height, int format){
-        m_previewWidth = width;
-        m_previewHeight =height;
-        MagicJNILib.setPreviewDataInfo(m_previewWidth, m_previewHeight, format);
-    }
-
-    public void setDestImage(String path) {
-        m_imagePath = path;
-    }
-
-
 
     public boolean onTouchEvent(MotionEvent e) {
         int x = (int) e.getX();
@@ -133,10 +124,6 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
     }
 
 
-    public void setOnInitComplete(InitCompleteListener m_onInitComplete) {
-        this.m_onInitComplete = m_onInitComplete;
-    }
-
     public void setOnCameraBufferRelease(CameraBufferReleaseListener m_onCameraBufferRelease) {
         this.m_onCameraBufferRelease = m_onCameraBufferRelease;
     }
@@ -156,11 +143,15 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         public void log() {
             frames++;
             if (System.nanoTime() - startTime > 1000000000) {
-                //Log.i("Magic FPS", "fps: " + frames);
+                Log.i("Magic FPS", "fps: " + frames);
                 frames = 0;
                 startTime = System.nanoTime();
             }
         }
+    }
+
+    public void setOnInitComplete(InitCompleteListener m_onInitComplete) {
+        this.m_onInitComplete = m_onInitComplete;
     }
 
     public interface InitCompleteListener {

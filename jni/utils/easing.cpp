@@ -1,12 +1,12 @@
 #include "easing.h"
 #include <math.h>
 
-float easeShake( float t, int round /*= 6*/ )
+inline float easeShake( double t, int round /*= 6*/ )
 {
     return 1.0 - cos(M_PI_2 + round*M_PI*t)*(1.0f - t);
 }
 
-static float easeOutBounce_helper(float t, float c, float a)
+float easeOutBounce_helper( double t, double c, double a )
 {
     if (t == 1.0) return c;
     if (t < (4/11.0)) {
@@ -23,7 +23,7 @@ static float easeOutBounce_helper(float t, float c, float a)
     }
 }
 
-float CEaseShake::update( float t )
+float CEaseShake::update( double t )
 {
     return easeShake(t, m_round);
 }
@@ -34,13 +34,13 @@ CEaseShake::CEaseShake( int round /*= 6*/ )
 }
 
 
-float CEaseOutCubic::update( float t )
+float CEaseOutCubic::update( double t )
 {
     t-=1.0;
     return t*t*t + 1.0;
 }
 
-float CEaseInOutCirc::update( float t )
+float CEaseInOutCirc::update( double t )
 {
     t*=double(2.0);
     if (t < 1) {
@@ -52,28 +52,28 @@ float CEaseInOutCirc::update( float t )
 }
 
 
-float CEaseOutBounce::update( float t )
+float CEaseOutBounce::update( double t )
 {
     return easeOutBounce_helper(t, 1, m_amplitude);
 }
 
-CEaseOutBounce::CEaseOutBounce( float amplitude /*= 1.0*/ )
+CEaseOutBounce::CEaseOutBounce( double amplitude /*= 1.0*/ )
 {
     m_amplitude = amplitude;
 }
 
-float CEaseInCubic::update( float t )
+float CEaseInCubic::update( double t )
 {
     return t*t*t;
 }
 
-float CEaseOutQuart::update( float t )
+float CEaseOutQuart::update( double t )
 {
     t -= 1.0;
     return - (t*t*t*t- 1);
 }
 
-float CEaseInQuart::update( float t )
+float CEaseInQuart::update( double t )
 {
     return t*t*t*t;
 }

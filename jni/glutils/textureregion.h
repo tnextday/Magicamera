@@ -3,6 +3,7 @@
 #define _textureregion_h_
 
 #include "texture.h"
+#include <stdlib.h>
 
 class TextureRegion
 {
@@ -35,6 +36,8 @@ public:
     void rotate90 (bool clockwise);
 
     void setTextureRegion(TextureRegion *tr);
+
+    bool isAvailable(){return m_texture != NULL;};
 
     GLfloat* getTexCoords(){ return m_texCoords; };
     

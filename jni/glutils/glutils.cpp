@@ -111,9 +111,9 @@ GLuint createProgram(const char* pVertexSource, const char* pFragmentSource) {
     GLuint program = glCreateProgram();
     if (program) {
         glAttachShader(program, vertexShader);
-        checkGlError("glAttachShader");
+        checkGlError("AttachVertexShader");
         glAttachShader(program, pixelShader);
-        checkGlError("glAttachShader");
+        checkGlError("AttachPixelShader");
         glLinkProgram(program);
         GLint linkStatus = GL_FALSE;
         glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);

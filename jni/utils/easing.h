@@ -13,50 +13,50 @@ public:
     //! * 0 means that the action just started
     //! * 0.5 means that the action is in the middle
     //! * 1 means that the action is over
-    virtual float update(float t) = 0;
+    virtual float update(double t) = 0;
 };
 
 class CEaseOutCubic :public CEasing
 {
 public:
-    virtual float update( float t );
+    virtual float update( double t );
 };
 
 class CEaseInCubic : public CEasing{
 public:
-    virtual float update( float t );
+    virtual float update( double t );
 };
 
 class CEaseShake :public CEasing{
     int m_round;
 public:
     CEaseShake(int round = 6);
-    virtual float update( float t );
+    virtual float update( double t );
 };
 
 class CEaseInOutCirc :public CEasing{
 public:
-    virtual float update( float t );
+    virtual float update( double t );
 };
 
 class CEaseOutBounce:public CEasing{
     float   m_amplitude;
 public:
-    CEaseOutBounce(float amplitude = 1.0);
-    virtual float update( float t );
+    CEaseOutBounce(double amplitude = 1.0);
+    virtual float update( double t );
 };
 
 class CEaseOutQuart :public CEasing
 {
 public:
-    virtual float update( float t );
+    virtual float update( double t );
 };
 
 class CEaseInQuart : public CEasing{
 public:
-    virtual float update( float t );
+    virtual float update( double t );
 };
 
-inline float easeShake(float t, int round = 6);
-static float easeOutBounce_helper(float t, float c, float a);
+inline float easeShake(double t, int round = 6);
+static float easeOutBounce_helper(double t, double c, double a);
 #endif // _easing_h_

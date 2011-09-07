@@ -23,7 +23,7 @@ const UINT32 g_nWindowWidth   = 480;
 const UINT32 g_nWindowHeight  = g_nglWinHeight + g_nToolBarHeight;
 const UINT32 g_PicWidth = 640;
 const UINT32 g_PicHeigth = 480;
-const bool g_useCamera = true;
+const bool g_useCamera = false;
 const int g_cameraFPSRate = 18;
 const int TIMER_UPDATE_NV21 = 1;
 const char* g_testImagePath = "assets\\test3.jpg";
@@ -474,7 +474,8 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     if (!eglCreateSurface(hGlWin, g_eglSurface, g_eglDisplay))
         return FALSE;
 
-    g_MagicMain.setupGraphics(g_nglWinWidth, g_nglWinHeight);
+    g_MagicMain.setupGraphics();
+    g_MagicMain.resize(g_nglWinWidth, g_nglWinHeight);
     g_MagicMain.setIOCallBack(&g_WinCallBack);
 
     if(g_useCamera){
@@ -487,6 +488,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     
     float lastTime = FrmGetTime();
     float timenow;
+    int frames = 0;
+    float fps_time = 0;
+    char title[50];
     // Run the main loop until the user closes the window
     while( TRUE )
     {
@@ -506,6 +510,14 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
 
             // Present the scene
             eglSwapBuffers( g_eglDisplay, g_eglSurface );
+            frames++;
+            fps_time += delta;
+            if (fps_time > 1){
+                _snprintf(title, 49, "%s - %d", g_strWindowTitle, frames);
+                SetWindowText(hWindow, title);
+                frames = 0;
+                fps_time = 0;
+            }
         }
     }
     if(g_useCamera)
