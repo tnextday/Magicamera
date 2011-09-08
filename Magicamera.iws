@@ -6,25 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.ipr" afterPath="$PROJECT_DIR$/Magicamera.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/baseshader.cpp" afterPath="$PROJECT_DIR$/jni/glutils/baseshader.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/glutils.cpp" afterPath="$PROJECT_DIR$/jni/glutils/glutils.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/textureregion.cpp" afterPath="$PROJECT_DIR$/jni/glutils/textureregion.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/textureregion.h" afterPath="$PROJECT_DIR$/jni/glutils/textureregion.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/jni_main.cpp" afterPath="$PROJECT_DIR$/jni/jni_main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/jni_main.h" afterPath="$PROJECT_DIR$/jni/jni_main.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/coverengine.cpp" afterPath="$PROJECT_DIR$/jni/magic/coverengine.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicmain.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.h" afterPath="$PROJECT_DIR$/jni/magic/magicmain.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/meshengine.cpp" afterPath="$PROJECT_DIR$/jni/magic/meshengine.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/utils/easing.cpp" afterPath="$PROJECT_DIR$/jni/utils/easing.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/utils/easing.h" afterPath="$PROJECT_DIR$/jni/utils/easing.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/win32/include/zlib.h" afterPath="$PROJECT_DIR$/win32/include/zlib.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/win32/main.cpp" afterPath="$PROJECT_DIR$/win32/main.cpp" />
     </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -95,8 +77,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -126,7 +108,7 @@
       <file leaf-file-name="EngineRender.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="29" selection-start="857" selection-end="857" vertical-scroll-proportion="0.3196931">
+            <state line="39" column="20" selection-start="1028" selection-end="1028" vertical-scroll-proportion="0.2589438">
               <folding />
             </state>
           </provider>
@@ -201,8 +183,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Favorites" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -273,7 +255,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -292,8 +274,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.Magicamera">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -473,21 +455,21 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.0" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5322835" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15353037" sideWeight="0.42834646" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15353037" sideWeight="0.6913386" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33825943" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5322835" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30866143" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.6031496" sideWeight="0.49671593" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32840723" sideWeight="0.6913386" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -613,21 +595,19 @@
         <state line="51" column="16" selection-start="2366" selection-end="2366" vertical-scroll-proportion="0.769821" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="28" selection-start="2903" selection-end="2903" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="0" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="28" selection-start="2903" selection-end="2903" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="29" selection-start="857" selection-end="857" vertical-scroll-proportion="0.3196931">
+        <state line="39" column="20" selection-start="1028" selection-end="1028" vertical-scroll-proportion="0.2589438">
           <folding />
         </state>
       </provider>

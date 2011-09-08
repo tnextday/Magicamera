@@ -8,4 +8,8 @@ public:
     virtual unsigned char* readRes(const char* resname, uint32_t& size) = 0;
 };
 
+unsigned char* readRes(const char* resname, uint32_t& size);
+void setFileUtils(FileUtils *fu);
+
+
 unsigned char* getFileDataFromZip( const char* pszZipFilePath, const char* pszFileName, unsigned int &size );

@@ -4,6 +4,8 @@
 #include <assert.h>
 #include "zip/unzip.h"
 
+FileUtils *g_FileUtils = NULL;
+
 unsigned char* getFileDataFromZip( const char* pszZipFilePath, const char* pszFileName, unsigned int &size )
 {
     unsigned char * pBuffer = NULL;
@@ -44,4 +46,15 @@ unsigned char* getFileDataFromZip( const char* pszZipFilePath, const char* pszFi
     }
 
     return pBuffer;
+}
+
+unsigned char* readRes( const char* resname, uint32_t& size )
+{
+    if (!g_FileUtils) return NULL;
+    return g_FileUtils->readRes(resname, size);
+}
+
+void setFileUtils( FileUtils *fu )
+{
+    g_FileUtils = fu;
 }

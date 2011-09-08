@@ -4,6 +4,11 @@
 class BlurEffect :
     public ImageEffect
 {
+    float   m_stepX;
+    float   m_stepY;
+    float   m_stepSize;
+    GLint   m_stepXLoc;
+    GLint   m_stepYLoc;
 public:
     BlurEffect(void);
     virtual ~BlurEffect(void);
@@ -12,5 +17,7 @@ public:
 
     virtual void onResize();
 
-    virtual void onDoEffect(){};
+    virtual void onDoEffect();;
+
+    void setStepSize(float ss);
 };

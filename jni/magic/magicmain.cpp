@@ -160,6 +160,7 @@ bool MagicMain::onTouchUp( float x, float y )
 void MagicMain::setIOCallBack( FileUtils* callback )
 {
     m_ioCallBack = callback;
+    setFileUtils(callback);
 }
 
 

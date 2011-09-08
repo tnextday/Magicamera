@@ -2,9 +2,11 @@
 #include "glutils\baseshader.h"
 #include "glutils\textureregion.h"
 #include "glutils\framebufferobject.h"
+#include "utils\fileutils.h"
 
 class ImageEffect
 {
+protected:
     BaseShader  m_shader;
     GLint       m_imgTexLoc;
     GLint       m_effectTexLoc;
@@ -16,6 +18,7 @@ class ImageEffect
     Texture*    m_InTex;
 
     FramebufferObject* m_fbo;
+    
 protected:
     virtual void onDoEffect() = 0;
     virtual void onResize() = 0;

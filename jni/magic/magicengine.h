@@ -20,6 +20,7 @@ enum EngineType {
     EngineType_None,
     EngineType_Mesh,
     EngineType_Cover,
+    ENgineType_Effect,
     EngineType_Kaleidoscope
 };
 
