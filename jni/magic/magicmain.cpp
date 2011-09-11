@@ -87,10 +87,9 @@ void MagicMain::renderFrame( float delta )
     update(delta);
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
     m_Engine->drawImage();
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
-    m_shader.setViewProj(m_vp);
 
     drawImage();
 
@@ -128,31 +127,24 @@ void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 
 bool MagicMain::onTouchDown( float x, float y )
 {
-    x = x*m_CoordWidth/m_ScreenWidth;
-    y = y*m_CoordHeight/m_ScreenHeight;
-    //LOGI("onTouchDown: %.1f, %.1f\n", x, y);
-    y = m_CoordHeight - y;
+    x = x/m_ScreenWidth - 1.0/2.0;
+    y = m_aspectRatio/2 - y*m_aspectRatio/m_ScreenHeight;
     m_Engine->onTouchDown(x, y - m_magicSpriteY);
     return true;
 }
 
 bool MagicMain::onTouchDrag( float x, float y )
 {
-    x = x*m_CoordWidth/m_ScreenWidth;
-    y = y*m_CoordHeight/m_ScreenHeight;
-    //LOGI("onTouchDrag: %.1f, %.1f\n", x, y);
-    y = m_CoordHeight - y;
+    x = x/m_ScreenWidth - 1.0/2.0;
+    y = m_aspectRatio/2 - y*m_aspectRatio/m_ScreenHeight;
     m_Engine->onTouchDrag(x, y - m_magicSpriteY);
     return true;
 }
 
 bool MagicMain::onTouchUp( float x, float y )
 {
-    x = x*m_CoordWidth/m_ScreenWidth;
-    y = y*m_CoordHeight/m_ScreenHeight;
-    //LOGI("onTouchUp: %.1f, %.1f\n", x, y);
-    y = m_CoordHeight - y;
-
+    x = x/m_ScreenWidth - 1.0/2.0;
+    y = m_aspectRatio/2 - y*m_aspectRatio/m_ScreenHeight;
     m_Engine->onTouchUp(x, y - m_magicSpriteY);
     return true;
 }
@@ -176,7 +168,7 @@ void MagicMain::update( float delta )
 void MagicMain::drawImage()
 {
     m_shader.use();
-    m_SrcTex.bind();
+//    m_SrcTex.bind();
     glDisable(GL_BLEND);
 
     m_magicSprite.draw(&m_shader);
@@ -215,7 +207,7 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
 
     m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
-    m_Engine->initEngine(&m_shader, m_adjust.getOutTexture());
+    m_Engine->initEngine(m_adjust.getOutTexture());
     m_Engine->start();
 }
 
@@ -264,9 +256,8 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
 void MagicMain::onEngineOutChange( Texture *tex )
 {
     m_magicSprite.setTexture(tex);
-    m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
-    m_magicSprite.setScale((float)g_CoordWidth/m_magicSprite.getRegionWidth());
-    m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+    //m_magicSprite.loadFromFile("assets/test2.jpg");
+    m_magicSpriteY = (m_aspectRatio - m_magicSprite.getHeight())/2;
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
 }
@@ -280,15 +271,11 @@ void MagicMain::onAdjustChange( Texture *tex )
 void MagicMain::resize( int w, int h )
 {
     LOGI("Resize(%d, %d)\n", w, h);
+    m_aspectRatio = (float)h/w;
     m_ScreenWidth = w;
     m_ScreenHeight = h;
-    m_CoordWidth = g_CoordWidth;
-    m_CoordHeight = g_CoordWidth*h/w;
-    matIdentity(m_vp);
-    matOrtho(m_vp, 0, m_CoordWidth, 0, m_CoordHeight, -10, 10);
+    m_shader.ortho(-0.5, 0.5, -m_aspectRatio/2, m_aspectRatio/2, -10, 10);
     if (m_magicSprite.isAvailable()){
-        m_magicSprite.setPostion(m_CoordWidth/2, m_CoordHeight/2);
-        m_magicSprite.setScale((float)g_CoordWidth/m_magicSprite.getRegionWidth());
-        m_magicSpriteY = (m_CoordHeight - m_magicSprite.getRegionHeight())/2;
+        m_magicSpriteY = (m_aspectRatio - m_magicSprite.getHeight())/2;
     }
 }

@@ -36,11 +36,9 @@ class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
     Sprite          m_magicSprite;
     GLfloat         m_magicSpriteY;
 
-    GLfloat         m_CoordWidth;
-    GLfloat         m_CoordHeight;
     GLfloat         m_ScreenWidth;
     GLfloat         m_ScreenHeight;
-    GLfloat         m_vp[16];
+    GLfloat         m_aspectRatio;
 
     int             m_inputFortmat;
 

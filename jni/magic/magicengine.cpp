@@ -10,7 +10,6 @@
 MagicEngine::MagicEngine()
 {
     m_InTex = NULL;
-    m_shader = NULL;
     m_fbo = NULL;
     m_sfactor = GL_SRC_ALPHA;
     m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -18,14 +17,14 @@ MagicEngine::MagicEngine()
     m_onOutputResize = NULL;
 }
 
-MagicEngine::MagicEngine( BaseShader* shader, Texture* SrcTex)
+MagicEngine::MagicEngine(Texture* SrcTex)
 {
     m_sfactor = GL_SRC_ALPHA;
     m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
     m_ioCallBack = NULL;
     m_onOutputResize = NULL;
     m_InTex = NULL;
-    initEngine(shader, SrcTex);
+    initEngine(SrcTex);
 }
 
 MagicEngine::~MagicEngine()
@@ -33,9 +32,9 @@ MagicEngine::~MagicEngine()
     SafeDelete(m_fbo);
 }
 
-bool MagicEngine::initEngine(BaseShader* shader, Texture* SrcTex) {
+bool MagicEngine::initEngine(Texture* SrcTex) {
     m_OutTex.init();
-    setShader(shader);
+    m_shader.loadFromRes("shaders/default.sp");
     setInputTexture(SrcTex);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
@@ -59,7 +58,7 @@ void MagicEngine::setSize( int w, int h )
 {
     //输出图片的比例和坐标系相同 
     m_width = w;
-    m_height = w*m_coordHeight/m_coordWidth;
+    m_height = h;
     m_OutTex.setSize(m_width, m_height);
 }
 
@@ -135,12 +134,11 @@ bool MagicEngine::onTouchUp( float x, float y )
 void MagicEngine::draw( Texture *texutre /*= NULL*/ )
 {
     glViewport(0,0, m_width, m_height);
-    m_shader->use();
-    m_shader->setViewProj(m_vp);
+    m_shader.use();
     //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glEnableVertexAttribArray(m_shader->getPositionLoc());
-    glEnableVertexAttribArray(m_shader->getTextureCoordLoc());
+    glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
     onDraw(texutre);
 }
 
@@ -151,12 +149,11 @@ void MagicEngine::SetIOCallBack( FileUtils* val )
 
 void MagicEngine::resizeCoord()
 {
-    m_coordWidth = g_CoordWidth;
-    m_coordHeight = m_coordWidth*m_InTex->getHeight()/m_InTex->getWidth();
-    setSize(m_coordWidth, m_coordHeight);
-    //重置坐标系
-    matIdentity(m_vp);
-    matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
+    m_width = m_InTex->getWidth();
+    m_height = m_InTex->getHeight();
+    m_aspectRatio = (float)m_height/m_width;
+    setSize(m_width, m_height);
+    m_shader.ortho(-0.5, 0.5, -m_aspectRatio/2, m_aspectRatio/2, -10, 10);
     if (m_onOutputResize){
         m_onOutputResize->onEngineOutChange(&m_OutTex);
     }

@@ -86,9 +86,9 @@ void CoverEngine::onDraw( Texture *texutre )
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    m_img.draw(m_shader, texutre);
+    m_img.draw(&m_shader, texutre);
     if(m_cover){
-        m_cover->draw(m_shader);
+        m_cover->draw(&m_shader);
     }
 }
 
@@ -105,9 +105,9 @@ EngineType CoverEngine::type()
 void CoverEngine::showCover()
 {
     resizeCoord();
-    m_cover->setPostion(m_width/2, m_cover->getRegionHeight()/2+m_height);
+    m_cover->setPostion(0, m_aspectRatio);
     m_cover->setRotation(0);
-    MoveTo *mt = new MoveTo(m_width/2, m_height/2, 1.5);
+    MoveTo *mt = new MoveTo(0, 0, 1.5);
     mt->setEasing(new CEaseOutBounce(0.6));
     m_cover->doAction(mt);
     m_bVisible = true;
@@ -121,7 +121,7 @@ void CoverEngine::hideCover()
     RotateTo2D * rotate = new RotateTo2D(-10 + rand()%20 , 0.6);
     rotate->setEasing(new CEaseInOutCirc);
     *parallel<<rotate;
-    MoveTo *mt = new MoveTo(m_width/2, -m_height*2, 0.8);
+    MoveTo *mt = new MoveTo(0, -m_aspectRatio, 0.8);
     mt->setEasing(new CEaseInQuart);
     *parallel<<mt;
     m_cover->doAction(parallel);
@@ -165,24 +165,18 @@ void CoverEngine::setCover( const char* coverPath)
 void CoverEngine::resizeCoord()
 {
     if (m_cover)
-    {
-        m_coordWidth = m_cover->getRegionWidth();
-        m_coordHeight = m_cover->getRegionHeight();
-        setSize(m_coordWidth, m_coordHeight);
+    {  
         //重置坐标系
-        matIdentity(m_vp);
-        matOrtho(m_vp, 0, m_coordWidth, 0, m_coordHeight, -10, 10);
+        m_width = m_cover->getRegionWidth();
+        m_height = m_cover->getRegionHeight();
+        m_aspectRatio = m_height/m_width;
+        setSize(m_width, m_height);
+        m_shader.ortho(-0.5, 0.5, -m_aspectRatio/2, m_aspectRatio/2, -10, 10);
         if (m_onOutputResize){
             m_onOutputResize->onEngineOutChange(&m_OutTex);
         }
     }else{
         MagicEngine::resizeCoord();
-    }
-
-    if (m_cover){
-        //居中显示
-        m_img.setScale((float)m_cover->getRegionWidth()/(float)m_img.getRegionWidth());
-        m_img.setPostion(m_coordWidth/2, m_coordHeight/2);
     }
 }
 

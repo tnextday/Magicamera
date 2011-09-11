@@ -37,5 +37,8 @@ public:
     bool isCompiled(){ return m_isCompiled;};
     void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);
     void setViewProj(GLfloat* mvp);
+
+    bool loadFromRes(const char* fileName);
+    bool loadFromMemory(const char* buf, int size);
 };
 #endif // _baseshader_h_

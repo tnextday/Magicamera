@@ -58,10 +58,7 @@ void MeshEngine::startAnimating(float duration, CEasing *easing /*= NULL*/)
     
     for (int i = 0; i < m_BufferCount; i++){
         float delta = m_DestVertex[i] - mVertexBuffer[i];
-        if (fabs(delta) >= 1.0f){
-            m_DeltaVertex[i] = delta;
-        }else 
-            m_DeltaVertex[i] = 0.0f;
+        m_DeltaVertex[i] = delta;
     }
     m_bAnimating = true;
     m_Duration = duration;
@@ -126,7 +123,7 @@ void MeshEngine::onDraw(Texture *texutre)
         m_InTex->bind();
     }
     glDisable(GL_BLEND);
-    Mesh::draw(m_shader);
+    Mesh::draw(&m_shader);
 }
 
 bool MeshEngine::onInit()
@@ -163,7 +160,7 @@ bool MeshEngine::onTouchDown( float x, float y )
 
 bool MeshEngine::onTouchDrag( float x, float y )
 {
-    moveMesh(x, y, x - m_lastX, y - m_lastY, 100);
+    moveMesh(x, y, x - m_lastX, y - m_lastY, 0.25);
     m_lastX = x;
     m_lastY = y;
     return true;
@@ -178,25 +175,27 @@ bool MeshEngine::onTouchUp( float x, float y )
 
 void MeshEngine::generateMesh( int w, int h )
 {
-    int uSteps = MESH_HEIGHT;
+    int uSteps = MESH_WIDTH/m_aspectRatio;
     int vSteps = MESH_WIDTH;
     Mesh::init(uSteps+1, vSteps+1);
     GLfloat x, y,u, v;
+    y = -m_aspectRatio/2.0;
     for(int j = 0;j <= vSteps; j++){
-        y = j*h/vSteps;
-        v = 1 - (GLfloat)j/vSteps;
+        v = 1.0 - (GLfloat)j/vSteps;
+        x = -0.5;
         for(int i = 0; i <= uSteps; i++){
-            x = i*w/uSteps;
             u = (GLfloat)i/uSteps;
             set(i,j,x,y,u,v);
+            x += 1.0/uSteps;
         }
+        y += m_aspectRatio/vSteps;
     }
     createBufferObjects();
 }
 
 void MeshEngine::init( int width, int height )
 {
-    if (mW == width && mH == height) return;
+    if (m_aspectRatio == height/width) return;
     generateMesh(width, height);
     m_BufferCount = mW*mH*VertexSize;
     SafeDeleteArray(m_DestVertex);

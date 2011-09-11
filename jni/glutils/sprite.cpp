@@ -68,8 +68,6 @@ float* Sprite::getVertices()
         float localY = -m_originY;
         float localX2 = localX + m_width;
         float localY2 = localY + m_height;
-        float worldOriginX = m_x - localX;
-        float worldOriginY = m_y - localY;
         if (m_scaleX != 1 || m_scaleY != 1) {
             localX *= m_scaleX;
             localY *= m_scaleY;
@@ -89,28 +87,28 @@ float* Sprite::getVertices()
             float localY2Cos = localY2 * cosv;
             float localY2Sin = localY2 * sinv;
 
-            float x1 = localXCos - localYSin + worldOriginX;
-            float y1 = localYCos + localXSin + worldOriginY;
+            float x1 = localXCos - localYSin + m_x;
+            float y1 = localYCos + localXSin + m_y;
             m_vertices[X1] = x1;
             m_vertices[Y1] = y1;
 
-            float x2 = localXCos - localY2Sin + worldOriginX;
-            float y2 = localY2Cos + localXSin + worldOriginY;
+            float x2 = localXCos - localY2Sin + m_x;
+            float y2 = localY2Cos + localXSin + m_y;
             m_vertices[X2] = x2;
             m_vertices[Y2] = y2;
 
-            float x3 = localX2Cos - localY2Sin + worldOriginX;
-            float y3 = localY2Cos + localX2Sin + worldOriginY;
+            float x3 = localX2Cos - localY2Sin + m_x;
+            float y3 = localY2Cos + localX2Sin + m_y;
             m_vertices[X3] = x3;
             m_vertices[Y3] = y3;
 
             m_vertices[X4] = x1 + (x3 - x2);
             m_vertices[Y4] = y3 - (y2 - y1);
         } else {
-            float x1 = localX + worldOriginX;
-            float y1 = localY + worldOriginY;
-            float x2 = localX2 + worldOriginX;
-            float y2 = localY2 + worldOriginY;
+            float x1 = localX + m_x;
+            float y1 = localY + m_y;
+            float x2 = localX2 + m_x;
+            float y2 = localY2 + m_y;
 
             m_vertices[X1] = x1;
             m_vertices[Y1] = y1;
@@ -206,6 +204,7 @@ void Sprite::draw(BaseShader *shader, Texture *otherTex /*= NULL*/)
     }
     if (!dst) return;
     dst->bind();
+
     glVertexAttribPointer(shader->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getVertices());
     glVertexAttribPointer(shader->getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, getTexCoords());
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -213,17 +212,7 @@ void Sprite::draw(BaseShader *shader, Texture *otherTex /*= NULL*/)
 
 void Sprite::setPostion( float x, float y )
 {
-    translate(x - m_x - m_originX, y - m_y -m_originY);
-}
-
-float Sprite::getX()
-{
-    return m_x + m_originX;
-}
-
-float Sprite::getY()
-{
-    return m_y + m_originY;
+    translate(x - m_x, y - m_y);
 }
 
 void Sprite::getBoundingRect( rect_t &rect )
@@ -273,9 +262,10 @@ void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
 
 void Sprite::setSize( GLfloat w, GLfloat h )
 {
-    if (m_width == w && m_height == h) return;
-    m_width = w;
-    m_height = h;
+    if(m_aspectRatio == h/w) return;
+    m_aspectRatio = h/w;
+    m_width = 1;
+    m_height = m_aspectRatio;
 
     if (m_dirty) return;
 
@@ -357,4 +347,28 @@ void Sprite::loadFromFile( const char* texPath )
 {
     m_spriteTexture = new Texture(texPath);
     setTexture(m_spriteTexture);
+}
+
+void Sprite::mapToWordSize( float w, float h )
+{
+    m_width = getRegionWidth()/w;
+    m_height = m_width/m_aspectRatio;
+
+    if (m_dirty) return;
+
+    float x2 = m_x + m_width;
+    float y2 = m_y + m_height;
+    m_vertices[X1] = m_x;
+    m_vertices[Y1] = m_y;
+
+    m_vertices[X2] = m_x;
+    m_vertices[Y2] = y2;
+
+    m_vertices[X3] = x2;
+    m_vertices[Y3] = y2;
+
+    m_vertices[X4] = x2;
+    m_vertices[Y4] = m_y;
+
+    if (m_rotation != 0 || m_scaleX != 1 || m_scaleY != 1) m_dirty = true;
 }

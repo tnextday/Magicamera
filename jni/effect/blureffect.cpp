@@ -13,7 +13,7 @@ void BlurEffect::onInit()
     uint32_t size = 0;
     unsigned char* sbuf = readRes("shaders/blur.sp", size);
     if (sbuf && size > 0){
-        loadFromMemory((char* )sbuf, size);
+        m_shader.loadFromMemory((char* )sbuf, size);
     }
     delete [] sbuf;
     m_shader.use();

@@ -23,8 +23,7 @@ protected:
     virtual void onDoEffect() = 0;
     virtual void onResize() = 0;
     virtual void onInit() = 0;
-    bool loadFromFile(const char* fileName);
-    bool loadFromMemory(const char* buf, int size);
+
 public:
     ImageEffect(void);
     virtual ~ImageEffect(void);
@@ -34,4 +33,6 @@ public:
     virtual void doEffect();
     virtual void setInputTex(Texture * tex);
     Texture* getOutTexture(){return &m_OutTex;};
+    bool loadFromRes( const char* fileName );
+    bool loadFromMemory( const char* buf, int size );
 };

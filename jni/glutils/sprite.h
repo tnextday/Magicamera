@@ -28,6 +28,7 @@ class Sprite : public TextureRegion{
 private:
     GLfloat     m_x, m_y;
     GLfloat     m_width, m_height;
+    GLfloat     m_aspectRatio;
     GLfloat     m_originX, m_originY;
     GLfloat     m_rotation;
     GLfloat     m_scaleX, m_scaleY;
@@ -66,12 +67,25 @@ public:
     //Vertices的排列顺序为(x1y1x2y2x3y3x4y4u1v1u2v2u3v3u4v4),不是交替排列的
     GLfloat* getVertices ();
     
-    float getX();
-    float getY();
+    float getX(){return m_x;};
+    float getY(){return m_y;};
+    GLfloat getWidth() const { return m_width; }
+    GLfloat getHeight() const { return m_height; }
     void getBoundingRect(rect_t &rect);
     void doAction(Action* action, bool autoFree = true);
     void update(float dt);
     bool isActionDone();
+
+    
+    //************************************
+    // Method:    mapToWordSize
+    // Description: 映射到世界坐标的大小，默认Sprite初始化会将宽初始化为1，高为宽高比
+    //              调用此函数后会将宽高转化为纹理原大小相对于world size的大小                     
+    // Parameter: float w 宽 
+    // Parameter: float h 高 
+    // Returns:   void
+    //************************************
+    void mapToWordSize(float w, float h);
 
 private:
     void init(int srcX, int srcY, int srcWidth, int srcHeight);

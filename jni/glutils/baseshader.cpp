@@ -1,6 +1,9 @@
 #include "baseshader.h"
 #include "glutils.h"
 #include "utils/mathelpers.h"
+#include "utils/fileutils.h"
+#include <zlib.h>
+
 
 BaseShader::BaseShader(void)
 {
@@ -58,6 +61,7 @@ void BaseShader::ortho( GLfloat left, GLfloat right, GLfloat bottom, GLfloat top
     GLfloat mvp[16];
     matIdentity(mvp);
     matOrtho(mvp, left, right, bottom, top, znear, zfar);
+    use();
     glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
 }
 
@@ -74,5 +78,44 @@ void BaseShader::deleteProgram()
         m_isCompiled = false;
         m_program = 0;
     }
-    checkGlError("deleteProgram");
+}
+
+bool BaseShader::loadFromRes( const char* fileName )
+{
+    bool ret = false;
+    uint32_t size;
+    unsigned char* date = readRes(fileName, size);
+    ret = loadFromMemory((char*)date, size);
+    SafeDeleteArray(date);
+    return ret;
+}
+
+bool BaseShader::loadFromMemory( const char* buf, int size )
+{
+    if (!buf || size < 12) return false;
+    char* buffer = (char *)buf;
+    if (buffer[0] != 'S' || buffer[1] != 'P' || buffer[2] != 'V' || buffer[3] != '1')
+        return false;
+    buffer +=4;
+    int oSize = *((int*)buffer);
+    buffer +=4;
+    int zSize = *((int*)buffer);
+    if (zSize > (size - 12)) return false;
+    buffer +=4;
+    char* oBuffer = new char[oSize];
+    uLong destLen = oSize;
+    int vsSize, fsSize;
+    char* vs;
+    char* fs;
+    bool ret = false;
+    if (Z_OK == uncompress((Bytef*)oBuffer, &destLen, (Bytef*)buffer, zSize)){
+        vsSize = *((int *)oBuffer);
+        vs = oBuffer + 4;
+        fsSize = *((int *)(oBuffer + 4 + vsSize));
+        fs = oBuffer + 8 + vsSize;
+        ret = makeProgram(vs,fs);
+    }
+    delete [] oBuffer;
+    return ret;
+
 }

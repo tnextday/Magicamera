@@ -5,6 +5,9 @@ import os,sys
 import math
 
 const_rate_count = 50
+#衰减精度，由于手指操作问题，精度太高会导致很容易误操作，所以特意降低精度
+const_rate_precision = 0.21
+
 const_filename = "ratetables.h"
 
 def easeInOutCubic(t):
@@ -43,7 +46,7 @@ def main(args):
             if (r > 1.0):
                 r = 0.0
             else:
-                r = easeInOutSine(1.0 - r)*0.7
+                r = easeInOutSine(1.0 - r)*const_rate_precision
                 #r = (1.0 - r)
             if (x < const_rate_count - 1):
                 linestr = "%s %f," % (linestr, r)

@@ -30,9 +30,10 @@ const char* g_testImagePath = "assets\\test.jpg";
 const char* g_strNV21Path = ".\\nv21\\%03d.nv21";
 const char* g_strSaveImagePath = "test.tga";
 const char* g_resPath = "assets\\";
+
+bool b_runing = true;
 MagicMain g_MagicMain;
 WinCallBack g_WinCallBack;
-
 EGLSurface g_eglSurface;
 EGLDisplay g_eglDisplay;
 HWND hbtn_save;
@@ -115,10 +116,21 @@ unsigned char* WinCallBack::readRes( const char* resname, uint32_t &size )
 }
 
 
-int eglCreateSurface(HWND hWin, EGLSurface &eglSurface, EGLDisplay &eglDisplay)
+int eglCreateSurface(HWND hWnd, EGLSurface &eglSurface, EGLDisplay &eglDisplay)
 {
+    HDC hDC		= 0;
+    hDC = GetDC(hWnd);
+    if (!hDC)
+    {
+        MessageBox(0, "Failed to create the device context", "Error", MB_OK|MB_ICONEXCLAMATION);
+        return FALSE;
+    }
+
+    eglDisplay = eglGetDisplay(hDC);
     // Get the display
-    eglDisplay = eglGetDisplay( EGL_DEFAULT_DISPLAY );
+    if(eglDisplay == EGL_NO_DISPLAY)
+        eglDisplay = eglGetDisplay((EGLNativeDisplayType) EGL_DEFAULT_DISPLAY);
+
     if( eglDisplay == EGL_NO_DISPLAY )
         return FALSE;
 
@@ -178,9 +190,7 @@ int eglCreateSurface(HWND hWin, EGLSurface &eglSurface, EGLDisplay &eglDisplay)
             EGL_BLUE_SIZE,        8,
             EGL_ALPHA_SIZE,        0,
             EGL_DEPTH_SIZE,        16,
-            EGL_STENCIL_SIZE,   8,
-            EGL_SAMPLE_BUFFERS, 0,
-            EGL_SAMPLES,        0,
+            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
             EGL_NONE
         };
 
@@ -211,7 +221,7 @@ int eglCreateSurface(HWND hWin, EGLSurface &eglSurface, EGLDisplay &eglDisplay)
     else return FALSE; // unsupported display
 
     // Create a window surface
-    eglSurface = eglCreateWindowSurface( eglDisplay, eglConfig, hWin, NULL );
+    eglSurface = eglCreateWindowSurface( eglDisplay, eglConfig, hWnd, NULL );
     if( EGL_NO_SURFACE == eglSurface )
         return FALSE;
 
@@ -335,7 +345,9 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
         return 0;
     case WM_CLOSE:
         PostQuitMessage( 0 );
-        return 0;
+        b_runing = false;
+        return 1;
+        //break;
     case WM_COMMAND:
         if (lParam == (int)hbtn_save){
             g_MagicMain.takePicture();
@@ -492,7 +504,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     float fps_time = 0;
     char title[50];
     // Run the main loop until the user closes the window
-    while( TRUE )
+    while( b_runing )
     {
         MSG msg;
         if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )

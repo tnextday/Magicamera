@@ -7,15 +7,6 @@
 #include "glutils/sprite.h"
 #include "utils/fileutils.h"
 
-//宽高比为2:3
-const static int MESH_WIDTH = 50;
-const static int MESH_HEIGHT = MESH_WIDTH*3/2;
-
-//MagicEngine 坐标系大小
-const static int g_CoordWidth = 480;
-const static int g_CoordHeight = 640;
-
-
 enum EngineType {
     EngineType_None,
     EngineType_Mesh,
@@ -31,16 +22,14 @@ public:
 
 class MagicEngine : public TouchEvent{
 protected:
-    BaseShader*     m_shader;
+    BaseShader      m_shader;
 
     Texture*        m_InTex;
     Texture         m_OutTex;
 
     GLfloat         m_width;
     GLfloat         m_height;
-    GLfloat         m_coordWidth;
-    GLfloat         m_coordHeight;
-    GLfloat         m_vp[16]; 
+    GLfloat         m_aspectRatio;
 
     GLenum          m_sfactor;
     GLenum          m_dfactor;
@@ -57,13 +46,12 @@ protected:
     virtual void resizeCoord();
 public:
     MagicEngine();
-    MagicEngine(BaseShader* shader, Texture* SrcTex);
+    MagicEngine(Texture* SrcTex);
     //声明为虚函数，确保子类可以被释放
     virtual	~MagicEngine();
 
-    bool initEngine(BaseShader* shader, Texture* SrcTex) ;
+    bool initEngine(Texture* SrcTex) ;
     void setSize(int w, int h);
-    void setShader(BaseShader* val) { m_shader = val; }
     virtual void setInputTexture(Texture* val);
     Texture* getOutTexture() {return &m_OutTex;};
 
