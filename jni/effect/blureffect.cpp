@@ -25,8 +25,8 @@ void BlurEffect::onInit()
 
 void BlurEffect::onResize()
 {
-    m_stepX = m_stepSize/m_width;
-    m_stepY = m_stepSize/m_height;
+//     m_stepX = m_stepSize/m_width;
+//     m_stepY = m_stepSize/m_height;
 }
 
 void BlurEffect::setStepSize( float ss )
@@ -35,8 +35,13 @@ void BlurEffect::setStepSize( float ss )
     onResize();
 }
 
-void BlurEffect::onDoEffect()
+void BlurEffect::onProcess(Texture* src, Texture* dst)
 {
-    glUniform1f(m_stepXLoc, m_stepX);
-    glUniform1f(m_stepYLoc, m_stepY);
+    GLuint w,h;
+    w = src->getWidth();
+    h = src->getHeight();
+    GLfloat stepX = m_stepSize/w;
+    GLfloat stepY = m_stepSize/h;
+    glUniform1f(m_stepXLoc, stepX);
+    glUniform1f(m_stepYLoc, stepY);
 }

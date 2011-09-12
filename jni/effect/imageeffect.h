@@ -20,7 +20,7 @@ protected:
     FramebufferObject* m_fbo;
     
 protected:
-    virtual void onDoEffect() = 0;
+    virtual void onProcess(Texture* src, Texture* dst) = 0;
     virtual void onResize() = 0;
     virtual void onInit() = 0;
 
@@ -30,7 +30,8 @@ public:
 
     virtual void Init();
 
-    virtual void doEffect();
+    virtual void process();
+    virtual void process(Texture* src, Texture* dst);
     virtual void setInputTex(Texture * tex);
     Texture* getOutTexture(){return &m_OutTex;};
     bool loadFromRes( const char* fileName );

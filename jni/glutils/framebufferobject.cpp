@@ -111,3 +111,9 @@ void FramebufferObject::resizeBuffers( int w, int h )
         createDepthBuffer();
     unbind();
 }
+
+void FramebufferObject::bindWithTexture( GLuint texId )
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, m_fboId[0]);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
+}

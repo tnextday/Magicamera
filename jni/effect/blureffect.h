@@ -17,7 +17,7 @@ public:
 
     virtual void onResize();
 
-    virtual void onDoEffect();;
+    virtual void onProcess(Texture* src, Texture* dst);;
 
     void setStepSize(float ss);
 };

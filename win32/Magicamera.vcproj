@@ -466,6 +466,10 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="blend"
+			>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>

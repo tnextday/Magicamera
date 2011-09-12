@@ -35,7 +35,7 @@ public:
     void setInputTexture(Texture* val);
    
     void setOnOutputChange(AdjustChange* val);
-    Texture* getOutTexture();;
+    Texture* getOutTexture();
 
     bool init();
     void drawImage();

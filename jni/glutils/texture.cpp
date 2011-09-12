@@ -123,6 +123,7 @@ void Texture::init()
 
 void Texture::setSize( int w, int h )
 {
+    if (m_Width == w && m_Height == h) return;
     m_Width = w; 
     m_Height = h;
     bind();

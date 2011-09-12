@@ -30,28 +30,9 @@ bool ImageEffect::loadFromRes( const char* fileName )
     return result;
 }
 
-void ImageEffect::doEffect()
+void ImageEffect::process()
 {
-    m_shader.use();
-    glDisable(GL_DEPTH_TEST);
-    m_fbo->bind();
-    //printGLColorSpaceInfo();
-    glViewport(0, 0, m_width, m_height);
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    //m_InTex->bind(1);
-    glUniform1i(m_imgTexLoc, 1);
-
-    onDoEffect();
-
-    glEnableVertexAttribArray(0);
-    glDisableVertexAttribArray(1); //话说不关掉这个就会报错
-    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
-    
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    m_fbo->unbind();
-    checkGlError("ImageEffect::doEffect");
+    process(m_InTex, &m_OutTex);
 }
 
 void ImageEffect::setInputTex( Texture * tex )
@@ -71,4 +52,28 @@ void ImageEffect::Init()
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
     onInit();
+}
+
+void ImageEffect::process( Texture* src, Texture* dst )
+{
+    GLuint w,h;
+    w = src->getWidth();
+    h = src->getHeight();
+    dst->setSize(w, h);
+    m_fbo->texture2d(dst->getTexHandle());
+    m_shader.use();
+    glDisable(GL_DEPTH_TEST);
+    m_fbo->bind(); 
+    glViewport(0, 0, w, h);
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    src->bind();
+    glUniform1i(m_imgTexLoc, 0);
+    onProcess(src, dst);
+    glEnableVertexAttribArray(0);
+    glDisableVertexAttribArray(1); //话说不关掉这个就会报错
+    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    m_fbo->unbind();
+    checkGlError("ImageEffect::process");
 }

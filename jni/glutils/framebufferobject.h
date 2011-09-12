@@ -27,6 +27,7 @@ public:
     ~FramebufferObject(void);
 
     void bind(){ glBindFramebuffer(GL_FRAMEBUFFER, m_fboId[0]); };
+    void bindWithTexture(GLuint texId);
     void unbind(){ glBindFramebuffer(GL_FRAMEBUFFER, 0); };
     //此函数的色深与egl环境色深相同
     void texture2d(GLuint texId);
