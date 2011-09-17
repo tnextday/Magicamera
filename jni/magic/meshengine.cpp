@@ -175,20 +175,22 @@ bool MeshEngine::onTouchUp( float x, float y )
 
 void MeshEngine::generateMesh( int w, int h )
 {
-    int uSteps = MESH_WIDTH/m_aspectRatio;
-    int vSteps = MESH_WIDTH;
+    int uSteps = MESH_WIDTH;
+    int vSteps = MESH_WIDTH/m_aspectRatio;
     Mesh::init(uSteps+1, vSteps+1);
     GLfloat x, y,u, v;
-    y = -m_aspectRatio/2.0;
+    GLfloat xStep = m_aspectRatio/uSteps;
+    GLfloat yStep = 1.0/vSteps;
+    y = -1.0/2.0;
     for(int j = 0;j <= vSteps; j++){
         v = 1.0 - (GLfloat)j/vSteps;
-        x = -0.5;
+        x = -m_aspectRatio/2.0;
         for(int i = 0; i <= uSteps; i++){
             u = (GLfloat)i/uSteps;
             set(i,j,x,y,u,v);
-            x += 1.0/uSteps;
+            x += xStep;
         }
-        y += m_aspectRatio/vSteps;
+        y += yStep;
     }
     createBufferObjects();
 }

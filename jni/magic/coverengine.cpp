@@ -169,9 +169,9 @@ void CoverEngine::resizeCoord()
         //ÖØÖÃ×ø±êÏµ
         m_width = m_cover->getRegionWidth();
         m_height = m_cover->getRegionHeight();
-        m_aspectRatio = m_height/m_width;
+        m_aspectRatio = m_width/m_height;
         setSize(m_width, m_height);
-        m_shader.ortho(-0.5, 0.5, -m_aspectRatio/2, m_aspectRatio/2, -10, 10);
+        m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5, -10, 10);
         if (m_onOutputResize){
             m_onOutputResize->onEngineOutChange(&m_OutTex);
         }

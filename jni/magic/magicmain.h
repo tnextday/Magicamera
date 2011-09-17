@@ -34,7 +34,6 @@ class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
     EngineType      m_nextEngine;
 
     Sprite          m_magicSprite;
-    GLfloat         m_magicSpriteY;
 
     GLfloat         m_ScreenWidth;
     GLfloat         m_ScreenHeight;
@@ -88,4 +87,8 @@ private:
     void drawImage();
 
     virtual void onAdjustChange( Texture *tex );
+
+    //将输入坐标转换成笛卡尔坐标 
+    GLfloat transformX(float x){return m_aspectRatio*(x/m_ScreenWidth - 1.0/2.0);};
+    GLfloat transformY(float y){return 1.0/2.0 - y/m_ScreenHeight;};
 };

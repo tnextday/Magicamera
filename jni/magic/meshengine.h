@@ -10,7 +10,7 @@ struct Vertex {
     GLfloat y;
 };
 
-const static int MESH_WIDTH = 60;
+const static int MESH_WIDTH = 50;
 
 class MeshEngine : public Mesh, MagicEngine{
 

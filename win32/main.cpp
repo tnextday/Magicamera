@@ -16,10 +16,10 @@
 //--------------------------------------------------------------------------------------
 
 const CHAR*  g_strWindowTitle = "MagicAmera";
-const UINT32 g_nglWinWidth   = 480;
-const UINT32 g_nglWinHeight  = 640;
+const UINT32 g_nglWinWidth   = 640;
+const UINT32 g_nglWinHeight  = 480;
 const UINT32 g_nToolBarHeight = 32;
-const UINT32 g_nWindowWidth   = 480;
+const UINT32 g_nWindowWidth   = g_nglWinWidth;
 const UINT32 g_nWindowHeight  = g_nglWinHeight + g_nToolBarHeight;
 const UINT32 g_PicWidth = 640;
 const UINT32 g_PicHeigth = 480;
@@ -493,7 +493,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
     if(g_useCamera){
         SetTimer(hWindow, TIMER_UPDATE_NV21, 1000/g_cameraFPSRate, NULL);
         g_MagicMain.setPreviewDataInfo(g_PicWidth, g_PicHeigth, IMAGE_FORMAT_NV21);
-        g_MagicMain.rotate90Input();
+        //g_MagicMain.rotate90Input();
     }else{
         g_MagicMain.setPreviewImage(g_testImagePath);
     }

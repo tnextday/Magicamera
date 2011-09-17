@@ -262,10 +262,10 @@ void Sprite::init(int srcX, int srcY, int srcWidth, int srcHeight)
 
 void Sprite::setSize( GLfloat w, GLfloat h )
 {
-    if(m_aspectRatio == h/w) return;
-    m_aspectRatio = h/w;
-    m_width = 1;
-    m_height = m_aspectRatio;
+    if(m_aspectRatio == w/h) return;
+    m_aspectRatio = w/h;
+    m_width = m_aspectRatio;
+    m_height = 1.0;
 
     if (m_dirty) return;
 
@@ -351,8 +351,8 @@ void Sprite::loadFromFile( const char* texPath )
 
 void Sprite::mapToWordSize( float w, float h )
 {
-    m_width = getRegionWidth()/w;
-    m_height = m_width/m_aspectRatio;
+    m_height = getRegionHeight()/h;
+    m_width = m_height*m_aspectRatio;
 
     if (m_dirty) return;
 

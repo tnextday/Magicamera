@@ -127,25 +127,25 @@ void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 
 bool MagicMain::onTouchDown( float x, float y )
 {
-    x = x/m_ScreenWidth - 1.0/2.0;
-    y = m_aspectRatio/2 - y*m_aspectRatio/m_ScreenHeight;
-    m_Engine->onTouchDown(x, y - m_magicSpriteY);
+    x = transformX(x);
+    y = transformY(y);
+    m_Engine->onTouchDown(x, y);
     return true;
 }
 
 bool MagicMain::onTouchDrag( float x, float y )
 {
-    x = x/m_ScreenWidth - 1.0/2.0;
-    y = m_aspectRatio/2 - y*m_aspectRatio/m_ScreenHeight;
-    m_Engine->onTouchDrag(x, y - m_magicSpriteY);
+    x = transformX(x);
+    y = transformY(y);
+    m_Engine->onTouchDrag(x, y);
     return true;
 }
 
 bool MagicMain::onTouchUp( float x, float y )
 {
-    x = x/m_ScreenWidth - 1.0/2.0;
-    y = m_aspectRatio/2 - y*m_aspectRatio/m_ScreenHeight;
-    m_Engine->onTouchUp(x, y - m_magicSpriteY);
+    x = transformX(x);
+    y = transformY(y);
+    m_Engine->onTouchUp(x, y);
     return true;
 }
 
@@ -257,7 +257,6 @@ void MagicMain::onEngineOutChange( Texture *tex )
 {
     m_magicSprite.setTexture(tex);
     //m_magicSprite.loadFromFile("assets/test2.jpg");
-    m_magicSpriteY = (m_aspectRatio - m_magicSprite.getHeight())/2;
     //TODO 为什么需要flip？？？？！！！！
     m_magicSprite.flip(false, true);
 }
@@ -271,11 +270,8 @@ void MagicMain::onAdjustChange( Texture *tex )
 void MagicMain::resize( int w, int h )
 {
     LOGI("Resize(%d, %d)\n", w, h);
-    m_aspectRatio = (float)h/w;
+    m_aspectRatio = (float)w/h;
     m_ScreenWidth = w;
     m_ScreenHeight = h;
-    m_shader.ortho(-0.5, 0.5, -m_aspectRatio/2, m_aspectRatio/2, -10, 10);
-    if (m_magicSprite.isAvailable()){
-        m_magicSpriteY = (m_aspectRatio - m_magicSprite.getHeight())/2;
-    }
+    m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5,-10, 10);
 }
