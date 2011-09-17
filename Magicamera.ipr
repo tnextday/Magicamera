@@ -3,6 +3,9 @@
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
+  <component name="ClearCaseSharedConfig">
+    <option name="myUseUcmModel" value="true" />
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="compAPI" />
     <resourceExtensions />
@@ -37,6 +40,7 @@
     <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
     <option name="UPDATE_CHANGES_POLICY" value="STASH" />
   </component>
+  <component name="IdProvider" IDEtalkID="B6800378D5122C184EDC2BE98F5F94E5" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -217,5 +221,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="hg4idea" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 

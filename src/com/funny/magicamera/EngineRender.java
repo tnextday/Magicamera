@@ -43,14 +43,14 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         checkFrameBuffer();
         MagicJNILib.step(deltaTime);
         fps.log();
-        long render_time = System.nanoTime() - time;
-        if (render_time < fps_time){
-            try {
-                Thread.sleep((fps_time-render_time)/1000000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//        long render_time = System.nanoTime() - time;
+//        if (render_time < fps_time){
+//            try {
+//                Thread.sleep((fps_time-render_time)/1000000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 

@@ -84,9 +84,9 @@ bool CoverEngine::onTouchDrag( float x, float y )
 
 void CoverEngine::onDraw( Texture *texutre )
 {
+    m_img.draw(&m_shader, texutre);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    m_img.draw(&m_shader, texutre);
     if(m_cover){
         m_cover->draw(&m_shader);
     }

@@ -1,53 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
     <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
             android:layout_weight="1">
 
         <android.opengl.GLSurfaceView android:id="@+id/glsurfaceview"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
-
-        
     </FrameLayout>
-            
+
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_gravity="center">
 
         <Button android:id="@+id/btn_back"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="返 回"/>
+                android:text="返回"/>
 
         <Button android:id="@+id/btn_take"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="拍 照"/>
+                android:text="拍照"/>
         <Button android:id="@+id/btn_engine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="切换引擎"/>
+                android:text="引擎"/>
         
         <Button android:id="@+id/btn_set_cover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="切换相框"/>
+                android:text="相框"/>
 
         <Button android:id="@+id/btn_restore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="复 原"/>
-
+                android:text="复原"/>
     </LinearLayout>
 
 </LinearLayout>

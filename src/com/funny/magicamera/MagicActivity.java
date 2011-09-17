@@ -274,7 +274,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             m_Camera.setPreviewCallback(this);
         }
         m_SurfaceView.queueEvent(new SetPreviewInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat()));
-        MagicJNILib.rotate90Input(true);
+        //MagicJNILib.rotate90Input(true);
         m_Camera.startPreview();
     }
 
