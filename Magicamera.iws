@@ -19,14 +19,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/imageeffect.cpp" afterPath="$PROJECT_DIR$/jni/effect/imageeffect.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/imageeffect.h" afterPath="$PROJECT_DIR$/jni/effect/imageeffect.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/baseshader.cpp" afterPath="$PROJECT_DIR$/jni/glutils/baseshader.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/baseshader.h" afterPath="$PROJECT_DIR$/jni/glutils/baseshader.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/coverengine.cpp" afterPath="$PROJECT_DIR$/jni/magic/coverengine.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicmain.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.h" afterPath="$PROJECT_DIR$/jni/magic/magicmain.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/Sepia.bmp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/00.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/01.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/02.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/03.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/04.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/05.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/06.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/07.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/08.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/09.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/10.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/11.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/12.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/13.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/14.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/15.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/16.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/frames/17.png" />
     </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -128,7 +139,7 @@
       <file leaf-file-name="EngineRender.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="34" selection-start="2011" selection-end="2011" vertical-scroll-proportion="0.6149915">
+            <state line="70" column="30" selection-start="1924" selection-end="1924" vertical-scroll-proportion="0.55025554">
               <folding />
             </state>
           </provider>
@@ -625,7 +636,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="34" selection-start="2011" selection-end="2011" vertical-scroll-proportion="0.6149915">
+        <state line="70" column="30" selection-start="1924" selection-end="1924" vertical-scroll-proportion="0.55025554">
           <folding />
         </state>
       </provider>

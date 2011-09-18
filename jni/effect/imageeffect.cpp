@@ -36,6 +36,12 @@ bool ImageEffect::loadFromMemory( const char* buf, int size )
 bool ImageEffect::loadFromRes( const char* fileName )
 {
     bool result = true;
+    uint32_t size = 0;
+    unsigned char* sbuf = readRes(fileName, size);
+    if (sbuf && size > 0){
+        result = m_shader.loadFromMemory((char* )sbuf, size);
+    }
+    SafeDeleteArray(sbuf);
     return result;
 }
 

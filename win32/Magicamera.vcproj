@@ -418,14 +418,6 @@
 			Name="effect"
 			>
 			<File
-				RelativePath="..\jni\effect\blureffect.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\jni\effect\blureffect.h"
-				>
-			</File>
-			<File
 				RelativePath="..\jni\effect\imageeffect.cpp"
 				>
 			</File>
