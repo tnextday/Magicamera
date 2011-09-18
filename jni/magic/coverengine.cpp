@@ -121,7 +121,7 @@ void CoverEngine::hideCover()
     RotateTo2D * rotate = new RotateTo2D(-10 + rand()%20 , 0.6);
     rotate->setEasing(new CEaseInOutCirc);
     *parallel<<rotate;
-    MoveTo *mt = new MoveTo(0, -m_aspectRatio, 0.8);
+    MoveTo *mt = new MoveTo(0, -1.5, 1.0);
     mt->setEasing(new CEaseInQuart);
     *parallel<<mt;
     m_cover->doAction(parallel);

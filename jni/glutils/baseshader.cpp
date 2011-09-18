@@ -43,7 +43,7 @@ bool BaseShader::makeProgram( const char* pVertexSource, const char* pFragmentSo
 }
 
 
-GLuint BaseShader::getViewPorjLoc()
+GLint BaseShader::getViewPorjLoc()
 {
     return m_viewprojLoc;
 }
@@ -118,4 +118,10 @@ bool BaseShader::loadFromMemory( const char* buf, int size )
     delete [] oBuffer;
     return ret;
 
+}
+
+GLint BaseShader::getUniformLoc( const char * uName )
+{
+    use();
+    return glGetUniformLocation(m_program, uName);
 }

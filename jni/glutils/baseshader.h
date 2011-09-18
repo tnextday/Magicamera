@@ -30,9 +30,11 @@ public:
 
     virtual void use(){if (m_isCompiled) glUseProgram(m_program);};
     GLuint getProgram(){return m_program;};
-    GLuint getPositionLoc(){return m_positionLoc;};
-    GLuint getTextureCoordLoc(){return m_texCoordLoc;};
-    GLuint getViewPorjLoc();
+    GLint getPositionLoc(){return m_positionLoc;};
+    GLint getTextureCoordLoc(){return m_texCoordLoc;};
+    GLint getViewPorjLoc();
+    GLint getUniformLoc(const char * uName);;
+
     void setViewProject(GLfloat *mvp);
     bool isCompiled(){ return m_isCompiled;};
     void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);

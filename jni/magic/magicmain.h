@@ -43,7 +43,7 @@ class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
 
     FileUtils*     m_ioCallBack;
 
-    ImageAdjust     m_adjust;
+//    ImageAdjust     m_adjust;
 
 public:
     MagicMain();

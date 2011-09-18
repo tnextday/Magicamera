@@ -15,4 +15,6 @@ __*
 zlib-1.2.4/*
 *.local
 *.identcache
-win32/nv21/*
+win32/test/*
+win32/assets/*
+*.stackdump

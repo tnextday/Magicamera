@@ -8,7 +8,7 @@
 #include "utils/mathelpers.h"
 #include "coverengine.h"
 
-const float MaxDeltaTime = 1.0/25.0;
+const float MaxDeltaTime = 1.0/20.0;
 
 static const char gVertexShader[] = 
         "uniform mat4 uMVPMatrix;\n"
@@ -71,8 +71,8 @@ bool MagicMain::setupGraphics() {
     glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
 
-    m_adjust.init();
-    m_adjust.setOnOutputChange(this);
+//     m_adjust.init();
+//     m_adjust.setOnOutputChange(this);
 
     return true;
 }
@@ -83,7 +83,7 @@ void MagicMain::renderFrame( float delta )
     if (!m_Engine) return;
     if (delta > MaxDeltaTime)
         delta = MaxDeltaTime;
-    
+
     update(delta);
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
     m_Engine->drawImage();
@@ -106,14 +106,14 @@ void MagicMain::updatePreviewData( char* data, long len )
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
         m_SrcTex.loadFromMemory((unsigned char*)data, len);
     }
-    m_adjust.drawImage();
+/*    m_adjust.drawImage();*/
 }
 
 void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 {
     m_SrcTex.setSize(w, h);
     m_inputFortmat = imageFormat;
-    m_adjust.setInputTexture(&m_SrcTex);
+/*    m_adjust.setInputTexture(&m_SrcTex);*/
     initEngine();
 
     //rgb565比rgb888快至少30%
@@ -180,16 +180,16 @@ void MagicMain::drawImage()
 void MagicMain::setPreviewImage( const char* data, long len )
 {
     m_SrcTex.loadFromMemory((unsigned char*)data, len);
-    m_adjust.setInputTexture(&m_SrcTex);
-    m_adjust.drawImage();
+//     m_adjust.setInputTexture(&m_SrcTex);
+//     m_adjust.drawImage();
     initEngine();
 }
 
 void MagicMain::setPreviewImage( const char* imgPath )
 {
     m_SrcTex.loadFromFile(imgPath);
-    m_adjust.setInputTexture(&m_SrcTex);
-    m_adjust.drawImage();
+//     m_adjust.setInputTexture(&m_SrcTex);
+//     m_adjust.drawImage();
     initEngine();
 }
 
@@ -207,7 +207,8 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
 
     m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
-    m_Engine->initEngine(m_adjust.getOutTexture());
+//    m_Engine->initEngine(m_adjust.getOutTexture());
+    m_Engine->initEngine(&m_SrcTex);
     m_Engine->start();
 }
 
@@ -249,8 +250,8 @@ void MagicMain::restoreMesh()
 void MagicMain::rotate90Input( bool clockwise /*= true*/)
 {
     //TODO Fix：貌似坐标系有点问题！~ 上下翻转的
-    m_adjust.rotate90(!clockwise);
-    m_adjust.drawImage();
+//     m_adjust.rotate90(!clockwise);
+//     m_adjust.drawImage();
 }
 
 void MagicMain::onEngineOutChange( Texture *tex )

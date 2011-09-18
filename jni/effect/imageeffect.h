@@ -9,10 +9,14 @@ class ImageEffect
 protected:
     BaseShader  m_shader;
     GLint       m_imgTexLoc;
+
     GLint       m_effectTexLoc;
+    GLint       m_texWidthLoc;
+    GLint       m_texHeightLoc;
 
     GLuint      m_width;
     GLuint      m_height;
+
 
     Texture     m_OutTex;
     Texture*    m_InTex;

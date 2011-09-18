@@ -12,6 +12,8 @@ static const GLfloat G_QuadData[] = {
 
 ImageEffect::ImageEffect(void)
 {
+    m_texWidthLoc = -1;
+    m_texHeightLoc = -1;
 }
 
 ImageEffect::~ImageEffect(void)
@@ -21,7 +23,14 @@ ImageEffect::~ImageEffect(void)
 
 bool ImageEffect::loadFromMemory( const char* buf, int size )
 {
-    return m_shader.loadFromMemory(buf,size);
+    bool bRet = m_shader.loadFromMemory(buf,size);
+    if (bRet){
+        m_shader.use();
+        m_imgTexLoc = glGetUniformLocation(m_shader.getProgram(), "uImgTex");
+        m_texHeightLoc = glGetUniformLocation(m_shader.getProgram(), "uTexHeight");
+        m_texWidthLoc = glGetUniformLocation(m_shader.getProgram(), "uTexWidth");
+    }
+    return bRet;
 }
 
 bool ImageEffect::loadFromRes( const char* fileName )
@@ -60,12 +69,15 @@ void ImageEffect::process( Texture* src, Texture* dst )
     w = src->getWidth();
     h = src->getHeight();
     dst->setSize(w, h);
-    m_fbo->texture2d(dst->getTexHandle());
     m_shader.use();
+    if (m_texWidthLoc >= 0)
+        glUniform1f(m_texWidthLoc, w);
+    if (m_texHeightLoc >= 0)
+        glUniform1f(m_texHeightLoc, h);
     glDisable(GL_DEPTH_TEST);
-    m_fbo->bind(); 
+    m_fbo->bindWithTexture(dst->getTexHandle()); 
     glViewport(0, 0, w, h);
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     src->bind();
     glUniform1i(m_imgTexLoc, 0);
