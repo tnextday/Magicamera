@@ -38,8 +38,8 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     Camera m_Camera = null;
     final static int BufferCount = 2;
 
-    int m_previewHeight = 320;
-    int m_previewWidth = 480;
+    int m_previewHeight = 480;
+    int m_previewWidth = 640;
 
     public String PicPath = null;
 
