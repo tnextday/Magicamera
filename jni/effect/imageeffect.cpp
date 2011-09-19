@@ -14,8 +14,16 @@ ImageEffect::ImageEffect(void)
 {
     m_texWidthLoc = -1;
     m_texHeightLoc = -1;
+    m_fbo = new FramebufferObject();
 }
 
+ImageEffect::ImageEffect( const char* fileName )
+{
+    m_texWidthLoc = -1;
+    m_texHeightLoc = -1;
+    m_fbo = new FramebufferObject();
+    loadFromRes(fileName);
+}
 ImageEffect::~ImageEffect(void)
 {
     SafeDelete(m_fbo);
@@ -39,34 +47,10 @@ bool ImageEffect::loadFromRes( const char* fileName )
     uint32_t size = 0;
     unsigned char* sbuf = readRes(fileName, size);
     if (sbuf && size > 0){
-        result = m_shader.loadFromMemory((char* )sbuf, size);
+        result = loadFromMemory((char* )sbuf, size);
     }
     SafeDeleteArray(sbuf);
     return result;
-}
-
-void ImageEffect::process()
-{
-    process(m_InTex, &m_OutTex);
-}
-
-void ImageEffect::setInputTex( Texture * tex )
-{
-    m_InTex = tex;
-    m_width = m_InTex->getWidth();
-    m_height = m_InTex->getHeight();
-    m_OutTex.setSize(m_width, m_height);
-    onResize();
-}
-
-void ImageEffect::Init()
-{
-    m_width = 0;
-    m_height = 0;
-    m_OutTex.init();
-    m_fbo = new FramebufferObject();
-    m_fbo->texture2d(m_OutTex.getTexHandle());
-    onInit();
 }
 
 void ImageEffect::process( Texture* src, Texture* dst )
@@ -87,7 +71,6 @@ void ImageEffect::process( Texture* src, Texture* dst )
     glClear(GL_COLOR_BUFFER_BIT);
     src->bind();
     glUniform1i(m_imgTexLoc, 0);
-    onProcess(src, dst);
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1); //话说不关掉这个就会报错
     glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);

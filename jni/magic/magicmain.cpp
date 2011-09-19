@@ -107,6 +107,7 @@ void MagicMain::updatePreviewData( char* data, long len )
         m_SrcTex.loadFromMemory((unsigned char*)data, len);
     }
 /*    m_adjust.drawImage();*/
+    m_Engine->updateInput(&m_SrcTex);
 }
 
 void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )

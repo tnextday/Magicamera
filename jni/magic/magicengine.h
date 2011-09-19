@@ -53,6 +53,7 @@ public:
     bool initEngine(Texture* SrcTex) ;
     void setSize(int w, int h);
     virtual void setInputTexture(Texture* val);
+    virtual void updateInput(Texture* val){};
     Texture* getOutTexture() {return &m_OutTex;};
 
     void drawImage();

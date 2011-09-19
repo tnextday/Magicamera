@@ -11,6 +11,8 @@ CoverEngine::CoverEngine(void)
 {
     m_cover = NULL;
     m_nextCover = NULL;
+    m_effect = NULL;
+    m_effectTex = NULL;
     m_toFinish = false;
     m_bVisible = false;
     m_finished = false;
@@ -20,6 +22,8 @@ CoverEngine::~CoverEngine(void)
 {
     SafeDelete(m_cover);
     SafeDelete(m_nextCover);
+    SafeDelete(m_effect);
+    SafeDelete(m_effectTex);
 }
 
 void CoverEngine::update( GLfloat delta )
@@ -67,9 +71,10 @@ void CoverEngine::start()
     m_toFinish = false;
     m_finished = false;
     uint32_t size;
-    unsigned char* date = m_ioCallBack->readRes("frames/01.png", size);
+    unsigned char* date = m_ioCallBack->readRes("frames/02.png", size);
     setCover(date, size);
     delete [] date;
+    setEffect("shaders/Sobel.sp");
 }
 
 bool CoverEngine::isFinished()
@@ -84,7 +89,12 @@ bool CoverEngine::onTouchDrag( float x, float y )
 
 void CoverEngine::onDraw( Texture *texutre )
 {
-    m_img.draw(&m_shader, texutre);
+    if (texutre)
+        doEffect(texutre);
+    Texture* srcTex = texutre;
+    if (m_effectTex)
+        srcTex = m_effectTex;
+    m_img.draw(&m_shader, srcTex);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     if(m_cover){
@@ -180,8 +190,37 @@ void CoverEngine::resizeCoord()
     }
 }
 
-void CoverEngine::setInputTexture( Texture* val )
+void CoverEngine::setInputTexture( Texture* tex )
 {
-    m_img.setTexture(val);
-    MagicEngine::setInputTexture(val);
+    m_img.setTexture(tex);
+    MagicEngine::setInputTexture(tex);
+    doEffect(tex);
+}
+
+void CoverEngine::updateInput( Texture* tex )
+{
+    doEffect(tex);
+}
+
+void CoverEngine::setEffect( const char* effectPath )
+{
+    if (!effectPath){
+        SafeDelete(m_effect);
+        SafeDelete(m_effectTex);
+    }
+    if (!m_effectTex){
+        m_effectTex = new Texture;
+        m_effectTex->init();
+    }
+    if (!m_effect){
+        m_effect = new ImageEffect();
+    }
+    m_effect->loadFromRes(effectPath);
+    doEffect(m_InTex);
+}
+
+void CoverEngine::doEffect( Texture* tex )
+{
+    if (!m_effect) return;
+    m_effect->process(tex, m_effectTex);
 }
