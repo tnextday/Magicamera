@@ -9,11 +9,16 @@ class BaseShader
 {
 private:
     GLuint m_program;
+    GLuint m_vertexShader;
+    GLuint m_pixelShader;
+
     GLint  m_positionLoc;
     GLint  m_texCoordLoc;
     GLint  m_viewprojLoc;
 
     bool    m_isCompiled;
+
+    GLuint createProgram(const char* pVertexSource, const char* pFragmentSource);
 
 public:
     /**
@@ -42,5 +47,7 @@ public:
 
     bool loadFromRes(const char* fileName);
     bool loadFromMemory(const char* buf, int size);
+
+    static GLuint loadShader(GLenum shaderType, const char* pSource);
 };
 #endif // _baseshader_h_

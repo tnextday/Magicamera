@@ -72,9 +72,9 @@ void CoverEngine::start()
     m_finished = false;
     uint32_t size;
     unsigned char* date = m_ioCallBack->readRes("frames/02.png", size);
-    setCover(date, size);
+    //setCover(date, size);
     delete [] date;
-    setEffect("shaders/Sobel.sp");
+    setEffect("shaders/Blur.sp");
 }
 
 bool CoverEngine::isFinished()

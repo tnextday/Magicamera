@@ -163,6 +163,7 @@ void MagicEngine::setInputTexture( Texture* val )
 {
     if (!val) return;
     m_InTex = val;
-    resizeCoord();
+    if (m_width != val->getWidth() || m_height != val->getHeight())
+        resizeCoord();
 }
 

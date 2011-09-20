@@ -55,7 +55,7 @@ bool ImageEffect::loadFromRes( const char* fileName )
 
 void ImageEffect::process( Texture* src, Texture* dst )
 {
-    GLuint w,h;
+    GLfloat w,h;
     w = src->getWidth();
     h = src->getHeight();
     dst->setSize(w, h);

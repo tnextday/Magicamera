@@ -13,6 +13,7 @@ MeshEngine::MeshEngine()
     m_bAnimating = false;
     m_bMeshChanged = false;
     m_easing = NULL;
+    m_aspectRatio = 0;
 }
 MeshEngine::~MeshEngine()
 {
@@ -197,7 +198,6 @@ void MeshEngine::generateMesh( int w, int h )
 
 void MeshEngine::init( int width, int height )
 {
-    if (m_aspectRatio == height/width) return;
     generateMesh(width, height);
     m_BufferCount = mW*mH*VertexSize;
     SafeDeleteArray(m_DestVertex);
