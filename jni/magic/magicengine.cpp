@@ -70,11 +70,9 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
     m_fbo->bind();
     if (texutre){
         setSize(texutre->getWidth(), texutre->getHeight());
-        draw(texutre);
-    }else{
-        setSize(m_InTex->getWidth(), m_InTex->getHeight());
-        draw();
     }
+    resizeCoord();
+    draw(texutre);
 
     int size = m_width*m_height*4;
     char* pixels = new char[size];
@@ -93,6 +91,7 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
 void MagicEngine::tackPicture( const char* data, long len )
 {
     Texture tex;
+    tex.init();
     tex.loadFromMemory((unsigned char*)data, len);
     tackPicture(&tex);
 }
@@ -100,6 +99,7 @@ void MagicEngine::tackPicture( const char* data, long len )
 void MagicEngine::tackPicture( const char* imagePath )
 {
     Texture tex;
+    tex.init();
     tex.loadFromFile(imagePath);
     tackPicture(&tex);
 }

@@ -70,10 +70,10 @@ void CoverEngine::start()
 {
     m_toFinish = false;
     m_finished = false;
-    uint32_t size;
-    unsigned char* date = m_ioCallBack->readRes("frames/02.png", size);
+    //uint32_t size;
+    //unsigned char* date = m_ioCallBack->readRes("frames/02.png", size);
     //setCover(date, size);
-    delete [] date;
+    //delete [] date;
     setEffect("shaders/Blur.sp");
 }
 
@@ -175,7 +175,7 @@ void CoverEngine::setCover( const char* coverPath)
 void CoverEngine::resizeCoord()
 {
     if (m_cover)
-    {  
+    {
         //ÖØÖÃ×ø±êÏµ
         m_width = m_cover->getRegionWidth();
         m_height = m_cover->getRegionHeight();

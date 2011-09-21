@@ -11,7 +11,7 @@ void OutputDebugText(const char* sz, ...){
     va_start(args, sz);
     _vsnprintf(szData, sizeof(szData)-1, sz, args);
     va_end(args);
-    OutputDebugString(szData);
+    OutputDebugStringA(szData);
 }
 #endif
 

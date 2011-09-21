@@ -86,7 +86,8 @@ void MagicMain::renderFrame( float delta )
 
     update(delta);
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
-    m_Engine->drawImage();
+    if (m_Engine)
+        m_Engine->drawImage();
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
