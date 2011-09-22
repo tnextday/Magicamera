@@ -519,7 +519,6 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int )
             lastTime = timenow;
             // Update and render the application
             g_MagicMain.renderFrame(delta);
-
             // Present the scene
             eglSwapBuffers( g_eglDisplay, g_eglSurface );
             frames++;

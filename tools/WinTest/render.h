@@ -23,14 +23,14 @@ class Render : public QWidget
 {
     Q_OBJECT
 private:
-    float m_lastTime;
-    float m_fpsTime;
-    int     m_fpsFrames;
+    float       m_lastTime;
+    float       m_fpsTime;
+    int         m_fpsFrames;
 public:
-    MagicMain       g_MagicMain;
-    WinCallBack     g_WinCallBack;
-    EGLSurface      g_eglSurface;
-    EGLDisplay      g_eglDisplay;
+    MagicMain       m_MagicMain;
+    WinCallBack     m_WinCallBack;
+    EGLSurface      m_eglSurface;
+    EGLDisplay      m_eglDisplay;
 
     QTimer          m_timer;
 public:
@@ -40,13 +40,10 @@ public:
 
 public slots:
     void on_renerTimer();
-    virtual void resizeEvent( QResizeEvent * );
-
-    virtual void mouseMoveEvent( QMouseEvent * );
-
-    virtual void mouseReleaseEvent( QMouseEvent * );
-
-    virtual void mousePressEvent( QMouseEvent * );
+    virtual void resizeEvent( QResizeEvent * e);
+    virtual void mouseMoveEvent( QMouseEvent * e);
+    virtual void mouseReleaseEvent( QMouseEvent * e);
+    virtual void mousePressEvent( QMouseEvent * e);
 };
 
 #endif // RENDER_H

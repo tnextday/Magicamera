@@ -8,7 +8,7 @@
 class WinTest : public QWidget
 {
     Q_OBJECT
-    Render *m_render;
+    Render m_render;
 public:
     WinTest(QWidget *parent = 0, Qt::WFlags flags = 0);
     ~WinTest();
