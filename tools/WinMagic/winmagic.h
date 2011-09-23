@@ -2,16 +2,16 @@
 #define WINTEST_H
 
 #include <QtGui/QWidget>
-#include "ui_wintest.h"
+#include "ui_winmagic.h"
 #include "render.h"
 
-class WinTest : public QWidget
+class WinMagic : public QWidget
 {
     Q_OBJECT
     Render m_render;
 public:
-    WinTest(QWidget *parent = 0, Qt::WFlags flags = 0);
-    ~WinTest();
+    WinMagic(QWidget *parent = 0, Qt::WFlags flags = 0);
+    ~WinMagic();
 
 private:
     Ui::WinTestClass ui;

@@ -24,7 +24,7 @@
     <widget class="QCommandLinkButton" name="clb_selectImg">
      <property name="font">
       <font>
-       <family>微软雅黑</family>
+       <family>Segoe UI</family>
       </font>
      </property>
      <property name="text">
@@ -80,7 +80,7 @@
              <widget class="QCommandLinkButton" name="clb_restore">
               <property name="font">
                <font>
-                <family>微软雅黑</family>
+                <family>Segoe UI</family>
                </font>
               </property>
               <property name="text">
@@ -157,7 +157,7 @@
     <widget class="QCommandLinkButton" name="clb_save">
      <property name="font">
       <font>
-       <family>微软雅黑</family>
+       <family>Segoe UI</family>
       </font>
      </property>
      <property name="text">
@@ -172,7 +172,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="wintest.qrc"/>
+  <include location="winmagic.qrc"/>
  </resources>
  <connections>
   <connection>

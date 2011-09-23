@@ -1,6 +1,6 @@
-#include "wintest.h"
+#include "winmagic.h"
 
-WinTest::WinTest(QWidget *parent, Qt::WFlags flags)
+WinMagic::WinMagic(QWidget *parent, Qt::WFlags flags)
     : QWidget(parent, flags)
 {
     ui.setupUi(this);
@@ -10,6 +10,6 @@ WinTest::WinTest(QWidget *parent, Qt::WFlags flags)
     ui.cb_engine->addItems(sl);
 }
 
-WinTest::~WinTest()
+WinMagic::~WinMagic()
 {
 }
