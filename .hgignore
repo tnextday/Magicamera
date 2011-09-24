@@ -19,7 +19,4 @@ win32/test/*
 win32/assets/*
 *.stackdump
 */GeneratedFiles/*
-*.nv21
-tools/assets/*
-tools/test/*
 *.lnk
