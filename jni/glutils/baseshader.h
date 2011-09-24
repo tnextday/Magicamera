@@ -45,7 +45,7 @@ public:
     void ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat znear, GLfloat zfar);
     void setViewProj(GLfloat* mvp);
 
-    bool loadFromRes(const char* fileName);
+    bool loadFromFile(const char* fileName);
     bool loadFromMemory(const char* buf, int size);
 
     static GLuint loadShader(GLenum shaderType, const char* pSource);

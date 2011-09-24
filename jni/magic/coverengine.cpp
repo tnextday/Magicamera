@@ -74,7 +74,7 @@ void CoverEngine::start()
     //unsigned char* date = m_ioCallBack->readRes("frames/02.png", size);
     //setCover(date, size);
     //delete [] date;
-    setEffect("shaders/Blur.sp");
+    setEffect("res://shaders/Blur.sp");
 }
 
 bool CoverEngine::isFinished()
@@ -215,7 +215,7 @@ void CoverEngine::setEffect( const char* effectPath )
     if (!m_effect){
         m_effect = new ImageEffect();
     }
-    m_effect->loadFromRes(effectPath);
+    m_effect->loadFromFile(effectPath);
     doEffect(m_InTex);
 }
 

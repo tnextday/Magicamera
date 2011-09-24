@@ -131,7 +131,8 @@ bool MagicMain::onTouchDown( float x, float y )
 {
     x = transformX(x);
     y = transformY(y);
-    m_Engine->onTouchDown(x, y);
+    if (m_Engine)
+        m_Engine->onTouchDown(x, y);
     return true;
 }
 
@@ -139,7 +140,8 @@ bool MagicMain::onTouchDrag( float x, float y )
 {
     x = transformX(x);
     y = transformY(y);
-    m_Engine->onTouchDrag(x, y);
+    if (m_Engine)
+        m_Engine->onTouchDrag(x, y);
     return true;
 }
 
@@ -147,7 +149,8 @@ bool MagicMain::onTouchUp( float x, float y )
 {
     x = transformX(x);
     y = transformY(y);
-    m_Engine->onTouchUp(x, y);
+    if (m_Engine)
+        m_Engine->onTouchUp(x, y);
     return true;
 }
 
@@ -216,14 +219,16 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
 
 void MagicMain::switchEngine(EngineType type)
 {
-    if (m_Engine->type() == type) return;
+    if (m_Engine && m_Engine->type() == type) return;
     m_nextEngine = type;
-    m_Engine->finish();
+    if (m_Engine)
+        m_Engine->finish();
 }
 
 void MagicMain::takePicture()
 {
-    m_Engine->tackPicture();
+    if (m_Engine)
+        m_Engine->tackPicture();
 }
 
 EngineType MagicMain::getEngineType()

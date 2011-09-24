@@ -22,7 +22,7 @@ ImageEffect::ImageEffect( const char* fileName )
     m_texWidthLoc = -1;
     m_texHeightLoc = -1;
     m_fbo = new FramebufferObject();
-    loadFromRes(fileName);
+    loadFromFile(fileName);
 }
 ImageEffect::~ImageEffect(void)
 {
@@ -41,11 +41,11 @@ bool ImageEffect::loadFromMemory( const char* buf, int size )
     return bRet;
 }
 
-bool ImageEffect::loadFromRes( const char* fileName )
+bool ImageEffect::loadFromFile( const char* fileName )
 {
     bool result = true;
     uint32_t size = 0;
-    unsigned char* sbuf = readRes(fileName, size);
+    unsigned char* sbuf = EasyReadFile(fileName, size);
     if (sbuf && size > 0){
         result = loadFromMemory((char* )sbuf, size);
     }

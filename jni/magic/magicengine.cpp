@@ -34,7 +34,7 @@ MagicEngine::~MagicEngine()
 
 bool MagicEngine::initEngine(Texture* SrcTex) {
     m_OutTex.init();
-    m_shader.loadFromRes("shaders/default.sp");
+    m_shader.loadFromFile("res://shaders/default.sp");
     setInputTexture(SrcTex);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());

@@ -84,11 +84,11 @@ void BaseShader::deleteProgram()
     }
 }
 
-bool BaseShader::loadFromRes( const char* fileName )
+bool BaseShader::loadFromFile( const char* fileName )
 {
     bool ret = false;
     uint32_t size;
-    unsigned char* date = readRes(fileName, size);
+    unsigned char* date = EasyReadFile(fileName, size);
     ret = loadFromMemory((char*)date, size);
     SafeDeleteArray(date);
     return ret;

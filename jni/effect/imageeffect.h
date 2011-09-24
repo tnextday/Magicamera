@@ -22,6 +22,6 @@ public:
     ImageEffect(const char* fileName);
     virtual ~ImageEffect(void);
     virtual void process(Texture* src, Texture* dst);
-    bool loadFromRes( const char* fileName );
+    bool loadFromFile( const char* fileName );
     bool loadFromMemory( const char* buf, int size );
 };

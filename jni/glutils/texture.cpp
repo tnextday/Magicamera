@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "texture.h"
 #include "glutils.h"
-
+#include "utils/fileutils.h"
 
 Texture::Texture()
 {
@@ -136,32 +136,16 @@ bool Texture::loadFromFile( const char *filePath )
         init();
     }
     bool result = true;
-    FILE *fp = fopen(filePath, "rb");
-    if (!fp) {
-        LOGE("Can't open file: %s\n", filePath);
-        return false;
-    }
-    char* buffer = NULL;
-    fseek(fp, 0, SEEK_END);
-    long size = ftell(fp);            // determine file size so we can fill it in later if FileSize == 0
-    if (size <= 0) {
-        fclose(fp);
-        return false;
-    }
-    fseek(fp, 0, SEEK_SET);
-    buffer = new char[size];
+    uint32_t size;
+    unsigned char* buffer = EasyReadFile(filePath, size);
 
-    if (fread(buffer, sizeof(char), size, fp) > 0){
+    if (buffer && size > 0){
         loadFromMemory((unsigned char*)buffer, size);
     }else{
         LOGE("Can't load texture: %s\n", filePath);
         result = false;
     }
-    fclose(fp);
-    if (buffer){
-        delete[] buffer;
-        buffer = NULL;
-    }
+    SafeDeleteArray(buffer);
     return result;
 }
 

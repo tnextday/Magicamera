@@ -7,15 +7,22 @@
 #include "magic/magicmain.h"
 #include <QTimer>
 #include <QResizeEvent>
+#include <QDir>
+#include "eglhelper.h"
 
-char* readFile(char* filename, uint32_t &size, char* preBuffer = NULL);
-float FrmGetTime();
-int eglCreateSurface(HWND hWnd, EGLSurface &eglSurface, EGLDisplay &eglDisplay);
 
 class WinCallBack: public FileUtils{
+private:
+    QDir     m_saveImageDir;
+    QDir     m_resDir;
 public:
+    WinCallBack();
     virtual bool SaveImage( char* buffer, int w, int h, int format );
-    virtual unsigned char* readRes( const char* resname, uint32_t& size );
+    virtual unsigned char* readResFile( const char* resname, uint32_t& size );
+
+    void setSavePath(QString &path);
+    void setResDir(QString &path);
+    static char* readResFile(QString &filename, uint32_t &size, char* preBuffer = NULL);
 };
 
 
@@ -43,6 +50,14 @@ public slots:
     virtual void mouseMoveEvent( QMouseEvent * e);
     virtual void mouseReleaseEvent( QMouseEvent * e);
     virtual void mousePressEvent( QMouseEvent * e);
+
+    void setImage(QString &path);
+    void setEngine(int engine);
+    void restoreMesh();
+    void setCover(QString &path);
+    void setEffect(QString &path);
+    void setSavePath(QString &path);
+    void setResPath(QString &path);
 
 
 };

@@ -48,13 +48,55 @@ unsigned char* getFileDataFromZip( const char* pszZipFilePath, const char* pszFi
     return pBuffer;
 }
 
-unsigned char* readRes( const char* resname, uint32_t& size )
+unsigned char* EasyReadFile( const char* resName, uint32_t& size )
 {
     if (!g_FileUtils) return NULL;
-    return g_FileUtils->readRes(resname, size);
+    return g_FileUtils->readFile(resName, size);
 }
 
 void setFileUtils( FileUtils *fu )
 {
     g_FileUtils = fu;
+}
+
+bool strStartWith( const char * str, const char * prefix )
+{
+    if (!str || !prefix)
+        return false;
+    while(*str){
+        if (*str != *prefix)
+            break;
+        str++; 
+        prefix++;
+        if (*prefix == 0)
+            return true;
+    }
+    return false;
+}
+
+unsigned char* FileUtils::readFile( const char* filePath, uint32_t& size )
+{
+    if (strStartWith(filePath, "res://"))
+        return readResFile(filePath+6, size);
+    else
+        return readNormalFile(filePath, size);
+}
+
+unsigned char* FileUtils::readNormalFile( const char* filePath, uint32_t& size )
+{
+    FILE *fp = fopen(filePath, "rb");
+    if (!fp) return NULL;
+    unsigned char* buffer = NULL;
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);            // determine file size so we can fill it in later if FileSize == 0
+    if (size <= 0) goto __end ;
+    fseek(fp, 0, SEEK_SET);
+    buffer = new unsigned char[size];
+    if (fread(buffer, sizeof(char), size, fp) <= 0){
+        SafeDeleteArray(buffer);
+    }
+
+__end:
+    fclose(fp);
+    return buffer;
 }
