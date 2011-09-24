@@ -37,13 +37,14 @@ public:
     Render(QWidget *parent = 0);
     ~Render();
 
-
 public slots:
     void on_renerTimer();
     virtual void resizeEvent( QResizeEvent * e);
     virtual void mouseMoveEvent( QMouseEvent * e);
     virtual void mouseReleaseEvent( QMouseEvent * e);
     virtual void mousePressEvent( QMouseEvent * e);
+
+
 };
 
 #endif // RENDER_H

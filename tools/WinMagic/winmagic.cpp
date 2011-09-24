@@ -13,3 +13,8 @@ WinMagic::WinMagic(QWidget *parent, Qt::WFlags flags)
 WinMagic::~WinMagic()
 {
 }
+
+void WinMagic::on_cb_engine_currentIndexChanged( int index )
+{
+    
+}

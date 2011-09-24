@@ -15,6 +15,9 @@ public:
 
 private:
     Ui::WinTestClass ui;
+
+public slots:
+    void on_cb_engine_currentIndexChanged(int index);
 };
 
 #endif // WINTEST_H

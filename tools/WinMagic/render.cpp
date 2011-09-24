@@ -1,10 +1,10 @@
 #include "render.h"
 #include <QDir>
 
-const char* g_testImagePath = "..\\test\\test.jpg";
+const char* g_testImagePath = "test\\test.jpg";
 const char* g_strNV21Path = "test\\nv21\\%03d.nv21";
 const char* g_strSaveImagePath = "test.tga";
-const char* g_resPath = "..\\assets\\";
+const char* g_resPath = "assets\\";
 
 char* readFile(char* filename, uint32_t &size, char* preBuffer /*= NULL*/){
     QFile file(filename);
@@ -218,6 +218,7 @@ Render::Render(QWidget *parent)
     m_timer.start(1000/60);
     m_fpsTime = 0;
     m_lastTime = 0;
+    m_fpsFrames = 0;
 }
 
 Render::~Render()
