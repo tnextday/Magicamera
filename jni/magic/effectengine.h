@@ -3,13 +3,14 @@
 #include "glutils/sprite.h"
 #include "effect/imageeffect.h"
 
-class CoverEngine :
+class EffectEngine :
     public MagicEngine
 {
 private:
     Sprite      m_img;
-    Sprite      *m_cover;
-    Sprite      *m_nextCover;
+    Texture     *m_coverTex;
+    Sprite      *m_frame;
+    Sprite      *m_nextFrame;
     ImageEffect *m_effect;
     Texture     *m_effectTex;
 
@@ -17,17 +18,21 @@ private:
     bool    m_finished;
 
     bool    m_bVisible;
-    
+
+    GLenum      m_sCoverFactor;
+    GLenum      m_dCoverFactor;
+    GLenum      m_sFrameFactor;
+    GLenum      m_dFrameFactor;
 
 protected:
-    virtual void resizeCoord();
+    virtual void resizeCoord(int w, int h);
     virtual bool onInit();
     virtual void onDraw( Texture *texutre );
     void doEffect(Texture* tex);
 
 public:
-    CoverEngine(void);
-    virtual ~CoverEngine(void);
+    EffectEngine(void);
+    virtual ~EffectEngine(void);
 
 
     void showCover();
@@ -51,6 +56,9 @@ public:
 
 public:
     void setCover(const char* coverPath);
-    void setCover( const unsigned char* buffer, uint32_t size );
+    void setFrame(const char* framePath);
+    void setFrame( const unsigned char* buffer, uint32_t size );
     void setEffect(const char* effectPath);
+
+    virtual void setSize( int w, int h, bool bPreview = true);
 };

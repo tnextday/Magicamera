@@ -38,6 +38,8 @@ class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
     GLfloat         m_ScreenWidth;
     GLfloat         m_ScreenHeight;
     GLfloat         m_aspectRatio;
+    GLuint          m_PreviewWidth;
+    GLuint          m_PreviewHeight;
 
     int             m_inputFortmat;
 
@@ -80,6 +82,7 @@ public:
     virtual void onEngineOutChange( Texture *tex );
 
     void resize(int w, int h);
+    void setPreviewSize(GLuint w, GLuint h);
 
 private:
     void initEngine(EngineType type = EngineType_Mesh);

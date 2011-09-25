@@ -6,7 +6,7 @@
 #include "magicmain.h"
 #include "glutils/glutils.h"
 #include "utils/mathelpers.h"
-#include "coverengine.h"
+#include "effectengine.h"
 
 const float MaxDeltaTime = 1.0/20.0;
 
@@ -203,13 +203,13 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     SafeDelete(m_Engine);
     switch (type)
     {
-    case EngineType_Cover:
-        m_Engine = (MagicEngine* )(new CoverEngine());
+    case EngineType_Effect:
+        m_Engine = (MagicEngine* )(new EffectEngine());
     	break;
     default:
         m_Engine = (MagicEngine* )(new MeshEngine());
     }
-
+    m_Engine->setPreviewSize(m_PreviewWidth, m_PreviewHeight);
     m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
 //    m_Engine->initEngine(m_adjust.getOutTexture());
@@ -242,16 +242,16 @@ EngineType MagicMain::getEngineType()
 
 void MagicMain::setCover( const unsigned char* buffer, uint32_t size )
 {
-    if (!m_Engine || m_Engine->type() != EngineType_Cover)
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
         return;
-    ((CoverEngine *)m_Engine)->setCover(buffer, size);
+    ((EffectEngine *)m_Engine)->setFrame(buffer, size);
 }
 
 void MagicMain::setCover( const char* path )
 {
-    if (!m_Engine || m_Engine->type() != EngineType_Cover)
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
         return;
-    ((CoverEngine *)m_Engine)->setCover(path);
+    ((EffectEngine *)m_Engine)->setFrame(path);
 }
 
 void MagicMain::restoreMesh()
@@ -288,12 +288,20 @@ void MagicMain::resize( int w, int h )
     m_aspectRatio = (float)w/h;
     m_ScreenWidth = w;
     m_ScreenHeight = h;
+    setPreviewSize(w, h);
     m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5,-10, 10);
+
 }
 
 void MagicMain::setEffect( const char* path )
 {
-    if (!m_Engine || m_Engine->type() != EngineType_Cover)
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
         return;
-    ((CoverEngine *)m_Engine)->setEffect(path);
+    ((EffectEngine *)m_Engine)->setEffect(path);
+}
+
+void MagicMain::setPreviewSize( GLuint w, GLuint h )
+{
+    m_PreviewWidth = w;
+    m_PreviewHeight = h;
 }

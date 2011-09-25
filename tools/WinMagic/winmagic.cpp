@@ -12,11 +12,11 @@ WinMagic::WinMagic(QWidget *parent, Qt::WFlags flags)
     QDir dir = QDir::current();
     dir.cd("./assets/frames");
     sl = dir.entryList(QStringList("*.png"),QDir::Files | QDir::NoSymLinks);
-    sl<<"";
+    sl.push_front("--None--");
     ui.cmb_cover->addItems(sl);
     dir.cd("../effects");
     sl = dir.entryList(QStringList("*.sp"),QDir::Files | QDir::NoSymLinks);
-    sl<<QString::fromWCharArray(L"");
+    sl.push_front("--None--");
     ui.cmb_effect->addItems(sl);
     dir.cd("../../test");
     m_render.setImage(dir.filePath("test.jpg"));
@@ -39,9 +39,11 @@ void WinMagic::on_clb_save_clicked()
 void WinMagic::on_clb_selectImg_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open Image"), "", tr("Image Files (*.png *.jpg *.bmp)"));
-    m_render.setImage(fileName);
-    ui.cb_engine->setCurrentIndex(0);
+        tr("Open Image"), "", tr("Image Files (*.png *.jpg *.bmp *.tga)"));
+    if (QFile::exists(fileName)){
+        m_render.setImage(fileName);
+        ui.cb_engine->setCurrentIndex(0);
+    }
 }
 
 void WinMagic::on_clb_restore_clicked()
@@ -51,10 +53,16 @@ void WinMagic::on_clb_restore_clicked()
 
 void WinMagic::on_cmb_cover_currentIndexChanged( const QString & text )
 {
-    m_render.setCover(QString::fromWCharArray(L"res://frames\\%1").arg(text));
+    if (!text.startsWith("--"))
+        m_render.setFrame(QString::fromWCharArray(L"res://frames\\%1").arg(text));
+    else
+        m_render.setFrame("");
 }
 
 void WinMagic::on_cmb_effect_currentIndexChanged( const QString & text )
 {
-    m_render.setEffect(QString::fromWCharArray(L"res://effects\\%1").arg(text));
+    if (!text.startsWith("--"))
+        m_render.setEffect(QString::fromWCharArray(L"res://effects\\%1").arg(text));
+    else
+        m_render.setEffect("");
 }

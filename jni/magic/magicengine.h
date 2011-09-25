@@ -10,10 +10,9 @@
 enum EngineType {
     EngineType_None = 0,
     EngineType_Mesh,
-    EngineType_Cover,
-    ENgineType_Effect,
+    EngineType_Effect,
     EngineType_Kaleidoscope,
-    ENgineType_Size
+    EngineType_Size
 };
 
 class EngineOutChange{
@@ -28,12 +27,11 @@ protected:
     Texture*        m_InTex;
     Texture         m_OutTex;
 
-    GLfloat         m_width;
-    GLfloat         m_height;
+    GLuint         m_width;
+    GLuint         m_height;
     GLfloat         m_aspectRatio;
-
-    GLenum          m_sfactor;
-    GLenum          m_dfactor;
+    GLuint          m_PreviewWidth;
+    GLuint          m_PreviewHeight;
 
     FramebufferObject*      m_fbo;
     FileUtils*      m_ioCallBack;
@@ -44,15 +42,15 @@ protected:
     void draw(Texture *texutre = NULL);
     virtual bool onInit() = 0;
     virtual void onDraw(Texture *texutre) = 0;
-    virtual void resizeCoord();
+    virtual void resizeCoord(int w, int h);
 public:
     MagicEngine();
-    MagicEngine(Texture* SrcTex);
+/*    MagicEngine(Texture* SrcTex);*/
     //声明为虚函数，确保子类可以被释放
     virtual	~MagicEngine();
 
     bool initEngine(Texture* SrcTex) ;
-    void setSize(int w, int h);
+    virtual void setSize(int w, int h, bool bPreview = true);
     virtual void setInputTexture(Texture* val);
     virtual void updateInput(Texture* val){};
     Texture* getOutTexture() {return &m_OutTex;};
@@ -67,10 +65,10 @@ public:
     void SetIOCallBack(FileUtils* val);
     void setOutputResize(EngineOutChange* val) { m_onOutputResize = val; }
 
-    GLfloat getWidth(){return m_width;}
-    GLfloat getHeigth(){return m_height;} 
+    GLuint getWidth(){return m_width;}
+    GLuint getHeigth(){return m_height;} 
 
-    void setBlendFunc(GLenum sfactor, GLenum dfactor);
+    void setPreviewSize(GLuint w, GLuint h);
 
     virtual void update(GLfloat delta) = 0;
     virtual void start() = 0;

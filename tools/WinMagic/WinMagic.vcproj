@@ -625,11 +625,11 @@
 				Name="magic"
 				>
 				<File
-					RelativePath="..\..\jni\magic\coverengine.cpp"
+					RelativePath="..\..\jni\magic\effectengine.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\jni\magic\coverengine.h"
+					RelativePath="..\..\jni\magic\effectengine.h"
 					>
 				</File>
 				<File

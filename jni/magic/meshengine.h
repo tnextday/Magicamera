@@ -88,6 +88,6 @@ public:
 
     virtual EngineType type();
 
-    virtual void resizeCoord();
+    virtual void resizeCoord(int w, int h);
 };
 #endif // _meshengine_h_

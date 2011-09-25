@@ -54,7 +54,7 @@ public slots:
     void setImage(const QString &path);
     void setEngine(int engine);
     void restoreMesh();
-    void setCover(const QString &path);
+    void setFrame(const QString &path);
     void setEffect(const QString &path);
     void setSavePath(const QString &path);
     void setResPath(const QString &path);

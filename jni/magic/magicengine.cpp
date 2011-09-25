@@ -11,21 +11,21 @@ MagicEngine::MagicEngine()
 {
     m_InTex = NULL;
     m_fbo = NULL;
-    m_sfactor = GL_SRC_ALPHA;
-    m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
     m_ioCallBack = NULL;
+    m_PreviewWidth = 640;
+    m_PreviewHeight = 480;
     m_onOutputResize = NULL;
 }
 
-MagicEngine::MagicEngine(Texture* SrcTex)
-{
-    m_sfactor = GL_SRC_ALPHA;
-    m_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-    m_ioCallBack = NULL;
-    m_onOutputResize = NULL;
-    m_InTex = NULL;
-    initEngine(SrcTex);
-}
+// MagicEngine::MagicEngine(Texture* SrcTex)
+// {
+//     m_ioCallBack = NULL;
+//     m_onOutputResize = NULL;
+//     m_InTex = NULL;
+//     m_PreviewWidth = 640;
+//     m_PreviewHeight = 480;
+//     initEngine(SrcTex);
+// }
 
 MagicEngine::~MagicEngine()
 {
@@ -53,14 +53,7 @@ void MagicEngine::drawImage()
     m_fbo->unbind();
 }
 
-//设置输出图片大小，不同于坐标
-void MagicEngine::setSize( int w, int h )
-{
-    //输出图片的比例和坐标系相同 
-    m_width = w;
-    m_height = h;
-    m_OutTex.setSize(m_width, m_height);
-}
+
 
 
 //保存图片会以输入图片的大小为准，但是会切割成处理后大小的比例
@@ -69,9 +62,10 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
     int ow = m_width, oh = m_height;
     m_fbo->bind();
     if (texutre){
-        setSize(texutre->getWidth(), texutre->getHeight());
+        setSize(texutre->getWidth(), texutre->getHeight(), false);
+    }else{
+        setSize(m_InTex->getWidth(), m_InTex->getHeight(), false);
     }
-    resizeCoord();
     draw(texutre);
 
     int size = m_width*m_height*4;
@@ -109,13 +103,6 @@ void MagicEngine::tackPicture( const char* data, int w, int h, int format )
     //TODO 暂时用不到，有时间完善 
 }
 
-void MagicEngine::setBlendFunc( GLenum sfactor, GLenum dfactor )
-{
-    m_sfactor = sfactor;
-    m_dfactor = dfactor;
-}
-
-
 bool MagicEngine::onTouchDown( float x, float y )
 {
     return false;
@@ -147,13 +134,30 @@ void MagicEngine::SetIOCallBack( FileUtils* val )
     m_ioCallBack = val;
 }
 
-void MagicEngine::resizeCoord()
+void MagicEngine::resizeCoord( int w, int h )
 {
-    m_width = m_InTex->getWidth();
-    m_height = m_InTex->getHeight();
-    m_aspectRatio = (float)m_width/m_height;
-    setSize(m_width, m_height);
+    m_aspectRatio = (float)w/h;
     m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5, -10, 10);
+    setSize(w, h);
+}
+
+//设置输出图片大小，不同于坐标
+void MagicEngine::setSize( int w, int h , bool bPreview /*= true*/)
+{
+    if (bPreview){
+        float aspect = (float)w/h;
+        if (aspect > m_aspectRatio){
+            m_width = m_PreviewWidth;
+            m_height = m_width/aspect;
+        }else{
+            m_height = m_PreviewHeight;
+            m_width = m_height*aspect;
+        }
+    }else{
+        m_width = w;
+        m_height = h;
+    }
+    m_OutTex.setSize(m_width, m_height);
     if (m_onOutputResize){
         m_onOutputResize->onEngineOutChange(&m_OutTex);
     }
@@ -164,6 +168,12 @@ void MagicEngine::setInputTexture( Texture* val )
     if (!val) return;
     m_InTex = val;
     if (m_width != val->getWidth() || m_height != val->getHeight())
-        resizeCoord();
+        resizeCoord(val->getWidth(), val->getHeight());
+}
+
+void MagicEngine::setPreviewSize( GLuint w, GLuint h )
+{
+    m_PreviewWidth = w;
+    m_PreviewHeight = h;
 }
 

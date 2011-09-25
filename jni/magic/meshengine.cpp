@@ -216,8 +216,8 @@ EngineType MeshEngine::type()
     return EngineType_Mesh;
 }
 
-void MeshEngine::resizeCoord()
+void MeshEngine::resizeCoord( int w, int h )
 {
-    MagicEngine::resizeCoord();
+    MagicEngine::resizeCoord(w, h);
     init(m_width, m_height);
 }

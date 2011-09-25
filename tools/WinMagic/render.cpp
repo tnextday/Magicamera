@@ -124,7 +124,7 @@ void Render::setImage(const QString &path )
 
 void Render::setEngine( int engine )
 {
-    if (engine >= ENgineType_Size)
+    if (engine >= EngineType_Size)
         return;
     m_MagicMain.switchEngine((EngineType)engine);
 }
@@ -134,14 +134,20 @@ void Render::restoreMesh()
     m_MagicMain.restoreMesh();
 }
 
-void Render::setCover(const QString &path )
+void Render::setFrame(const QString &path )
 {
-    m_MagicMain.setCover(path.toLocal8Bit());
+    if (path != "")
+        m_MagicMain.setCover(path.toLocal8Bit());
+    else
+        m_MagicMain.setCover(NULL);
 }
 
 void Render::setEffect(const QString &path )
 {
-    m_MagicMain.setEffect(path.toLocal8Bit());
+    if (path != "")
+        m_MagicMain.setEffect(path.toLocal8Bit());
+    else
+        m_MagicMain.setEffect(NULL);
 }
 
 void Render::setSavePath(const QString &path )
