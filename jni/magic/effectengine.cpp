@@ -39,13 +39,15 @@ void EffectEngine::update( GLfloat delta )
     m_frame->update(delta);
     if (m_frame->isActionDone()){
         if (!m_bVisible){
+            SafeDelete(m_frame);
             if (m_toFinish){
                 m_finished = true;
             }else if (m_nextFrame){
-                SafeDelete(m_frame);
                 m_frame = m_nextFrame;
                 m_nextFrame = NULL;
                 showCover();
+            }else{
+                resizeCoord(m_InTex->getWidth(), m_InTex->getHeight());
             }
         }    
     }
