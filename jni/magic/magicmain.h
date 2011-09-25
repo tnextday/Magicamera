@@ -64,6 +64,8 @@ public:
     void switchEngine(EngineType type);
 
     void setCover(const unsigned char* buffer, uint32_t size);
+    void setCover(const char* path);
+    void setEffect(const char* path);
     void restoreMesh();
 
     void rotate90Input(bool clockwise = true);

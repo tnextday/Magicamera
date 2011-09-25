@@ -20,9 +20,8 @@ public:
     virtual bool SaveImage( char* buffer, int w, int h, int format );
     virtual unsigned char* readResFile( const char* resname, uint32_t& size );
 
-    void setSavePath(QString &path);
-    void setResDir(QString &path);
-    static char* readResFile(QString &filename, uint32_t &size, char* preBuffer = NULL);
+    void setSavePath(const QString &path);
+    void setResDir(const QString &path);
 };
 
 
@@ -43,6 +42,7 @@ public:
 public:
     Render(QWidget *parent = 0);
     ~Render();
+    QPaintEngine* paintEngine() const;
 
 public slots:
     void on_renerTimer();
@@ -51,15 +51,14 @@ public slots:
     virtual void mouseReleaseEvent( QMouseEvent * e);
     virtual void mousePressEvent( QMouseEvent * e);
 
-    void setImage(QString &path);
+    void setImage(const QString &path);
     void setEngine(int engine);
     void restoreMesh();
-    void setCover(QString &path);
-    void setEffect(QString &path);
-    void setSavePath(QString &path);
-    void setResPath(QString &path);
-
-
+    void setCover(const QString &path);
+    void setEffect(const QString &path);
+    void setSavePath(const QString &path);
+    void setResPath(const QString &path);
+    void takePicture();
 };
 
 #endif // RENDER_H

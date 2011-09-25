@@ -8,11 +8,12 @@
 #include "utils/fileutils.h"
 
 enum EngineType {
-    EngineType_None,
+    EngineType_None = 0,
     EngineType_Mesh,
     EngineType_Cover,
     ENgineType_Effect,
-    EngineType_Kaleidoscope
+    EngineType_Kaleidoscope,
+    ENgineType_Size
 };
 
 class EngineOutChange{

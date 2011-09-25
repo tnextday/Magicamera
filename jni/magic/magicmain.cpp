@@ -242,9 +242,16 @@ EngineType MagicMain::getEngineType()
 
 void MagicMain::setCover( const unsigned char* buffer, uint32_t size )
 {
-    if (m_Engine->type() != EngineType_Cover)
+    if (!m_Engine || m_Engine->type() != EngineType_Cover)
         return;
     ((CoverEngine *)m_Engine)->setCover(buffer, size);
+}
+
+void MagicMain::setCover( const char* path )
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Cover)
+        return;
+    ((CoverEngine *)m_Engine)->setCover(path);
 }
 
 void MagicMain::restoreMesh()
@@ -282,4 +289,11 @@ void MagicMain::resize( int w, int h )
     m_ScreenWidth = w;
     m_ScreenHeight = h;
     m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5,-10, 10);
+}
+
+void MagicMain::setEffect( const char* path )
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Cover)
+        return;
+    ((CoverEngine *)m_Engine)->setEffect(path);
 }

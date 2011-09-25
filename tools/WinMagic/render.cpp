@@ -1,61 +1,50 @@
 #include "render.h"
 #include <QDir>
 #include <QDateTime>
+#include <QDebug>
 
 bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
 {
     bool result = false;
-    QString imgName = QString("magic_%1.jpg").arg(QDateTime::currentDateTime().toString("YYMMDD_hhmmss_sss"));
-    QImage img(w, h, QImage::Format_RGB888);
-    if (img.loadFromData((const uchar*)buffer, w*h*4)){
-        img.rgbSwapped();
-        if (!m_saveImageDir.exists())
-            m_saveImageDir.mkpath("");
-        result = img.save(m_saveImageDir.filePath(imgName), "JPG");
-    }
+    QString imgName = QString("magic_%1.jpg").arg(QDateTime::currentDateTime().toString("yyMMdd_hhmmss_zzz"));
+    QImage img((uchar*)buffer, w, h, QImage::Format_ARGB32);
+    img = img.rgbSwapped();
+    img = img.mirrored();
+    if (!m_saveImageDir.exists())
+        m_saveImageDir.mkpath("./");
+    result = img.save(m_saveImageDir.filePath(imgName), "JPG");
     return result;
 }
 
 
 unsigned char* WinCallBack::readResFile( const char* resname, uint32_t &size )
 {
-    return (unsigned char*)readResFile(m_resDir.filePath(resname), (uint32_t)size);
-}
-
-void WinCallBack::setSavePath( QString &path )
-{
-    m_saveImageDir.setPath(path);
-}
-
-void WinCallBack::setResDir( QString &path )
-{
-    m_resDir.setPath(path);
-}
-
-char* WinCallBack::readResFile( QString &filename, uint32_t &size, char* preBuffer /*= NULL*/ )
-{
-    QFile file(filename);
+    QFile file(m_resDir.filePath(resname));
     if (!file.open(QIODevice::ReadOnly))
         return NULL;
 
     char* buffer = NULL;
     size = file.size();
-    if (preBuffer){
-        buffer = preBuffer;
-    }else{
-        buffer = new char[size];
-    }
+    buffer = new char[size];
     if (file.read(buffer, size) <= 0){
-        if (!preBuffer){
-            delete[] buffer;
-        }
-        buffer = NULL;
+        SafeDeleteArray(buffer);
     }
 
 __end:
     file.close();
-    return buffer;
+    return (unsigned char*)buffer;
 }
+
+void WinCallBack::setSavePath(const QString &path )
+{
+    m_saveImageDir.setPath(path);
+}
+
+void WinCallBack::setResDir(const QString &path )
+{
+    m_resDir.setPath(path);
+}
+
 
 WinCallBack::WinCallBack()
 {
@@ -64,8 +53,10 @@ WinCallBack::WinCallBack()
 }
 
 Render::Render(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent, Qt::WFlags(Qt::MSWindowsOwnDC))
 {
+    setAttribute(Qt::WA_PaintOnScreen);
+    //setAttribute(Qt::WA_NoBackground);
     this->resize(640, 480);
     if (!eglCreateSurface(this->winId(), m_eglSurface, m_eglDisplay))
         return;
@@ -107,6 +98,8 @@ void Render::on_renerTimer()
 void Render::resizeEvent( QResizeEvent * e)
 {
     m_MagicMain.resize(e->size().width(), e->size().height());
+    qDebug()<<"resizeEvent "<< e->size();
+    on_renerTimer();
 }
 
 void Render::mouseMoveEvent( QMouseEvent * e)
@@ -124,37 +117,53 @@ void Render::mousePressEvent( QMouseEvent * e)
     m_MagicMain.onTouchDown(e->x(), e->y());
 }
 
-void Render::setImage( QString &path )
+void Render::setImage(const QString &path )
 {
     m_MagicMain.setPreviewImage(path.toLocal8Bit());
 }
 
 void Render::setEngine( int engine )
 {
-
+    if (engine >= ENgineType_Size)
+        return;
+    m_MagicMain.switchEngine((EngineType)engine);
 }
 
 void Render::restoreMesh()
 {
-
+    m_MagicMain.restoreMesh();
 }
 
-void Render::setCover( QString &path )
+void Render::setCover(const QString &path )
 {
-
+    m_MagicMain.setCover(path.toLocal8Bit());
 }
 
-void Render::setEffect( QString &path )
+void Render::setEffect(const QString &path )
 {
-
+    m_MagicMain.setEffect(path.toLocal8Bit());
 }
 
-void Render::setSavePath( QString &path )
+void Render::setSavePath(const QString &path )
 {
-
+    m_WinCallBack.setSavePath(path);
 }
 
-void Render::setResPath( QString &path )
+void Render::setResPath(const QString &path )
 {
+    m_WinCallBack.setResDir(path);
+}
 
+void Render::takePicture()
+{
+    m_MagicMain.takePicture();
+}
+
+// ccording to the Qt docs, if you want to use GDI or Direct3D on Windows with Qt, you need to:
+// 
+// 1) Override QWidget::paintEngine to return NULL
+// 2) Call QWidget::setAttribute(Qt::WA_PaintOnScreen, true)
+QPaintEngine* Render::paintEngine() const
+{
+    return NULL;
 }
