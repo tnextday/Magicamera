@@ -5,11 +5,11 @@
 #include "ui_winmagic.h"
 #include "render.h"
 
-struct BlendFuncFactor{
+struct BlendFunc{
     QString str;
     int code;
 };
-static const BlendFuncFactor BlendFuncFactors [] = {
+static const BlendFunc BlendFuncs [] = {
     {"GL_ZERO",	                     GL_ZERO                    },
     {"GL_ONE",	                     GL_ONE                     },
     {"GL_SRC_COLOR",	             GL_SRC_COLOR               },
@@ -28,11 +28,26 @@ static const BlendFuncFactor BlendFuncFactors [] = {
     {"END", 0}
 };
 
+struct BlendFuncFactor{
+    QString name;
+    QString sf;
+    QString df;
+};
+
+static const BlendFuncFactor BlendFuncFactors[] = {
+    {"BlendNormal",       "GL_SRC_ALPHA", "GL_ONE_MINUS_SRC_ALPHA"},
+    {"BlendLighten",       "GL_ONE",       "GL_ONE"},
+    {"ZhengPianDieDi",   "GL_DST_COLOR", "GL_ZERO"},
+    {"BlendOverlay",       "GL_DST_COLOR", "GL_SRC_COLOR"},
+    {"END", "", ""}
+};
 
 class WinMagic : public QWidget
 {
     Q_OBJECT
     Render m_render;
+    QStringList m_sfs;
+    QStringList m_dfs;
 public:
     WinMagic(QWidget *parent = 0, Qt::WFlags flags = 0);
     ~WinMagic();
@@ -55,11 +70,15 @@ public slots:
 
     void on_tabWidget_currentChanged(int index);
 
+    void on_cmb_resType_currentIndexChanged(int index);
     void on_cmb_preset_currentIndexChanged(int index);
     void on_btn_preview_clicked();
     void on_btn_saveRes_clicked();
     void on_btn_selResImg_clicked();
 
+    virtual void dropEvent( QDropEvent * );
+
+    virtual void dragEnterEvent( QDragEnterEvent * );
 };
 
 #endif // WINTEST_H

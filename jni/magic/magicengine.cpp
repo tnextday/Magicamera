@@ -144,18 +144,17 @@ void MagicEngine::resizeCoord( int w, int h )
 //设置输出图片大小，不同于坐标
 void MagicEngine::setSize( int w, int h , bool bPreview /*= true*/)
 {
+    m_width = w;
+    m_height = h;
     if (bPreview){
         float aspect = (float)w/h;
-        if (aspect > m_aspectRatio){
+        if (aspect > m_aspectRatio && m_width > m_PreviewWidth){
             m_width = m_PreviewWidth;
             m_height = m_width/aspect;
-        }else{
+        }else if (m_height > m_PreviewHeight){
             m_height = m_PreviewHeight;
             m_width = m_height*aspect;
         }
-    }else{
-        m_width = w;
-        m_height = h;
     }
     m_OutTex.setSize(m_width, m_height);
     if (m_onOutputResize){

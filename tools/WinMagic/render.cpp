@@ -53,7 +53,7 @@ WinCallBack::WinCallBack()
 }
 
 Render::Render(QWidget *parent)
-    : QWidget(parent, Qt::WFlags(Qt::MSWindowsOwnDC))
+    : QWidget(parent)
 {
     setAttribute(Qt::WA_PaintOnScreen);
     //setAttribute(Qt::WA_NoBackground);
@@ -172,4 +172,12 @@ void Render::takePicture()
 QPaintEngine* Render::paintEngine() const
 {
     return NULL;
+}
+
+void Render::setCover( const QString &path )
+{
+    if (path != "")
+        m_MagicMain.setCover(path.toLocal8Bit());
+    else
+        m_MagicMain.setCover(NULL);
 }
