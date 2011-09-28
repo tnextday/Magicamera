@@ -65,7 +65,8 @@ public:
     EngineType getEngineType();
     void switchEngine(EngineType type);
 
-    void setCover(const unsigned char* buffer, uint32_t size);
+/*    void setCover(const unsigned char* buffer, uint32_t size);*/
+    void setFrame(const char* path);
     void setCover(const char* path);
     void setEffect(const char* path);
     void restoreMesh();

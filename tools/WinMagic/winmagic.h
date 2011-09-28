@@ -57,6 +57,7 @@ public:
 private:
     Ui::WinTestClass ui;
     void setupTest();
+    void reloadRes();
     void setupResEditer();
 
 public slots:
@@ -76,8 +77,9 @@ public slots:
     void on_btn_saveRes_clicked();
     void on_btn_selResImg_clicked();
 
-    virtual void dropEvent( QDropEvent * );
+    bool saveTexture(const QString & path);
 
+    virtual void dropEvent( QDropEvent * );
     virtual void dragEnterEvent( QDragEnterEvent * );
 };
 

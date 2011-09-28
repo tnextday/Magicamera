@@ -240,14 +240,28 @@ EngineType MagicMain::getEngineType()
 }
 
 
-void MagicMain::setCover( const unsigned char* buffer, uint32_t size )
+// void MagicMain::setCover( const unsigned char* buffer, uint32_t size )
+// {
+//     if (!m_Engine || m_Engine->type() != EngineType_Effect)
+//         return;
+//     ((EffectEngine *)m_Engine)->setFrame(buffer, size);
+// }
+
+void MagicMain::setCover( const char* path )
 {
     if (!m_Engine || m_Engine->type() != EngineType_Effect)
         return;
-    ((EffectEngine *)m_Engine)->setFrame(buffer, size);
+    ((EffectEngine *)m_Engine)->setCover(path);
 }
 
-void MagicMain::setCover( const char* path )
+void MagicMain::setEffect( const char* path )
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
+        return;
+    ((EffectEngine *)m_Engine)->setEffect(path);
+}
+
+void MagicMain::setFrame( const char* path )
 {
     if (!m_Engine || m_Engine->type() != EngineType_Effect)
         return;
@@ -293,12 +307,7 @@ void MagicMain::resize( int w, int h )
 
 }
 
-void MagicMain::setEffect( const char* path )
-{
-    if (!m_Engine || m_Engine->type() != EngineType_Effect)
-        return;
-    ((EffectEngine *)m_Engine)->setEffect(path);
-}
+
 
 void MagicMain::setPreviewSize( GLuint w, GLuint h )
 {

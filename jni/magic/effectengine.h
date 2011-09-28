@@ -11,6 +11,7 @@ private:
     Texture     *m_coverTex;
     Sprite      *m_frame;
     Sprite      *m_nextFrame;
+    char        m_framePath[260];
     ImageEffect *m_effect;
     Texture     *m_effectTex;
 
@@ -29,6 +30,8 @@ protected:
     virtual bool onInit();
     virtual void onDraw( Texture *texutre );
     void doEffect(Texture* tex);
+
+    bool loadFrame(const char* framePath);
 
 public:
     EffectEngine(void);
@@ -57,7 +60,7 @@ public:
 public:
     void setCover(const char* coverPath);
     void setFrame(const char* framePath);
-    void setFrame( const unsigned char* buffer, uint32_t size );
+    //void setFrame( const unsigned char* buffer, uint32_t size );
     void setEffect(const char* effectPath);
 
     virtual void setSize( int w, int h, bool bPreview = true);

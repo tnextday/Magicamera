@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QUrl>
 #include <QDebug>
+#include "utils/packageloader.h"
 
 WinMagic::WinMagic(QWidget *parent, Qt::WFlags flags)
     : QWidget(parent, flags)
@@ -19,6 +20,9 @@ WinMagic::~WinMagic()
 void WinMagic::on_cb_engine_currentIndexChanged( int index )
 {
     m_render.setEngine(index+1);
+    if (index == 1){
+        reloadRes();
+    }
 }
 
 void WinMagic::on_clb_save_clicked()
@@ -43,7 +47,10 @@ void WinMagic::on_clb_restore_clicked()
 
 void WinMagic::on_cmb_covers_currentIndexChanged( const QString & text )
 {
-
+    if (!text.startsWith("--"))
+        m_render.setCover(QString::fromWCharArray(L"res://covers\\%1").arg(text));
+    else
+        m_render.setCover("");
 }
 
 void WinMagic::on_cmb_effect_currentIndexChanged( const QString & text )
@@ -75,20 +82,32 @@ void WinMagic::on_cmb_preset_currentIndexChanged( int index )
 //预览
 void WinMagic::on_btn_preview_clicked()
 {
+    QDir dir = QDir::current();
+    dir.cd("./tmp");
+    QString path = dir.filePath(ui.edt_name->text()+".pk");
+    saveTexture(path);
     if (ui.cmb_resType->currentIndex() == 0){
-        //保存为蒙版
+        //预览蒙版
+        m_render.setCover(path);
     }else{
-        //保存为相框
+        //预览相框
+        m_render.setFrame(path);
     }
+    
 }
 //保存资源
 void WinMagic::on_btn_saveRes_clicked()
 {
+    QDir dir = QDir::current();
+
     if (ui.cmb_resType->currentIndex() == 0){
+        dir.cd("./assets/covers");
         //保存为蒙版
     }else{
+        dir.cd("./assets/frames");
         //保存为相框
     }
+    saveTexture(dir.filePath(ui.edt_name->text()+".pk"));
 }
 
 void WinMagic::on_btn_selResImg_clicked()
@@ -108,16 +127,9 @@ void WinMagic::setupTest()
     QStringList sl;
     sl<<QString::fromWCharArray(L"哈哈相机")<<QString::fromWCharArray(L"特效相机");
     ui.cb_engine->addItems(sl);
+    reloadRes();
     QDir dir = QDir::current();
-    dir.cd("./assets/frames");
-    sl = dir.entryList(QStringList("*.png"),QDir::Files | QDir::NoSymLinks);
-    sl.push_front("--None--");
-    ui.cmb_frames->addItems(sl);
-    dir.cd("../effects");
-    sl = dir.entryList(QStringList("*.sp"),QDir::Files | QDir::NoSymLinks);
-    sl.push_front("--None--");
-    ui.cmb_effect->addItems(sl);
-    dir.cd("../../test");
+    dir.cd("./test");
     m_render.setImage(dir.filePath("test.jpg"));
 }
 
@@ -186,6 +198,7 @@ void WinMagic::dropEvent( QDropEvent * event)
             fi.setFile(url.toLocalFile());
             if (QString("tga jpg jpeg bmp png").contains(fi.suffix().toLower())){
                 ui.edt_resImg->setText(fi.filePath());
+                ui.edt_name->setText(QFileInfo(fi.filePath()).baseName());
                 break;
             }
         }
@@ -197,4 +210,53 @@ void WinMagic::dragEnterEvent( QDragEnterEvent * event)
     
     if (event->mimeData()->hasUrls() /*&& ui.edt_resImg->geometry().contains(event->pos())*/)
         event->acceptProposedAction();
+}
+
+bool WinMagic::saveTexture( const QString & path )
+{
+    QFile inFile(ui.edt_resImg->text());
+    QFile outFile(path);
+    if (!inFile.open(QIODevice::ReadOnly))
+        return false;
+    if (!outFile.open(QIODevice::Truncate | QIODevice::ReadWrite)){
+        return false;
+    }
+    QByteArray buf = inFile.readAll();
+    inFile.close();
+    BlendTexFileHeader header;
+    memset(&header, 0, sizeof(BlendTexFileHeader));
+    header.sgin[0] = 'b';
+    header.sgin[1] = 'f';
+    header.sgin[2] = 't';
+    header.sgin[3] = '1';
+    header.sfactor = getGLBlendFuncFromStr(ui.cmb_sf->currentText());
+    header.dfactor = getGLBlendFuncFromStr(ui.cmb_df->currentText());
+    header.size = buf.size();
+    outFile.write((char*)&header, sizeof(BlendTexFileHeader));
+    outFile.write(buf);
+    outFile.close();
+    return true;
+}
+
+void WinMagic::reloadRes()
+{
+    QDir dir = QDir::current();
+    dir.cd("./assets/frames");
+    QStringList sl;
+    sl = dir.entryList(QStringList("*.pk"),QDir::Files | QDir::NoSymLinks);
+    ui.cmb_frames->clear();
+    ui.cmb_frames->addItem("--None--");
+    ui.cmb_frames->addItems(sl);
+
+    dir.cd("../covers");
+    sl = dir.entryList(QStringList("*.pk"),QDir::Files | QDir::NoSymLinks);
+    ui.cmb_covers->clear();
+    ui.cmb_covers->addItem("--None--");
+    ui.cmb_covers->addItems(sl);
+
+    dir.cd("../effects");
+    sl = dir.entryList(QStringList("*.sp"),QDir::Files | QDir::NoSymLinks);
+    ui.cmb_effect->clear();
+    ui.cmb_effect->addItem("--None--");
+    ui.cmb_effect->addItems(sl);
 }

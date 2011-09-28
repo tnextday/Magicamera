@@ -6,11 +6,12 @@
 #include "utils/mathelpers.h"
 #include <time.h>
 #include <stdlib.h>
+#include "utils/packageloader.h"
 
 EffectEngine::EffectEngine(void)
 {
     m_frame = NULL;
-    m_nextFrame = NULL;
+    m_framePath[0] = 0;
     m_effect = NULL;
     m_effectTex = NULL;
     m_coverTex = NULL; 
@@ -26,7 +27,6 @@ EffectEngine::EffectEngine(void)
 EffectEngine::~EffectEngine(void)
 {
     SafeDelete(m_frame);
-    SafeDelete(m_nextFrame);
     SafeDelete(m_effect);
     SafeDelete(m_effectTex);
     SafeDelete(m_coverTex);
@@ -42,9 +42,8 @@ void EffectEngine::update( GLfloat delta )
             SafeDelete(m_frame);
             if (m_toFinish){
                 m_finished = true;
-            }else if (m_nextFrame){
-                m_frame = m_nextFrame;
-                m_nextFrame = NULL;
+            }else if (loadFrame(m_framePath)){
+                m_framePath[0] = 0;
                 showCover();
             }else{
                 resizeCoord(m_InTex->getWidth(), m_InTex->getHeight());
@@ -146,40 +145,38 @@ void EffectEngine::hideCover()
     m_bVisible = false;
 }
 
-void EffectEngine::setFrame( const unsigned char* buffer, uint32_t size )
-{
-    if (!buffer || !size){
-        SafeDelete(m_nextFrame);
-        hideCover();
-        return;
-    }
-    
-    if (m_frame && m_bVisible){
-        SafeDelete(m_nextFrame);
-        m_nextFrame = new Sprite(buffer, size);
-        hideCover();
-    }else{
-        SafeDelete(m_frame);
-        m_frame = new Sprite(buffer, size);
-        showCover();
-    }
-}
+// void EffectEngine::setFrame( const unsigned char* buffer, uint32_t size )
+// {
+//     if (!buffer || !size){
+//         SafeDelete(m_nextFrame);
+//         hideCover();
+//         return;
+//     }
+//     
+//     if (m_frame && m_bVisible){
+//         SafeDelete(m_nextFrame);
+//         m_nextFrame = new Sprite(buffer, size);
+//         hideCover();
+//     }else{
+//         SafeDelete(m_frame);
+//         m_frame = new Sprite(buffer, size);
+//         showCover();
+//     }
+// }
 
 void EffectEngine::setFrame( const char* framePath)
 {
+    m_framePath[0] = 0;
     if (!framePath){
-        SafeDelete(m_nextFrame);
         hideCover();
         return;
     }
     if (m_frame && m_bVisible){
-        SafeDelete(m_nextFrame);
-        m_nextFrame = new Sprite(framePath);
+        strncpy(m_framePath, framePath, 260);
         hideCover();
     }else{
-        SafeDelete(m_frame);
-        m_frame = new Sprite(framePath);
-        showCover();
+        if (loadFrame(framePath))
+            showCover();
     }
 }
 
@@ -188,7 +185,12 @@ void EffectEngine::setCover( const char* coverPath )
 {
     SafeDelete(m_coverTex);
     if (coverPath){
-        m_coverTex = new Texture(coverPath);
+        BlendTexLoader loader;
+        if (loader.loadFromFile(coverPath)){
+            m_coverTex = new Texture(loader.getData(), loader.getDataSize());
+            m_sCoverFactor = loader.getSrcFactor();
+            m_dCoverFactor = loader.getDstFactor();
+        }
     }
 }
 
@@ -245,4 +247,19 @@ void EffectEngine::setSize( int w, int h , bool bPreview /*= true*/)
         h = m_frame->getRegionHeight();
     }
     MagicEngine::setSize(w, h, bPreview);
+}
+
+bool EffectEngine::loadFrame( const char* framePath )
+{
+    SafeDelete(m_frame);
+    if (framePath){
+        BlendTexLoader loader;
+        if (loader.loadFromFile(framePath)){
+            m_frame = new Sprite(loader.getData(), loader.getDataSize());
+            m_sFrameFactor = loader.getSrcFactor();
+            m_dFrameFactor = loader.getDstFactor();
+            return true;
+        }
+    }
+    return false;
 }

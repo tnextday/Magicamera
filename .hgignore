@@ -20,3 +20,4 @@ win32/assets/*
 *.stackdump
 */GeneratedFiles/*
 *.lnk
+tools/Res/*

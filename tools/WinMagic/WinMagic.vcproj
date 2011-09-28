@@ -604,6 +604,14 @@
 					RelativePath="..\..\jni\utils\mathelpers.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\jni\utils\packageloader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\jni\utils\packageloader.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="ui"

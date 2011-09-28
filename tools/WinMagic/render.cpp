@@ -16,7 +16,6 @@ bool WinCallBack::SaveImage( char* buffer, int w, int h, int format )
     return result;
 }
 
-
 unsigned char* WinCallBack::readResFile( const char* resname, uint32_t &size )
 {
     QFile file(m_resDir.filePath(resname));
@@ -137,9 +136,9 @@ void Render::restoreMesh()
 void Render::setFrame(const QString &path )
 {
     if (path != "")
-        m_MagicMain.setCover(path.toLocal8Bit());
+        m_MagicMain.setFrame(path.toLocal8Bit());
     else
-        m_MagicMain.setCover(NULL);
+        m_MagicMain.setFrame(NULL);
 }
 
 void Render::setEffect(const QString &path )
