@@ -17,7 +17,8 @@ class AndroidFileUtils : public FileUtils{
 public:
     AndroidFileUtils(){ApkPath[0] = '\0';};
     virtual bool SaveImage( char* buffer, int w, int h, int format);
-    virtual unsigned char* readRes( const char* resname, uint32_t& size );
+    virtual unsigned char* readResFile( const char* resName, uint32_t& size );
+
     void setApkPath(const char * path);
 };
 
@@ -37,7 +38,9 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_switchEngine(JNIEnv * env, jobject obj, jint type);
 JNIEXPORT jint JNICALL Java_com_funny_magicamera_MagicJNILib_getEngineType(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture(JNIEnv * env, jobject obj);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover(JNIEnv * env, jobject obj,  jbyteArray buffer);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover(JNIEnv * env, jobject obj, jstring path);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame(JNIEnv * env, jobject obj, jstring path);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect(JNIEnv * env, jobject obj, jstring path);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, int format);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer);

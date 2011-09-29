@@ -2,9 +2,13 @@ package com.funny.magicamera;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
+import android.content.res.AssetManager;
 import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -14,7 +18,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -23,9 +26,7 @@ import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Random;
 
 public class MagicActivity extends Activity implements Camera.PreviewCallback, View.OnClickListener,
             EngineRender.InitCompleteListener, EngineRender.CameraBufferReleaseListener {
@@ -42,8 +43,14 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     int m_previewWidth = 640;
 
     public String PicPath = null;
+    private final static int DIALOG_SELECT_ENGINE = 0;
+    private final static int DIALOG_SELECT_COVER = 1;
+    private final static int DIALOG_SELECT_FRAME = 2;
+    private final static int DIALOG_SELECT_EFFECT = 3;
 
-
+    private String[] m_frames;
+    private String[] m_covers;
+    private String[] m_effects;
 
     enum CameraType {
         FACING_BACK, FACING_FRONT
@@ -63,11 +70,13 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             return;
         }
         setContentView(R.layout.magic);
-        ((Button) findViewById(R.id.btn_back)).setOnClickListener(this);
-        ((Button) findViewById(R.id.btn_set_cover)).setOnClickListener(this);
-        ((Button) findViewById(R.id.btn_engine)).setOnClickListener(this);
-        ((Button) findViewById(R.id.btn_restore)).setOnClickListener(this);
-        ((Button) findViewById(R.id.btn_take)).setOnClickListener(this);
+        findViewById(R.id.btn_back).setOnClickListener(this);
+        findViewById(R.id.btn_set_cover).setOnClickListener(this);
+        findViewById(R.id.btn_set_frame).setOnClickListener(this);
+        findViewById(R.id.btn_set_effect).setOnClickListener(this);
+        findViewById(R.id.btn_engine).setOnClickListener(this);
+        findViewById(R.id.btn_restore).setOnClickListener(this);
+        findViewById(R.id.btn_take).setOnClickListener(this);
 
         m_SurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
         if (SDK_Version >= 8) {
@@ -83,6 +92,14 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         Intent intent = getIntent();
         String picPath = intent.getStringExtra("PicPath");
 
+        try {
+            AssetManager am = getResources().getAssets();
+            m_covers = am.list("covers");
+            m_effects = am.list("effects");
+            m_frames = am.list("frames");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         m_engine = new EngineRender();
         m_engine.setOnInitComplete(this);
         if (SDK_Version >= 8)
@@ -100,25 +117,13 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         if (view.getId() == R.id.btn_back) {
             finish();
         } else if (view.getId() == R.id.btn_engine) {
-            if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_MESH) {
-                MagicJNILib.switchEngine(MagicJNILib.ENGINE_TYPE_COVER);
-            } else if (MagicJNILib.getEngineType() == MagicJNILib.ENGINE_TYPE_COVER) {
-                MagicJNILib.switchEngine(MagicJNILib.ENGINE_TYPE_MESH);
-            }
+            showDialog(DIALOG_SELECT_ENGINE);
         } else if (view.getId() == R.id.btn_set_cover) {
-            Random random = new Random();
-            try {
-                InputStream is = getResources().getAssets().open(String.format("frames/%02d.png", random.nextInt(17)));
-                int size = is.available();
-                if (size > 0) {
-                    byte[] buffer = new byte[size];
-                    is.read(buffer);
-                    m_SurfaceView.queueEvent(new SetCover(buffer));
-                    is.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            showDialog(DIALOG_SELECT_COVER);
+        } else if (view.getId() == R.id.btn_set_frame) {
+            showDialog(DIALOG_SELECT_FRAME);
+        } else if (view.getId() == R.id.btn_set_effect) {
+            showDialog(DIALOG_SELECT_EFFECT);
         } else if (view.getId() == R.id.btn_restore) {
             MagicJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
@@ -126,18 +131,91 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         }
     }
 
-    private class SetCover implements Runnable {
-        byte[] buffer;
+    private void switchEngine(int type){
+        findViewById(R.id.btn_restore).setVisibility(type == MagicJNILib.ENGINE_TYPE_MESH ? View.VISIBLE : View.GONE);
 
-        private SetCover(byte[] buffer) {
-            this.buffer = buffer;
+        findViewById(R.id.btn_set_cover).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        findViewById(R.id.btn_set_effect).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        findViewById(R.id.btn_set_frame).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        MagicJNILib.switchEngine(type);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DIALOG_SELECT_ENGINE:
+                return new AlertDialog.Builder(this)
+                        .setItems(R.array.engine_types, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0) {
+                                    switchEngine(MagicJNILib.ENGINE_TYPE_MESH);
+                                } else {
+                                    switchEngine(MagicJNILib.ENGINE_TYPE_EFFECT);
+                                }
+                            }
+                        })
+                        .create();
+            case DIALOG_SELECT_COVER:
+                return new AlertDialog.Builder(this)
+                        .setItems(m_covers, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                m_SurfaceView.queueEvent(new SetCover("res://covers/"+m_covers[which]));
+                            }
+                        })
+                        .create();
+            case DIALOG_SELECT_FRAME:
+                return new AlertDialog.Builder(this)
+                        .setItems(m_frames, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                m_SurfaceView.queueEvent(new SetFrame("res://frames/"+m_frames[which]));
+                            }
+                        })
+                        .create();
+            case DIALOG_SELECT_EFFECT:
+                return new AlertDialog.Builder(this)
+                        .setItems(m_effects, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                m_SurfaceView.queueEvent(new SetEffect("res://effects/"+m_effects[which]));
+                            }
+                        })
+                        .create();
+
         }
+        return null;
+    }
 
+    private class SetCover implements Runnable {
+        String m_path;
+        private SetCover(String path) {
+            this.m_path = path;
+        }
         @Override
         public void run() {
-            MagicJNILib.setCover(buffer);
+            MagicJNILib.setCover(m_path);
         }
     }
+    private class SetFrame implements Runnable {
+        String m_path;
+        private SetFrame(String path) {
+            this.m_path = path;
+        }
+        @Override
+        public void run() {
+            MagicJNILib.setFrame(m_path);
+        }
+    }
+    private class SetEffect implements Runnable {
+        String m_path;
+        private SetEffect(String path) {
+            this.m_path = path;
+        }
+        @Override
+        public void run() {
+            MagicJNILib.setEffect(m_path);
+        }
+    }
+
+
 
     private class TakePicture implements Runnable {
         @Override

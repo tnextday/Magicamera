@@ -1,26 +1,20 @@
 #include "framebufferobject.h"
 #include "glutils.h"
 
-FramebufferObject::FramebufferObject(bool bColorBUffer /*= false*/, bool bDepthBuffer/* = false*/)
+FramebufferObject::FramebufferObject(bool bDepthBuffer/* = false*/)
 {
     glGenFramebuffers(1, m_fboId);
-    m_colorBuffer = 0;
     m_depthBuffer = 0;
     m_height = 0;
     m_width = 0;
-    m_bUseColorBuffer = bColorBUffer;
     m_bUseDepthBuffer = bDepthBuffer;
 }
 
 FramebufferObject::~FramebufferObject(void)
 {
-    if (m_colorBuffer != 0){
-        deleteRenderBuffer(m_colorBuffer);
-        m_colorBuffer = 0;
-    }
     if (m_depthBuffer != 0){
         deleteRenderBuffer(m_depthBuffer);
-        m_colorBuffer = 0;
+        m_depthBuffer = 0;
     }
     glDeleteFramebuffers(1, m_fboId);
 }
@@ -55,20 +49,6 @@ bool FramebufferObject::check_status()
     return status == GL_FRAMEBUFFER_COMPLETE;
 }
 
-void FramebufferObject::createColorBuffer()
-{
-    if (m_colorBuffer != 0){
-        deleteRenderBuffer(m_colorBuffer);   
-    }
-    m_colorBuffer = genRenderbuffer();
-    glBindRenderbuffer(GL_RENDERBUFFER, m_colorBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB5_A1, m_width, m_height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER,
-        GL_COLOR_ATTACHMENT0,
-        GL_RENDERBUFFER, m_colorBuffer);
-    checkGlError("createColorBuffer");
-    /*unbind();*/
-}
 
 void FramebufferObject::createDepthBuffer()
 {
@@ -105,8 +85,6 @@ void FramebufferObject::resizeBuffers( int w, int h )
     m_width = w;
     m_height = h;
     bind();
-    if (m_bUseColorBuffer)
-        createColorBuffer();
     if (m_bUseDepthBuffer)
         createDepthBuffer();
     unbind();

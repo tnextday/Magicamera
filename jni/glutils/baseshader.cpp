@@ -3,6 +3,7 @@
 #include "utils/mathelpers.h"
 #include "utils/fileutils.h"
 #include <zlib.h>
+#include <stdlib.h>
 
 
 BaseShader::BaseShader(void)

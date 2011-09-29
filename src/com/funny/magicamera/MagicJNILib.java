@@ -19,7 +19,7 @@ public class MagicJNILib {
 
     public static final int ENGINE_TYPE_NONE = 0;
     public static final int ENGINE_TYPE_MESH = 1;
-    public static final int ENGINE_TYPE_COVER = 2;
+    public static final int ENGINE_TYPE_EFFECT = 2;
     //public static final int ENGINE_TYPE_Kaleidoscope = 3;
 
 
@@ -36,7 +36,9 @@ public class MagicJNILib {
     public static native void rotate90Input(boolean clockwise);
     public static native void setApkPath(String apkPath);
     public static native void takePicture();
-    public static native void setCover(byte[] buffer);
+    public static native void setCover(String path);
+    public static native void setFrame(String path);
+    public static native void setEffect(String path);
     public static native void restoreMesh();
     public static native void switchEngine(int type);
     public static native int getEngineType();

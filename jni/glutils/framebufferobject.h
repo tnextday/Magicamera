@@ -9,11 +9,9 @@ class FramebufferObject
 
 private:
     GLuint m_fboId[1];
-    GLuint m_colorBuffer;
     GLuint m_depthBuffer;
     GLuint m_width;
     GLuint m_height;
-    bool   m_bUseColorBuffer;
     bool   m_bUseDepthBuffer;
 
 public:
@@ -23,7 +21,7 @@ public:
     // Parameter: bool bDepthBuffer 是否创建depth buffer
     // ColorBuffer只支持16位色，如果想支持更高颜色，要使用texture2d纹理
     //************************************
-    FramebufferObject(bool bColorBUffer = false, bool bDepthBuffer = false);
+    FramebufferObject(bool bDepthBuffer = false);
     ~FramebufferObject(void);
 
     void bind(){ glBindFramebuffer(GL_FRAMEBUFFER, m_fboId[0]); };
@@ -35,7 +33,6 @@ public:
     bool check_status();
 
 private:
-    void createColorBuffer();
     void createDepthBuffer();
     GLuint genRenderbuffer();
     void deleteRenderBuffer(GLuint bufferId);

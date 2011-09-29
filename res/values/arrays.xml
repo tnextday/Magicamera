@@ -1,0 +1,6 @@
+<resources>
+ <string-array name="engine_types">
+     <item>哈哈相机</item>
+     <item>特效相机</item>
+ </string-array>
+</resources>

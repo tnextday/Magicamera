@@ -32,14 +32,6 @@ bool AndroidFileUtils::SaveImage( char* buffer, int w, int h, int format )
     return result;
 }
 
-unsigned char* AndroidFileUtils::readRes( const char* resname, uint32_t& size )
-{
-    char respath[MAX_PATH] = {0};
-    strcpy(respath, "assets/");
-    strncat(respath, resname, MAX_PATH - 8 );
-    LOGI("LoadRes:[%s][%s]", ApkPath, respath);
-    return getFileDataFromZip(ApkPath, respath, size);
-}
 
 void AndroidFileUtils::setApkPath( const char * path )
 {
@@ -47,6 +39,14 @@ void AndroidFileUtils::setApkPath( const char * path )
     strncpy(ApkPath, path, MAX_PATH - 1);
 }
 
+unsigned char* AndroidFileUtils::readResFile( const char* resName, uint32_t& size )
+{
+    char respath[MAX_PATH] = {0};
+    strcpy(respath, "assets/");
+    strncat(respath, resName, MAX_PATH - 8 );
+//     LOGI("LoadRes:[%s][%s]", ApkPath, respath);
+    return getFileDataFromZip(ApkPath, respath, size);
+}
 void CheckException(const char* methond )
 {
     if (env->ExceptionOccurred()){
@@ -197,12 +197,15 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture( JNIEnv
     g_MagicMain->takePicture();
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover( JNIEnv * env, jobject obj, jbyteArray buffer )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover( JNIEnv * env, jobject obj, jstring path )
 {
-    unsigned char* p_buffer = (unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
-    long len = env->GetArrayLength(buffer);
-    g_MagicMain->setCover(p_buffer, len);
-    env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
+    const char* str;
+    jboolean isCopy;
+    str = env->GetStringUTFChars(path, &isCopy);
+    if (isCopy) {
+        g_MagicMain->setCover(str);
+        env->ReleaseStringUTFChars(path, str);
+    }
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_switchEngine( JNIEnv * env, jobject obj, jint type )
@@ -218,4 +221,26 @@ JNIEXPORT jint JNICALL Java_com_funny_magicamera_MagicJNILib_getEngineType( JNIE
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh( JNIEnv * env, jobject obj )
 {
     g_MagicMain->restoreMesh();
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame( JNIEnv * env, jobject obj, jstring path )
+{
+    const char* str;
+    jboolean isCopy;
+    str = env->GetStringUTFChars(path, &isCopy);
+    if (isCopy) {
+        g_MagicMain->setFrame(str);
+        env->ReleaseStringUTFChars(path, str);
+    }
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect( JNIEnv * env, jobject obj, jstring path )
+{
+    const char* str;
+    jboolean isCopy;
+    str = env->GetStringUTFChars(path, &isCopy);
+    if (isCopy) {
+        g_MagicMain->setEffect(str);
+        env->ReleaseStringUTFChars(path, str);
+    }
 }

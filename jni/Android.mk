@@ -9,7 +9,6 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	actions/parallel.cpp \
 	actions/rotateto2d.cpp \
 	actions/sequence.cpp \
-	effect/blureffect.cpp \
 	effect/imageeffect.cpp \
 	gdx2d/gdx2d.cpp \
 	gdx2d/stb_image.c \
@@ -21,7 +20,7 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	glutils/sprite.cpp \
 	glutils/texture.cpp \
 	glutils/textureregion.cpp \
-	magic/coverengine.cpp \
+	magic/effectengine.cpp \
 	magic/imageadjust.cpp \
 	magic/magicengine.cpp \
 	magic/magicmain.cpp \
@@ -32,6 +31,7 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	utils/fastmath.cpp \
 	utils/fileutils.cpp \
 	utils/mathelpers.cpp \
+	utils/packageloader.cpp \
 	zip/ioapi.cpp \
 	zip/unzip.cpp \
 
