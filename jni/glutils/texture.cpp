@@ -66,18 +66,26 @@ void Texture::bind( int unit )
     glBindTexture(GL_TEXTURE_2D, m_TexHandle);
 }
 
-void Texture::setWrap( GLfloat wrap_s /*= GL_REPEAT*/, GLfloat wrap_t /*= GL_REPEAT*/ )
-{
-    bind();
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);    
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t); 
-}
+//如果使用非2^n大小的纹理，必须设置为GL_CLAMP_TO_EDGE，否则会失效，默认只设置成GL_CLAMP_TO_EDGE
+// void Texture::setWrap( GLfloat wrap_s /*= GL_REPEAT*/, GLfloat wrap_t /*= GL_REPEAT*/ )
+// {
+//     bind();
+//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);    
+//     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t); 
+//     glTexParameterf ( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//     glTexParameterf ( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+// }
 
+// 对于npot(Non-Power-of-Two)纹理，如果扩展中不包含GL_OES_texture_npot，
+// 那么只能设置为GL_CLAMP_TO_EDGE，GL_LINEAR或者GL_NEAREST，否则会黑屏，
+// PowerVR系列显卡大部分都不支持GL_OES_texture_npot扩展
+//如果使用npot纹理，只能设置为GL_LINEAR或者GL_NEAREST
 void Texture::setFilter( GLfloat min /*= GL_LINEAR*/, GLfloat mag /*= GL_LINEAR*/ )
 {
     bind();
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
+
 }
 
 void Texture::uploadImageData( GLubyte* data, int width, int height, GLenum imageFormat )
@@ -117,8 +125,9 @@ GLuint Texture::createGLHandle()
 void Texture::init()
 {
     m_TexHandle = createGLHandle();
-    setWrap();
     setFilter();
+    glTexParameterf ( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf ( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
 }
 
 void Texture::setSize( int w, int h )
