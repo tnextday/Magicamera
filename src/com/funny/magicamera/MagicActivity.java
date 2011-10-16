@@ -24,7 +24,6 @@ import java.util.List;
 public class MagicActivity extends Activity implements Camera.PreviewCallback, View.OnClickListener,
             MSurfaceView.InitCompleteListener, MSurfaceView.CameraBufferReleaseListener {
     MSurfaceView m_SurfaceView;
-    public static int SDK_Version = Build.VERSION.SDK_INT;
     public static String TAG = "MagicEngine";
 
     //    int m_CameraId; //use above 2.3
@@ -93,7 +92,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             e.printStackTrace();
         }
         m_SurfaceView.setOnInitComplete(this);
-        if (SDK_Version >= 8)
+        if (Build.VERSION.SDK_INT >= 8)
             m_SurfaceView.setOnCameraBufferRelease(this);
 
         if (picPath != null && new File(picPath).exists()) {
@@ -289,24 +288,26 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
 
     public void startCamera(CameraType cameraType) {
-        int cameraId = 0;
-        if (SDK_Version >= 9) {
-            int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
-            if (cameraType == CameraType.FACING_FRONT) {
-                facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
-            }
+        m_Camera = null;
+        if (Build.VERSION.SDK_INT >= 9) {
             int numberOfCameras = Camera.getNumberOfCameras();
-            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-            for (int i = 0; i < numberOfCameras; i++) {
-                Camera.getCameraInfo(i, cameraInfo);
-                if (cameraInfo.facing == facing) {
-                    cameraId = i;
+            if (numberOfCameras > 1){
+                int cameraId = 0;
+                int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
+                if (cameraType == CameraType.FACING_FRONT) {
+                    facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
                 }
+                Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+                for (int i = 0; i < numberOfCameras; i++) {
+                    Camera.getCameraInfo(i, cameraInfo);
+                    if (cameraInfo.facing == facing) {
+                        cameraId = i;
+                    }
+                }
+                m_Camera = Camera.open(cameraId);
             }
-        }
-        if (SDK_Version >= 9) {
-            m_Camera = Camera.open(cameraId);
-        } else {
+        } 
+        if (m_Camera == null){
             m_Camera = Camera.open();
         }
 
@@ -333,7 +334,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         int previewFormat = parameters.getPreviewFormat();
         int szBuffer = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8;
         //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
-        if (SDK_Version >= 8) {
+        if (Build.VERSION.SDK_INT >= 8) {
             m_Camera.setPreviewCallbackWithBuffer(this);
             for (int i = 0; i < BufferCount; i++) {
                 m_Camera.addCallbackBuffer(new byte[szBuffer]);
@@ -349,7 +350,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     public void stopCamera() {
         if (m_Camera == null) return;
         m_Camera.stopPreview();
-        if (SDK_Version >= 8) {
+        if (Build.VERSION.SDK_INT >= 8) {
             m_Camera.setPreviewCallbackWithBuffer(null);
         } else {
             m_Camera.setPreviewCallback(null);
