@@ -1,20 +1,27 @@
 package com.funny.magicamera;
 
+import android.content.Context;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 
+import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 import java.util.LinkedList;
-
 
 /**
  * User: tNextDay
  * Description:
  */
-public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputProcessor {
-
+public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer, InputEvent.InputProcessor{
+    private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
     private long lastFrameTime = System.nanoTime();
     private float deltaTime = 0.0f;
 
@@ -25,12 +32,52 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
     private CameraBufferReleaseListener m_onCameraBufferRelease = null;
 
     private InitCompleteListener m_onInitComplete = null;
+    
+    public MSurfaceView(Context context) {
+        super(context);
+        Log.w(MagicActivity.TAG, "creating MSurfaceView1");
+        init();
+    }
 
-    private static final long fps_time = 1000000000/35;
+    public MSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        Log.w(MagicActivity.TAG, "creating MSurfaceView2");
+        init();
 
-    public EngineRender() {
-        super();
+    }
+
+    public void init(){
+        if (Build.VERSION.SDK_INT >= 8) {
+            setEGLContextClientVersion(2);
+        } else {
+            setEGLContextFactory(new ContextFactory20());
+        }
+        //设置EGL环境为32位真彩色，不过Android系统貌似只能显示16位色
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
+        getHolder().setFormat(PixelFormat.RGBA_8888);
+        setRenderer(this);
         inputEvent.setInputProcessor(this);
+    }
+
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.w(MagicActivity.TAG, "MSurfaceView surfaceDestroyed");
+        super.surfaceDestroyed(holder);
+        MagicJNILib.destory();
+    }
+
+    @Override
+    public void onPause() {
+        Log.w(MagicActivity.TAG, "MSurfaceView onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        Log.w(MagicActivity.TAG, "MSurfaceView onResume");
+        super.onResume();
     }
 
     static final FPSLogger fps = new FPSLogger();
@@ -65,7 +112,6 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
                 m_onCameraBufferRelease.onCameraBufferRelease(bytes);
             }
         }
-
     }
 
     public void addCameraBuffer(byte[] buffer){
@@ -84,10 +130,11 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
         Log.d(MagicActivity.TAG, "onSurfaceCreated");
         MagicJNILib.create();
         if (m_onInitComplete != null){
-            m_onInitComplete.onEngineInitCompleted(this);
+            m_onInitComplete.onEngineInitCompleted();
         }
     }
-
+    
+    @Override
     public boolean onTouchEvent(MotionEvent e) {
         int x = (int) e.getX();
         int y = (int) e.getY();
@@ -155,10 +202,34 @@ public class EngineRender implements GLSurfaceView.Renderer, InputEvent.InputPro
     }
 
     public interface InitCompleteListener {
-        void onEngineInitCompleted(EngineRender engine);
+        void onEngineInitCompleted();
     }
 
     public interface CameraBufferReleaseListener{
         void onCameraBufferRelease(byte[] buffer);
+    }
+
+    private static class ContextFactory20 implements GLSurfaceView.EGLContextFactory {
+        private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
+
+        public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
+            Log.w(MagicActivity.TAG, "creating OpenGL ES 2.0 context");
+            checkEglError("Before eglCreateContext", egl);
+            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE};
+            EGLContext context = egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, attrib_list);
+            checkEglError("After eglCreateContext", egl);
+            return context;
+        }
+
+        public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) {
+            egl.eglDestroyContext(display, context);
+        }
+    }
+    
+    private static void checkEglError(String prompt, EGL10 egl) {
+        int error;
+        while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) {
+            Log.e(MagicActivity.TAG, String.format("%s: EGL error: 0x%x", prompt, error));
+        }
     }
 }

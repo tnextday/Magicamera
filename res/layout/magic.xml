@@ -10,7 +10,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1">
 
-        <android.opengl.GLSurfaceView android:id="@+id/glsurfaceview"
+        <com.funny.magicamera.MSurfaceView android:id="@+id/surfaceview"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
     </FrameLayout>

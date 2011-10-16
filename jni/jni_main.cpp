@@ -112,7 +112,6 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_create(JNIEnv * env, jobject obj)
 {
-    SafeDelete(g_MagicMain);
     g_MagicMain = new MagicMain();
     g_MagicMain->setupGraphics();
     g_MagicMain->setIOCallBack(&g_androidFileUtils);
@@ -124,25 +123,29 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_destory(JNIEnv * en
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_resize( JNIEnv * env, jobject obj, jint width, jint height )
 {
-    g_MagicMain->resize(width, height);
+    if (g_MagicMain)
+        g_MagicMain->resize(width, height);
 }
 
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, jobject obj, jfloat delta)
 {
-	g_MagicMain->renderFrame(delta);
+    if (g_MagicMain)
+	    g_MagicMain->renderFrame(delta);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format)
 {
-	g_MagicMain->setPreviewDataInfo(width, height, format);
+    if (g_MagicMain)
+	    g_MagicMain->setPreviewDataInfo(width, height, format);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer)
 {
 	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
     long len = env->GetArrayLength(buffer);
-	g_MagicMain->updatePreviewData(p_buffer, len);
+    if (g_MagicMain)
+	    g_MagicMain->updatePreviewData(p_buffer, len);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }
 
@@ -151,9 +154,10 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JN
     const char* str;
     jboolean isCopy;
     str = env->GetStringUTFChars(path, &isCopy);
-    if (isCopy) {
+    if (isCopy ) {
         //pthread_mutex_lock(&g_lock);
-        g_MagicMain->setPreviewImage(str);
+        if (g_MagicMain)
+            g_MagicMain->setPreviewImage(str);
         //pthread_mutex_unlock(&g_lock);
         env->ReleaseStringUTFChars(path, str);
     }
@@ -161,22 +165,26 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JN
 
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
-	return g_MagicMain->onTouchDown(x, y);
+    if (g_MagicMain)
+	    return g_MagicMain->onTouchDown(x, y);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
-	return g_MagicMain->onTouchDrag(x, y);
+    if (g_MagicMain)
+	    return g_MagicMain->onTouchDrag(x, y);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIEnv * env, jobject obj, jfloat x, jfloat y )
 {
-	return g_MagicMain->onTouchUp(x, y);
+    if (g_MagicMain)
+	    return g_MagicMain->onTouchUp(x, y);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90Input( JNIEnv * env, jobject obj, jboolean clockwise )
 {
-    g_MagicMain->rotate90Input(clockwise);
+    if (g_MagicMain)
+        g_MagicMain->rotate90Input(clockwise);
 }
 
 
@@ -194,7 +202,8 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setApkPath( JNIEnv 
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture( JNIEnv * env, jobject obj )
 {
-    g_MagicMain->takePicture();
+    if (g_MagicMain)
+        g_MagicMain->takePicture();
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover( JNIEnv * env, jobject obj, jstring path )
@@ -203,24 +212,30 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover( JNIEnv * 
     jboolean isCopy;
     str = env->GetStringUTFChars(path, &isCopy);
     if (isCopy) {
-        g_MagicMain->setCover(str);
+        if (g_MagicMain)
+            g_MagicMain->setCover(str);
         env->ReleaseStringUTFChars(path, str);
     }
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_switchEngine( JNIEnv * env, jobject obj, jint type )
 {
-    g_MagicMain->switchEngine((EngineType)type);
+    if (g_MagicMain)
+        g_MagicMain->switchEngine((EngineType)type);
 }
 
 JNIEXPORT jint JNICALL Java_com_funny_magicamera_MagicJNILib_getEngineType( JNIEnv * env, jobject obj )
 {
-    return (int)g_MagicMain->getEngineType();
+    int type = 0;
+    if (g_MagicMain)
+        type = (int)g_MagicMain->getEngineType();
+    return type;
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh( JNIEnv * env, jobject obj )
 {
-    g_MagicMain->restoreMesh();
+    if (g_MagicMain)
+        g_MagicMain->restoreMesh();
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame( JNIEnv * env, jobject obj, jstring path )
@@ -229,7 +244,8 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame( JNIEnv * 
     jboolean isCopy;
     str = env->GetStringUTFChars(path, &isCopy);
     if (isCopy) {
-        g_MagicMain->setFrame(str);
+        if (g_MagicMain)
+            g_MagicMain->setFrame(str);
         env->ReleaseStringUTFChars(path, str);
     }
 }
@@ -240,7 +256,8 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect( JNIEnv *
     jboolean isCopy;
     str = env->GetStringUTFChars(path, &isCopy);
     if (isCopy) {
-        g_MagicMain->setEffect(str);
+        if (g_MagicMain)
+            g_MagicMain->setEffect(str);
         env->ReleaseStringUTFChars(path, str);
     }
 }

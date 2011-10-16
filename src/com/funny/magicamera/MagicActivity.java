@@ -10,28 +10,20 @@ import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.content.res.AssetManager;
 import android.graphics.ImageFormat;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import javax.microedition.khronos.egl.EGL10;
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.egl.EGLContext;
-import javax.microedition.khronos.egl.EGLDisplay;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class MagicActivity extends Activity implements Camera.PreviewCallback, View.OnClickListener,
-            EngineRender.InitCompleteListener, EngineRender.CameraBufferReleaseListener {
-    GLSurfaceView m_SurfaceView;
-    EngineRender m_engine;
+            MSurfaceView.InitCompleteListener, MSurfaceView.CameraBufferReleaseListener {
+    MSurfaceView m_SurfaceView;
     public static int SDK_Version = Build.VERSION.SDK_INT;
     public static String TAG = "MagicEngine";
 
@@ -78,17 +70,17 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         findViewById(R.id.btn_restore).setOnClickListener(this);
         findViewById(R.id.btn_take).setOnClickListener(this);
 
-        m_SurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
-        if (SDK_Version >= 8) {
-            m_SurfaceView.setEGLContextClientVersion(2);
-        } else {
-            m_SurfaceView.setEGLContextFactory(new ContextFactory20());
-        }
-        //设置EGL环境为32位真彩色，不过Android系统貌似只能显示16位色
-        m_SurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
-        m_SurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
-
+        m_SurfaceView = (MSurfaceView) findViewById(R.id.surfaceview);
+        Log.w(MagicActivity.TAG, "MagicActivity onCreate");
+//        if (Build.VERSION.SDK_INT >= 8) {
+//            m_SurfaceView.setEGLContextClientVersion(2);
+//        } else {
+//            m_SurfaceView.setEGLContextFactory(new ContextFactory20());
+//        }
+//        //设置EGL环境为32位真彩色，不过Android系统貌似只能显示16位色
+//        m_SurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+//        //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
+//        m_SurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
         Intent intent = getIntent();
         String picPath = intent.getStringExtra("PicPath");
 
@@ -100,11 +92,9 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         } catch (IOException e) {
             e.printStackTrace();
         }
-        m_engine = new EngineRender();
-        m_engine.setOnInitComplete(this);
+        m_SurfaceView.setOnInitComplete(this);
         if (SDK_Version >= 8)
-            m_engine.setOnCameraBufferRelease(this);
-        m_SurfaceView.setRenderer(m_engine);
+            m_SurfaceView.setOnCameraBufferRelease(this);
 
         if (picPath != null && new File(picPath).exists()) {
             PicPath = picPath;
@@ -255,7 +245,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     }
 
     @Override
-    public void onEngineInitCompleted(EngineRender engine) {
+    public void onEngineInitCompleted() {
         if (PicPath != null) {
             m_SurfaceView.queueEvent(new SetImage(PicPath));
         } else {
@@ -288,7 +278,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
-        m_engine.addCameraBuffer(bytes);
+        m_SurfaceView.addCameraBuffer(bytes);
         //    	m_Camera.addCallbackBuffer(bytes);
     }
 
@@ -408,34 +398,11 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         return optimalSize;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (m_engine.onTouchEvent(event))
-            return true;
-        return super.onTouchEvent(event);
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (m_SurfaceView.onTouchEvent(event))
+//            return true;
+//        return super.onTouchEvent(event);
+//    }
 
-    private static class ContextFactory20 implements GLSurfaceView.EGLContextFactory {
-        private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
-
-        public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
-            Log.w(MagicActivity.TAG, "creating OpenGL ES 2.0 context");
-            checkEglError("Before eglCreateContext", egl);
-            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE};
-            EGLContext context = egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, attrib_list);
-            checkEglError("After eglCreateContext", egl);
-            return context;
-        }
-
-        public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) {
-            egl.eglDestroyContext(display, context);
-        }
-    }
-
-    private static void checkEglError(String prompt, EGL10 egl) {
-        int error;
-        while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) {
-            Log.e(MagicActivity.TAG, String.format("%s: EGL error: 0x%x", prompt, error));
-        }
-    }
 }
