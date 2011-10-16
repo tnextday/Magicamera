@@ -18,8 +18,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/glyuvtexture.cpp" afterPath="$PROJECT_DIR$/jni/glutils/glyuvtexture.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/magic.xml" afterPath="$PROJECT_DIR$/res/layout/magic.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
     </list>
     <ignored path="Magicamera.iws" />
@@ -104,7 +103,16 @@
       <file leaf-file-name="MagicActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="287" column="0" selection-start="9732" selection-end="9732" vertical-scroll-proportion="-0.06473595">
+            <state line="70" column="35" selection-start="2384" selection-end="2384" vertical-scroll-proportion="0.9633803">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="magic.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="33" column="42" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -141,9 +149,9 @@
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java" />
         <option value="$USER_HOME$/Desktop/1.htm" />
         <option value="$USER_HOME$/Desktop/1_files/all.css" />
-        <option value="$PROJECT_DIR$/res/layout/magic.xml" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/EngineRender.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" />
+        <option value="$PROJECT_DIR$/res/layout/magic.xml" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
       </list>
     </option>
@@ -505,10 +513,10 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.46456692" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.29291338" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.52283466" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.32913387" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36535433" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.53385824" sideWeight="0.49671593" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32840723" sideWeight="0.6913386" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
@@ -630,19 +638,21 @@
         <state line="49" column="56" selection-start="1646" selection-end="1646" vertical-scroll-proportion="0.53521127" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="20" selection-start="407" selection-end="407" vertical-scroll-proportion="0.36141303" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="75" column="0" selection-start="2262" selection-end="2262" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="42" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="287" column="0" selection-start="9732" selection-end="9732" vertical-scroll-proportion="-0.06473595">
+        <state line="70" column="35" selection-start="2384" selection-end="2384" vertical-scroll-proportion="0.9633803">
           <folding />
         </state>
       </provider>

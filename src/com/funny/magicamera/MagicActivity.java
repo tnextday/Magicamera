@@ -68,6 +68,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         findViewById(R.id.btn_engine).setOnClickListener(this);
         findViewById(R.id.btn_restore).setOnClickListener(this);
         findViewById(R.id.btn_take).setOnClickListener(this);
+        findViewById(R.id.btn_focus).setOnClickListener(this);
 
         m_SurfaceView = (MSurfaceView) findViewById(R.id.surfaceview);
         Log.w(MagicActivity.TAG, "MagicActivity onCreate");
@@ -117,6 +118,8 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             MagicJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
             m_SurfaceView.queueEvent(new TakePicture());
+        } else if (view.getId() == R.id.btn_focus){
+            m_Camera.autoFocus(null);
         }
     }
 
@@ -325,6 +328,10 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
             parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
         }
+
+        List<String> FocusModes = parameters.getSupportedFocusModes();
+        if (FocusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO))
+            parameters.setFlashMode(Camera.Parameters.FOCUS_MODE_AUTO);
         m_Camera.setParameters(parameters);
 
         parameters = m_Camera.getParameters();
