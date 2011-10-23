@@ -61,6 +61,8 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             return;
         }
         setContentView(R.layout.magic);
+
+
         findViewById(R.id.btn_back).setOnClickListener(this);
         findViewById(R.id.btn_set_cover).setOnClickListener(this);
         findViewById(R.id.btn_set_frame).setOnClickListener(this);
@@ -350,7 +352,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
             m_Camera.setPreviewCallback(this);
         }
         m_SurfaceView.queueEvent(new SetPreviewInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat()));
-        //MagicJNILib.rotate90Input(true);
+        //MagicJNILib.rotate90(true);
         m_Camera.startPreview();
     }
 

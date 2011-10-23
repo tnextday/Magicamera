@@ -197,3 +197,10 @@ GLuint BaseShader::createProgram( const char* pVertexSource, const char* pFragme
     }
     return program;
 }
+
+void BaseShader::setAttrf( const char* attr_name, GLfloat value )
+{
+    GLint attr_loc = glGetAttribLocation(m_program, attr_name);
+    if (attr_loc >= 0)
+        glUniform1f(attr_loc, value);
+}

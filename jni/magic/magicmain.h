@@ -23,7 +23,7 @@ enum Status {
 };
 
 
-class MagicMain : public TouchEvent, EngineOutChange, AdjustChange{
+class MagicMain : public TouchEvent, EngineOutChange{
     BaseShader      m_shader;
     Status          m_status;
 
@@ -60,7 +60,9 @@ public:
     void setPreviewImage(const char* data, long len);
     void setPreviewImage(const char* imgPath);
 
-    void takePicture();
+    void takePicture(Texture *tex = NULL);
+    void takePicture(const char* imgPath);
+    void takePicture(const char* data , long len);
 
     EngineType getEngineType();
     void switchEngine(EngineType type);

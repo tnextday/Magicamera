@@ -28,12 +28,11 @@ const int ADJV4 = 15;
 
 ImageAdjust::ImageAdjust(void)
 {
-    m_InTex = NULL;
-    m_onOutputChange = NULL;
     m_rorateCount = 0;
     m_bNeedAdjust = false;
     m_bXfliped = false;
     m_bYfliped = false;
+    reset();
 }
 
 ImageAdjust::~ImageAdjust(void)
@@ -92,50 +91,21 @@ void ImageAdjust::rotate90( bool clockwise )
         m_QuadData[ADJU4] = temp;
         m_rorateCount--;
     }
-    resize();
+//    setSize();
 }
 
-void ImageAdjust::resize()
+void ImageAdjust::setSize(int w, int h)
 {
-    if (!m_InTex) return;
     if (m_rorateCount%2 == 0){
-        m_width = m_InTex->getWidth();
-        m_height = m_InTex->getHeight();
+        m_width = w;
+        m_height = h;
     } else {
-        m_width = m_InTex->getHeight();
-        m_height = m_InTex->getWidth();
+        m_width = h;
+        m_height = w;
     }
-    m_OutTex.setSize(m_width, m_height);
     m_bNeedAdjust = m_rorateCount%4 != 0;
-    if (m_onOutputChange){
-        //TODO 如果进行翻转操作设置成InputTexutre就是错误的了
-        if (m_bNeedAdjust)
-            m_onOutputChange->onAdjustChange(&m_OutTex);
-        else
-            m_onOutputChange->onAdjustChange(m_InTex);
-    }
 }
 
-void ImageAdjust::drawImage()
-{
-    if (!m_bNeedAdjust || !m_InTex) return;
-    m_shader.use();
-    glDisable(GL_DEPTH_TEST);
-    m_fbo->bind();
-    glViewport(0, 0, m_width, m_height);
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    m_InTex->bind();
-
-    //glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glEnableVertexAttribArray(0);
-    glDisableVertexAttribArray(1); //话说不关掉这个就会报错
-    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    m_fbo->unbind();
-    checkGlError("uploadYUVTexImage");
-}
 
 bool ImageAdjust::init()
 {
@@ -145,18 +115,10 @@ bool ImageAdjust::init()
         return false;
     }
     reset();
-    m_OutTex.init();
-    m_OutTex.setSize(1, 1);
     m_fbo = new FramebufferObject();
-    m_fbo->texture2d(m_OutTex.getTexHandle());
     return true;
 }
 
-void ImageAdjust::setInputTexture( Texture* val )
-{
-    m_InTex = val; 
-    resize();
-}
 
 void ImageAdjust::reset()
 {
@@ -171,15 +133,23 @@ void ImageAdjust::reset()
     memcpy(m_QuadData, Quad, sizeof(GLfloat)*16);
 }
 
-void ImageAdjust::setOnOutputChange( AdjustChange* val )
-{
-    m_onOutputChange = val;
-}
 
-Texture* ImageAdjust::getOutTexture()
+bool ImageAdjust::process( Texture* src, Texture* dst )
 {
-    if (m_bNeedAdjust)
-        return &m_OutTex;
-    else
-        return m_InTex;
+    if (!m_bNeedAdjust) return false;
+    m_shader.use();
+    m_fbo->bindWithTexture(dst->getTexHandle());
+    setSize(src->getWidth(), src->getHeight());
+    dst->setSize(m_width, m_height);
+    glViewport(0, 0, m_width, m_height);
+/*    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);*/
+    glClear(GL_COLOR_BUFFER_BIT);
+    src->bind();
+    //glEnableVertexAttribArray(m_shader.getPositionLoc());
+    glEnableVertexAttribArray(0);
+    glDisableVertexAttribArray(1); //话说不关掉这个就会报错
+    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    m_fbo->unbind();
+    return true;
 }

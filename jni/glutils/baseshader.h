@@ -38,7 +38,9 @@ public:
     GLint getPositionLoc(){return m_positionLoc;};
     GLint getTextureCoordLoc(){return m_texCoordLoc;};
     GLint getViewPorjLoc();
-    GLint getUniformLoc(const char * uName);;
+    GLint getUniformLoc(const char * uName);
+
+    void setAttrf(const char* attr_name, GLfloat value);
 
     void setViewProject(GLfloat *mvp);
     bool isCompiled(){ return m_isCompiled;};

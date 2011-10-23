@@ -88,7 +88,7 @@ void MagicMain::renderFrame( float delta )
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
     if (m_Engine)
         m_Engine->drawImage();
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
 
@@ -120,10 +120,9 @@ void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        m_glYUVTex = new glYUVTexture(w, h, m_SrcTex.getTexHandle());
+        m_glYUVTex = new glYUVTexture(w, h, &m_SrcTex);
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
         m_SrcTex.setImageFormat(GDX2D_FORMAT_RGB565);
-
 }
 
 
@@ -225,10 +224,26 @@ void MagicMain::switchEngine(EngineType type)
         m_Engine->finish();
 }
 
-void MagicMain::takePicture()
+void MagicMain::takePicture( Texture *tex /*= NULL*/)
 {
     if (m_Engine)
-        m_Engine->tackPicture();
+        m_Engine->tackPicture(tex);
+}
+
+void MagicMain::takePicture( const char* imgPath)
+{
+    Texture tex;
+    tex.init();
+    tex.loadFromFile(imgPath);
+    takePicture(&tex);
+}
+
+void MagicMain::takePicture( const char* data , long len )
+{
+    Texture tex;
+    tex.init();
+    tex.loadFromMemory((unsigned char*)data, len);
+    takePicture(&tex);
 }
 
 EngineType MagicMain::getEngineType()

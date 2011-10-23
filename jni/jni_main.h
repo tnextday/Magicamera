@@ -38,6 +38,8 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_switchEngine(JNIEnv * env, jobject obj, jint type);
 JNIEXPORT jint JNICALL Java_com_funny_magicamera_MagicJNILib_getEngineType(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture(JNIEnv * env, jobject obj);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePictureWithFile(JNIEnv * env, jobject obj, jstring path);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePictureWithBuffer(JNIEnv * env, jobject obj, jbyteArray buffer);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover(JNIEnv * env, jobject obj, jstring path);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame(JNIEnv * env, jobject obj, jstring path);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect(JNIEnv * env, jobject obj, jstring path);
@@ -45,7 +47,7 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh(JNIEnv 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, int format);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage(JNIEnv * env, jobject obj,  jstring path);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90Input(JNIEnv * env, jobject obj,  jboolean clockwise);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90(JNIEnv * env, jobject obj,  jboolean clockwise);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp(JNIEnv * env, jobject obj, jfloat x, jfloat y);

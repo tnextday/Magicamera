@@ -46,10 +46,10 @@ static const GLfloat QuadData[] = {
     -1.0f, +1.0f, 0.0f, 0.0f,
 };
 
-glYUVTexture::glYUVTexture(int w, int h, GLuint texid)
+glYUVTexture::glYUVTexture(int w, int h, Texture *tex)
 {
     m_fbo = NULL;
-    init(w, h, texid);
+    init(w, h, tex);
 }
 
 glYUVTexture::~glYUVTexture(void)
@@ -58,9 +58,10 @@ glYUVTexture::~glYUVTexture(void)
     SafeDelete(m_fbo);
 }
 
-bool glYUVTexture::init( int w, int h, GLuint texid )
+bool glYUVTexture::init( int w, int h, Texture *tex)
 {
-
+    m_QuadData = (GLfloat *)QuadData;
+    m_Adjust = NULL;
     m_shader.makeProgram(g_YUV_VShader, g_YUV_FShader);
     if (!m_shader.isCompiled()) {
         LOGE("Could not create program.\n");
@@ -74,10 +75,12 @@ bool glYUVTexture::init( int w, int h, GLuint texid )
     setDefaultTexParameter(m_YUVTexs[YTexId_idx]);
     setDefaultTexParameter(m_YUVTexs[UVTexId_idx]);
 
-    m_width = w;
-    m_height = h;
+    m_iWidth = w;
+    m_iHeight = h;
     m_fbo = new FramebufferObject();
-    m_fbo->texture2d(texid);
+    m_oWidth = m_iWidth;
+    m_oHeight = m_iHeight;
+    setDstTex(tex);
     checkGlError("glYUVTexture::init");
     return true;
 }
@@ -93,7 +96,7 @@ void glYUVTexture::setDefaultTexParameter( GLuint texId )
 
 void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
 {
-    if (w != m_width || h != m_height) {
+    if (w != m_iWidth || h != m_iHeight) {
         LOGE("uploadYUVTexImage Error 0\n");
         return;
     }
@@ -101,8 +104,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     m_shader.use();
     glDisable(GL_DEPTH_TEST);
     m_fbo->bind();
-    //printGLColorSpaceInfo();
-    glViewport(0, 0, m_width, m_height);
+    glViewport(0, 0, m_oWidth, m_oHeight);
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -122,13 +124,31 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     //glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1); //话说不关掉这个就会报错
-    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, QuadData);
+    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
     checkGlError("uploadYUVTexImage");
 }
 
-void glYUVTexture::setTargetTexId( GLuint texid )
+void glYUVTexture::setDstTex( Texture *tex )
 {
-    m_fbo->texture2d(texid);
+    m_DstTex = tex;
+    m_fbo->texture2d(tex->getTexHandle());
+    m_DstTex->setSize(m_oWidth, m_oHeight);
+}
+
+void glYUVTexture::setImageAdjust( ImageAdjust *adjust )
+{
+    m_Adjust = adjust;
+    if (m_Adjust){
+        m_Adjust->setSize(m_iWidth, m_iHeight);
+        m_oWidth = m_Adjust->getWidth();
+        m_oHeight = m_Adjust->getHeight();
+        m_QuadData = m_Adjust->getQuadData();
+    }else{
+        m_oWidth = m_iWidth;
+        m_oHeight = m_oHeight;
+        m_QuadData = (GLfloat *)QuadData;
+    }
+    m_DstTex->setSize(m_oWidth, m_oHeight);
 }

@@ -58,9 +58,6 @@ public:
     void drawImage();
 
     void tackPicture(Texture *texutre = NULL);
-    void tackPicture(const char* data, long len);
-    void tackPicture(const char* imagePath);
-    void tackPicture(const char* data, int w, int h, int format);
 
     void SetIOCallBack(FileUtils* val);
     void setOutputResize(EngineOutChange* val) { m_onOutputResize = val; }

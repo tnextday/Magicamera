@@ -33,9 +33,11 @@ public class MagicJNILib {
     public static native boolean onTouchDrag(float x, float y);
     public static native boolean onTouchUp(float x, float y);
     public static native void setPreviewImage(String path);
-    public static native void rotate90Input(boolean clockwise);
+    public static native void rotate90(boolean clockwise);
     public static native void setApkPath(String apkPath);
     public static native void takePicture();
+    public static native void takePictureWithFile(String path);
+    public static native void takePictureWithBuffer(byte[] buffer);
     public static native void setCover(String path);
     public static native void setFrame(String path);
     public static native void setEffect(String path);

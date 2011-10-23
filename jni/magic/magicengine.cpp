@@ -82,27 +82,6 @@ void MagicEngine::tackPicture(Texture *texutre /*= NULL*/)
     setSize(ow, oh);
 }
 
-void MagicEngine::tackPicture( const char* data, long len )
-{
-    Texture tex;
-    tex.init();
-    tex.loadFromMemory((unsigned char*)data, len);
-    tackPicture(&tex);
-}
-
-void MagicEngine::tackPicture( const char* imagePath )
-{
-    Texture tex;
-    tex.init();
-    tex.loadFromFile(imagePath);
-    tackPicture(&tex);
-}
-
-void MagicEngine::tackPicture( const char* data, int w, int h, int format )
-{
-    //TODO 暂时用不到，有时间完善 
-}
-
 bool MagicEngine::onTouchDown( float x, float y )
 {
     return false;

@@ -181,13 +181,11 @@ JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchUp( JNIE
 	    return g_MagicMain->onTouchUp(x, y);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90Input( JNIEnv * env, jobject obj, jboolean clockwise )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90( JNIEnv * env, jobject obj, jboolean clockwise )
 {
     if (g_MagicMain)
         g_MagicMain->rotate90Input(clockwise);
 }
-
-
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setApkPath( JNIEnv * env, jobject obj, jstring apkPath )
 {
@@ -204,6 +202,27 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePicture( JNIEnv
 {
     if (g_MagicMain)
         g_MagicMain->takePicture();
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePictureWithFile( JNIEnv * env, jobject obj, jstring path )
+{
+    const char* str;
+    jboolean isCopy;
+    str = env->GetStringUTFChars(path, &isCopy);
+    if (isCopy) {
+        if (g_MagicMain)
+            g_MagicMain->takePicture(str);
+        env->ReleaseStringUTFChars(path, str);
+    }
+}
+
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePictureWithBuffer( JNIEnv * env, jobject obj, jbyteArray buffer )
+{
+    char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
+    long len = env->GetArrayLength(buffer);
+    if (g_MagicMain)
+        g_MagicMain->takePicture(p_buffer, len);
+    env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }
 
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover( JNIEnv * env, jobject obj, jstring path )
