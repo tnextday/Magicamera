@@ -1,7 +1,7 @@
 #pragma once
 #include "magicengine.h"
 #include "glutils/sprite.h"
-#include "effect/imageeffect.h"
+#include "effect/effect.h"
 
 class EffectEngine :
     public MagicEngine
@@ -12,7 +12,7 @@ private:
     Sprite      *m_frame;
     Sprite      *m_nextFrame;
     char        m_framePath[260];
-    ImageEffect *m_effect;
+    Effect      *m_effect;
     Texture     *m_effectTex;
 
     bool    m_toFinish;
@@ -61,7 +61,11 @@ public:
     void setCover(const char* coverPath);
     void setFrame(const char* framePath);
     //void setFrame( const unsigned char* buffer, uint32_t size );
-    void setEffect(const char* effectPath);
+    void setEffect(const char* effectName);
+    const char* getEffectName();
+    void setParameter(const char* parameterKey, float value);
+    float getParameterValue(const char* parameterKey);
+    const char* getParameterKeys();
 
     virtual void setSize( int w, int h, bool bPreview = true);
 };

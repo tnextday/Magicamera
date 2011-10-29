@@ -203,8 +203,10 @@ void Sprite::draw(BaseShader *shader, Texture *otherTex /*= NULL*/)
         dst = m_texture;
     }
     if (!dst) return;
+    shader->use();
     dst->bind();
-
+    glEnableVertexAttribArray(shader->getPositionLoc());
+    glEnableVertexAttribArray(shader->getTextureCoordLoc());
     glVertexAttribPointer(shader->getPositionLoc(), 2, GL_FLOAT, GL_FALSE, 0, getVertices());
     glVertexAttribPointer(shader->getTextureCoordLoc(), 2, GL_FLOAT, GL_FALSE, 0, getTexCoords());
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);

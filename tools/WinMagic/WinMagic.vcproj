@@ -449,6 +449,30 @@
 				Name="effect"
 				>
 				<File
+					RelativePath="..\..\jni\effect\effect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\jni\effect\effect.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\jni\effect\effectfactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\jni\effect\effectfactory.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\jni\effect\glow.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\jni\effect\glow.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\jni\effect\imageeffect.cpp"
 					>
 				</File>

@@ -56,10 +56,16 @@ public slots:
     void restoreMesh();
     void setFrame(const QString &path);
     void setCover(const QString &path);
-    void setEffect(const QString &path);
+    void setEffect(const QString &name);
     void setSavePath(const QString &path);
     void setResPath(const QString &path);
     void takePicture();
+
+    const char* getEffectList();
+    const char* getEffectName();
+    void setParameter(const QString &parameterKey, float value);
+    float getParameterValue(const QString &parameterKey);
+    const char* getParameterKeys();
 };
 
 #endif // RENDER_H

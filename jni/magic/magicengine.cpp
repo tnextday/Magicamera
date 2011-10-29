@@ -33,6 +33,11 @@ MagicEngine::~MagicEngine()
 }
 
 bool MagicEngine::initEngine(Texture* SrcTex) {
+
+    GLuint dims[2];
+    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, (GLint*)dims);
+    m_MaxWidth = dims[0];
+    m_MaxHeight = dims[1];
     m_OutTex.init();
     m_shader.loadFromFile("res://shaders/default.sp");
     setInputTexture(SrcTex);
@@ -100,11 +105,11 @@ bool MagicEngine::onTouchUp( float x, float y )
 void MagicEngine::draw( Texture *texutre /*= NULL*/ )
 {
     glViewport(0,0, m_width, m_height);
-    m_shader.use();
+/*    m_shader.use();*/
     //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
+//     glEnableVertexAttribArray(m_shader.getPositionLoc());
+//     glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
     onDraw(texutre);
 }
 
@@ -125,15 +130,21 @@ void MagicEngine::setSize( int w, int h , bool bPreview /*= true*/)
 {
     m_width = w;
     m_height = h;
+    int mw, mh;
     if (bPreview){
-        float aspect = (float)w/h;
-        if (aspect > m_aspectRatio && m_width > m_PreviewWidth){
-            m_width = m_PreviewWidth;
-            m_height = m_width/aspect;
-        }else if (m_height > m_PreviewHeight){
-            m_height = m_PreviewHeight;
-            m_width = m_height*aspect;
-        }
+        mw = m_PreviewWidth;
+        mh = m_PreviewHeight;
+    }else{
+        mw = m_MaxWidth;
+        mh = m_MaxHeight;
+    }
+    float aspect = (float)w/h;
+    if (aspect > 1.0 && m_width > mw){
+        m_width = mw;
+        m_height = m_width/aspect;
+    }else if (m_height > mh){
+        m_height = mh;
+        m_width = m_height*aspect;
     }
     m_OutTex.setSize(m_width, m_height);
     if (m_onOutputResize){

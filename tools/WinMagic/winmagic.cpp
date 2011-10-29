@@ -56,7 +56,7 @@ void WinMagic::on_cmb_covers_currentIndexChanged( const QString & text )
 void WinMagic::on_cmb_effect_currentIndexChanged( const QString & text )
 {
     if (!text.startsWith("--"))
-        m_render.setEffect(QString::fromWCharArray(L"res://effects\\%1").arg(text));
+        m_render.setEffect(text);
     else
         m_render.setEffect("");
 }
@@ -254,8 +254,8 @@ void WinMagic::reloadRes()
     ui.cmb_covers->addItem("--None--");
     ui.cmb_covers->addItems(sl);
 
-    dir.cd("../effects");
-    sl = dir.entryList(QStringList("*.sp"),QDir::Files | QDir::NoSymLinks);
+    QString effects = m_render.getEffectList();
+    sl = effects.split("|", QString::SkipEmptyParts);
     ui.cmb_effect->clear();
     ui.cmb_effect->addItem("--None--");
     ui.cmb_effect->addItems(sl);

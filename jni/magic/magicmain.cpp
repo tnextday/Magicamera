@@ -7,6 +7,7 @@
 #include "glutils/glutils.h"
 #include "utils/mathelpers.h"
 #include "effectengine.h"
+#include "effect/effectfactory.h"
 
 const float MaxDeltaTime = 1.0/20.0;
 
@@ -48,6 +49,9 @@ bool MagicMain::setupGraphics() {
     printGLString("Vendor", GL_VENDOR);
     printGLString("Renderer", GL_RENDERER);
     printGLString("Extensions", GL_EXTENSIONS);
+    GLuint dims[2];
+    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, (GLint*)dims);
+    LOGI("MAX_VIEWPORT: %d, %d\n", dims[0], dims[1]);
 
     m_shader.makeProgram(gVertexShader, gFragmentShader);
     if (!m_shader.isCompiled()){
@@ -269,11 +273,11 @@ void MagicMain::setCover( const char* path )
     ((EffectEngine *)m_Engine)->setCover(path);
 }
 
-void MagicMain::setEffect( const char* path )
+void MagicMain::setEffect( const char* name )
 {
     if (!m_Engine || m_Engine->type() != EngineType_Effect)
         return;
-    ((EffectEngine *)m_Engine)->setEffect(path);
+    ((EffectEngine *)m_Engine)->setEffect(name);
 }
 
 void MagicMain::setFrame( const char* path )
@@ -322,10 +326,41 @@ void MagicMain::resize( int w, int h )
 
 }
 
-
-
 void MagicMain::setPreviewSize( GLuint w, GLuint h )
 {
     m_PreviewWidth = w;
     m_PreviewHeight = h;
+}
+
+const char* MagicMain::getEffectName()
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
+        return NULL;
+    return ((EffectEngine *)m_Engine)->getEffectName();
+}
+
+void MagicMain::setParameter( const char* parameterKey, float value )
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
+        return;
+    ((EffectEngine *)m_Engine)->setParameter(parameterKey, value);
+}
+
+float MagicMain::getParameterValue( const char* parameterKey )
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
+        return 0;
+    return ((EffectEngine *)m_Engine)->getParameterValue(parameterKey);
+}
+
+const char* MagicMain::getParameterKeys()
+{
+    if (!m_Engine || m_Engine->type() != EngineType_Effect)
+        return NULL;
+    return ((EffectEngine *)m_Engine)->getParameterKeys();
+}
+
+const char* MagicMain::getEffectList()
+{
+    return ::getEffectList();
 }

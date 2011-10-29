@@ -70,7 +70,14 @@ public:
 /*    void setCover(const unsigned char* buffer, uint32_t size);*/
     void setFrame(const char* path);
     void setCover(const char* path);
-    void setEffect(const char* path);
+
+    const char* getEffectList();
+    void setEffect(const char* name);
+    const char* getEffectName();
+    void setParameter(const char* parameterKey, float value);
+    float getParameterValue(const char* parameterKey);
+    const char* getParameterKeys();
+
     void restoreMesh();
 
     void rotate90Input(bool clockwise = true);

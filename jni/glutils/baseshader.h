@@ -41,6 +41,7 @@ public:
     GLint getUniformLoc(const char * uName);
 
     void setAttrf(const char* attr_name, GLfloat value);
+    void setAttrf(GLint attr_loc, GLfloat value){glUniform1f(attr_loc, value);};
 
     void setViewProject(GLfloat *mvp);
     bool isCompiled(){ return m_isCompiled;};

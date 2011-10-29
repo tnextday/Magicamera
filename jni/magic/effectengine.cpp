@@ -7,6 +7,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include "utils/packageloader.h"
+#include "effect/effectfactory.h"
 
 EffectEngine::EffectEngine(void)
 {
@@ -93,6 +94,8 @@ void EffectEngine::onDraw( Texture *texutre )
 {
     if (texutre)
         doEffect(texutre);
+//     else
+//         doEffect(m_InTex);
     Texture* srcTex = texutre;
     if (m_effectTex)
         srcTex = m_effectTex;
@@ -206,28 +209,50 @@ void EffectEngine::updateInput( Texture* tex )
     doEffect(tex);
 }
 
-void EffectEngine::setEffect( const char* effectPath )
+void EffectEngine::setEffect( const char* effectName )
 {
-    if (!effectPath){
-        SafeDelete(m_effect);
+    SafeDelete(m_effect);
+    
+    m_effect = createEffect(effectName);
+    if (!m_effect){
         SafeDelete(m_effectTex);
-        return;
-    }
-    if (!m_effectTex){
+    }else if(!m_effectTex){
         m_effectTex = new Texture;
         m_effectTex->init();
     }
-    if (!m_effect){
-        m_effect = new ImageEffect();
-    }
-    m_effect->loadFromFile(effectPath);
     doEffect(m_InTex);
+}
+
+const char* EffectEngine::getEffectName(){
+    if (m_effect)
+        return m_effect->getName();
+    return NULL;
+}
+
+void EffectEngine::setParameter(const char* parameterKey, float value){
+    if (m_effect){
+        m_effect->setParameter(parameterKey, value);
+        doEffect(m_InTex);
+    }
+}
+
+float EffectEngine::getParameterValue(const char* parameterKey){
+    if (m_effect)
+        return m_effect->getParameterValue(parameterKey);
+    return 0;
+}
+
+const char* EffectEngine::getParameterKeys(){
+    if (m_effect)
+        return m_effect->getParameterKeys();
+    return NULL;
 }
 
 void EffectEngine::doEffect( Texture* tex )
 {
     if (!m_effect) return;
-    m_effect->process(tex, m_effectTex);
+    m_effectTex->setSize(m_width, m_height);
+    m_effect->apply(tex, m_effectTex);
 }
 
 void EffectEngine::resizeCoord(int w, int h)

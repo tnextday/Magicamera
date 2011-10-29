@@ -141,10 +141,10 @@ void Render::setFrame(const QString &path )
         m_MagicMain.setFrame(NULL);
 }
 
-void Render::setEffect(const QString &path )
+void Render::setEffect( const QString &name )
 {
-    if (path != "")
-        m_MagicMain.setEffect(path.toLocal8Bit());
+    if (name != "")
+        m_MagicMain.setEffect(name.toLocal8Bit());
     else
         m_MagicMain.setEffect(NULL);
 }
@@ -179,4 +179,29 @@ void Render::setCover( const QString &path )
         m_MagicMain.setCover(path.toLocal8Bit());
     else
         m_MagicMain.setCover(NULL);
+}
+
+const char* Render::getEffectList()
+{
+    return m_MagicMain.getEffectList();
+}
+
+const char* Render::getEffectName()
+{
+    return m_MagicMain.getEffectName();
+}
+
+void Render::setParameter( const QString &parameterKey, float value )
+{
+    m_MagicMain.setParameter(parameterKey.toLocal8Bit(), value);
+}
+
+float Render::getParameterValue( const QString &parameterKey )
+{
+    return m_MagicMain.getParameterValue(parameterKey.toLocal8Bit());
+}
+
+const char* Render::getParameterKeys()
+{
+    return m_MagicMain.getParameterKeys();
 }

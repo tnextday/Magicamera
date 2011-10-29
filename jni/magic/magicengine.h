@@ -29,6 +29,8 @@ protected:
 
     GLuint         m_width;
     GLuint         m_height;
+    GLuint          m_MaxWidth;
+    GLuint          m_MaxHeight;
     GLfloat         m_aspectRatio;
     GLuint          m_PreviewWidth;
     GLuint          m_PreviewHeight;
