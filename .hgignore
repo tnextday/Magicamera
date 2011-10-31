@@ -22,3 +22,5 @@ win32/assets/*
 *.lnk
 tools/Res/*
 win32/*
+*.sdf
+*.old
