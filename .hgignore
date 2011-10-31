@@ -21,3 +21,4 @@ win32/assets/*
 */GeneratedFiles/*
 *.lnk
 tools/Res/*
+win32/*

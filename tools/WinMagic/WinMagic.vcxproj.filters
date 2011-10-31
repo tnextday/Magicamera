@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{99c6fccd-f05d-4061-a258-6857d93a7fd8}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{40504d3c-aedb-4e86-88f3-31f35bd7fa35}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{32bc4cfa-2fb7-41ca-a3cd-468dd95e5980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\actions">
+      <UniqueIdentifier>{1ec0a627-6e7e-4738-80ed-556ee3297985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\effect">
+      <UniqueIdentifier>{9d2b8274-dbb6-467d-9d76-9295cc618404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\gdx2d">
+      <UniqueIdentifier>{47475433-7370-415a-abd1-c2b7ad4361c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\glutils">
+      <UniqueIdentifier>{b6d3c389-592d-452b-b732-89ac5e7ec074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\zip">
+      <UniqueIdentifier>{b0c36f96-5345-4826-8e23-4ecec1082fd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\utils">
+      <UniqueIdentifier>{86ad818c-38a1-42c2-9914-3160e084c3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ui">
+      <UniqueIdentifier>{66bfba64-3a78-416d-b939-daa42851a2c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\magic">
+      <UniqueIdentifier>{6e2fc9df-7cf5-4806-aff7-1b92b66c930a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="eglhelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winmagic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_winmagic.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_render.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_winmagic.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_render.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_winmagic.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\actions\action.cpp">
+      <Filter>Engine\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\actions\moveto.cpp">
+      <Filter>Engine\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\actions\parallel.cpp">
+      <Filter>Engine\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\actions\rotateto2d.cpp">
+      <Filter>Engine\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\actions\sequence.cpp">
+      <Filter>Engine\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\effect.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\effectfactory.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\glow.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\imageeffect.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\gdx2d\gdx2d.cpp">
+      <Filter>Engine\gdx2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\gdx2d\stb_image.c">
+      <Filter>Engine\gdx2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\baseshader.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\framebufferobject.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\globject.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\glutils.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\glyuvtexture.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\mesh.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\sprite.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\texture.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\glutils\textureregion.cpp">
+      <Filter>Engine\glutils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\zip\ioapi.cpp">
+      <Filter>Engine\zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\zip\unzip.cpp">
+      <Filter>Engine\zip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\utils\arraylist.cpp">
+      <Filter>Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\utils\easing.cpp">
+      <Filter>Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\utils\fastmath.cpp">
+      <Filter>Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\utils\fileutils.cpp">
+      <Filter>Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\utils\mathelpers.cpp">
+      <Filter>Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\utils\packageloader.cpp">
+      <Filter>Engine\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\ui\button.cpp">
+      <Filter>Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\magic\effectengine.cpp">
+      <Filter>Engine\magic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\magic\imageadjust.cpp">
+      <Filter>Engine\magic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\magic\magicengine.cpp">
+      <Filter>Engine\magic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\magic\magicmain.cpp">
+      <Filter>Engine\magic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\magic\meshengine.cpp">
+      <Filter>Engine\magic</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="eglhelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_winmagic.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\actions\action.h">
+      <Filter>Engine\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\actions\moveto.h">
+      <Filter>Engine\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\actions\parallel.h">
+      <Filter>Engine\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\actions\rotateto2d.h">
+      <Filter>Engine\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\actions\sequence.h">
+      <Filter>Engine\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\effect.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\effectfactory.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\glow.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\imageeffect.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\gdx2d\gdx2d.h">
+      <Filter>Engine\gdx2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\baseshader.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\framebufferobject.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\globject.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\glutils.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\glyuvtexture.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\mesh.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\sprite.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\texture.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\glutils\textureregion.h">
+      <Filter>Engine\glutils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\zip\ioapi.h">
+      <Filter>Engine\zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\zip\unzip.h">
+      <Filter>Engine\zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\utils\arraylist.h">
+      <Filter>Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\utils\easing.h">
+      <Filter>Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\utils\fastmath.h">
+      <Filter>Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\utils\fileutils.h">
+      <Filter>Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\utils\mathelpers.h">
+      <Filter>Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\utils\packageloader.h">
+      <Filter>Engine\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\ui\button.h">
+      <Filter>Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\ui\touchevent.h">
+      <Filter>Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\effectengine.h">
+      <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\imageadjust.h">
+      <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\magicengine.h">
+      <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\magicmain.h">
+      <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\meshengine.h">
+      <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\ratetables.h">
+      <Filter>Engine\magic</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="render.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="winmagic.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="winmagic.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="winmagic.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
