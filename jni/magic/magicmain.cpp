@@ -52,6 +52,7 @@ bool MagicMain::setupGraphics() {
     GLuint dims[2];
     glGetIntegerv(GL_MAX_VIEWPORT_DIMS, (GLint*)dims);
     LOGI("MAX_VIEWPORT: %d, %d\n", dims[0], dims[1]);
+    setMaxOutputSize(dims[0], dims[1]);
 
     m_shader.makeProgram(gVertexShader, gFragmentShader);
     if (!m_shader.isCompiled()){
@@ -89,7 +90,7 @@ void MagicMain::renderFrame( float delta )
         delta = MaxDeltaTime;
 
     update(delta);
-    //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader
+    //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader 
     if (m_Engine)
         m_Engine->drawImage();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -212,6 +213,7 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     default:
         m_Engine = (MagicEngine* )(new MeshEngine());
     }
+    m_Engine->setMaxOutputSize(m_MaxWidth, m_MaxHeight);
     m_Engine->setPreviewSize(m_PreviewWidth, m_PreviewHeight);
     m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
@@ -296,7 +298,7 @@ void MagicMain::restoreMesh()
 
 void MagicMain::rotate90Input( bool clockwise /*= true*/)
 {
-    //TODO Fix：貌似坐标系有点问题！~ 上下翻转的
+    //TODO Fix：貌似坐标系有点问题！~ 上下翻转的 
 //     m_adjust.rotate90(!clockwise);
 //     m_adjust.drawImage();
 }
@@ -305,7 +307,7 @@ void MagicMain::onEngineOutChange( Texture *tex )
 {
     m_magicSprite.setTexture(tex);
     //m_magicSprite.loadFromFile("assets/test2.jpg");
-    //TODO 为什么需要flip？？？？！！！！
+    //TODO 为什么需要flip？？？？！！！！ 
     m_magicSprite.flip(false, true);
 }
 
@@ -363,4 +365,15 @@ const char* MagicMain::getParameterKeys()
 const char* MagicMain::getEffectList()
 {
     return ::getEffectList();
+}
+
+void MagicMain::setMaxOutputSize( int w, int h )
+{
+    GLuint dims[2];
+    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, (GLint*)dims);
+    m_MaxWidth = w > dims[0] ? dims[0] : w;
+    m_MaxHeight = h > dims[1] ? dims[1] : h;
+    if(m_Engine){
+        m_Engine->setMaxOutputSize(m_MaxWidth, m_MaxHeight);
+    }
 }

@@ -132,7 +132,6 @@ void EffectEngine::showCover()
     mt->setEasing(new CEaseOutBounce(0.6));
     m_frame->doAction(mt);
     m_bVisible = true;
-
 }
 
 void EffectEngine::hideCover()

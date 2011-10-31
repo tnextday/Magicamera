@@ -41,6 +41,9 @@ class MagicMain : public TouchEvent, EngineOutChange{
     GLuint          m_PreviewWidth;
     GLuint          m_PreviewHeight;
 
+    GLuint          m_MaxWidth;
+    GLuint          m_MaxHeight;
+
     int             m_inputFortmat;
 
     FileUtils*     m_ioCallBack;
@@ -88,11 +91,13 @@ public:
 
     void setIOCallBack(FileUtils* callback);
 
-    //Engine输出texture大小改变
+    //Engine输出texture大小改变 
     virtual void onEngineOutChange( Texture *tex );
 
     void resize(int w, int h);
     void setPreviewSize(GLuint w, GLuint h);
+
+    void setMaxOutputSize(int w, int h);
 
 private:
     void initEngine(EngineType type = EngineType_Mesh);

@@ -68,6 +68,7 @@ public:
     GLuint getHeigth(){return m_height;} 
 
     void setPreviewSize(GLuint w, GLuint h);
+    void setMaxOutputSize(GLuint w, GLuint h);
 
     virtual void update(GLfloat delta) = 0;
     virtual void start() = 0;

@@ -147,7 +147,7 @@ bool ImageAdjust::process( Texture* src, Texture* dst )
     src->bind();
     //glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(0);
-    glDisableVertexAttribArray(1); //话说不关掉这个就会报错
+    glDisableVertexAttribArray(1); //话说不关掉这个就会报错 
     glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();

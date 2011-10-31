@@ -125,7 +125,7 @@ void MagicEngine::resizeCoord( int w, int h )
     setSize(w, h);
 }
 
-//设置输出图片大小，不同于坐标
+//设置输出图片大小，不同于坐标  
 void MagicEngine::setSize( int w, int h , bool bPreview /*= true*/)
 {
     m_width = w;
@@ -164,5 +164,11 @@ void MagicEngine::setPreviewSize( GLuint w, GLuint h )
 {
     m_PreviewWidth = w;
     m_PreviewHeight = h;
+}
+
+void MagicEngine::setMaxOutputSize( GLuint w, GLuint h )
+{
+    m_MaxWidth = w; 
+    m_MaxHeight = h;
 }
 
