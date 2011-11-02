@@ -55,13 +55,18 @@ static const char Glow_FShader_vblur_final[] =
     "    sum += texture2D(RTScene, vec2(vTexCoord.x, vTexCoord.y + 3.0*vBlurSize)) * 0.09;\n"
     "    sum += texture2D(RTScene, vec2(vTexCoord.x, vTexCoord.y + 4.0*vBlurSize)) * 0.05;\n"
     "    vec4 srcColor  = texture2D(SrcTex,vTexCoord);\n"
-    "    gl_FragColor = srcColor + sum*Exposure;\n"
+    "    #define BlendOverlayf(base, blend)    (base < 0.5 ? (2.0 * base * blend) : (1.0 - 2.0 * (1.0 - base) * (1.0 - blend)))\n"
+    "    #define Blend(base, blend, funcf)     vec3(funcf(base.r, blend.r), funcf(base.g, blend.g), funcf(base.b, blend.b))\n"
+    "    #define BlendOverlay(base, blend)     Blend(base, blend, BlendOverlayf)\n"
+    "    #define BlendHardLight(base, blend)   BlendOverlay(blend, base)\n"
+    "    gl_FragColor =  vec4(BlendHardLight(srcColor.rgb, sum.rgb), 1.0);\n"
+    //"    gl_FragColor = min(srcColor, sum);\n"
     "}\n";
 
 
 Glow::Glow(void)
 {
-    mBlurStep = 6;
+    mBlurStep = 1;
     mHBlur.makeProgram(Glow_VShader, Glow_FShader_hblur);
     mHBlurSizeLoc = mHBlur.getUniformLoc("hBlurSize");
     mFinal.makeProgram(Glow_VShader, Glow_FShader_vblur_final);
@@ -81,7 +86,7 @@ void Glow::apply( Texture* input, Texture* output )
 {
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    //横向模糊,渲染到临时纹理上
+    //横向模糊,渲染到临时纹理上 
     mHBlur.use();
     mHBlur.setAttrf(mHBlurSizeLoc, mBlurStep/output->getWidth());
     mTmpTex.setSize(output->getWidth(), output->getHeight());
@@ -92,7 +97,7 @@ void Glow::apply( Texture* input, Texture* output )
     input->bind(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    //纵向模糊，并且和原图片混合
+    //纵向模糊，并且和原图片混合 
     mFinal.use();
     mFinal.setAttrf(mVBlurSizeLoc, mBlurStep/output->getHeight());
     mFinal.setAttrf(mExposureLoc, mExposure);
