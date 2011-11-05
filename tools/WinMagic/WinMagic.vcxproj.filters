@@ -194,6 +194,9 @@
     <ClCompile Include="..\..\jni\effect\scanline.cpp">
       <Filter>Engine\effect</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\jni\effect\hdr.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eglhelper.h">
@@ -308,6 +311,9 @@
       <Filter>Engine\magic</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jni\effect\scanline.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\hdr.h">
       <Filter>Engine\effect</Filter>
     </ClInclude>
   </ItemGroup>

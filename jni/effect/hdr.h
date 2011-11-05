@@ -2,25 +2,28 @@
 #include "effect.h"
 
 
-#define Glow_Effect_Name "Glow"
+#define HDR_Effect_Name "HDR"
 
-class Glow :
+class HDR :
     public Effect
 {
 private:
     BaseShader          mHBlur;
+    BaseShader          mVBlur;
     BaseShader          mFinal;
     Texture             mTmpTex;
+    Texture             mTmpTex2;
     FramebufferObject   mFBO;
     GLint               mHBlurSizeLoc;
     GLint               mVBlurSizeLoc;
     GLint               mExposureLoc;
     GLint               mSrcTexLoc;
-    GLint               mRTSenceLoc;
+    GLint               mLightTexLoc;
     float               mBlurStep;
+    float               mExposure;
 public:
-    Glow(void);
-    virtual ~Glow(void);
+    HDR(void);
+    virtual ~HDR(void);
     virtual void apply( Texture* input, Texture* output );
     virtual const char* getName();
     virtual void setParameter( const char* parameterKey, float value );
