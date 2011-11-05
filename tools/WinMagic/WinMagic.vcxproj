@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\jni\effect\scanline.cpp" />
     <ClCompile Include="eglhelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="..\..\jni\magic\meshengine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\jni\effect\scanline.h" />
     <ClInclude Include="eglhelper.h" />
     <CustomBuild Include="render.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>

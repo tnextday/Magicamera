@@ -191,6 +191,9 @@
     <ClCompile Include="..\..\jni\magic\meshengine.cpp">
       <Filter>Engine\magic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\jni\effect\scanline.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eglhelper.h">
@@ -303,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="..\..\jni\magic\ratetables.h">
       <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\scanline.h">
+      <Filter>Engine\effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

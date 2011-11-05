@@ -97,7 +97,7 @@ void Glow::apply( Texture* input, Texture* output )
     input->bind(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    //纵向模糊，并且和原图片混合 
+    //纵向模糊，并且和原图片混合  
     mFinal.use();
     mFinal.setAttrf(mVBlurSizeLoc, mBlurStep/output->getHeight());
     mFinal.setAttrf(mExposureLoc, mExposure);
@@ -109,6 +109,7 @@ void Glow::apply( Texture* input, Texture* output )
     mTmpTex.bind(1);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    mFBO.unbind();
 }
 
 const char* Glow::getName()
@@ -139,5 +140,5 @@ float Glow::getParameterValue( const char* parameterKey )
 
 const char* Glow::getParameterKeys()
 {
-    return "exposure|blurstep";
+    return "[{key:'blurstep'; type:'float'; max:5.0; min:0.0;}]";
 }
