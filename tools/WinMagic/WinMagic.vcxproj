@@ -90,6 +90,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\jni\effect\hdr.cpp" />
     <ClCompile Include="..\..\jni\effect\scanline.cpp" />
+    <ClCompile Include="..\..\jni\effect\shift.cpp" />
     <ClCompile Include="eglhelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\jni\effect\hdr.h" />
     <ClInclude Include="..\..\jni\effect\scanline.h" />
+    <ClInclude Include="..\..\jni\effect\shift.h" />
     <ClInclude Include="eglhelper.h" />
     <CustomBuild Include="render.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
