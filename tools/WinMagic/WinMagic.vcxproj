@@ -89,6 +89,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\jni\effect\hdr.cpp" />
+    <ClCompile Include="..\..\jni\effect\microspur.cpp" />
     <ClCompile Include="..\..\jni\effect\scanline.cpp" />
     <ClCompile Include="..\..\jni\effect\shift.cpp" />
     <ClCompile Include="eglhelper.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\jni\effect\hdr.h" />
+    <ClInclude Include="..\..\jni\effect\microspur.h" />
     <ClInclude Include="..\..\jni\effect\scanline.h" />
     <ClInclude Include="..\..\jni\effect\shift.h" />
     <ClInclude Include="eglhelper.h" />

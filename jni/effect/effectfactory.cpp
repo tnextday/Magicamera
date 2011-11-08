@@ -4,13 +4,14 @@
 #include "scanline.h"
 #include "hdr.h"
 #include "shift.h"
-
+#include "microspur.h"
 
 static const char* g_str_effects = 
     Glow_Effect_Name "|"
     ScanLine_Effect_Name "|"
     HDR_Effect_Name "|"
     Shift_Effect_Name "|"
+    Microspur_Effect_Name "|"
     ;
 
 Effect* createEffect( const char* effectName )
@@ -25,6 +26,8 @@ Effect* createEffect( const char* effectName )
         return new HDR;
     }else if (strcmp(effectName, Shift_Effect_Name) == 0){
         return new Shift;
+    }else if (strcmp(effectName, Microspur_Effect_Name) == 0){
+        return new Microspur;
     }
     return NULL;
 }

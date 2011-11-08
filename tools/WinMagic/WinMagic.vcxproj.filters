@@ -200,6 +200,9 @@
     <ClCompile Include="..\..\jni\effect\shift.cpp">
       <Filter>Engine\effect</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\jni\effect\microspur.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eglhelper.h">
@@ -320,6 +323,9 @@
       <Filter>Engine\effect</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jni\effect\shift.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\microspur.h">
       <Filter>Engine\effect</Filter>
     </ClInclude>
   </ItemGroup>
