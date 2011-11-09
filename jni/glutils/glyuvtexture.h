@@ -39,7 +39,7 @@ public:
     bool init(int w, int h, Texture *tex);
 
     void setDstTex(Texture *tex);
-    void uploadYUVTexImage(char* yuv420sp, int w, int h);
+    void uploadYUVTexImage(char* yuv420sp);
 
     void setImageAdjust(ImageAdjust *adjust);
 

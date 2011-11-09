@@ -42,7 +42,8 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePictureWithFile
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_takePictureWithBuffer(JNIEnv * env, jobject obj, jbyteArray buffer);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setCover(JNIEnv * env, jobject obj, jstring path);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame(JNIEnv * env, jobject obj, jstring path);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect(JNIEnv * env, jobject obj, jstring path);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect(JNIEnv * env, jobject obj, jstring name);
+JNIEXPORT jstring JNICALL Java_com_funny_magicamera_MagicJNILib_getEffectList(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, int format);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer);

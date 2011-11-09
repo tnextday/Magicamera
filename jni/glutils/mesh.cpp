@@ -111,6 +111,8 @@ void Mesh::draw(BaseShader *shader)
         return;
     }
     shader->use();
+    glEnableVertexAttribArray(shader->getPositionLoc());
+    glEnableVertexAttribArray(shader->getTextureCoordLoc());
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_Vertex_Idx]);
     glVertexAttribPointer(shader->getPositionLoc(), VertexSize, GL_FLOAT, GL_FALSE, 0, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[VBO_TexCoord_Idx]);

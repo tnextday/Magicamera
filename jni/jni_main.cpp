@@ -269,14 +269,19 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame( JNIEnv * 
     }
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect( JNIEnv * env, jobject obj, jstring path )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect( JNIEnv * env, jobject obj, jstring name )
 {
     const char* str;
     jboolean isCopy;
-    str = env->GetStringUTFChars(path, &isCopy);
+    str = env->GetStringUTFChars(name, &isCopy);
     if (isCopy) {
         if (g_MagicMain)
             g_MagicMain->setEffect(str);
-        env->ReleaseStringUTFChars(path, str);
+        env->ReleaseStringUTFChars(name, str);
     }
+}
+
+JNIEXPORT jstring JNICALL Java_com_funny_magicamera_MagicJNILib_getEffectList(JNIEnv * env, jobject obj)
+{
+    return env->NewStringUTF(g_MagicMain->getEffectList());
 }

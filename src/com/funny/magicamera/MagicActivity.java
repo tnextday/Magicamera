@@ -89,11 +89,12 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         try {
             AssetManager am = getResources().getAssets();
             m_covers = am.list("covers");
-            m_effects = am.list("effects");
             m_frames = am.list("frames");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String effectList = "--None--,"+MagicJNILib.getEffectList();
+        m_effects = effectList.split(",");
         m_SurfaceView.setOnInitComplete(this);
         if (Build.VERSION.SDK_INT >= 8)
             m_SurfaceView.setOnCameraBufferRelease(this);
@@ -169,7 +170,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
                 return new AlertDialog.Builder(this)
                         .setItems(m_effects, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                m_SurfaceView.queueEvent(new SetEffect("res://effects/"+m_effects[which]));
+                                m_SurfaceView.queueEvent(new SetEffect(m_effects[which]));
                             }
                         })
                         .create();
@@ -255,6 +256,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         } else {
             //TODO 异步执行
             startCamera(CameraType.FACING_FRONT);
+            //MagicJNILib.rotate90(true);
         }
     }
 

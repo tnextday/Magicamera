@@ -113,9 +113,6 @@
     <ClCompile Include="..\..\jni\effect\glow.cpp">
       <Filter>Engine\effect</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\jni\effect\imageeffect.cpp">
-      <Filter>Engine\effect</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\jni\gdx2d\gdx2d.cpp">
       <Filter>Engine\gdx2d</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
       <Filter>Engine\glutils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\jni\glutils\framebufferobject.cpp">
-      <Filter>Engine\glutils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\jni\glutils\globject.cpp">
       <Filter>Engine\glutils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\jni\glutils\glutils.cpp">
@@ -179,9 +173,6 @@
     <ClCompile Include="..\..\jni\magic\effectengine.cpp">
       <Filter>Engine\magic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\jni\magic\imageadjust.cpp">
-      <Filter>Engine\magic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\jni\magic\magicengine.cpp">
       <Filter>Engine\magic</Filter>
     </ClCompile>
@@ -202,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="..\..\jni\effect\microspur.cpp">
       <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\magic\imageadjust.cpp">
+      <Filter>Engine\magic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +229,6 @@
     <ClInclude Include="..\..\jni\effect\glow.h">
       <Filter>Engine\effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\jni\effect\imageeffect.h">
-      <Filter>Engine\effect</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\jni\gdx2d\gdx2d.h">
       <Filter>Engine\gdx2d</Filter>
     </ClInclude>
@@ -245,9 +236,6 @@
       <Filter>Engine\glutils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jni\glutils\framebufferobject.h">
-      <Filter>Engine\glutils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\jni\glutils\globject.h">
       <Filter>Engine\glutils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\jni\glutils\glutils.h">
@@ -301,9 +289,6 @@
     <ClInclude Include="..\..\jni\magic\effectengine.h">
       <Filter>Engine\magic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\jni\magic\imageadjust.h">
-      <Filter>Engine\magic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\jni\magic\magicengine.h">
       <Filter>Engine\magic</Filter>
     </ClInclude>
@@ -327,6 +312,9 @@
     </ClInclude>
     <ClInclude Include="..\..\jni\effect\microspur.h">
       <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\magic\imageadjust.h">
+      <Filter>Engine\magic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

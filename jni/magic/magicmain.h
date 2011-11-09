@@ -48,7 +48,7 @@ class MagicMain : public TouchEvent, EngineOutChange{
 
     FileUtils*     m_ioCallBack;
 
-//    ImageAdjust     m_adjust;
+    ImageAdjust     m_adjust;
 
 public:
     MagicMain();
@@ -105,8 +105,6 @@ private:
     void update(float delta);
 
     void drawImage();
-
-    virtual void onAdjustChange( Texture *tex );
 
     //将输入坐标转换成笛卡尔坐标 
     GLfloat transformX(float x){return m_aspectRatio*(x/m_ScreenWidth - 1.0/2.0);};

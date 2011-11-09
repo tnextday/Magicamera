@@ -94,12 +94,8 @@ void glYUVTexture::setDefaultTexParameter( GLuint texId )
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
+void glYUVTexture::uploadYUVTexImage( char* yuv420sp)
 {
-    if (w != m_iWidth || h != m_iHeight) {
-        LOGE("uploadYUVTexImage Error 0\n");
-        return;
-    }
 
     m_shader.use();
     glDisable(GL_DEPTH_TEST);
@@ -112,19 +108,18 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp, int w, int h )
     glBindTexture(GL_TEXTURE_2D, m_YUVTexs[YTexId_idx]);
     glUniform1i(m_uYtexLoc, 1);
     
-    glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,w,h,0,GL_LUMINANCE,GL_UNSIGNED_BYTE, yuv420sp);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,m_iWidth,m_iHeight,0,GL_LUMINANCE,GL_UNSIGNED_BYTE, yuv420sp);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_YUVTexs[UVTexId_idx]);
     glUniform1i(m_uUVTexLoc, 2);
     
-    glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE_ALPHA,w/2,h/2,0,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE, yuv420sp+w*h);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE_ALPHA,m_iWidth/2,m_iHeight/2,0,GL_LUMINANCE_ALPHA,GL_UNSIGNED_BYTE, yuv420sp+m_iWidth*m_iHeight);
 
     
-    //glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1); //话说不关掉这个就会报错
-    glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();
     checkGlError("uploadYUVTexImage");
@@ -147,7 +142,7 @@ void glYUVTexture::setImageAdjust( ImageAdjust *adjust )
         m_QuadData = m_Adjust->getQuadData();
     }else{
         m_oWidth = m_iWidth;
-        m_oHeight = m_oHeight;
+        m_oHeight = m_iHeight;
         m_QuadData = (GLfloat *)QuadData;
     }
     m_DstTex->setSize(m_oWidth, m_oHeight);

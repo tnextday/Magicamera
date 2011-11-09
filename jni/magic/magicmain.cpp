@@ -76,8 +76,8 @@ bool MagicMain::setupGraphics() {
     glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
 
-//     m_adjust.init();
-//     m_adjust.setOnOutputChange(this);
+    m_adjust.init();
+
 
     return true;
 }
@@ -106,13 +106,12 @@ void MagicMain::updatePreviewData( char* data, long len )
 {
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
         //m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
-        m_glYUVTex->uploadYUVTexImage(data, m_SrcTex.getWidth(), m_SrcTex.getHeight());
+        m_glYUVTex->uploadYUVTexImage(data);
     }else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
         m_SrcTex.uploadImageData((GLubyte*)data);
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
         m_SrcTex.loadFromMemory((unsigned char*)data, len);
     }
-/*    m_adjust.drawImage();*/
     m_Engine->updateInput(&m_SrcTex);
 }
 
@@ -120,12 +119,12 @@ void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
 {
     m_SrcTex.setSize(w, h);
     m_inputFortmat = imageFormat;
-/*    m_adjust.setInputTexture(&m_SrcTex);*/
     initEngine();
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
         m_glYUVTex = new glYUVTexture(w, h, &m_SrcTex);
+        m_glYUVTex->setImageAdjust(&m_adjust);
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
         m_SrcTex.setImageFormat(GDX2D_FORMAT_RGB565);
 }
@@ -188,18 +187,24 @@ void MagicMain::drawImage()
 
 void MagicMain::setPreviewImage( const char* data, long len )
 {
-    m_SrcTex.loadFromMemory((unsigned char*)data, len);
-//     m_adjust.setInputTexture(&m_SrcTex);
-//     m_adjust.drawImage();
+    if (m_adjust.isNeedAdjust()){
+        Texture tex ;
+        tex.loadFromMemory((unsigned char*)data, len);
+        m_adjust.apply(&tex, &m_SrcTex);
+    }else{
+        m_SrcTex.loadFromMemory((unsigned char*)data, len);
+    }
     initEngine();
 }
 
 void MagicMain::setPreviewImage( const char* imgPath )
 {
-    m_SrcTex.loadFromFile(imgPath);
-//     m_adjust.setInputTexture(&m_SrcTex);
-//     m_adjust.drawImage();
-    initEngine();
+    uint32_t size;
+    unsigned char* buffer = EasyReadFile(imgPath, size);
+    if (buffer && size > 0){
+        setPreviewImage((const char*)buffer, size);
+    }
+    SafeDeleteArray(buffer);
 }
 
 void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
@@ -238,17 +243,25 @@ void MagicMain::takePicture( Texture *tex /*= NULL*/)
 
 void MagicMain::takePicture( const char* imgPath)
 {
-    Texture tex;
-    tex.init();
-    tex.loadFromFile(imgPath);
-    takePicture(&tex);
+    uint32_t size;
+    unsigned char* buffer = EasyReadFile(imgPath, size);
+    if (buffer && size > 0){
+        takePicture((const char*)buffer, size);
+    }
+    SafeDeleteArray(buffer);
 }
 
 void MagicMain::takePicture( const char* data , long len )
 {
     Texture tex;
     tex.init();
-    tex.loadFromMemory((unsigned char*)data, len);
+    if (m_adjust.isNeedAdjust()){
+        Texture tmp;
+        tmp.loadFromMemory((unsigned char*)data, len);
+        m_adjust.apply(&tmp, &tex);
+    }else{
+        tex.loadFromMemory((unsigned char*)data, len);
+    }
     takePicture(&tex);
 }
 
@@ -299,8 +312,12 @@ void MagicMain::restoreMesh()
 void MagicMain::rotate90Input( bool clockwise /*= true*/)
 {
     //TODO Fix：貌似坐标系有点问题！~ 上下翻转的 
-//     m_adjust.rotate90(!clockwise);
-//     m_adjust.drawImage();
+    m_adjust.rotate90(!clockwise);
+    if (m_glYUVTex){
+        m_glYUVTex->setImageAdjust(&m_adjust);
+    }
+    
+    //m_Engine->setInputTexture(&m_SrcTex);
 }
 
 void MagicMain::onEngineOutChange( Texture *tex )
@@ -309,12 +326,6 @@ void MagicMain::onEngineOutChange( Texture *tex )
     //m_magicSprite.loadFromFile("assets/test2.jpg");
     //TODO 为什么需要flip？？？？！！！！ 
     m_magicSprite.flip(false, true);
-}
-
-void MagicMain::onAdjustChange( Texture *tex )
-{
-    if (m_Engine)
-        m_Engine->setInputTexture(tex);
 }
 
 void MagicMain::resize( int w, int h )

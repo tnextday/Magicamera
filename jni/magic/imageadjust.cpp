@@ -134,7 +134,7 @@ void ImageAdjust::reset()
 }
 
 
-bool ImageAdjust::process( Texture* src, Texture* dst )
+bool ImageAdjust::apply( Texture* src, Texture* dst )
 {
     if (!m_bNeedAdjust) return false;
     m_shader.use();

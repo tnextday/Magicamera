@@ -27,7 +27,7 @@ public:
     bool init();
 
     bool isNeedAdjust(){return m_bNeedAdjust;};
-    bool process( Texture* src, Texture* dst );
+    bool apply( Texture* src, Texture* dst );
     GLfloat* getQuadData(){return m_QuadData;};
     void setSize(int w, int h);
 

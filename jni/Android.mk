@@ -9,7 +9,13 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	actions/parallel.cpp \
 	actions/rotateto2d.cpp \
 	actions/sequence.cpp \
-	effect/imageeffect.cpp \
+	effect/effect.cpp \
+	effect/effectfactory.cpp \
+	effect/glow.cpp \
+	effect/hdr.cpp \
+	effect/microspur.cpp \
+	effect/scanline.cpp \
+	effect/shift.cpp \
 	gdx2d/gdx2d.cpp \
 	gdx2d/stb_image.c \
 	glutils/baseshader.cpp \

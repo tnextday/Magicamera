@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MagicActivity"
-                  android:screenOrientation="landscape"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                 />
 

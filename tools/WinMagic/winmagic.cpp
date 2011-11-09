@@ -255,7 +255,7 @@ void WinMagic::reloadRes()
     ui.cmb_covers->addItems(sl);
 
     QString effects = m_render.getEffectList();
-    sl = effects.split("|", QString::SkipEmptyParts);
+    sl = effects.split(",", QString::SkipEmptyParts);
     ui.cmb_effect->clear();
     ui.cmb_effect->addItem("--None--");
     ui.cmb_effect->addItems(sl);

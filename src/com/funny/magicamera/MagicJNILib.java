@@ -40,7 +40,8 @@ public class MagicJNILib {
     public static native void takePictureWithBuffer(byte[] buffer);
     public static native void setCover(String path);
     public static native void setFrame(String path);
-    public static native void setEffect(String path);
+    public static native void setEffect(String name);
+    public static native String getEffectList();
     public static native void restoreMesh();
     public static native void switchEngine(int type);
     public static native int getEngineType();

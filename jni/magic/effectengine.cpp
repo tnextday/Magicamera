@@ -94,8 +94,8 @@ void EffectEngine::onDraw( Texture *texutre )
 {
     if (texutre)
         doEffect(texutre);
-    else
-        doEffect(m_InTex);
+    //else
+    //    doEffect(m_InTex);
     m_fbo->bind();
     Texture* srcTex = texutre;
     if (m_effectTex)

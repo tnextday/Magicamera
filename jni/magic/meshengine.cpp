@@ -114,6 +114,9 @@ void MeshEngine::stopAnimating()
 
 void MeshEngine::onDraw(Texture *texutre)
 {
+    m_shader.use();
+    m_fbo->bind();
+    glDisable(GL_BLEND);
     if (m_bMeshChanged){
         uploadBuffer(BT_VertexBuffer);
         m_bMeshChanged = false;
@@ -125,6 +128,7 @@ void MeshEngine::onDraw(Texture *texutre)
     }
     glDisable(GL_BLEND);
     Mesh::draw(&m_shader);
+    //m_fbo->unbind();
 }
 
 bool MeshEngine::onInit()

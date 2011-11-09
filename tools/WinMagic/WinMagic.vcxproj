@@ -92,6 +92,7 @@
     <ClCompile Include="..\..\jni\effect\microspur.cpp" />
     <ClCompile Include="..\..\jni\effect\scanline.cpp" />
     <ClCompile Include="..\..\jni\effect\shift.cpp" />
+    <ClCompile Include="..\..\jni\magic\imageadjust.cpp" />
     <ClCompile Include="eglhelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render.cpp" />
@@ -107,12 +108,14 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_winmagic.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_render.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_winmagic.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\jni\actions\action.cpp" />
     <ClCompile Include="..\..\jni\actions\moveto.cpp" />
@@ -122,12 +125,10 @@
     <ClCompile Include="..\..\jni\effect\effect.cpp" />
     <ClCompile Include="..\..\jni\effect\effectfactory.cpp" />
     <ClCompile Include="..\..\jni\effect\glow.cpp" />
-    <ClCompile Include="..\..\jni\effect\imageeffect.cpp" />
     <ClCompile Include="..\..\jni\gdx2d\gdx2d.cpp" />
     <ClCompile Include="..\..\jni\gdx2d\stb_image.c" />
     <ClCompile Include="..\..\jni\glutils\baseshader.cpp" />
     <ClCompile Include="..\..\jni\glutils\framebufferobject.cpp" />
-    <ClCompile Include="..\..\jni\glutils\globject.cpp" />
     <ClCompile Include="..\..\jni\glutils\glutils.cpp" />
     <ClCompile Include="..\..\jni\glutils\glyuvtexture.cpp" />
     <ClCompile Include="..\..\jni\glutils\mesh.cpp" />
@@ -144,7 +145,6 @@
     <ClCompile Include="..\..\jni\utils\packageloader.cpp" />
     <ClCompile Include="..\..\jni\ui\button.cpp" />
     <ClCompile Include="..\..\jni\magic\effectengine.cpp" />
-    <ClCompile Include="..\..\jni\magic\imageadjust.cpp" />
     <ClCompile Include="..\..\jni\magic\magicengine.cpp" />
     <ClCompile Include="..\..\jni\magic\magicmain.cpp" />
     <ClCompile Include="..\..\jni\magic\meshengine.cpp" />
@@ -154,6 +154,7 @@
     <ClInclude Include="..\..\jni\effect\microspur.h" />
     <ClInclude Include="..\..\jni\effect\scanline.h" />
     <ClInclude Include="..\..\jni\effect\shift.h" />
+    <ClInclude Include="..\..\jni\magic\imageadjust.h" />
     <ClInclude Include="eglhelper.h" />
     <CustomBuild Include="render.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
@@ -188,11 +189,9 @@
     <ClInclude Include="..\..\jni\effect\effect.h" />
     <ClInclude Include="..\..\jni\effect\effectfactory.h" />
     <ClInclude Include="..\..\jni\effect\glow.h" />
-    <ClInclude Include="..\..\jni\effect\imageeffect.h" />
     <ClInclude Include="..\..\jni\gdx2d\gdx2d.h" />
     <ClInclude Include="..\..\jni\glutils\baseshader.h" />
     <ClInclude Include="..\..\jni\glutils\framebufferobject.h" />
-    <ClInclude Include="..\..\jni\glutils\globject.h" />
     <ClInclude Include="..\..\jni\glutils\glutils.h" />
     <ClInclude Include="..\..\jni\glutils\glyuvtexture.h" />
     <ClInclude Include="..\..\jni\glutils\mesh.h" />
@@ -210,7 +209,6 @@
     <ClInclude Include="..\..\jni\ui\button.h" />
     <ClInclude Include="..\..\jni\ui\touchevent.h" />
     <ClInclude Include="..\..\jni\magic\effectengine.h" />
-    <ClInclude Include="..\..\jni\magic\imageadjust.h" />
     <ClInclude Include="..\..\jni\magic\magicengine.h" />
     <ClInclude Include="..\..\jni\magic\magicmain.h" />
     <ClInclude Include="..\..\jni\magic\meshengine.h" />

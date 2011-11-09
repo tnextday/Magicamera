@@ -7,11 +7,11 @@
 #include "microspur.h"
 
 static const char* g_str_effects = 
-    Glow_Effect_Name "|"
-    ScanLine_Effect_Name "|"
-    HDR_Effect_Name "|"
-    Shift_Effect_Name "|"
-    Microspur_Effect_Name "|"
+    Glow_Effect_Name ","
+    ScanLine_Effect_Name ","
+    HDR_Effect_Name ","
+    Shift_Effect_Name ","
+    Microspur_Effect_Name ","
     ;
 
 Effect* createEffect( const char* effectName )
