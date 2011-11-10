@@ -62,7 +62,7 @@ private:
     void generateMesh( int w, int h );
 
 protected:
-    virtual void onDraw(Texture *texutre);
+    virtual void draw(Texture *inTex);
     virtual bool onInit();
 
 public:

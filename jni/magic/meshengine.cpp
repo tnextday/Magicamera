@@ -112,8 +112,9 @@ void MeshEngine::stopAnimating()
     m_Duration = 0.0f;
 }
 
-void MeshEngine::onDraw(Texture *texutre)
+void MeshEngine::draw( Texture *inTex )
 {
+    glViewport(0,0, m_width, m_height);
     m_shader.use();
     m_fbo->bind();
     glDisable(GL_BLEND);
@@ -121,14 +122,15 @@ void MeshEngine::onDraw(Texture *texutre)
         uploadBuffer(BT_VertexBuffer);
         m_bMeshChanged = false;
     }
-    if (texutre){
-        texutre->bind();
+    if (inTex){
+        inTex->bind();
     }else{
         m_InTex->bind();
     }
     glDisable(GL_BLEND);
     Mesh::draw(&m_shader);
     //m_fbo->unbind();
+    mNeedUpdate = false;
 }
 
 bool MeshEngine::onInit()

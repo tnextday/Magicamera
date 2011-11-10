@@ -15,6 +15,7 @@ MagicEngine::MagicEngine()
     m_PreviewWidth = 640;
     m_PreviewHeight = 480;
     m_onOutputResize = NULL;
+    
 }
 
 // MagicEngine::MagicEngine(Texture* SrcTex)
@@ -43,7 +44,7 @@ bool MagicEngine::initEngine(Texture* SrcTex) {
     setInputTexture(SrcTex);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
-
+    mNeedUpdate = true;
     onInit();
     return true;
 }
@@ -102,17 +103,6 @@ bool MagicEngine::onTouchUp( float x, float y )
     return false;
 }
 
-void MagicEngine::draw( Texture *texutre /*= NULL*/ )
-{
-    glViewport(0,0, m_width, m_height);
-/*    m_shader.use();*/
-    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-//     glEnableVertexAttribArray(m_shader.getPositionLoc());
-//     glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
-    onDraw(texutre);
-}
-
 void MagicEngine::SetIOCallBack( FileUtils* val )
 {
     m_ioCallBack = val;
@@ -150,6 +140,7 @@ void MagicEngine::setSize( int w, int h , bool bPreview /*= true*/)
     if (m_onOutputResize){
         m_onOutputResize->onEngineOutChange(&m_OutTex);
     }
+    mNeedUpdate = true;
 }
 
 void MagicEngine::setInputTexture( Texture* val )
@@ -158,6 +149,7 @@ void MagicEngine::setInputTexture( Texture* val )
     m_InTex = val;
     if (m_width != val->getWidth() || m_height != val->getHeight())
         resizeCoord(val->getWidth(), val->getHeight());
+    mNeedUpdate = true;
 }
 
 void MagicEngine::setPreviewSize( GLuint w, GLuint h )

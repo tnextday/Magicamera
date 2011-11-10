@@ -21,8 +21,8 @@ EffectEngine::EffectEngine(void)
     m_finished = false;
     m_sFrameFactor = GL_SRC_ALPHA;
     m_dFrameFactor = GL_ONE_MINUS_SRC_ALPHA;
-    m_sCoverFactor = GL_ONE;
-    m_dCoverFactor = GL_ONE;
+	m_sCoverFactor = GL_ONE;
+	m_dCoverFactor = GL_ONE;
 }
 
 EffectEngine::~EffectEngine(void)
@@ -90,16 +90,16 @@ bool EffectEngine::onTouchDrag( float x, float y )
     return false;
 }
 
-void EffectEngine::onDraw( Texture *texutre )
+void EffectEngine::draw( Texture *inTex )
 {
-    if (texutre)
-        doEffect(texutre);
-    //else
-    //    doEffect(m_InTex);
+    if (mNeedUpdate && m_effect){
+        Texture *tex = inTex ? inTex : m_InTex;
+        m_effectTex->setSize(m_width, m_height);
+        m_effect->apply(tex, m_effectTex);
+    }
     m_fbo->bind();
-    Texture* srcTex = texutre;
-    if (m_effectTex)
-        srcTex = m_effectTex;
+    glViewport(0,0, m_width, m_height);
+    Texture* srcTex = m_effectTex ? m_effectTex : inTex;
     glDisable(GL_BLEND);
     m_img.draw(&m_shader, srcTex);
     glEnable(GL_BLEND);
@@ -111,6 +111,7 @@ void EffectEngine::onDraw( Texture *texutre )
         glBlendFunc(m_sFrameFactor, m_dFrameFactor);
         m_frame->draw(&m_shader);
     }
+    mNeedUpdate = false;
 }
 
 bool EffectEngine::onTouchUp( float x, float y )
@@ -201,18 +202,19 @@ void EffectEngine::setInputTexture( Texture* tex )
 {
     m_img.setTexture(tex);
     MagicEngine::setInputTexture(tex);
-    doEffect(tex);
+    mNeedUpdate = true;
 }
 
 void EffectEngine::updateInput( Texture* tex )
 {
-    doEffect(tex);
+    mNeedUpdate = true;
 }
 
 void EffectEngine::setEffect( const char* effectName )
 {
+    if (m_effect && strcmp(effectName, m_effect->getName()) == 0) return;
+
     SafeDelete(m_effect);
-    
     m_effect = createEffect(effectName);
     if (!m_effect){
         SafeDelete(m_effectTex);
@@ -220,7 +222,7 @@ void EffectEngine::setEffect( const char* effectName )
         m_effectTex = new Texture;
         m_effectTex->init();
     }
-    doEffect(m_InTex);
+    mNeedUpdate = true;
 }
 
 const char* EffectEngine::getEffectName(){
@@ -232,7 +234,7 @@ const char* EffectEngine::getEffectName(){
 void EffectEngine::setParameter(const char* parameterKey, float value){
     if (m_effect){
         m_effect->setParameter(parameterKey, value);
-        doEffect(m_InTex);
+        mNeedUpdate = true;
     }
 }
 
@@ -246,13 +248,6 @@ const char* EffectEngine::getParameterKeys(){
     if (m_effect)
         return m_effect->getParameterKeys();
     return NULL;
-}
-
-void EffectEngine::doEffect( Texture* tex )
-{
-    if (!m_effect) return;
-    m_effectTex->setSize(m_width, m_height);
-    m_effect->apply(tex, m_effectTex);
 }
 
 void EffectEngine::resizeCoord(int w, int h)

@@ -197,6 +197,9 @@
     <ClCompile Include="..\..\jni\magic\imageadjust.cpp">
       <Filter>Engine\magic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\jni\effect\overlay.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eglhelper.h">
@@ -315,6 +318,9 @@
     </ClInclude>
     <ClInclude Include="..\..\jni\magic\imageadjust.h">
       <Filter>Engine\magic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\overlay.h">
+      <Filter>Engine\effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

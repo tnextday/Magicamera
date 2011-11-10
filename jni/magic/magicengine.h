@@ -40,10 +40,11 @@ protected:
 
     EngineOutChange* m_onOutputResize;
 
+    bool           mNeedUpdate;
+
 protected:
-    void draw(Texture *texutre = NULL);
+    virtual void draw(Texture *inTex = NULL) = 0;
     virtual bool onInit() = 0;
-    virtual void onDraw(Texture *texutre) = 0;
     virtual void resizeCoord(int w, int h);
 public:
     MagicEngine();

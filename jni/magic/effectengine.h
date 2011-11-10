@@ -28,15 +28,12 @@ private:
 protected:
     virtual void resizeCoord(int w, int h);
     virtual bool onInit();
-    virtual void onDraw( Texture *texutre );
-    void doEffect(Texture* tex);
-
+    virtual void draw( Texture *inTex );
     bool loadFrame(const char* framePath);
 
 public:
     EffectEngine(void);
     virtual ~EffectEngine(void);
-
 
     void showCover();
     void hideCover();
