@@ -17,7 +17,14 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="" />
+    <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/Android.mk" afterPath="$PROJECT_DIR$/jni/Android.mk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj.filters" afterPath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj.filters" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj" afterPath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/effectfactory.cpp" afterPath="$PROJECT_DIR$/jni/effect/effectfactory.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicmain.cpp" />
+    </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -87,8 +94,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -100,7 +107,7 @@
       <file leaf-file-name="MagicActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="251" column="13" selection-start="8884" selection-end="8884" vertical-scroll-proportion="0.23943663">
+            <state line="251" column="13" selection-start="8884" selection-end="8884" vertical-scroll-proportion="0.032367975">
               <folding />
             </state>
           </provider>
@@ -195,7 +202,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
@@ -267,6 +273,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -287,10 +294,17 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Android Application.Magicamera">
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -311,13 +325,6 @@
         <option name="BuildArtifacts" enabled="false" />
         <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
@@ -382,6 +389,17 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="FtpUpload" enabled="false">
+          <server_id />
+          <server_name />
+        </option>
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" />
       <module name="" />
@@ -406,17 +424,6 @@
         <option name="BuildArtifacts" enabled="false" />
         <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="FtpUpload" enabled="false">
-          <server_id />
-          <server_name />
-        </option>
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
@@ -498,9 +505,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32840723" sideWeight="0.46771654" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.0" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -511,13 +517,14 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.3559055" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.72440946" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998358" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.26614174" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18801314" sideWeight="0.2629921" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36535433" sideWeight="0.49671593" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.53385824" sideWeight="0.49671593" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32840723" sideWeight="0.46771654" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -630,37 +637,31 @@
         <state line="8" column="0" selection-start="273" selection-end="273" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="0" selection-start="2262" selection-end="2262" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="989" selection-end="989" vertical-scroll-proportion="0.665">
-          <folding />
-        </state>
+        <state line="21" column="0" selection-start="989" selection-end="989" vertical-scroll-proportion="0.665" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="42" selection-start="831" selection-end="831" vertical-scroll-proportion="0.72833335">
+        <state line="23" column="42" selection-start="831" selection-end="831" vertical-scroll-proportion="0.72833335" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="251" column="13" selection-start="8884" selection-end="8884" vertical-scroll-proportion="0.032367975">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="38" selection-start="1351" selection-end="1359" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="35" column="38" selection-start="1351" selection-end="1359" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="251" column="13" selection-start="8884" selection-end="8884" vertical-scroll-proportion="0.23943663">
-          <folding />
-        </state>
+        <state line="75" column="0" selection-start="2262" selection-end="2262" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
   </component>

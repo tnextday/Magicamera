@@ -5,6 +5,7 @@
 #include "hdr.h"
 #include "shift.h"
 #include "microspur.h"
+#include "reversal.h"
 
 static const char* g_str_effects = 
     Glow_Effect_Name ","
@@ -12,6 +13,7 @@ static const char* g_str_effects =
     HDR_Effect_Name ","
     Shift_Effect_Name ","
     Microspur_Effect_Name ","
+    Reversal_Effect_Name ","
     ;
 
 Effect* createEffect( const char* effectName )
@@ -28,6 +30,8 @@ Effect* createEffect( const char* effectName )
         return new Shift;
     }else if (strcmp(effectName, Microspur_Effect_Name) == 0){
         return new Microspur;
+    }else if (strcmp(effectName, Reversal_Effect_Name) == 0){
+        return new Reversal;
     }
     return NULL;
 }

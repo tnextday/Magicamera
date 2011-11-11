@@ -14,6 +14,8 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	effect/glow.cpp \
 	effect/hdr.cpp \
 	effect/microspur.cpp \
+	effect/overlay.cpp \
+	effect/reversal.cpp \
 	effect/scanline.cpp \
 	effect/shift.cpp \
 	gdx2d/gdx2d.cpp \

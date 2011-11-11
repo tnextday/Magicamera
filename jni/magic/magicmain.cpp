@@ -194,7 +194,8 @@ void MagicMain::setPreviewImage( const char* data, long len )
     }else{
         m_SrcTex.loadFromMemory((unsigned char*)data, len);
     }
-    initEngine();
+    if (!m_Engine)
+        initEngine();
 }
 
 void MagicMain::setPreviewImage( const char* imgPath )
