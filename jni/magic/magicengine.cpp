@@ -44,7 +44,8 @@ bool MagicEngine::initEngine(Texture* SrcTex) {
     setInputTexture(SrcTex);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());
-    mNeedUpdate = true;
+    m_bUpdated = true;
+    m_bReDraw = true;
     onInit();
     return true;
 }
@@ -52,11 +53,14 @@ bool MagicEngine::initEngine(Texture* SrcTex) {
 
 void MagicEngine::drawImage()
 {
+    if (!m_bReDraw) return;
+    LOGI("MagicEngine::drawImage()\n");
     m_fbo->bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     draw();
     m_fbo->unbind();
+    m_bReDraw = false;
 }
 
 
@@ -140,7 +144,8 @@ void MagicEngine::setSize( int w, int h , bool bPreview /*= true*/)
     if (m_onOutputResize){
         m_onOutputResize->onEngineOutChange(&m_OutTex);
     }
-    mNeedUpdate = true;
+    m_bUpdated = true;
+    m_bReDraw = true;
 }
 
 void MagicEngine::setInputTexture( Texture* val )
@@ -149,7 +154,8 @@ void MagicEngine::setInputTexture( Texture* val )
     m_InTex = val;
     if (m_width != val->getWidth() || m_height != val->getHeight())
         resizeCoord(val->getWidth(), val->getHeight());
-    mNeedUpdate = true;
+    m_bUpdated = true;
+    m_bReDraw = true;
 }
 
 void MagicEngine::setPreviewSize( GLuint w, GLuint h )

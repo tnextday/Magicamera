@@ -37,9 +37,9 @@ bool Parallel::isDone()
     return m_bDone;
 }
 
-void Parallel::step( float dt )
+bool Parallel::step( float dt )
 {
-    if (m_bDone) return;
+    if (m_bDone) return false;
     Action *action;
     m_bDone = true;
     for (int i = 0; i < m_list.size(); i++)
@@ -50,6 +50,7 @@ void Parallel::step( float dt )
             m_bDone = false;
         }
     }
+    return true;
 }
 
 Parallel & Parallel::operator<<(Action *action )

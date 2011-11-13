@@ -17,7 +17,7 @@ public:
 
     inline virtual bool isDone();
 
-    virtual void step( float dt );
+    virtual bool step( float dt );
 
     Sequence & operator<<(Action *action);
 

@@ -318,11 +318,13 @@ void Sprite::doAction( Action* action, bool autoFree /*= true*/)
     m_action->setTarget(this);
 }
 
-void Sprite::update( float dt )
+bool Sprite::update( float dt )
 {
+    bool bUpdated = false;
     if (m_action){
-        m_action->step(dt);
+        bUpdated = m_action->step(dt);
     }
+    return bUpdated;
 }
 
 bool Sprite::isActionDone()

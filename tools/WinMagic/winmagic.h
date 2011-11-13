@@ -45,7 +45,7 @@ static const BlendFuncFactor BlendFuncFactors[] = {
 class WinMagic : public QWidget
 {
     Q_OBJECT
-    Render m_render;
+    Render* m_render;
     QStringList m_sfs;
     QStringList m_dfs;
 public:

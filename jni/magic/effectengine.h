@@ -25,6 +25,8 @@ private:
     GLenum      m_sFrameFactor;
     GLenum      m_dFrameFactor;
 
+    bool        m_bAnimate;
+
 protected:
     virtual void resizeCoord(int w, int h);
     virtual bool onInit();

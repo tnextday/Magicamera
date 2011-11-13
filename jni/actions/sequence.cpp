@@ -37,9 +37,9 @@ bool Sequence::isDone()
     return m_bDone;
 }
 
-void Sequence::step( float dt )
+bool Sequence::step( float dt )
 {
-    if (m_bDone) return;
+    if (m_bDone) return false;
     Action* action = m_list[m_currAction];
     action->step(dt);
     if (action->isDone()){
@@ -48,6 +48,7 @@ void Sequence::step( float dt )
             m_bDone = true;
         }
     }
+    return true;
 }
 
 Sequence & Sequence::operator<<(Action *action )

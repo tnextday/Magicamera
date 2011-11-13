@@ -11,7 +11,7 @@ MeshEngine::MeshEngine()
     m_DeltaVertex = NULL;
     m_OrgiVertex = NULL;
     m_bAnimating = false;
-    m_bMeshChanged = false;
+    m_bUpdated = false;
     m_easing = NULL;
     m_aspectRatio = 0;
 }
@@ -41,7 +41,8 @@ void MeshEngine::update( GLfloat delta )
         m_bAnimating = false;
         memcpy(mVertexBuffer, m_DestVertex, m_BufferCount*sizeof(GLfloat));
     }
-    m_bMeshChanged = true;
+    m_bUpdated = true;
+    m_bReDraw = true;
 }
 
 void MeshEngine::backupOrigVertex()
@@ -92,7 +93,8 @@ void MeshEngine::moveMesh( float ox, float oy, float mx, float my, float r )
                         p->x += mx*rate;
                     if (j != 0 && j != mH-1)
                         p->y += my*rate;
-                    m_bMeshChanged = true;
+                    m_bUpdated = true;
+                    m_bReDraw = true;
                 }
             }
         }
@@ -114,13 +116,15 @@ void MeshEngine::stopAnimating()
 
 void MeshEngine::draw( Texture *inTex )
 {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_width, m_height);
     m_shader.use();
     m_fbo->bind();
     glDisable(GL_BLEND);
-    if (m_bMeshChanged){
+    if (m_bUpdated){
         uploadBuffer(BT_VertexBuffer);
-        m_bMeshChanged = false;
+        m_bUpdated = false;
     }
     if (inTex){
         inTex->bind();
@@ -130,7 +134,8 @@ void MeshEngine::draw( Texture *inTex )
     glDisable(GL_BLEND);
     Mesh::draw(&m_shader);
     //m_fbo->unbind();
-    mNeedUpdate = false;
+    m_bUpdated = false;
+    m_bReDraw = false;
 }
 
 bool MeshEngine::onInit()
@@ -168,6 +173,7 @@ bool MeshEngine::onTouchDown( float x, float y )
 bool MeshEngine::onTouchDrag( float x, float y )
 {
     moveMesh(x, y, x - m_lastX, y - m_lastY, 0.25);
+    
     m_lastX = x;
     m_lastY = y;
     return true;
@@ -213,7 +219,8 @@ void MeshEngine::init( int width, int height )
     m_DeltaVertex = new GLfloat[m_BufferCount];
     m_OrgiVertex = new GLfloat[m_BufferCount];
     m_bAnimating = false;
-    m_bMeshChanged = false;
+    m_bUpdated = false;
+    m_bReDraw = true;
     backupOrigVertex();
 }
 

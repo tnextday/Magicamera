@@ -65,20 +65,12 @@ bool MagicMain::setupGraphics() {
     glDisable(GL_DEPTH_TEST);
     glCullFace(GL_FRONT);
     glEnable(GL_CULL_FACE);
-    //ÆôÓÃ»ìºÏ²Ù×÷
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_SrcTex.init();
 
     printGLColorSpaceInfo();
 
-    glEnableVertexAttribArray(m_shader.getPositionLoc());
-    glEnableVertexAttribArray(m_shader.getTextureCoordLoc());
-
     m_adjust.init();
-
-
     return true;
 }
 
@@ -175,13 +167,8 @@ void MagicMain::update( float delta )
 
 void MagicMain::drawImage()
 {
-    m_shader.use();
-//    m_SrcTex.bind();
     glDisable(GL_BLEND);
-
     m_magicSprite.draw(&m_shader);
-//     glEnable(GL_BLEND);
-//     glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
@@ -196,6 +183,7 @@ void MagicMain::setPreviewImage( const char* data, long len )
     }
     if (!m_Engine)
         initEngine();
+    m_Engine->setInputTexture(&m_SrcTex);
 }
 
 void MagicMain::setPreviewImage( const char* imgPath )

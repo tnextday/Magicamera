@@ -40,7 +40,8 @@ protected:
 
     EngineOutChange* m_onOutputResize;
 
-    bool           mNeedUpdate;
+    bool           m_bUpdated;
+    bool           m_bReDraw;
 
 protected:
     virtual void draw(Texture *inTex = NULL) = 0;

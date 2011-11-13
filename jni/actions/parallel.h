@@ -16,7 +16,7 @@ public:
 
     inline virtual bool isDone();
 
-    virtual void step( float dt );
+    virtual bool step( float dt );
 
     Parallel & operator<<(Action *action);
 

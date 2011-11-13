@@ -27,8 +27,6 @@ private:
     float           m_Duration;
     float           m_Elapsed;    //逝去时间
 
-    bool            m_bMeshChanged;
-
     bool            m_toFinish;
     bool            m_finished;
 

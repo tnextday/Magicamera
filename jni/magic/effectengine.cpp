@@ -23,6 +23,8 @@ EffectEngine::EffectEngine(void)
     m_dFrameFactor = GL_ONE_MINUS_SRC_ALPHA;
 	m_sCoverFactor = GL_ONE;
 	m_dCoverFactor = GL_ONE;
+
+    m_bAnimate = false;
 }
 
 EffectEngine::~EffectEngine(void)
@@ -35,9 +37,10 @@ EffectEngine::~EffectEngine(void)
 
 void EffectEngine::update( GLfloat delta )
 {
-    m_img.update(delta);
+    if (!m_bAnimate) return;
+    m_bReDraw = m_bReDraw || m_img.update(delta);
     if (!m_frame) return;
-    m_frame->update(delta);
+    m_bReDraw = m_bReDraw || m_frame->update(delta);
     if (m_frame->isActionDone()){
         if (!m_bVisible){
             SafeDelete(m_frame);
@@ -60,11 +63,15 @@ bool EffectEngine::onTouchDown( float x, float y )
 
 void EffectEngine::finish()
 {
-    m_toFinish = true;
-    if (!m_bVisible)
+    if(!m_bAnimate)
         m_finished = true;
-    else
-        hideCover();
+    else{
+        m_toFinish = true;
+        if (!m_bVisible)
+            m_finished = true;
+        else
+            hideCover();
+    }
 }
 
 bool EffectEngine::onInit()
@@ -92,10 +99,11 @@ bool EffectEngine::onTouchDrag( float x, float y )
 
 void EffectEngine::draw( Texture *inTex )
 {
-    if (mNeedUpdate && m_effect){
+    if (m_bUpdated && m_effect){
         Texture *tex = inTex ? inTex : m_InTex;
         m_effectTex->setSize(m_width, m_height);
         m_effect->apply(tex, m_effectTex);
+        m_bUpdated = false;
     }
     m_fbo->bind();
     glViewport(0,0, m_width, m_height);
@@ -111,7 +119,6 @@ void EffectEngine::draw( Texture *inTex )
         glBlendFunc(m_sFrameFactor, m_dFrameFactor);
         m_frame->draw(&m_shader);
     }
-    mNeedUpdate = false;
 }
 
 bool EffectEngine::onTouchUp( float x, float y )
@@ -170,18 +177,31 @@ void EffectEngine::hideCover()
 
 void EffectEngine::setFrame( const char* framePath)
 {
-    m_framePath[0] = 0;
-    if (!framePath){
-        hideCover();
-        return;
-    }
-    if (m_frame && m_bVisible){
-        strncpy(m_framePath, framePath, 260);
-        hideCover();
+    if (m_bAnimate){
+        m_framePath[0] = 0;
+        if (!framePath){
+            hideCover();
+            return;
+        }
+        if (m_frame && m_bVisible){
+            strncpy(m_framePath, framePath, 260);
+            hideCover();
+        }else{
+            if (loadFrame(framePath))
+                showCover();
+        }
     }else{
-        if (loadFrame(framePath))
-            showCover();
+        if (loadFrame(framePath)){
+            resizeCoord(0, 0);
+            m_bVisible = true;
+            m_frame->setPostion(0, 0);
+            m_frame->setRotation(0);
+        }else{
+            m_bVisible = false;
+            resizeCoord(m_InTex->getWidth(), m_InTex->getHeight());
+        }
     }
+    m_bReDraw = true;
 }
 
 
@@ -196,23 +216,24 @@ void EffectEngine::setCover( const char* coverPath )
             m_dCoverFactor = loader.getDstFactor();
         }
     }
+    m_bReDraw = true;
 }
 
 void EffectEngine::setInputTexture( Texture* tex )
 {
     m_img.setTexture(tex);
     MagicEngine::setInputTexture(tex);
-    mNeedUpdate = true;
+    m_bUpdated = true;
 }
 
 void EffectEngine::updateInput( Texture* tex )
 {
-    mNeedUpdate = true;
+    m_bUpdated = true;
 }
 
 void EffectEngine::setEffect( const char* effectName )
 {
-    if (m_effect && strcmp(effectName, m_effect->getName()) == 0) return;
+    if (m_effect && effectName && strcmp(effectName, m_effect->getName()) == 0) return;
 
     SafeDelete(m_effect);
     m_effect = createEffect(effectName);
@@ -222,7 +243,8 @@ void EffectEngine::setEffect( const char* effectName )
         m_effectTex = new Texture;
         m_effectTex->init();
     }
-    mNeedUpdate = true;
+    m_bUpdated = true;
+    m_bReDraw = true;
 }
 
 const char* EffectEngine::getEffectName(){
@@ -234,7 +256,7 @@ const char* EffectEngine::getEffectName(){
 void EffectEngine::setParameter(const char* parameterKey, float value){
     if (m_effect){
         m_effect->setParameter(parameterKey, value);
-        mNeedUpdate = true;
+        m_bUpdated = true;
     }
 }
 

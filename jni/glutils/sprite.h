@@ -73,7 +73,7 @@ public:
     GLfloat getHeight() const { return m_height; }
     void getBoundingRect(rect_t &rect);
     void doAction(Action* action, bool autoFree = true);
-    void update(float dt);
+    bool update(float dt);
     bool isActionDone();
 
     

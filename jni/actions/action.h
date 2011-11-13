@@ -34,10 +34,10 @@ public:
 
     virtual void restart();
 
-    virtual bool isDone();
+    virtual bool isDone(){return m_elapsed > m_duration;};
 
     //! called every frame with it's delta time. DON'T override unless you know what you are doing.
-    virtual void step(float dt);
+    virtual bool step(float dt);
 
     //! called once per frame. time a value between 0 and 1
     //! For example: 

@@ -42,9 +42,9 @@ void Action::onStart()
 
 }
 
-void Action::step( float dt )
+bool Action::step( float dt )
 {
-        
+    bool updated = !isDone();
     if (m_firstTick){
         m_elapsed = 0;
         onStart();
@@ -56,13 +56,9 @@ void Action::step( float dt )
     }else{
         update(min(1, m_elapsed/m_duration));
     }
-    
+    return updated;
 }
 
-bool Action::isDone()
-{
-    return m_elapsed > m_duration;
-}
 
 Action* Action::setEasing( CEasing *easing, bool autoFree /*= true*/)
 {

@@ -8,7 +8,9 @@ WinMagic::WinMagic(QWidget *parent, Qt::WFlags flags)
     : QWidget(parent, flags)
 {
     ui.setupUi(this);
-    m_render.show();
+    //ui.gb_preview->
+    //m_render->show();
+    m_render = ui.render;
     setupTest();
     setupResEditer();
 }
@@ -19,7 +21,7 @@ WinMagic::~WinMagic()
 
 void WinMagic::on_cb_engine_currentIndexChanged( int index )
 {
-    m_render.setEngine(index+1);
+    m_render->setEngine(index+1);
     if (index == 1){
         reloadRes();
     }
@@ -27,7 +29,7 @@ void WinMagic::on_cb_engine_currentIndexChanged( int index )
 
 void WinMagic::on_clb_save_clicked()
 {
-    m_render.takePicture();
+    m_render->takePicture();
 }
 
 void WinMagic::on_clb_selectImg_clicked()
@@ -35,36 +37,36 @@ void WinMagic::on_clb_selectImg_clicked()
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open Image"), "", tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (QFile::exists(fileName)){
-        m_render.setImage(fileName);
+        m_render->setImage(fileName);
         //ui.cb_engine->setCurrentIndex(0);
     }
 }
 
 void WinMagic::on_clb_restore_clicked()
 {
-    m_render.restoreMesh();
+    m_render->restoreMesh();
 }
 
 void WinMagic::on_cmb_covers_currentIndexChanged( const QString & text )
 {
     if (!text.startsWith("--"))
-        m_render.setCover(QString::fromWCharArray(L"res://covers\\%1").arg(text));
+        m_render->setCover(QString::fromWCharArray(L"res://covers\\%1").arg(text));
     else
-        m_render.setCover("");
+        m_render->setCover("");
 }
 
 void WinMagic::on_cmb_effect_currentIndexChanged( const QString & text )
 {
     if (!text.startsWith("--"))
-        m_render.setEffect(text);
+        m_render->setEffect(text);
     else
-        m_render.setEffect("");
+        m_render->setEffect("");
 }
 
 void WinMagic::on_tabWidget_currentChanged ( int index )
 {
     if (index != 0){
-        m_render.setEngine(2);
+        m_render->setEngine(2);
     }
 }
 
@@ -88,10 +90,10 @@ void WinMagic::on_btn_preview_clicked()
     saveTexture(path);
     if (ui.cmb_resType->currentIndex() == 0){
         //Ô¤ÀÀÃÉ°æ
-        m_render.setCover(path);
+        m_render->setCover(path);
     }else{
         //Ô¤ÀÀÏà¿ò
-        m_render.setFrame(path);
+        m_render->setFrame(path);
     }
     
 }
@@ -130,7 +132,7 @@ void WinMagic::setupTest()
     reloadRes();
     QDir dir = QDir::current();
     dir.cd("./test");
-    m_render.setImage(dir.filePath("test.jpg"));
+    m_render->setImage(dir.filePath("test.jpg"));
 }
 
 void WinMagic::setupResEditer()
@@ -174,18 +176,18 @@ int WinMagic::getGLBlendFuncFromStr( const QString & codeStr )
 void WinMagic::on_cmb_frames_currentIndexChanged( const QString & text )
 {
     if (!text.startsWith("--"))
-        m_render.setFrame(QString::fromWCharArray(L"res://frames\\%1").arg(text));
+        m_render->setFrame(QString::fromWCharArray(L"res://frames\\%1").arg(text));
     else
-        m_render.setFrame("");
+        m_render->setFrame("");
 }
 
 void WinMagic::on_cmb_resType_currentIndexChanged( int index )
 {
     if (index == 0){
         //±à¼­ÃÉ°æ£¬È¡ÏûÏà¿ò
-        m_render.setFrame("");
+        m_render->setFrame("");
     }else{
-        m_render.setCover("");
+        m_render->setCover("");
     }
 }
 
@@ -254,7 +256,7 @@ void WinMagic::reloadRes()
     ui.cmb_covers->addItem("--None--");
     ui.cmb_covers->addItems(sl);
 
-    QString effects = m_render.getEffectList();
+    QString effects = m_render->getEffectList();
     sl = effects.split(",", QString::SkipEmptyParts);
     ui.cmb_effect->clear();
     ui.cmb_effect->addItem("--None--");
