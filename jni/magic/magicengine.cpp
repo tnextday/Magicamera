@@ -56,7 +56,7 @@ void MagicEngine::drawImage()
     if (!m_bReDraw) return;
     LOGI("MagicEngine::drawImage()\n");
     m_fbo->bind();
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     draw();
     m_fbo->unbind();

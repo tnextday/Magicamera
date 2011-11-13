@@ -69,8 +69,9 @@ public:
     
     float getX(){return m_x;};
     float getY(){return m_y;};
-    GLfloat getWidth() const { return m_width; }
-    GLfloat getHeight() const { return m_height; }
+    GLfloat getWidth() const { return m_width; };
+    GLfloat getHeight() const { return m_height; };
+    GLfloat getAspect() const { return m_aspectRatio;};
     void getBoundingRect(rect_t &rect);
     void doAction(Action* action, bool autoFree = true);
     bool update(float dt);

@@ -56,7 +56,7 @@ public:
     bool initEngine(Texture* SrcTex) ;
     virtual void setSize(int w, int h, bool bPreview = true);
     virtual void setInputTexture(Texture* val);
-    virtual void updateInput(Texture* val){};
+    virtual void updateInput(Texture* val){m_bReDraw = true;};
     Texture* getOutTexture() {return &m_OutTex;};
 
     void drawImage();

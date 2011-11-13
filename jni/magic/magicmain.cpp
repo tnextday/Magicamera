@@ -35,6 +35,7 @@ MagicMain::MagicMain()
     m_ioCallBack = NULL;
     m_Engine = NULL;
     m_nextEngine = EngineType_None;
+    m_aspectRatio = 1;
 }
 
 MagicMain::~MagicMain()
@@ -85,7 +86,7 @@ void MagicMain::renderFrame( float delta )
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader 
     if (m_Engine)
         m_Engine->drawImage();
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
 
@@ -315,6 +316,11 @@ void MagicMain::onEngineOutChange( Texture *tex )
     //m_magicSprite.loadFromFile("assets/test2.jpg");
     //TODO 为什么需要flip？？？？！！！！ 
     m_magicSprite.flip(false, true);
+    if (m_aspectRatio < m_magicSprite.getAspect()){
+        m_magicSprite.setScale(m_aspectRatio/m_magicSprite.getAspect());
+    }else{
+        m_magicSprite.setScale(1);
+    }
 }
 
 void MagicMain::resize( int w, int h )
@@ -325,7 +331,11 @@ void MagicMain::resize( int w, int h )
     m_ScreenHeight = h;
     setPreviewSize(w, h);
     m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5,-10, 10);
-
+    if (m_aspectRatio < m_magicSprite.getAspect()){
+        m_magicSprite.setScale(m_aspectRatio/m_magicSprite.getAspect());
+    }else{
+        m_magicSprite.setScale(1);
+    }
 }
 
 void MagicMain::setPreviewSize( GLuint w, GLuint h )

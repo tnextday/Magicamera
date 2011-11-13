@@ -256,7 +256,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         } else {
             //TODO 异步执行
             startCamera(CameraType.FACING_FRONT);
-            //MagicJNILib.rotate90(true);
+            MagicJNILib.rotate90(true);
         }
     }
 

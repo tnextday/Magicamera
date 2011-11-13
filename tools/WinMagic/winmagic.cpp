@@ -132,7 +132,7 @@ void WinMagic::setupTest()
     reloadRes();
     QDir dir = QDir::current();
     dir.cd("./test");
-    m_render->setImage(dir.filePath("test.jpg"));
+    m_render->setImage(dir.filePath("test4.jpg"));
 }
 
 void WinMagic::setupResEditer()

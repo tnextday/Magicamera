@@ -229,6 +229,7 @@ void EffectEngine::setInputTexture( Texture* tex )
 void EffectEngine::updateInput( Texture* tex )
 {
     m_bUpdated = true;
+    m_bReDraw = true;
 }
 
 void EffectEngine::setEffect( const char* effectName )

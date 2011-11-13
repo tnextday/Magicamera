@@ -85,13 +85,13 @@ void Render::on_renerTimer()
     m_MagicMain.renderFrame(delta);
     // Present the scene
     eglSwapBuffers( m_eglDisplay, m_eglSurface );
-    m_fpsFrames++;
-    m_fpsTime += delta;
-    if (m_fpsTime > 1){
-        this->setWindowTitle(QString("Render - %1").arg(m_fpsFrames));
-        m_fpsFrames = 0;
-        m_fpsTime = 0;
-    }
+//     m_fpsFrames++;
+//     m_fpsTime += delta;
+//     if (m_fpsTime > 1){
+//         this->setWindowTitle(QString("Render - %1").arg(m_fpsFrames));
+//         m_fpsFrames = 0;
+//         m_fpsTime = 0;
+//     }
 }
 
 void Render::resizeEvent( QResizeEvent * e)
