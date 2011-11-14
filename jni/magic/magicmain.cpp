@@ -305,6 +305,7 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
     m_adjust.rotate90(!clockwise);
     if (m_glYUVTex){
         m_glYUVTex->setImageAdjust(&m_adjust);
+        m_Engine->setInputTexture(&m_SrcTex);
     }
     
     //m_Engine->setInputTexture(&m_SrcTex);
@@ -316,11 +317,8 @@ void MagicMain::onEngineOutChange( Texture *tex )
     //m_magicSprite.loadFromFile("assets/test2.jpg");
     //TODO 为什么需要flip？？？？！！！！ 
     m_magicSprite.flip(false, true);
-    if (m_aspectRatio < m_magicSprite.getAspect()){
-        m_magicSprite.setScale(m_aspectRatio/m_magicSprite.getAspect());
-    }else{
-        m_magicSprite.setScale(1);
-    }
+    m_magicSprite.setScale(m_aspectRatio < m_magicSprite.getAspect() ?
+        m_aspectRatio/m_magicSprite.getAspect() : 1.0);
 }
 
 void MagicMain::resize( int w, int h )
@@ -331,11 +329,8 @@ void MagicMain::resize( int w, int h )
     m_ScreenHeight = h;
     setPreviewSize(w, h);
     m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5,-10, 10);
-    if (m_aspectRatio < m_magicSprite.getAspect()){
-        m_magicSprite.setScale(m_aspectRatio/m_magicSprite.getAspect());
-    }else{
-        m_magicSprite.setScale(1);
-    }
+    m_magicSprite.setScale(m_aspectRatio < m_magicSprite.getAspect() ?
+        m_aspectRatio/m_magicSprite.getAspect() : 1.0);
 }
 
 void MagicMain::setPreviewSize( GLuint w, GLuint h )

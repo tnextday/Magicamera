@@ -223,6 +223,9 @@ void EffectEngine::setInputTexture( Texture* tex )
 {
     m_img.setTexture(tex);
     MagicEngine::setInputTexture(tex);
+    //ÉèÖÃÔ´Í¼Æ¬Ëõ·ÅÌî³äÏà¿ò
+    m_img.setScale(m_aspectRatio > m_img.getAspect() ?
+        m_aspectRatio/m_img.getAspect() : 1.0);
     m_bUpdated = true;
 }
 
@@ -281,6 +284,9 @@ void EffectEngine::resizeCoord(int w, int h)
         h = m_frame->getRegionHeight();
     }
     MagicEngine::resizeCoord(w, h);
+    //ÉèÖÃÔ´Í¼Æ¬Ëõ·ÅÌî³äÏà¿ò
+    m_img.setScale(m_aspectRatio > m_img.getAspect() ?
+        m_aspectRatio/m_img.getAspect() : 1.0);
 }
 
 void EffectEngine::setSize( int w, int h , bool bPreview /*= true*/)
