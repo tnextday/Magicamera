@@ -27,13 +27,13 @@ class MagicMain : public TouchEvent, EngineOutChange{
     BaseShader      m_shader;
     Status          m_status;
 
-    Texture         m_SrcTex;
+    Texture*        m_SrcTex;
     glYUVTexture*   m_glYUVTex;
 
     MagicEngine*    m_Engine;
     EngineType      m_nextEngine;
 
-    Sprite          m_magicSprite;
+    Sprite          m_outSprite;
 
     GLfloat         m_ScreenWidth;
     GLfloat         m_ScreenHeight;
@@ -57,11 +57,11 @@ public:
     bool setupGraphics() ;
     void renderFrame(float delta);
 
-    void updatePreviewData(char* data, long len);
-    void setPreviewDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
+    void updateInputData(char* data, long len);
+    void setInputDataInfo(int w, int h, int imageFormat = IMAGE_FORMAT_NV21);
 
-    void setPreviewImage(const char* data, long len);
-    void setPreviewImage(const char* imgPath);
+    void setInputImage(const char* data, long len);
+    void setInputImage(const char* imgPath);
 
     void takePicture(Texture *tex = NULL);
     void takePicture(const char* imgPath);

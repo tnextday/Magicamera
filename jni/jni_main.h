@@ -45,9 +45,9 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setFrame(JNIEnv * e
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setEffect(JNIEnv * env, jobject obj, jstring name);
 JNIEXPORT jstring JNICALL Java_com_funny_magicamera_MagicJNILib_getEffectList(JNIEnv * env, jobject obj);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_restoreMesh(JNIEnv * env, jobject obj);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, int format);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer);
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage(JNIEnv * env, jobject obj,  jstring path);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setInputDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, int format);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_updateInputData(JNIEnv * env, jobject obj,  jbyteArray buffer);
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setInputImage(JNIEnv * env, jobject obj,  jstring path);
 JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_rotate90(JNIEnv * env, jobject obj,  jboolean clockwise);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDown(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 JNIEXPORT jboolean JNICALL Java_com_funny_magicamera_MagicJNILib_onTouchDrag(JNIEnv * env, jobject obj, jfloat x, jfloat y);

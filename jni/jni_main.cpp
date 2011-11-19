@@ -134,22 +134,22 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_step(JNIEnv * env, 
 	    g_MagicMain->renderFrame(delta);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format)
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setInputDataInfo(JNIEnv * env, jobject obj,  jint width, jint height, jint format)
 {
     if (g_MagicMain)
-	    g_MagicMain->setPreviewDataInfo(width, height, format);
+	    g_MagicMain->setInputDataInfo(width, height, format);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_uploadPreviewData(JNIEnv * env, jobject obj,  jbyteArray buffer)
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_updateInputData(JNIEnv * env, jobject obj,  jbyteArray buffer)
 {
 	char* p_buffer = (char*)env->GetPrimitiveArrayCritical(buffer, 0);
     long len = env->GetArrayLength(buffer);
     if (g_MagicMain)
-	    g_MagicMain->updatePreviewData(p_buffer, len);
+	    g_MagicMain->updateInputData(p_buffer, len);
 	env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 }
 
-JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JNIEnv * env, jobject obj, jstring path )
+JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setInputImage( JNIEnv * env, jobject obj, jstring path )
 {
     const char* str;
     jboolean isCopy;
@@ -157,7 +157,7 @@ JNIEXPORT void JNICALL Java_com_funny_magicamera_MagicJNILib_setPreviewImage( JN
     if (isCopy ) {
         //pthread_mutex_lock(&g_lock);
         if (g_MagicMain)
-            g_MagicMain->setPreviewImage(str);
+            g_MagicMain->setInputImage(str);
         //pthread_mutex_unlock(&g_lock);
         env->ReleaseStringUTFChars(path, str);
     }

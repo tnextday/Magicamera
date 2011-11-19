@@ -91,7 +91,7 @@ void ImageAdjust::rotate90( bool clockwise )
         m_QuadData[ADJU4] = temp;
         m_rorateCount--;
     }
-//    setSize();
+    m_bNeedAdjust = m_rorateCount%4 != 0;
 }
 
 void ImageAdjust::setSize(int w, int h)
@@ -103,7 +103,7 @@ void ImageAdjust::setSize(int w, int h)
         m_width = h;
         m_height = w;
     }
-    m_bNeedAdjust = m_rorateCount%4 != 0;
+
 }
 
 

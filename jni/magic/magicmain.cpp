@@ -36,12 +36,14 @@ MagicMain::MagicMain()
     m_Engine = NULL;
     m_nextEngine = EngineType_None;
     m_aspectRatio = 1;
+    m_SrcTex = NULL;
 }
 
 MagicMain::~MagicMain()
 {
     SafeDelete(m_glYUVTex);
     SafeDelete(m_Engine);
+    SafeDelete(m_SrcTex);
 }
 
 
@@ -66,8 +68,6 @@ bool MagicMain::setupGraphics() {
     glDisable(GL_DEPTH_TEST);
     glCullFace(GL_FRONT);
     glEnable(GL_CULL_FACE);
-
-    m_SrcTex.init();
 
     printGLColorSpaceInfo();
 
@@ -95,31 +95,34 @@ void MagicMain::renderFrame( float delta )
     checkGlError("renderFrame");
 }
 
-void MagicMain::updatePreviewData( char* data, long len )
+void MagicMain::updateInputData( char* data, long len )
 {
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        //m_PreviewTex->uploadImageData((GLubyte*)m_tmpImageData);
         m_glYUVTex->uploadYUVTexImage(data);
     }else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
-        m_SrcTex.uploadImageData((GLubyte*)data);
+        m_SrcTex->uploadImageData((GLubyte*)data);
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
-        m_SrcTex.loadFromMemory((unsigned char*)data, len);
+        m_SrcTex->loadFromMemory((unsigned char*)data, len);
     }
-    m_Engine->updateInput(&m_SrcTex);
+    m_Engine->updateInput(m_SrcTex);
 }
 
-void MagicMain::setPreviewDataInfo( int w, int h, int imageFormat )
+void MagicMain::setInputDataInfo( int w, int h, int imageFormat )
 {
-    m_SrcTex.setSize(w, h);
+    if (!m_SrcTex){
+        m_SrcTex = new Texture;
+        m_SrcTex->init();
+    }
+    m_SrcTex->setSize(w, h);
     m_inputFortmat = imageFormat;
     initEngine();
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        m_glYUVTex = new glYUVTexture(w, h, &m_SrcTex);
+        m_glYUVTex = new glYUVTexture(w, h, m_SrcTex);
         m_glYUVTex->setImageAdjust(&m_adjust);
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
-        m_SrcTex.setImageFormat(GDX2D_FORMAT_RGB565);
+        m_SrcTex->setImageFormat(GDX2D_FORMAT_RGB565);
 }
 
 
@@ -169,30 +172,35 @@ void MagicMain::update( float delta )
 void MagicMain::drawImage()
 {
     glDisable(GL_BLEND);
-    m_magicSprite.draw(&m_shader);
+    m_outSprite.draw(&m_shader);
 }
 
 
-void MagicMain::setPreviewImage( const char* data, long len )
+void MagicMain::setInputImage( const char* data, long len )
 {
+    if (!data || !len) return;
+    if (!m_SrcTex){
+        m_SrcTex = new Texture;
+        m_SrcTex->init();
+    }
     if (m_adjust.isNeedAdjust()){
         Texture tex ;
         tex.loadFromMemory((unsigned char*)data, len);
-        m_adjust.apply(&tex, &m_SrcTex);
+        m_adjust.apply(&tex, m_SrcTex);
     }else{
-        m_SrcTex.loadFromMemory((unsigned char*)data, len);
+        m_SrcTex->loadFromMemory((unsigned char*)data, len);
     }
     if (!m_Engine)
         initEngine();
-    m_Engine->setInputTexture(&m_SrcTex);
+    m_Engine->setInputTexture(m_SrcTex);
 }
 
-void MagicMain::setPreviewImage( const char* imgPath )
+void MagicMain::setInputImage( const char* imgPath )
 {
     uint32_t size;
     unsigned char* buffer = EasyReadFile(imgPath, size);
     if (buffer && size > 0){
-        setPreviewImage((const char*)buffer, size);
+        setInputImage((const char*)buffer, size);
     }
     SafeDeleteArray(buffer);
 }
@@ -213,7 +221,7 @@ void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
     m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
 //    m_Engine->initEngine(m_adjust.getOutTexture());
-    m_Engine->initEngine(&m_SrcTex);
+    m_Engine->initEngine(m_SrcTex);
     m_Engine->start();
 }
 
@@ -227,8 +235,16 @@ void MagicMain::switchEngine(EngineType type)
 
 void MagicMain::takePicture( Texture *tex /*= NULL*/)
 {
-    if (m_Engine)
+    if (!m_Engine) return;
+    if (tex && m_adjust.isNeedAdjust()){
+        Texture tmp;
+        tmp.init();
+        m_adjust.apply(m_SrcTex, &tmp);
+        m_Engine->tackPicture(&tmp);
+    }else{
         m_Engine->tackPicture(tex);
+    }
+    
 }
 
 void MagicMain::takePicture( const char* imgPath)
@@ -237,22 +253,22 @@ void MagicMain::takePicture( const char* imgPath)
     unsigned char* buffer = EasyReadFile(imgPath, size);
     if (buffer && size > 0){
         takePicture((const char*)buffer, size);
+    }else{
+        takePicture();
     }
     SafeDeleteArray(buffer);
 }
 
 void MagicMain::takePicture( const char* data , long len )
 {
-    Texture tex;
-    tex.init();
-    if (m_adjust.isNeedAdjust()){
-        Texture tmp;
-        tmp.loadFromMemory((unsigned char*)data, len);
-        m_adjust.apply(&tmp, &tex);
-    }else{
+    if (data && len){
+        Texture tex;
         tex.loadFromMemory((unsigned char*)data, len);
+        takePicture(&tex);
+    }else{
+        takePicture();
     }
-    takePicture(&tex);
+
 }
 
 EngineType MagicMain::getEngineType()
@@ -303,22 +319,27 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
 {
     //TODO Fix：貌似坐标系有点问题！~ 上下翻转的 
     m_adjust.rotate90(!clockwise);
+    if (!m_SrcTex) return;
     if (m_glYUVTex){
-        m_glYUVTex->setImageAdjust(&m_adjust);
-        m_Engine->setInputTexture(&m_SrcTex);
+        m_glYUVTex->setImageAdjust(&m_adjust);   
+    }else{
+        Texture* tmp = new Texture();
+        tmp->init();
+        m_adjust.apply(m_SrcTex, tmp);
+        SafeDelete(m_SrcTex);
+        m_SrcTex = tmp;
     }
-    
-    //m_Engine->setInputTexture(&m_SrcTex);
+    m_Engine->setInputTexture(m_SrcTex);
 }
 
 void MagicMain::onEngineOutChange( Texture *tex )
 {
-    m_magicSprite.setTexture(tex);
+    m_outSprite.setTexture(tex);
     //m_magicSprite.loadFromFile("assets/test2.jpg");
     //TODO 为什么需要flip？？？？！！！！ 
-    m_magicSprite.flip(false, true);
-    m_magicSprite.setScale(m_aspectRatio < m_magicSprite.getAspect() ?
-        m_aspectRatio/m_magicSprite.getAspect() : 1.0);
+    m_outSprite.flip(false, true);
+    m_outSprite.setScale(m_aspectRatio < m_outSprite.getAspect() ?
+        m_aspectRatio/m_outSprite.getAspect() : 1.0);
 }
 
 void MagicMain::resize( int w, int h )
@@ -329,8 +350,8 @@ void MagicMain::resize( int w, int h )
     m_ScreenHeight = h;
     setPreviewSize(w, h);
     m_shader.ortho(-m_aspectRatio/2, m_aspectRatio/2, -0.5, 0.5,-10, 10);
-    m_magicSprite.setScale(m_aspectRatio < m_magicSprite.getAspect() ?
-        m_aspectRatio/m_magicSprite.getAspect() : 1.0);
+    m_outSprite.setScale(m_aspectRatio < m_outSprite.getAspect() ?
+        m_aspectRatio/m_outSprite.getAspect() : 1.0);
 }
 
 void MagicMain::setPreviewSize( GLuint w, GLuint h )

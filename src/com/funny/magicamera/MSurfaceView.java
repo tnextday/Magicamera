@@ -107,7 +107,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
             bytes = m_buffers.poll();
         }
         if (bytes != null) {
-            MagicJNILib.uploadPreviewData(bytes);
+            MagicJNILib.updateInputData(bytes);
             if (m_onCameraBufferRelease != null){
                 m_onCameraBufferRelease.onCameraBufferRelease(bytes);
             }

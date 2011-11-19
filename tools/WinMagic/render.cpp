@@ -118,7 +118,7 @@ void Render::mousePressEvent( QMouseEvent * e)
 
 void Render::setImage(const QString &path )
 {
-    m_MagicMain.setPreviewImage(path.toLocal8Bit());
+    m_MagicMain.setInputImage(path.toLocal8Bit());
 }
 
 void Render::setEngine( int engine )
@@ -204,4 +204,9 @@ float Render::getParameterValue( const QString &parameterKey )
 const char* Render::getParameterKeys()
 {
     return m_MagicMain.getParameterKeys();
+}
+
+void Render::rotate90Input( bool clockwise /*= true*/ )
+{
+    m_MagicMain.rotate90Input(clockwise);
 }

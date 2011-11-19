@@ -102,6 +102,13 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         if (picPath != null && new File(picPath).exists()) {
             PicPath = picPath;
         }
+        MagicJNILib.onTake = new MagicJNILib.TakePictureListener(){
+
+            @Override
+            public void onTakePicture(String picPath) {
+                //Toast.makeText(MagicActivity.this, "图片已保存！", Toast.LENGTH_SHORT);
+            }
+        };
 
     }
 
@@ -228,7 +235,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
         @Override
         public void run() {
-            MagicJNILib.setPreviewImage(img_path);
+            MagicJNILib.setInputImage(img_path);
         }
     }
 
@@ -245,7 +252,8 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
         @Override
         public void run() {
-            MagicJNILib.setPreviewDataInfo(width, height, format);
+            MagicJNILib.setInputDataInfo(width, height, format);
+            MagicJNILib.rotate90(true);
         }
     }
 
@@ -256,7 +264,6 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
         } else {
             //TODO 异步执行
             startCamera(CameraType.FACING_FRONT);
-            MagicJNILib.rotate90(true);
         }
     }
 

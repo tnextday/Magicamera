@@ -106,6 +106,9 @@ void Texture::uploadImageData( GLubyte* data )
 
 void Texture::loadFromMemory( const unsigned char *buffer, uint32_t len)
 {
+    if (!m_TexHandle){
+        init();
+    }
     gdx2d_pixmap* pixmap = gdx2d_load(buffer, len);
     m_imageFormat = pixmap->format;
     m_Width = pixmap->width;
@@ -124,6 +127,8 @@ GLuint Texture::createGLHandle()
 
 void Texture::init()
 {
+    m_Width = 0;
+    m_Height = 0;
     m_TexHandle = createGLHandle();
     setFilter();
     glTexParameterf ( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -141,9 +146,6 @@ void Texture::setSize( int w, int h )
 
 bool Texture::loadFromFile( const char *filePath )
 {
-    if (!m_TexHandle){
-        init();
-    }
     bool result = true;
     uint32_t size;
     unsigned char* buffer = EasyReadFile(filePath, size);
