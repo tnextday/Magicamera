@@ -90,6 +90,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\jni\effect\hdr.cpp" />
     <ClCompile Include="..\..\jni\effect\microspur.cpp" />
+    <ClCompile Include="..\..\jni\effect\nostalgia.cpp" />
     <ClCompile Include="..\..\jni\effect\overlay.cpp" />
     <ClCompile Include="..\..\jni\effect\reversal.cpp" />
     <ClCompile Include="..\..\jni\effect\scanline.cpp" />
@@ -156,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\jni\effect\hdr.h" />
     <ClInclude Include="..\..\jni\effect\microspur.h" />
+    <ClInclude Include="..\..\jni\effect\nostalgia.h" />
     <ClInclude Include="..\..\jni\effect\overlay.h" />
     <ClInclude Include="..\..\jni\effect\reversal.h" />
     <ClInclude Include="..\..\jni\effect\scanline.h" />

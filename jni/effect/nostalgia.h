@@ -1,16 +1,16 @@
 #pragma once
 #include "effect.h"
 
-#define Reversal_Effect_Name "Reversal"
+#define Nostalgia_Effect_Name "Nostalgia"
 
-//反转片
-class Reversal : public Effect{
+//怀旧色调
+class Nostalgia : public Effect{
 
     BaseShader  mShader;
     FramebufferObject   mFBO;
 
 public:
-    Reversal(void);
+    Nostalgia(void);
     virtual void apply( Texture* input, Texture* output );
     virtual const char* getName();
     virtual void setParameter( const char* parameterKey, float value );
