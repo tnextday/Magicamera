@@ -64,13 +64,13 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 
 
         findViewById(R.id.btn_back).setOnClickListener(this);
-        findViewById(R.id.btn_set_cover).setOnClickListener(this);
-        findViewById(R.id.btn_set_frame).setOnClickListener(this);
-        findViewById(R.id.btn_set_effect).setOnClickListener(this);
-        findViewById(R.id.btn_engine).setOnClickListener(this);
-        findViewById(R.id.btn_restore).setOnClickListener(this);
+//        findViewById(R.id.btn_set_cover).setOnClickListener(this);
+//        findViewById(R.id.btn_set_frame).setOnClickListener(this);
+//        findViewById(R.id.btn_set_effect).setOnClickListener(this);
+//        findViewById(R.id.btn_engine).setOnClickListener(this);
+//        findViewById(R.id.btn_restore).setOnClickListener(this);
         findViewById(R.id.btn_take).setOnClickListener(this);
-        findViewById(R.id.btn_focus).setOnClickListener(this);
+//        findViewById(R.id.btn_focus).setOnClickListener(this);
 
         m_SurfaceView = (MSurfaceView) findViewById(R.id.surfaceview);
         Log.w(MagicActivity.TAG, "MagicActivity onCreate");

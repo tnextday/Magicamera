@@ -1,36 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
+        android:background="@drawable/bg"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+    <RelativeLayout android:id="@+id/title_bar"
+                android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:background="@drawable/title_bar_bg">
+        <Button android:id="@+id/btn_back"
+                android:text="@string/str_btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/white"
+                android:background="@drawable/title_bar_btn_bg"
+                android:layout_alignParentLeft="true"/>
+        <TextView android:id="@+id/tv_title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:textColor="@android:color/white"
+                  android:text="@string/str_effect_mode"
+                  android:textStyle="bold"
+                  android:textSize="24sp"/>
+        <Button android:id="@+id/btn_mode"
+                android:text="@string/str_btn_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/white"
+                android:background="@drawable/title_bar_btn_bg"
+                android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout android:id="@+id/tool_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/toolbar_bg"
+            >
+        <Button android:id="@+id/btn_camera_cfg"
+                android:background="@drawable/btn_cfg_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"/>
+        <Button android:id="@+id/btn_effect"
+                android:background="@drawable/btn_effect_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
 
     <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0px"
+            android:layout_centerInParent="true"
+            android:layout_above="@id/tool_bar"
+            android:layout_below="@id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
             android:layout_weight="1">
 
         <com.funny.magicamera.MSurfaceView android:id="@+id/surfaceview"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
     </FrameLayout>
-
+    <ImageView android:background="@drawable/title_bar_shadow"
+           android:layout_below="@id/title_bar"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+    <ImageView android:background="@drawable/tool_bar_shadow"
+           android:layout_above="@id/tool_bar"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+    <Button android:id="@+id/btn_take"
+            android:background="@drawable/btn_take_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
     <LinearLayout
+            android:visibility="gone"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="center">
 
-        <Button android:id="@+id/btn_back"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="返回"/>
-
-        <Button android:id="@+id/btn_take"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="保存"/>
         <Button android:id="@+id/btn_focus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,4 +131,4 @@
                 android:text="复原"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
