@@ -7,4 +7,7 @@
     <string name="str_btn_mode">相机模式</string>
     <string name="str_effect_mode">特效</string>
     <string name="str_haha_mode">哈哈镜</string>
+    <string name="str_effect_filter">滤 镜</string>
+    <string name="str_effect_overlay">叠 加</string>
+    <string name="str_effect_frame">相 框</string>
 </resources>

@@ -7,6 +7,7 @@
 #include "microspur.h"
 #include "reversal.h"
 #include "nostalgia.h"
+#include "coloreffect.h"
 
 static const char* g_str_effects = 
     Glow_Effect_Name ","
@@ -16,6 +17,7 @@ static const char* g_str_effects =
     Microspur_Effect_Name ","
     Reversal_Effect_Name ","
     Nostalgia_Effect_Name ","
+    ColorEffect_Effect_Name ","
     ;
 
 Effect* createEffect( const char* effectName )
@@ -36,6 +38,8 @@ Effect* createEffect( const char* effectName )
         return new Reversal;
     }else if (strcmp(effectName, Nostalgia_Effect_Name) == 0){
         return new Nostalgia;
+    }else if (strcmp(effectName, ColorEffect_Effect_Name) == 0){
+        return new ColorEffect;
     }
     return NULL;
 }

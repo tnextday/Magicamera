@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\jni\effect\coloreffect.cpp" />
     <ClCompile Include="..\..\jni\effect\hdr.cpp" />
     <ClCompile Include="..\..\jni\effect\microspur.cpp" />
     <ClCompile Include="..\..\jni\effect\nostalgia.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="..\..\jni\magic\meshengine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\jni\effect\coloreffect.h" />
     <ClInclude Include="..\..\jni\effect\hdr.h" />
     <ClInclude Include="..\..\jni\effect\microspur.h" />
     <ClInclude Include="..\..\jni\effect\nostalgia.h" />

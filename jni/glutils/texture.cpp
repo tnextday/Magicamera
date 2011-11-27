@@ -104,12 +104,13 @@ void Texture::uploadImageData( GLubyte* data )
     uploadImageData(data, m_Width, m_Height, m_imageFormat);
 }
 
-void Texture::loadFromMemory( const unsigned char *buffer, uint32_t len)
+bool Texture::loadFromMemory( const unsigned char *buffer, uint32_t len )
 {
     if (!m_TexHandle){
         init();
     }
     gdx2d_pixmap* pixmap = gdx2d_load(buffer, len);
+    if (!pixmap) return false;
     m_imageFormat = pixmap->format;
     m_Width = pixmap->width;
     m_Height = pixmap->height;
@@ -117,6 +118,7 @@ void Texture::loadFromMemory( const unsigned char *buffer, uint32_t len)
     LOGI("Decoder Image : %d,%d format:%d\n", pixmap->width, pixmap->height, pixmap->format);
     uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, m_imageFormat);
     gdx2d_free(pixmap);
+    return true;
 }
 GLuint Texture::createGLHandle()
 {

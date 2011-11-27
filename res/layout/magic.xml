@@ -5,6 +5,8 @@
         android:background="@drawable/bg"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
+    <!--标题栏-->
     <RelativeLayout android:id="@+id/title_bar"
                 android:layout_width="fill_parent"
                  android:layout_height="wrap_content"
@@ -12,6 +14,7 @@
                  android:background="@drawable/title_bar_bg">
         <Button android:id="@+id/btn_back"
                 android:text="@string/str_btn_back"
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -28,6 +31,7 @@
                   android:textSize="24sp"/>
         <Button android:id="@+id/btn_mode"
                 android:text="@string/str_btn_mode"
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -38,7 +42,7 @@
     </RelativeLayout>
 
 
-
+    <!--底部工具栏-->
     <RelativeLayout android:id="@+id/tool_bar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -61,7 +65,7 @@
                 android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-
+    <!--预览区域-->
     <FrameLayout
             android:layout_centerInParent="true"
             android:layout_above="@id/tool_bar"
@@ -75,20 +79,48 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
     </FrameLayout>
+    <!--特效选择页-->
+    <TabHost android:id="@+id/tabhost"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_above="@id/tool_bar">
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:orientation="vertical">
+            <TabWidget android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@drawable/tab_bg"
+                       android:id="@android:id/tabs"/>
+            <FrameLayout android:layout_width="fill_parent"
+                         android:layout_height="fill_parent"
+                         android:background="@drawable/tab_content_bg"
+                         android:id="@android:id/tabcontent" >
+                <LinearLayout android:id="@+id/content_empty"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dip"
+                    />
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+    <!--标题栏阴影-->
     <ImageView android:background="@drawable/title_bar_shadow"
            android:layout_below="@id/title_bar"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"/>
+    <!--工具栏阴影-->
     <ImageView android:background="@drawable/tool_bar_shadow"
            android:layout_above="@id/tool_bar"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"/>
+    <!--拍摄按钮，在底部中心-->
     <Button android:id="@+id/btn_take"
             android:background="@drawable/btn_take_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
+
+
     <LinearLayout
             android:visibility="gone"
             android:orientation="horizontal"

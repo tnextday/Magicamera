@@ -1,9 +1,6 @@
 package com.funny.magicamera;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,14 +11,15 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class MagicActivity extends Activity implements Camera.PreviewCallback, View.OnClickListener,
+public class MagicActivity extends ActivityGroup implements Camera.PreviewCallback, View.OnClickListener,
             MSurfaceView.InitCompleteListener, MSurfaceView.CameraBufferReleaseListener {
     MSurfaceView m_SurfaceView;
     public static String TAG = "MagicEngine";
@@ -42,6 +40,9 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
     private String[] m_frames;
     private String[] m_covers;
     private String[] m_effects;
+
+    TabHost mTabHost;
+
 
     enum CameraType {
         FACING_BACK, FACING_FRONT
@@ -71,6 +72,7 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
 //        findViewById(R.id.btn_restore).setOnClickListener(this);
         findViewById(R.id.btn_take).setOnClickListener(this);
 //        findViewById(R.id.btn_focus).setOnClickListener(this);
+
 
         m_SurfaceView = (MSurfaceView) findViewById(R.id.surfaceview);
         Log.w(MagicActivity.TAG, "MagicActivity onCreate");
@@ -109,7 +111,29 @@ public class MagicActivity extends Activity implements Camera.PreviewCallback, V
                 //Toast.makeText(MagicActivity.this, "图片已保存！", Toast.LENGTH_SHORT);
             }
         };
+        setupTabHost();
+    }
 
+    static int tabTitleId[] = {
+        R.string.str_effect_filter,
+        R.string.str_effect_overlay,
+        R.string.str_effect_frame
+    };
+    public void setupTabHost(){
+        mTabHost = (TabHost) findViewById(R.id.tabhost);
+        mTabHost.setup(getLocalActivityManager());
+        LinearLayout ll = (LinearLayout)mTabHost.getChildAt(0);
+        TabWidget tw = (TabWidget)ll.getChildAt(0);
+        LinearLayout tabIndicator;
+        TextView tvTab;
+        for(int i = 0; i < tabTitleId.length; i++){
+            tabIndicator = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.effect_tab_indicator, tw, false);
+            tvTab = (TextView)tabIndicator.findViewById(R.id.title );
+            tvTab.setText(getString(tabTitleId[i]));
+            mTabHost.addTab(mTabHost.newTabSpec(String.format("tab_%d", i))
+                    .setIndicator(tabIndicator)
+                    .setContent(R.id.content_empty));
+        }
     }
 
     @Override

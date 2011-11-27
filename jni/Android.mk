@@ -9,6 +9,7 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	actions/parallel.cpp \
 	actions/rotateto2d.cpp \
 	actions/sequence.cpp \
+	effect/coloreffect.cpp \
 	effect/effect.cpp \
 	effect/effectfactory.cpp \
 	effect/glow.cpp \

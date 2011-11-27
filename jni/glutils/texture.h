@@ -39,7 +39,7 @@ public:
     void uploadImageData(GLubyte* data, int width, int height, GLenum imageFormat);
     void uploadImageData(GLubyte* data);
     //update压缩过的数据，jpeg,png,tga。。。
-    void loadFromMemory(const unsigned char *buffer, uint32_t len);
+    bool loadFromMemory(const unsigned char *buffer, uint32_t len);
     bool loadFromFile(const char *filePath);
     void setSize(int w, int h);;
     GLuint getWidth(){return m_Width;};
