@@ -55,7 +55,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         //设置EGL环境为32位真彩色，不过Android系统貌似只能显示16位色
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
-        getHolder().setFormat(PixelFormat.RGBA_8888);
+        getHolder().setFormat(PixelFormat.TRANSLUCENT);
         setRenderer(this);
         inputEvent.setInputProcessor(this);
     }

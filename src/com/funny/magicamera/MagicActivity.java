@@ -1,6 +1,9 @@
 package com.funny.magicamera;
 
-import android.app.*;
+import android.app.ActivityGroup;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,14 +16,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MagicActivity extends ActivityGroup implements Camera.PreviewCallback, View.OnClickListener,
-            MSurfaceView.InitCompleteListener, MSurfaceView.CameraBufferReleaseListener {
+public class MagicActivity extends ActivityGroup implements Camera.PreviewCallback,
+            View.OnClickListener,
+            MSurfaceView.InitCompleteListener,
+            MSurfaceView.CameraBufferReleaseListener,
+            AdapterView.OnItemClickListener {
     MSurfaceView m_SurfaceView;
     public static String TAG = "MagicEngine";
 
@@ -42,6 +53,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     private String[] m_effects;
 
     TabHost mTabHost;
+
+    private ToggleButton tbtn_cfg;
+    private ToggleButton tbtn_effect;
 
 
     enum CameraType {
@@ -65,26 +79,31 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
 
         findViewById(R.id.btn_back).setOnClickListener(this);
+        findViewById(R.id.btn_mode).setOnClickListener(this);
 //        findViewById(R.id.btn_set_cover).setOnClickListener(this);
 //        findViewById(R.id.btn_set_frame).setOnClickListener(this);
 //        findViewById(R.id.btn_set_effect).setOnClickListener(this);
 //        findViewById(R.id.btn_engine).setOnClickListener(this);
 //        findViewById(R.id.btn_restore).setOnClickListener(this);
-        findViewById(R.id.btn_take).setOnClickListener(this);
-//        findViewById(R.id.btn_focus).setOnClickListener(this);
+        Button btn_take = (Button)findViewById(R.id.btn_take);
+        btn_take.setOnClickListener(this);
+        btn_take.setLongClickable(true);
+        //长按自动对焦
+        btn_take.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (m_Camera != null)
+                    m_Camera.autoFocus(null);
+                return true;
+            }
+        });
+        findViewById(R.id.btn_camera_cfg).setOnClickListener(this);
+        findViewById(R.id.btn_effect).setOnClickListener(this);
 
 
         m_SurfaceView = (MSurfaceView) findViewById(R.id.surfaceview);
         Log.w(MagicActivity.TAG, "MagicActivity onCreate");
-//        if (Build.VERSION.SDK_INT >= 8) {
-//            m_SurfaceView.setEGLContextClientVersion(2);
-//        } else {
-//            m_SurfaceView.setEGLContextFactory(new ContextFactory20());
-//        }
-//        //设置EGL环境为32位真彩色，不过Android系统貌似只能显示16位色
-//        m_SurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-//        //如果色深设置成8888，必须设置Holder的format，否则系统会崩溃
-//        m_SurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
+
         Intent intent = getIntent();
         String picPath = intent.getStringExtra("PicPath");
 
@@ -95,7 +114,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String effectList = "--None--,"+MagicJNILib.getEffectList();
+        String effectList = "原汁原味,"+MagicJNILib.getEffectList();
         m_effects = effectList.split(",");
         m_SurfaceView.setOnInitComplete(this);
         if (Build.VERSION.SDK_INT >= 8)
@@ -114,10 +133,22 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         setupTabHost();
     }
 
-    static int tabTitleId[] = {
+    final static int tabTitleId[] = {
         R.string.str_effect_filter,
         R.string.str_effect_overlay,
         R.string.str_effect_frame
+    };
+    final static int tabContentId[] = {
+        R.id.gallery_filter,
+        R.id.gallery_overlay,
+        R.id.gallery_frame,
+    };
+
+    private final String[] data_from ={
+        "preview", "title",
+    };
+    private final int[] set_to = {
+        R.id.im_preview, R.id.tv_title
     };
     public void setupTabHost(){
         mTabHost = (TabHost) findViewById(R.id.tabhost);
@@ -126,44 +157,91 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         TabWidget tw = (TabWidget)ll.getChildAt(0);
         LinearLayout tabIndicator;
         TextView tvTab;
+        View v = LayoutInflater.from(this).inflate(R.layout.effect_tab_content,
+                        mTabHost.getTabContentView(),
+                        true);
+        
         for(int i = 0; i < tabTitleId.length; i++){
             tabIndicator = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.effect_tab_indicator, tw, false);
             tvTab = (TextView)tabIndicator.findViewById(R.id.title );
             tvTab.setText(getString(tabTitleId[i]));
             mTabHost.addTab(mTabHost.newTabSpec(String.format("tab_%d", i))
                     .setIndicator(tabIndicator)
-                    .setContent(R.id.content_empty));
+                    .setContent(tabContentId[i]));
+            ((Gallery)v.findViewById(tabContentId[i])).setOnItemClickListener(this);
         }
+        Gallery g = (Gallery)v.findViewById(tabContentId[0]);
+        ArrayList<Map<String, ?>> effects = new ArrayList<Map<String, ?>>();
+        Map<String, Object> item;
+        for (String str : m_effects){
+            item = new HashMap<String, Object>();
+            item.put("title", str);
+            item.put("preview", R.drawable.icon);
+            effects.add(item);
+        }
+        g.setAdapter(new SimpleAdapter(this, effects, 
+                R.layout.gallery_item, data_from, set_to));
+        
     }
 
+    //gallery 按钮回调
+    @Override
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        m_SurfaceView.queueEvent(new SetEffect(m_effects[position]));
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_back) {
             finish();
-        } else if (view.getId() == R.id.btn_engine) {
+        } else if (view.getId() == R.id.btn_mode) {
             showDialog(DIALOG_SELECT_ENGINE);
-        } else if (view.getId() == R.id.btn_set_cover) {
-            showDialog(DIALOG_SELECT_COVER);
-        } else if (view.getId() == R.id.btn_set_frame) {
-            showDialog(DIALOG_SELECT_FRAME);
-        } else if (view.getId() == R.id.btn_set_effect) {
-            showDialog(DIALOG_SELECT_EFFECT);
         } else if (view.getId() == R.id.btn_restore) {
             MagicJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
             m_SurfaceView.queueEvent(new TakePicture());
-        } else if (view.getId() == R.id.btn_focus){
-            m_Camera.autoFocus(null);
+        } else if (view.getId() == R.id.btn_camera_cfg){
+
+        } else if (view.getId() == R.id.btn_effect){
+            ToggleButton tbtn = (ToggleButton)view;
+            Animation anim;
+            if (tbtn.isChecked()){
+                anim = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
+            }else{
+                anim = AnimationUtils.loadAnimation(this, R.anim.push_down_out);
+            }
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ToggleButton tbtn = (ToggleButton)findViewById(R.id.btn_effect);
+                    findViewById(R.id.tabhost)
+                            .setVisibility(tbtn.isChecked()?View.VISIBLE:View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            findViewById(R.id.tabhost).setAnimation(anim);
         }
     }
 
     private void switchEngine(int type){
-        findViewById(R.id.btn_restore).setVisibility(type == MagicJNILib.ENGINE_TYPE_MESH ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_restore).setVisibility(type == MagicJNILib.ENGINE_TYPE_MESH ? View.VISIBLE : View.GONE);
 
-        findViewById(R.id.btn_set_cover).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
-        findViewById(R.id.btn_set_effect).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
-        findViewById(R.id.btn_set_frame).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_set_cover).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_set_effect).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_set_frame).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
         MagicJNILib.switchEngine(type);
+        int resId = R.string.str_haha_mode;
+        if (type == MagicJNILib.ENGINE_TYPE_EFFECT)
+            resId = R.string.str_effect_mode;
+        ((TextView)findViewById(R.id.tv_title)).setText(resId);
     }
 
     @Override
