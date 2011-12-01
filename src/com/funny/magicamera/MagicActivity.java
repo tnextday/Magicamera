@@ -39,8 +39,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     Camera m_Camera = null;
     final static int BufferCount = 2;
 
-    int m_previewHeight = 480;
-    int m_previewWidth = 640;
+    int m_previewHeight = 360;
+    int m_previewWidth = 480;
 
     public String PicPath = null;
     private final static int DIALOG_SELECT_ENGINE = 0;
@@ -212,14 +212,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    mTabHost.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     ToggleButton tbtn = (ToggleButton)findViewById(R.id.btn_effect);
-                    findViewById(R.id.tabhost)
-                            .setVisibility(tbtn.isChecked()?View.VISIBLE:View.GONE);
+                    mTabHost.setVisibility(tbtn.isChecked()?View.VISIBLE:View.GONE);
                 }
 
                 @Override

@@ -2,7 +2,6 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-        android:background="@drawable/bg"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
@@ -41,19 +40,13 @@
 
     </RelativeLayout>
     <!--预览区域-->
-    <FrameLayout
+    <com.funny.magicamera.MSurfaceView android:id="@+id/surfaceview"
             android:layout_centerInParent="true"
             android:layout_above="@+id/tool_bar"
             android:layout_below="@id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:layout_weight="1">
-
-        <com.funny.magicamera.MSurfaceView android:id="@+id/surfaceview"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
-    </FrameLayout>
+            android:layout_weight="1"/>
     <!--特效选择页-->
     <TabHost android:id="@+id/tabhost"
              android:visibility="gone"

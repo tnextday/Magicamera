@@ -86,7 +86,7 @@ void MagicMain::renderFrame( float delta )
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader 
     if (m_Engine)
         m_Engine->drawImage();
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
 
@@ -205,7 +205,7 @@ void MagicMain::setInputImage( const char* imgPath )
     SafeDeleteArray(buffer);
 }
 
-void MagicMain::initEngine(EngineType type /*= EngineType_Mesh*/)
+void MagicMain::initEngine( EngineType type /*= EngineType_Effect*/ )
 {
     SafeDelete(m_Engine);
     switch (type)

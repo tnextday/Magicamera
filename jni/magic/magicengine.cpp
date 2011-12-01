@@ -54,7 +54,7 @@ bool MagicEngine::initEngine(Texture* SrcTex) {
 void MagicEngine::drawImage()
 {
     if (!m_bReDraw) return;
-    LOGI("MagicEngine::drawImage()\n");
+    //LOGI("MagicEngine::drawImage()\n");
     m_fbo->bind();
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);

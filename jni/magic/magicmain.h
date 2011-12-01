@@ -100,7 +100,7 @@ public:
     void setMaxOutputSize(int w, int h);
 
 private:
-    void initEngine(EngineType type = EngineType_Mesh);
+    void initEngine(EngineType type = EngineType_Effect);
 
     void update(float delta);
 

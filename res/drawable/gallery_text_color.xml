@@ -3,5 +3,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" android:color="@drawable/gallery_text_color_select"/>
     <item android:state_checked="true" android:color="@drawable/gallery_text_color_select"/>
+    <item android:state_selected="true" android:color="@drawable/gallery_text_color_select"/>
     <item android:color="@drawable/gallery_text_color_normal"/>
 </selector>
