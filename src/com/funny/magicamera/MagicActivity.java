@@ -39,8 +39,11 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     Camera m_Camera = null;
     final static int BufferCount = 2;
 
-    int m_previewHeight = 360;
-    int m_previewWidth = 480;
+    int mPreviewHeight = 360;
+    int mPreviewWidth = 480;
+
+    int mOutputHeight = 768;
+    int mOutputWidth = 1024;
 
     public String PicPath = null;
     private final static int DIALOG_SELECT_ENGINE = 0;
@@ -56,6 +59,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
     private ToggleButton tbtn_cfg;
     private ToggleButton tbtn_effect;
+
+
 
 
     enum CameraType {
@@ -185,10 +190,14 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     }
 
     //gallery 按钮回调
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        m_SurfaceView.queueEvent(new SetEffect(m_effects[position]));
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        if (adapterView.getId() == R.id.gallery_filter){
+            m_SurfaceView.queueEvent(new SetEffect(m_effects[position]));
+        }
     }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_back) {
@@ -198,7 +207,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         } else if (view.getId() == R.id.btn_restore) {
             MagicJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
-            m_SurfaceView.queueEvent(new TakePicture());
+            onTakePicture();
+
         } else if (view.getId() == R.id.btn_camera_cfg){
 
         } else if (view.getId() == R.id.btn_effect){
@@ -228,6 +238,32 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             });
             findViewById(R.id.tabhost).setAnimation(anim);
         }
+    }
+    void onTakePicture(){
+        m_Camera.autoFocus(new Camera.AutoFocusCallback(){
+
+            @Override
+            public void onAutoFocus(boolean b, Camera camera) {
+                camera.takePicture(
+                    new Camera.ShutterCallback(){
+
+                        @Override
+                        public void onShutter() {
+
+                        }
+                    },
+                    null,
+                    new Camera.PictureCallback() {
+                        @Override
+                        public void onPictureTaken(byte[] bytes, Camera camera) {
+                            m_SurfaceView.queueEvent(new TakePicture(bytes));
+                            camera.startPreview();
+                            
+                        }
+                    });
+            }
+        });
+
     }
 
     private void switchEngine(int type){
@@ -321,9 +357,18 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
 
     private class TakePicture implements Runnable {
+        byte[] mBuffer = null;
+
+        private TakePicture(byte[] mBuffer) {
+            this.mBuffer = mBuffer;
+        }
+
         @Override
         public void run() {
-            MagicJNILib.takePicture();
+            if (mBuffer == null)
+                MagicJNILib.takePicture();
+            else
+                MagicJNILib.takePictureWithBuffer(mBuffer);
         }
     }
 
@@ -360,6 +405,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
     @Override
     public void onEngineInitCompleted() {
+        //switchEngine(MagicJNILib.ENGINE_TYPE_EFFECT);
         if (PicPath != null) {
             m_SurfaceView.queueEvent(new SetImage(PicPath));
         } else {
@@ -431,12 +477,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         Camera.Parameters parameters = m_Camera.getParameters();
 
         List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-        //        List<Size> psizes = parameters.getSupportedPictureSizes();
+        List<Camera.Size> pSizes = parameters.getSupportedPictureSizes();
         List<Integer> formats = parameters.getSupportedPreviewFormats();
 
-        //formats  = parameters.getSupportedPictureFormats();
-        Camera.Size optimalSize = getOptimalPreviewSize(sizes, m_previewWidth, m_previewHeight);
-        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
+        Camera.Size optJpgSize = getOptimalPreviewSize(pSizes, mOutputWidth, mOutputHeight);
+        parameters.setPictureSize(optJpgSize.width, optJpgSize.height);
+        Camera.Size optSize = getOptimalPreviewSize(sizes, mPreviewWidth, mPreviewHeight);
+        parameters.setPreviewSize(optSize.width, optSize.height);
         if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
             parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
         }
@@ -448,8 +495,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
         parameters = m_Camera.getParameters();
         Camera.Size previewSize = parameters.getPreviewSize();
-        m_previewWidth = previewSize.width;
-        m_previewHeight = previewSize.height;
+        mPreviewWidth = previewSize.width;
+        mPreviewHeight = previewSize.height;
         int previewFormat = parameters.getPreviewFormat();
         int szBuffer = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8;
         //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
@@ -461,7 +508,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         } else {
             m_Camera.setPreviewCallback(this);
         }
-        m_SurfaceView.queueEvent(new SetPreviewInfo(m_previewWidth, m_previewHeight, parameters.getPreviewFormat()));
+        m_SurfaceView.queueEvent(new SetPreviewInfo(mPreviewWidth, mPreviewHeight, parameters.getPreviewFormat()));
         //MagicJNILib.rotate90(true);
         m_Camera.startPreview();
     }
