@@ -17,7 +17,7 @@ static const char* g_str_effects =
     Microspur_Effect_Name ","
     Reversal_Effect_Name ","
     Nostalgia_Effect_Name ","
-    ColorEffect_Effect_Name ","
+//    ColorEffect_Effect_Name ","
     ;
 
 Effect* createEffect( const char* effectName )

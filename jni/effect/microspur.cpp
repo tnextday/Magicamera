@@ -100,7 +100,7 @@ void Microspur::apply( Texture* input, Texture* output )
     glClear(GL_COLOR_BUFFER_BIT);
     glUniform1f(mEdge0Loc, mEdge0);
     glUniform1f(mEdge1Loc, mEdge1);
-    glUniform1f(mAspectLoc, (float)output->getWidth()/output->getHeight());
+    glUniform1f(mAspectLoc, (float)output->getHeight()/output->getWidth());
     glUniform1i(mSrcTexLoc, 0);
     input->bind(0);
     glUniform1i(mRTSenceLoc, 1);

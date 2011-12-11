@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filter_none">原汁原味</string>
+    <string name="filter_glow">梦幻</string>
+    <string name="filter_scanline">扫描线</string>
+    <string name="filter_hdr">HDR</string>
+    <string name="filter_shift">移轴</string>
+    <string name="filter_microspur">微距</string>
+    <string name="filter_reversal">反转片</string>
+    <string name="filter_nostalgia">怀旧色调</string>
+    <string name="overlay_none">原汁原味</string>
+    <string name="overlay_01">闪耀</string>
+    <string name="overlay_02">温暖的心</string>
+    <string name="overlay_07">星光</string>
+    <string name="overlay_10">暖暖</string>
+    <string name="overlay_11">LOMO</string>
+    <string name="frame_none">原汁原味</string>
+    <string name="frame_00">通缉</string>
+    <string name="frame_11">棒棒糖</string>
+    <string name="frame_12">胶片</string>
+</resources>

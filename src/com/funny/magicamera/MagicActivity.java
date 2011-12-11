@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Build;
@@ -22,16 +23,13 @@ import android.widget.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MagicActivity extends ActivityGroup implements Camera.PreviewCallback,
             View.OnClickListener,
             MSurfaceView.InitCompleteListener,
             MSurfaceView.CameraBufferReleaseListener,
-            AdapterView.OnItemClickListener {
+            AdapterView.OnItemSelectedListener {
     MSurfaceView m_SurfaceView;
     public static String TAG = "MagicEngine";
 
@@ -51,9 +49,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     private final static int DIALOG_SELECT_FRAME = 2;
     private final static int DIALOG_SELECT_EFFECT = 3;
 
-    private String[] m_frames;
-    private String[] m_covers;
-    private String[] m_effects;
+    private ArrayList<String> m_frames;
+    private ArrayList<String> m_overlay;
+    private ArrayList<String> m_filters;
 
     TabHost mTabHost;
 
@@ -111,16 +109,26 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
         Intent intent = getIntent();
         String picPath = intent.getStringExtra("PicPath");
-
+        String sl[];
         try {
             AssetManager am = getResources().getAssets();
-            m_covers = am.list("covers");
-            m_frames = am.list("frames");
+            sl = am.list("covers");
+            m_overlay = new ArrayList<String>(sl.length+1);
+            m_overlay.add("none");
+            m_overlay.addAll(Arrays.asList(sl));
+            sl = am.list("frames");
+            m_frames = new ArrayList<String>(sl.length+1);
+            m_frames.add("none");
+            m_frames.addAll(Arrays.asList(sl));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String effectList = "原汁原味,"+MagicJNILib.getEffectList();
-        m_effects = effectList.split(",");
+        String effectList = MagicJNILib.getEffectList();
+        sl = effectList.split(",");
+        m_filters = new ArrayList<String>(sl.length+1);
+        m_filters.add("none");
+        m_filters.addAll(Arrays.asList(sl));
+
         m_SurfaceView.setOnInitComplete(this);
         if (Build.VERSION.SDK_INT >= 8)
             m_SurfaceView.setOnCameraBufferRelease(this);
@@ -165,7 +173,11 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         View v = LayoutInflater.from(this).inflate(R.layout.effect_tab_content,
                         mTabHost.getTabContentView(),
                         true);
-        
+        ArrayList<String> EffectType = null;
+        String EffectName[] = {"filter_", "overlay_", "frame_"};
+        Resources res = getResources();
+        int resId;
+        String packageName = getPackageName();
         for(int i = 0; i < tabTitleId.length; i++){
             tabIndicator = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.effect_tab_indicator, tw, false);
             tvTab = (TextView)tabIndicator.findViewById(R.id.title );
@@ -173,31 +185,62 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             mTabHost.addTab(mTabHost.newTabSpec(String.format("tab_%d", i))
                     .setIndicator(tabIndicator)
                     .setContent(tabContentId[i]));
-            ((Gallery)v.findViewById(tabContentId[i])).setOnItemClickListener(this);
-        }
-        Gallery g = (Gallery)v.findViewById(tabContentId[0]);
-        ArrayList<Map<String, ?>> effects = new ArrayList<Map<String, ?>>();
-        Map<String, Object> item;
-        for (String str : m_effects){
-            item = new HashMap<String, Object>();
-            item.put("title", str);
-            item.put("preview", R.drawable.icon);
-            effects.add(item);
-        }
-        g.setAdapter(new SimpleAdapter(this, effects, 
-                R.layout.gallery_item, data_from, set_to));
-        
+
+            //设置各个Gallery项
+
+            Gallery g = (Gallery)v.findViewById(tabContentId[i]);
+            g.setCallbackDuringFling(false);
+            g.setOnItemSelectedListener(this);
+            ArrayList<Map<String, ?>> effects = new ArrayList<Map<String, ?>>();
+            Map<String, Object> item;
+            switch (i){
+                case 0:
+                    EffectType = m_filters;
+                    break;
+                case 1:
+                    EffectType = m_overlay;
+                    break;
+                case 2:
+                    EffectType = m_frames;
+                    break;
+            }
+            for (String str : EffectType){
+                item = new HashMap<String, Object>();
+                str = str.replace(".pk", "").toLowerCase();
+                //设置标题
+                resId = res.getIdentifier(EffectName[i]+str, "string", packageName);
+                if (resId != 0){
+                    item.put("title", res.getString(resId));
+                }else{
+                    item.put("title", str);   
+                }
+                resId = res.getIdentifier(EffectName[i]+str, "drawable", packageName);
+                if (resId == 0)
+                    resId = R.drawable.noeffect;
+                item.put("preview", resId);
+                effects.add(item);
+            }
+            g.setAdapter(new SimpleAdapter(this, effects,
+                    R.layout.gallery_item, data_from, set_to));
+        } 
     }
 
     //gallery 按钮回调
-
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         if (adapterView.getId() == R.id.gallery_filter){
-            m_SurfaceView.queueEvent(new SetEffect(m_effects[position]));
+            m_SurfaceView.queueEvent(new SetEffect(m_filters.get(pos)));
+        }else if (adapterView.getId() == R.id.gallery_overlay){
+            m_SurfaceView.queueEvent(new SetOverlay("res://covers/"+m_overlay.get(pos)));
+        }else if (adapterView.getId() == R.id.gallery_frame){
+            m_SurfaceView.queueEvent(new SetFrame("res://frames/"+m_frames.get(pos)));
         }
     }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_back) {
@@ -294,38 +337,14 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                             }
                         })
                         .create();
-            case DIALOG_SELECT_COVER:
-                return new AlertDialog.Builder(this)
-                        .setItems(m_covers, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                m_SurfaceView.queueEvent(new SetCover("res://covers/"+m_covers[which]));
-                            }
-                        })
-                        .create();
-            case DIALOG_SELECT_FRAME:
-                return new AlertDialog.Builder(this)
-                        .setItems(m_frames, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                m_SurfaceView.queueEvent(new SetFrame("res://frames/"+m_frames[which]));
-                            }
-                        })
-                        .create();
-            case DIALOG_SELECT_EFFECT:
-                return new AlertDialog.Builder(this)
-                        .setItems(m_effects, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                m_SurfaceView.queueEvent(new SetEffect(m_effects[which]));
-                            }
-                        })
-                        .create();
 
         }
         return null;
     }
 
-    private class SetCover implements Runnable {
+    private class SetOverlay implements Runnable {
         String m_path;
-        private SetCover(String path) {
+        private SetOverlay(String path) {
             this.m_path = path;
         }
         @Override
@@ -410,7 +429,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             m_SurfaceView.queueEvent(new SetImage(PicPath));
         } else {
             //TODO 异步执行
-            startCamera(CameraType.FACING_FRONT);
+            startCamera(CameraType.FACING_BACK);
         }
     }
 

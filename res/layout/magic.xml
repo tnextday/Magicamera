@@ -64,10 +64,6 @@
                          android:layout_height="fill_parent"
                          android:background="@drawable/tab_content_bg"
                          android:id="@android:id/tabcontent" >
-                <LinearLayout android:id="@+id/content_empty"
-                            android:layout_width="fill_parent"
-                            android:layout_height="0dip"
-                    />
             </FrameLayout>
         </LinearLayout>
     </TabHost>
