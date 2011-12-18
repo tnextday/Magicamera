@@ -206,7 +206,16 @@
     <ClCompile Include="..\..\jni\effect\nostalgia.cpp">
       <Filter>Engine\effect</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\jni\effect\coloreffect.cpp">
+    <ClCompile Include="..\..\jni\effect\infrared.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\lemo.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\purple.cpp">
+      <Filter>Engine\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\effect\curveeffect.cpp">
       <Filter>Engine\effect</Filter>
     </ClCompile>
   </ItemGroup>
@@ -337,7 +346,19 @@
     <ClInclude Include="..\..\jni\effect\nostalgia.h">
       <Filter>Engine\effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\jni\effect\coloreffect.h">
+    <ClInclude Include="..\..\jni\effect\infrared.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\lemo.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\purple.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\curveeffect.h">
+      <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\effect\colorcurves.h">
       <Filter>Engine\effect</Filter>
     </ClInclude>
   </ItemGroup>

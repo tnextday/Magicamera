@@ -88,11 +88,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\jni\effect\coloreffect.cpp" />
+    <ClCompile Include="..\..\jni\effect\curveeffect.cpp" />
     <ClCompile Include="..\..\jni\effect\hdr.cpp" />
+    <ClCompile Include="..\..\jni\effect\infrared.cpp" />
+    <ClCompile Include="..\..\jni\effect\lemo.cpp" />
     <ClCompile Include="..\..\jni\effect\microspur.cpp" />
     <ClCompile Include="..\..\jni\effect\nostalgia.cpp" />
     <ClCompile Include="..\..\jni\effect\overlay.cpp" />
+    <ClCompile Include="..\..\jni\effect\purple.cpp" />
     <ClCompile Include="..\..\jni\effect\reversal.cpp" />
     <ClCompile Include="..\..\jni\effect\scanline.cpp" />
     <ClCompile Include="..\..\jni\effect\shift.cpp" />
@@ -156,11 +159,15 @@
     <ClCompile Include="..\..\jni\magic\meshengine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\jni\effect\coloreffect.h" />
+    <ClInclude Include="..\..\jni\effect\colorcurves.h" />
+    <ClInclude Include="..\..\jni\effect\curveeffect.h" />
     <ClInclude Include="..\..\jni\effect\hdr.h" />
+    <ClInclude Include="..\..\jni\effect\infrared.h" />
+    <ClInclude Include="..\..\jni\effect\lemo.h" />
     <ClInclude Include="..\..\jni\effect\microspur.h" />
     <ClInclude Include="..\..\jni\effect\nostalgia.h" />
     <ClInclude Include="..\..\jni\effect\overlay.h" />
+    <ClInclude Include="..\..\jni\effect\purple.h" />
     <ClInclude Include="..\..\jni\effect\reversal.h" />
     <ClInclude Include="..\..\jni\effect\scanline.h" />
     <ClInclude Include="..\..\jni\effect\shift.h" />

@@ -9,14 +9,17 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	actions/parallel.cpp \
 	actions/rotateto2d.cpp \
 	actions/sequence.cpp \
-	effect/coloreffect.cpp \
+	effect/curveeffect.cpp \
 	effect/effect.cpp \
 	effect/effectfactory.cpp \
 	effect/glow.cpp \
 	effect/hdr.cpp \
+	effect/infrared.cpp \
+	effect/lemo.cpp \
 	effect/microspur.cpp \
 	effect/nostalgia.cpp \
 	effect/overlay.cpp \
+	effect/purple.cpp \
 	effect/reversal.cpp \
 	effect/scanline.cpp \
 	effect/shift.cpp \

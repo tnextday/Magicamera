@@ -7,7 +7,10 @@
 #include "microspur.h"
 #include "reversal.h"
 #include "nostalgia.h"
-#include "coloreffect.h"
+#include "lemo.h"
+#include "infrared.h"
+#include "purple.h"
+#include "colorcurves.h"
 
 static const char* g_str_effects = 
     Glow_Effect_Name ","
@@ -17,7 +20,14 @@ static const char* g_str_effects =
     Microspur_Effect_Name ","
     Reversal_Effect_Name ","
     Nostalgia_Effect_Name ","
-//    ColorEffect_Effect_Name ","
+    LEMO_Effect_Name ","
+    InfraRed_Effect_Name ","
+    Purple_Effect_Name ","
+    E6C41_Effect_Name ","
+    C41E6_Effect_Name ","
+    CROSS1_Effect_Name  ","
+    CROSS2_Effect_Name  ","
+    CROSS3_Effect_Name  ","
     ;
 
 Effect* createEffect( const char* effectName )
@@ -38,8 +48,22 @@ Effect* createEffect( const char* effectName )
         return new Reversal;
     }else if (strcmp(effectName, Nostalgia_Effect_Name) == 0){
         return new Nostalgia;
-    }else if (strcmp(effectName, ColorEffect_Effect_Name) == 0){
-        return new ColorEffect;
+    }else if (strcmp(effectName, LEMO_Effect_Name) == 0){
+        return new LEMO;
+    }else if (strcmp(effectName, InfraRed_Effect_Name) == 0){
+        return new InfraRed;
+    }else if (strcmp(effectName, Purple_Effect_Name) == 0){
+        return new Purple;
+    }else if (strcmp(effectName, E6C41_Effect_Name) == 0){
+        return new E6C41;
+    }else if (strcmp(effectName, C41E6_Effect_Name) == 0){
+        return new C41E6;
+    }else if (strcmp(effectName, CROSS1_Effect_Name) == 0){
+        return new CROSS1;
+    }else if (strcmp(effectName, CROSS2_Effect_Name) == 0){
+        return new CROSS2;
+    }else if (strcmp(effectName, CROSS3_Effect_Name) == 0){
+        return new CROSS3;
     }
     return NULL;
 }

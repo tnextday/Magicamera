@@ -8,6 +8,8 @@
     <string name="filter_microspur">微距</string>
     <string name="filter_reversal">反转片</string>
     <string name="filter_nostalgia">怀旧色调</string>
+    <string name="filter_lemo">LEMO</string>
+    <string name="filter_infrared">红外特效</string>
     <string name="overlay_none">原汁原味</string>
     <string name="overlay_01">闪耀</string>
     <string name="overlay_02">温暖的心</string>

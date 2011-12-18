@@ -1,22 +1,19 @@
 #pragma once
 #include "effect.h"
 
-#define ColorEffect_Effect_Name "ColorEffect"
+#define InfraRed_Effect_Name "InfraRed"
 
-//怀旧色调
-class ColorEffect : public Effect{
+//反转片
+class InfraRed : public Effect{
 
-    BaseShader          mShader;
+    BaseShader  mShader;
     FramebufferObject   mFBO;
-    Texture             mColorIndex;
-    GLint               mSrcTexLoc;
-    GLint               mLookupTexLoc;
+
 public:
-    ColorEffect(void);
+    InfraRed(void);
     virtual void apply( Texture* input, Texture* output );
     virtual const char* getName();
     virtual void setParameter( const char* parameterKey, float value );
     virtual float getParameterValue( const char* parameterKey );
     virtual const char* getParameterKeys();
-
 };
