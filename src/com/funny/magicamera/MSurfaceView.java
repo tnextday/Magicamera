@@ -232,4 +232,84 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
             Log.e(MagicActivity.TAG, String.format("%s: EGL error: 0x%x", prompt, error));
         }
     }
+
+    static public class SetOverlay implements Runnable {
+        String m_path;
+        public SetOverlay(String path) {
+            this.m_path = path;
+        }
+        @Override
+        public void run() {
+            MagicJNILib.setCover(m_path);
+        }
+    }
+    static public class SetFrame implements Runnable {
+        String m_path;
+        public SetFrame(String path) {
+            this.m_path = path;
+        }
+        @Override
+        public void run() {
+            MagicJNILib.setFrame(m_path);
+        }
+    }
+    static public class SetEffect implements Runnable {
+        String m_path;
+        public SetEffect(String path) {
+            this.m_path = path;
+        }
+        @Override
+        public void run() {
+            MagicJNILib.setEffect(m_path);
+        }
+    }
+
+
+
+    static public class TakePicture implements Runnable {
+        byte[] mBuffer = null;
+
+        public TakePicture(byte[] mBuffer) {
+            this.mBuffer = mBuffer;
+        }
+
+        @Override
+        public void run() {
+            if (mBuffer == null)
+                MagicJNILib.takePicture();
+            else
+                MagicJNILib.takePictureWithBuffer(mBuffer);
+        }
+    }
+
+    static public class SetImage implements Runnable {
+        String img_path;
+
+        public SetImage(String img_path) {
+            this.img_path = img_path;
+        }
+
+        @Override
+        public void run() {
+            MagicJNILib.setInputImage(img_path);
+        }
+    }
+
+    static public class SetPreviewInfo implements Runnable {
+        int width;
+        int height;
+        int format;
+
+        public SetPreviewInfo(int width, int height, int format) {
+            this.width = width;
+            this.height = height;
+            this.format = format;
+        }
+
+        @Override
+        public void run() {
+            MagicJNILib.setInputDataInfo(width, height, format);
+            MagicJNILib.rotate90(true);
+        }
+    }
 }
