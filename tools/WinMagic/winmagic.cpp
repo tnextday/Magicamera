@@ -29,7 +29,7 @@ void WinMagic::on_cb_engine_currentIndexChanged( int index )
 
 void WinMagic::on_clb_save_clicked()
 {
-    m_render->takePicture();
+    m_render->takePicture(m_ImagePath);
 }
 
 void WinMagic::on_clb_selectImg_clicked()
@@ -38,6 +38,7 @@ void WinMagic::on_clb_selectImg_clicked()
         tr("Open Image"), "", tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (QFile::exists(fileName)){
         m_render->setImage(fileName);
+        m_ImagePath = fileName;
         //ui.cb_engine->setCurrentIndex(0);
     }
 }
@@ -262,4 +263,14 @@ void WinMagic::reloadRes()
     ui.cmb_effect->clear();
     ui.cmb_effect->addItem("--None--");
     ui.cmb_effect->addItems(sl);
+}
+
+void WinMagic::on_btn_rot_left_clicked()
+{
+    m_render->rotate90Input(false);
+}
+
+void WinMagic::on_btn_rot_right_clicked()
+{
+    m_render->rotate90Input(true);
 }

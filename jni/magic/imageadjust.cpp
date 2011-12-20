@@ -136,11 +136,10 @@ void ImageAdjust::reset()
 
 bool ImageAdjust::apply( Texture* src, Texture* dst )
 {
-    if (!m_bNeedAdjust) return false;
     m_shader.use();
-    m_fbo->bindWithTexture(dst->getTexHandle());
     setSize(src->getWidth(), src->getHeight());
     dst->setSize(m_width, m_height);
+    m_fbo->bindWithTexture(dst->getTexHandle());
     glViewport(0, 0, m_width, m_height);
 /*    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);*/
     glClear(GL_COLOR_BUFFER_BIT);

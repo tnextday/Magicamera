@@ -48,6 +48,7 @@ class WinMagic : public QWidget
     Render* m_render;
     QStringList m_sfs;
     QStringList m_dfs;
+    QString     m_ImagePath;
 public:
     WinMagic(QWidget *parent = 0, Qt::WFlags flags = 0);
     ~WinMagic();
@@ -76,6 +77,8 @@ public slots:
     void on_btn_preview_clicked();
     void on_btn_saveRes_clicked();
     void on_btn_selResImg_clicked();
+    void on_btn_rot_left_clicked();
+    void on_btn_rot_right_clicked();
 
     bool saveTexture(const QString & path);
 

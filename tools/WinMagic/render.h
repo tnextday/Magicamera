@@ -60,6 +60,7 @@ public slots:
     void setSavePath(const QString &path);
     void setResPath(const QString &path);
     void takePicture();
+    void takePicture(const QString &path);
     void rotate90Input(bool clockwise = true);
 
     const char* getEffectList();

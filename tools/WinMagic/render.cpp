@@ -164,6 +164,10 @@ void Render::takePicture()
     m_MagicMain.takePicture();
 }
 
+void Render::takePicture( const QString &path )
+{
+    m_MagicMain.takePicture(path.toLocal8Bit());
+}
 // ccording to the Qt docs, if you want to use GDI or Direct3D on Windows with Qt, you need to:
 // 
 // 1) Override QWidget::paintEngine to return NULL
