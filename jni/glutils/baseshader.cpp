@@ -3,7 +3,9 @@
 #include "utils/mathelpers.h"
 #include "utils/fileutils.h"
 #include <zlib.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <GLES2/gl2ext.h>
 
 
 BaseShader::BaseShader(void)
@@ -60,7 +62,7 @@ void BaseShader::ortho( GLfloat left, GLfloat right, GLfloat bottom, GLfloat top
 {
     if (m_viewprojLoc < 0) return;
     GLfloat mvp[16];
-    matIdentity(mvp);
+    //matIdentity(mvp);
     matOrtho(mvp, left, right, bottom, top, znear, zfar);
     use();
     glUniformMatrix4fv(m_viewprojLoc, 1, GL_FALSE, (GLfloat*)mvp);
@@ -203,4 +205,61 @@ void BaseShader::setAttrf( const char* attr_name, GLfloat value )
     GLint attr_loc = glGetAttribLocation(m_program, attr_name);
     if (attr_loc >= 0)
         glUniform1f(attr_loc, value);
+}
+
+//TODO 保存编译后的shader
+//http://www.khronos.org/registry/gles/extensions/OES/OES_get_program_binary.txt
+
+bool BaseShader::saveBinary( const char* fileName )
+{
+    if (checkIfSupportsExtension("GL_OES_get_program_binary"))
+        return false;
+#ifdef WIN32
+    return false;
+#else
+    GLsizei binaryLength;
+    GLvoid* binary;
+    GLenum format;
+    FILE*   outfile;
+
+    //
+    //  Retrieve the binary from the program object
+    //
+    glGetProgramiv(m_program, GL_PROGRAM_BINARY_LENGTH_OES, &binaryLength);
+    binary = (GLvoid*)malloc(binaryLength);
+    glGetProgramBinaryOES(m_program, binaryLength, NULL, &format, binary);
+
+    //
+    //  Cache the program binary for future runs
+    //
+    outfile = fopen(fileName, "wb");
+    fwrite(binary, binaryLength, 1, outfile);
+    fclose(outfile);
+    free(binary);
+    return true;
+#endif
+
+}
+
+bool BaseShader::loadBinary( const char* binary, int size )
+{
+#ifdef WIN32
+    return false;
+#else
+    GLint   success;
+    GLenum format = 1;//TODO 此处为binary格式，应该与glGetProgramBinaryOES中的format对应
+    glProgramBinaryOES(m_program, format, binary, size);
+    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        //
+        // Something must have changed since the program binaries
+        // were cached away.  Fallback to source shader loading path,
+        // and then retrieve and cache new program binaries once again.
+        //
+        return false;
+    }
+    return true;
+#endif
+
 }

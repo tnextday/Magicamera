@@ -88,8 +88,8 @@ void Glow::apply( Texture* input, Texture* output )
     mHBlur.use();
     mHBlur.setAttrf(mHBlurSizeLoc, mBlurStep/output->getWidth());
     mTmpTex.setSize(output->getWidth(), output->getHeight());
-    mFBO.bindWithTexture(mTmpTex.getTexHandle());
     glViewport(0, 0, output->getWidth(), output->getHeight());
+    mFBO.bindWithTexture(mTmpTex.getTexHandle());
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     input->bind(0);

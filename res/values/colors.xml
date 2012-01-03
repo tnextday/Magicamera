@@ -1,4 +1,5 @@
 <resources>
     <drawable name="gallery_text_color_normal">#ffcccccc</drawable>
     <drawable name="gallery_text_color_select">#ffffffff</drawable>
+    <drawable name="blue">#ff0000ff</drawable>
 </resources>

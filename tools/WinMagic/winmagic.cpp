@@ -13,6 +13,7 @@ WinMagic::WinMagic(QWidget *parent, Qt::WFlags flags)
     m_render = ui.render;
     setupTest();
     setupResEditer();
+    ui.cb_engine->setCurrentIndex(1);
 }
 
 WinMagic::~WinMagic()

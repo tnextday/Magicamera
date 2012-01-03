@@ -287,34 +287,28 @@ bool matPerspective(float* m ,float fieldOfViewDegree, float aspectRatio, float 
 //like glortho
 bool matOrtho(float* m,float f32Left, float f32Right,float f32Bottom, float f32Top, float f32ZNear, float f32ZFar)
 {
-    float diff = f32Right - f32Left;
-    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
+    float deltaX = f32Right - f32Left;
+    float deltaY = f32Top - f32Bottom;
+    float deltaZ = f32ZFar - f32ZNear;
+    if(deltaX == 0 || deltaY == 0 || deltaZ == 0) //chk for divide by zero......
         return false;
-    
-    diff = f32Top - f32Bottom;
-    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-        return false;
-        
-    diff = f32ZFar - f32ZNear;
-    if(diff > -FLT_EPSILON && diff < FLT_EPSILON) //chk for divide by zero......
-        return false;
-        
-   m[0] = float(2.0/(f32Right-f32Left));
-   m[1] = m[2] = m[3] = 0;
 
-   m[4] = 0;
-   m[5] = float(2.0/(f32Top-f32Bottom));
-   m[6] = m[7] = 0;
+    m[0] = float(2.0/deltaX);
+    m[1] = m[2] = m[3] = 0;
 
-   m[8] = m[9] = 0;
-   m[10] = -float(2.0/(f32ZFar - f32ZNear));
-   m[11] = 0;
-   
-   m[12] = -((f32Right+f32Left)/(f32Right-f32Left));
-   m[13] = -((f32Top+f32Bottom)/(f32Top-f32Bottom));
-   m[14] = -((f32ZNear+f32ZFar)/(f32ZFar-f32ZNear));
-   m[15] = 1;
-   return true;
+    m[4] = 0;
+    m[5] = float(2.0/deltaY);
+    m[6] = m[7] = 0;
+
+    m[8] = m[9] = 0;
+    m[10] = -float(2.0/deltaZ);
+    m[11] = 0;
+
+    m[12] = -((f32Right+f32Left)/deltaX);
+    m[13] = -((f32Top+f32Bottom)/deltaY);
+    m[14] = -((f32ZNear+f32ZFar)/deltaZ);
+    m[15] = 1;
+    return true;
 }
 
 bool vecNormalize(float& x, float& y, float& z)

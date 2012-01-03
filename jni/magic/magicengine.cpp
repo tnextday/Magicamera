@@ -7,6 +7,28 @@
 #include "glutils/glutils.h"
 #include "utils/mathelpers.h"
 
+static const char Engine_VertexShader[] = 
+    "uniform mat4 uMVPMatrix;\n"
+    "attribute vec4 aPosition;\n"
+    "attribute vec2 aTexCoord;\n"
+    "varying vec2 vTexCoord;\n"
+    "void main() {\n"
+    "  gl_Position = uMVPMatrix * aPosition;\n" 
+    "  vTexCoord = aTexCoord;\n"
+    "}\n";
+
+static const char Engine_FragmentShader[] = 
+    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
+    "precision highp float;\n"
+    "#else\n"
+    "precision mediump float;\n"
+    "#endif\n"
+    "varying vec2 vTexCoord;\n"
+    "uniform sampler2D sTexture;\n"
+    "void main() {\n"
+    "  gl_FragColor = texture2D(sTexture, vTexCoord);\n"
+    "}\n";
+
 MagicEngine::MagicEngine()
 {
     m_InTex = NULL;
@@ -40,7 +62,11 @@ bool MagicEngine::initEngine(Texture* SrcTex) {
     m_MaxWidth = dims[0];
     m_MaxHeight = dims[1];
     m_OutTex.init();
-    m_shader.loadFromFile("res://shaders/default.sp");
+    m_shader.makeProgram(Engine_VertexShader, Engine_FragmentShader);
+    if (!m_shader.isCompiled()){
+        LOGE("Could not create program.\n");
+        return false;
+    }
     setInputTexture(SrcTex);
     m_fbo = new FramebufferObject();
     m_fbo->texture2d(m_OutTex.getTexHandle());

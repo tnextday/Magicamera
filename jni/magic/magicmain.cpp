@@ -22,7 +22,11 @@ static const char gVertexShader[] =
         "}\n";
 
 static const char gFragmentShader[] = 
+        "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
+        "precision highp float;\n"
+        "#else\n"
         "precision mediump float;\n"
+        "#endif\n"
         "varying vec2 vTexCoord;\n"
         "uniform sampler2D sTexture;\n"
         "void main() {\n"
@@ -66,8 +70,8 @@ bool MagicMain::setupGraphics() {
     m_shader.use();
 
     glDisable(GL_DEPTH_TEST);
-    glCullFace(GL_FRONT);
-    glEnable(GL_CULL_FACE);
+//     glCullFace(GL_FRONT);
+//     glEnable(GL_CULL_FACE);
 
     printGLColorSpaceInfo();
 
@@ -86,7 +90,7 @@ void MagicMain::renderFrame( float delta )
     //这个的坐标系和其他的稍有不同，所以这个放在前面执行，可以对其使用不同的Shader 
     if (m_Engine)
         m_Engine->drawImage();
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(37.0/255.0, 72.0/255.0, 100.0/255.0, 0.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glViewport(0,0, m_ScreenWidth, m_ScreenHeight);
 
@@ -223,6 +227,8 @@ void MagicMain::initEngine( EngineType type /*= EngineType_Effect*/ )
 //    m_Engine->initEngine(m_adjust.getOutTexture());
     m_Engine->initEngine(m_SrcTex);
     m_Engine->start();
+
+
 }
 
 void MagicMain::switchEngine(EngineType type)
@@ -317,7 +323,7 @@ void MagicMain::restoreMesh()
 
 void MagicMain::rotate90Input( bool clockwise /*= true*/)
 {
-    //TODO Fix：貌似坐标系有点问题！~ 上下翻转的 
+
     m_adjust.rotate90(!clockwise);
     if (!m_SrcTex) return;
     if (m_glYUVTex){
@@ -335,8 +341,7 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
 void MagicMain::onEngineOutChange( Texture *tex )
 {
     m_outSprite.setTexture(tex);
-    //m_magicSprite.loadFromFile("assets/test2.jpg");
-    //TODO 为什么需要flip？？？？！！！！ 
+    //因为是渲染到fbo上面的，上下翻转的。所以这里要正回来
     m_outSprite.flip(false, true);
     m_outSprite.setScale(m_aspectRatio < m_outSprite.getAspect() ?
         m_aspectRatio/m_outSprite.getAspect() : 1.0);

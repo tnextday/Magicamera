@@ -26,7 +26,6 @@ protected:
 
     Texture*        m_InTex;
     Texture         m_OutTex;
-
     GLuint         m_width;
     GLuint         m_height;
     GLuint          m_MaxWidth;

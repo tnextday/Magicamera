@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
+        android:background="@drawable/canvas_bg"
         android:layout_height="fill_parent">
 
     <!--标题栏-->
@@ -46,6 +47,7 @@
             android:layout_below="@id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:layout_weight="1"/>
     <!--特效选择页-->
     <TabHost android:id="@+id/tabhost"

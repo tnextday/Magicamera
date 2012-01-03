@@ -122,6 +122,7 @@ bool ImageAdjust::init()
 
 void ImageAdjust::reset()
 {
+    //由于是渲染到fbo上面，所以v是颠倒的
     GLfloat Quad[] =
     {
         // X, Y, U, V

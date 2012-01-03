@@ -5,6 +5,8 @@
 #include <GLES2/gl2.h>
 #include "glutils.h"
 
+#define GL_GLEXT_PROTOTYPES
+
 class BaseShader
 {
 private:
@@ -50,6 +52,10 @@ public:
 
     bool loadFromFile(const char* fileName);
     bool loadFromMemory(const char* buf, int size);
+
+    //TODO 保存与载入编译后的Shader Binary,未完成
+    bool saveBinary(const char* fileName);
+    bool loadBinary(const char* binary, int size);
 
     static GLuint loadShader(GLenum shaderType, const char* pSource);
 };
