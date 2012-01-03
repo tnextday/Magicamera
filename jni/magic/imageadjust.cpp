@@ -10,7 +10,11 @@ static const char g_Adjust_VShader[] =
     "}\n";
 
 static const char g_Adjust_FShader[] = 
+    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
+    "precision highp float;\n"
+    "#else\n"
     "precision mediump float;\n"
+    "#endif\n"
     "varying vec2 vTexCoord;\n"
     "uniform sampler2D sTexture;\n"
     "void main() {\n"
