@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             String path = getPath(data.getData());
             if(path != null && new File(path).exists()){
                 Intent intent = new Intent(this, MagicActivity.class);
-                intent.putExtra("PicPath", path);
+                intent.putExtra("mPicPath", path);
                 startActivity(intent);
             }
         }

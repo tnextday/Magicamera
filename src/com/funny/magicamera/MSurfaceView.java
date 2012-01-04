@@ -93,7 +93,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         inputEvent.processEvents();
         MagicJNILib.step(deltaTime);
         checkFrameBuffer();
-        fps.log();
+        //fps.log();
 //        long render_time = System.nanoTime() - time;
 //        if (render_time < fps_time){
 //            try {

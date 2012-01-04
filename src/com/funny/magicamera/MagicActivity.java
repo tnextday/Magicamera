@@ -46,7 +46,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     int mOutputHeight = 768;
     int mOutputWidth = 1024;
 
-    public String PicPath = null;
+    public String mPicPath = null;
     private final static int DIALOG_SELECT_ENGINE = 0;
 
     private ArrayList<String> m_frames;
@@ -101,7 +101,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         Log.w(MagicActivity.TAG, "MagicActivity onCreate");
 
         Intent intent = getIntent();
-        String picPath = intent.getStringExtra("PicPath");
+        String picPath = intent.getStringExtra("mPicPath");
         String sl[];
         try {
             AssetManager am = getResources().getAssets();
@@ -132,7 +132,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             m_SurfaceView.setOnCameraBufferRelease(this);
 
         if (picPath != null && new File(picPath).exists()) {
-            PicPath = picPath;
+            mPicPath = picPath;
         }
         MagicJNILib.onTake = new MagicJNILib.TakePictureListener(){
             @Override
@@ -285,30 +285,35 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      * 拍照
      */
     void takePicture() {
-        mCamera.autoFocus(new Camera.AutoFocusCallback() {
+        if (mPicPath == null){
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
 
-            @Override
-            public void onAutoFocus(boolean b, Camera camera) {
-                camera.takePicture(
-                        new Camera.ShutterCallback() {
+                @Override
+                public void onAutoFocus(boolean b, Camera camera) {
+                    camera.takePicture(
+                            new Camera.ShutterCallback() {
 
-                            @Override
-                            public void onShutter() {
+                                @Override
+                                public void onShutter() {
 
+                                }
+                            },
+                            null,
+                            new Camera.PictureCallback() {
+                                @Override
+                                public void onPictureTaken(byte[] bytes, Camera camera) {
+                                    m_SurfaceView.queueEvent(new TakePicture(bytes));
+                                    camera.startPreview();
+
+                                }
                             }
-                        },
-                        null,
-                        new Camera.PictureCallback() {
-                            @Override
-                            public void onPictureTaken(byte[] bytes, Camera camera) {
-                                m_SurfaceView.queueEvent(new TakePicture(bytes));
-                                camera.startPreview();
+                    );
+                }
+            });
+        }else{
+            m_SurfaceView.queueEvent(new TakePicture(null));
+        }
 
-                            }
-                        }
-                );
-            }
-        });
 
     }
 
@@ -351,8 +356,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      */
     public void onEngineInitCompleted() {
         //switchEngine(MagicJNILib.ENGINE_TYPE_EFFECT);
-        if (PicPath != null) {
-            m_SurfaceView.queueEvent(new SetImage(PicPath));
+        if (mPicPath != null) {
+            m_SurfaceView.queueEvent(new SetImage(mPicPath));
         } else {
             startCamera(mCameraType);
         }
@@ -363,7 +368,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      * @param picPath 图片地址
      */
     public void onPictureSaved(String picPath){
-        Toast.makeText(MagicActivity.this, "图片已保存！\n"+picPath, Toast.LENGTH_SHORT);
+        Toast.makeText(this, "图片已保存！\n"+picPath, Toast.LENGTH_LONG).show();
     }
 
     @Override
