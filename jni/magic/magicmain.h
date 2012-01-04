@@ -27,7 +27,8 @@ class MagicMain : public TouchEvent, EngineOutChange{
     BaseShader      m_shader;
     Status          m_status;
 
-    Texture*        m_SrcTex;
+    Texture*        m_origSrcTex;
+    Texture*        m_srcTex;
     glYUVTexture*   m_glYUVTex;
 
     MagicEngine*    m_Engine;

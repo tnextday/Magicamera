@@ -277,7 +277,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
                 }
             });
-            findViewById(R.id.tabhost).setAnimation(anim);
+            mTabHost.startAnimation(anim);
         }
     }
 

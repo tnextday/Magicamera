@@ -40,14 +40,16 @@ MagicMain::MagicMain()
     m_Engine = NULL;
     m_nextEngine = EngineType_None;
     m_aspectRatio = 1;
-    m_SrcTex = NULL;
+    m_srcTex = NULL;
+    m_origSrcTex = NULL;
 }
 
 MagicMain::~MagicMain()
 {
     SafeDelete(m_glYUVTex);
     SafeDelete(m_Engine);
-    SafeDelete(m_SrcTex);
+    SafeDelete(m_srcTex);
+    SafeDelete(m_origSrcTex);
 }
 
 
@@ -104,29 +106,29 @@ void MagicMain::updateInputData( char* data, long len )
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
         m_glYUVTex->uploadYUVTexImage(data);
     }else if(m_inputFortmat == IMAGE_FORMAT_RGB_565){
-        m_SrcTex->uploadImageData((GLubyte*)data);
+        m_srcTex->uploadImageData((GLubyte*)data);
     }else if(m_inputFortmat == IMAGE_FORMAT_PACKET){
-        m_SrcTex->loadFromMemory((unsigned char*)data, len);
+        m_srcTex->loadFromMemory((unsigned char*)data, len);
     }
-    m_Engine->updateInput(m_SrcTex);
+    m_Engine->updateInput(m_srcTex);
 }
 
 void MagicMain::setInputDataInfo( int w, int h, int imageFormat )
 {
-    if (!m_SrcTex){
-        m_SrcTex = new Texture;
-        m_SrcTex->init();
+    if (!m_srcTex){
+        m_srcTex = new Texture;
+        m_srcTex->init();
     }
-    m_SrcTex->setSize(w, h);
+    m_srcTex->setSize(w, h);
     m_inputFortmat = imageFormat;
     initEngine();
 
     //rgb565比rgb888快至少30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
-        m_glYUVTex = new glYUVTexture(w, h, m_SrcTex);
+        m_glYUVTex = new glYUVTexture(w, h, m_srcTex);
         m_glYUVTex->setImageAdjust(&m_adjust);
     }if(m_inputFortmat == IMAGE_FORMAT_RGB_565)
-        m_SrcTex->setImageFormat(GDX2D_FORMAT_RGB565);
+        m_srcTex->setImageFormat(GDX2D_FORMAT_RGB565);
 }
 
 
@@ -183,20 +185,20 @@ void MagicMain::drawImage()
 void MagicMain::setInputImage( const char* data, long len )
 {
     if (!data || !len) return;
-    if (!m_SrcTex){
-        m_SrcTex = new Texture;
-        m_SrcTex->init();
+    if (!m_srcTex){
+        m_srcTex = new Texture;
+        m_srcTex->init();
     }
     if (m_adjust.isNeedAdjust()){
         Texture tex ;
         tex.loadFromMemory((unsigned char*)data, len);
-        m_adjust.apply(&tex, m_SrcTex);
+        m_adjust.apply(&tex, m_srcTex);
     }else{
-        m_SrcTex->loadFromMemory((unsigned char*)data, len);
+        m_srcTex->loadFromMemory((unsigned char*)data, len);
     }
     if (!m_Engine)
         initEngine();
-    m_Engine->setInputTexture(m_SrcTex);
+    m_Engine->setInputTexture(m_srcTex);
 }
 
 void MagicMain::setInputImage( const char* imgPath )
@@ -225,7 +227,7 @@ void MagicMain::initEngine( EngineType type /*= EngineType_Effect*/ )
     m_Engine->setOutputResize(this);
     m_Engine->SetIOCallBack(m_ioCallBack);
 //    m_Engine->initEngine(m_adjust.getOutTexture());
-    m_Engine->initEngine(m_SrcTex);
+    m_Engine->initEngine(m_srcTex);
     m_Engine->start();
 
 
@@ -245,7 +247,7 @@ void MagicMain::takePicture( Texture *tex /*= NULL*/)
     if (tex && m_adjust.isNeedAdjust()){
         Texture tmp;
         tmp.init();
-        m_adjust.apply(m_SrcTex, &tmp);
+        m_adjust.apply(tex, &tmp);
         m_Engine->tackPicture(&tmp);
     }else{
         m_Engine->tackPicture(tex);
@@ -325,17 +327,19 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
 {
 
     m_adjust.rotate90(!clockwise);
-    if (!m_SrcTex) return;
+    if (!m_srcTex) return;
     if (m_glYUVTex){
         m_glYUVTex->setImageAdjust(&m_adjust);   
     }else{
-        Texture* tmp = new Texture();
-        tmp->init();
-        m_adjust.apply(m_SrcTex, tmp);
-        SafeDelete(m_SrcTex);
-        m_SrcTex = tmp;
+        //如果原始图片没有备份，那么备份一份原始资源
+        if (m_origSrcTex == NULL){
+            m_origSrcTex = m_srcTex;
+            m_srcTex = new Texture();
+            m_srcTex->init();
+        }
+        m_adjust.apply(m_origSrcTex, m_srcTex);
     }
-    m_Engine->setInputTexture(m_SrcTex);
+    m_Engine->setInputTexture(m_srcTex);
 }
 
 void MagicMain::onEngineOutChange( Texture *tex )

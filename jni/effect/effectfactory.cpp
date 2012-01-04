@@ -19,7 +19,7 @@ static const char* g_str_effects =
     Shift_Effect_Name ","
     Microspur_Effect_Name ","
     Reversal_Effect_Name ","
-    Nostalgia_Effect_Name ","
+    //Nostalgia_Effect_Name ","
     LEMO_Effect_Name ","
     InfraRed_Effect_Name ","
     Purple_Effect_Name ","

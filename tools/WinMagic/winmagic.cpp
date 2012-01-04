@@ -134,8 +134,9 @@ void WinMagic::setupTest()
     reloadRes();
     QDir dir = QDir::current();
     dir.cd("./test");
+    m_ImagePath = dir.filePath("test2.jpg");
     //m_render->rotate90Input(true);
-    m_render->setImage(dir.filePath("test2.jpg"));
+    m_render->setImage(m_ImagePath);
 }
 
 void WinMagic::setupResEditer()
