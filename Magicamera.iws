@@ -13,6 +13,7 @@
     </option>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="magic" />
     <option name="TAB_LOG_LEVEL" value="INFO" />
   </component>
   <component name="CCaseConfig">
@@ -30,12 +31,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/effectfactory.cpp" afterPath="$PROJECT_DIR$/jni/effect/effectfactory.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/btn_hide_n.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/btn_hide_p.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/btn_hide_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/filter_select.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/magic.xml" afterPath="$PROJECT_DIR$/res/layout/magic.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/WinMagic/winmagic.cpp" afterPath="$PROJECT_DIR$/tools/WinMagic/winmagic.cpp" />
     </list>
     <ignored path="Magicamera.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -119,28 +124,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MSurfaceView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="10" selection-start="2836" selection-end="2836" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MagicActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MagicActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="370" column="75" selection-start="13076" selection-end="13076" vertical-scroll-proportion="0.0">
+            <state line="68" column="20" selection-start="1769" selection-end="1771" vertical-scroll-proportion="0.5640244">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MagicJNILib.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
+      <file leaf-file-name="FilterSelect.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="39" selection-start="3007" selection-end="3007" vertical-scroll-proportion="1.1823056">
+            <state line="53" column="11" selection-start="1624" selection-end="1624" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PopupView.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="31" column="10" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -149,16 +156,7 @@
       <file leaf-file-name="magic.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="59" selection-start="2859" selection-end="2859" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="colors.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="36" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0">
+            <state line="58" column="9" selection-start="2562" selection-end="2562" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -174,22 +172,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="F:/WebGL Christmas Demo and share with friends!_files/ga.js" />
-        <option value="F:/WebGL Christmas Demo and share with friends!.htm" />
-        <option value="F:/WebGL Christmas Demo/static/PicShower.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/Oak3D.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/PostSession.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/Camera.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/MainSession.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/LoadSession.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/SessionManager.js" />
-        <option value="D:/APMServ/www/htdocs/Christmas/index.htm" />
-        <option value="D:/APMServ/www/htdocs/Christmas/static/PicShower.js" />
         <option value="$PROJECT_DIR$/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/res/layout/magic.xml" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" />
+        <option value="$PROJECT_DIR$/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/res/layout/effect_setting.xml" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/PosableDialog.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MyPopupWindow.java" />
+        <option value="$PROJECT_DIR$/res/layout/gallery_item.xml" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/PopupView.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/EffectSetting.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/EffectSelect.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
+        <option value="$PROJECT_DIR$/res/drawable/brn_hide_bg.xml" />
+        <option value="$PROJECT_DIR$/res/layout/filter_select.xml" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java" />
+        <option value="$PROJECT_DIR$/res/layout/magic.xml" />
       </list>
     </option>
   </component>
@@ -257,14 +255,20 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="Magicamera" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Android 2.3.3 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -305,6 +309,100 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popupviews" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-hdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Magicamera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -325,6 +423,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -352,6 +452,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\workspace\Magicamera\res\drawable-hdpi" />
       <recent name="E:\workspace\Magicamera\res\anim" />
     </key>
   </component>
@@ -553,7 +654,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329653" sideWeight="0.0" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33660132" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3280757" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249183" sideWeight="0.64037853" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35962147" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -563,16 +663,17 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32649842" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3280757" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20751634" sideWeight="0.1214511" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25408497" sideWeight="0.3643533" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39950982" sideWeight="0.64037853" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20751634" sideWeight="0.5078864" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35962147" sideWeight="0.49346405" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25408497" sideWeight="0.64037853" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35962147" sideWeight="0.49346405" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.533123" sideWeight="0.49671593" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32761437" sideWeight="0.63779527" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3280757" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -688,94 +789,102 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="48" selection-start="589" selection-end="589" vertical-scroll-proportion="0.57360405" />
+        <state line="77" column="22" selection-start="3085" selection-end="3085" vertical-scroll-proportion="2.3214285" />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/Oak3D.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="3" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0" />
+    <entry file="file://$PROJECT_DIR$/res/drawable-hdpi/gallery_image_n.9.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/PostSession.js">
+    <entry file="file://$PROJECT_DIR$/res/drawable/gallery_image_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="20" selection-start="9" selection-end="20" vertical-scroll-proportion="0.0" />
+        <state line="7" column="44" selection-start="384" selection-end="384" vertical-scroll-proportion="0.3941019" />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/PicShower.js">
+    <entry file="file://D:/android-sdk-windows/platforms/android-8/src/android/app/Dialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="19" selection-start="2949" selection-end="2949" vertical-scroll-proportion="0.035714287" />
+        <state line="574" column="7" selection-start="18898" selection-end="18898" vertical-scroll-proportion="15.3707485" />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/LoadSession.js">
+    <entry file="file://$PROJECT_DIR$/res/layout/gallery_item.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="27" selection-start="3918" selection-end="3918" vertical-scroll-proportion="0.6785714" />
+        <state line="11" column="57" selection-start="514" selection-end="514" vertical-scroll-proportion="0.3843594" />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/SessionManager.js">
+    <entry file="file://D:/android-sdk-windows/platforms/android-8/src/android/view/Window.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="0" selection-start="1815" selection-end="1815" vertical-scroll-proportion="0.5" />
+        <state line="775" column="25" selection-start="29140" selection-end="29140" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/Camera.js">
+    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="0" selection-start="3626" selection-end="3626" vertical-scroll-proportion="0.64285713" />
+        <state line="1" column="34" selection-start="29" selection-end="46" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://D:/APMServ/www/htdocs/Christmas/static/MainSession.js">
+    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="5" selection-start="5950" selection-end="5950" vertical-scroll-proportion="0.75" />
-      </provider>
-    </entry>
-    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/graphics/PixelFormat.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="37" selection-start="293" selection-end="293" vertical-scroll-proportion="0.23979592" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="36" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="60" selection-start="779" selection-end="779" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/app/ActivityGroup.class">
+    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/widget/PopupWindow.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="149" selection-end="149" vertical-scroll-proportion="0.14285715">
+        <state line="10" column="11" selection-start="354" selection-end="354" vertical-scroll-proportion="0.32142857">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="10" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/btn_hide_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="48" selection-start="239" selection-end="239" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/filter_select.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="37" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="11" selection-start="1624" selection-end="1624" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/btn_cfg_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="11" selection-start="332" selection-end="332" vertical-scroll-proportion="0.20965058">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="59" selection-start="2859" selection-end="2859" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="10" selection-start="2836" selection-end="2836" vertical-scroll-proportion="0.0">
+        <state line="58" column="9" selection-start="2562" selection-end="2562" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="370" column="75" selection-start="13076" selection-end="13076" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="39" selection-start="3007" selection-end="3007" vertical-scroll-proportion="1.1823056">
+        <state line="68" column="20" selection-start="1769" selection-end="1771" vertical-scroll-proportion="0.5640244">
           <folding />
         </state>
       </provider>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:orientation="vertical">
+    <Button android:id="@+id/btn_hide"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/btn_hide_bg"/>
+    <!--特效选择页-->
+    <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/tabhost"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:orientation="vertical">
+            <TabWidget android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@drawable/tab_bg"
+                       android:id="@android:id/tabs"/>
+            <FrameLayout android:layout_width="fill_parent"
+                         android:layout_height="fill_parent"
+                         android:background="@drawable/tab_content_bg"
+                         android:id="@android:id/tabcontent">
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+</LinearLayout>

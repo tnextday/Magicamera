@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Build;
@@ -17,22 +15,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.funny.magicamera.popupviews.FilterSelect;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 import static com.funny.magicamera.MSurfaceView.*;
 
 public class MagicActivity extends ActivityGroup implements Camera.PreviewCallback,
             View.OnClickListener,
             CameraBufferReleaseListener,
-            AdapterView.OnItemSelectedListener {
+            FilterSelect.FilterSelected {
     MSurfaceView m_SurfaceView;
     public static String TAG = "MagicEngine";
 
@@ -49,11 +47,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     public String mPicPath = null;
     private final static int DIALOG_SELECT_ENGINE = 0;
 
-    private ArrayList<String> m_frames;
-    private ArrayList<String> m_overlay;
-    private ArrayList<String> m_filters;
 
-    TabHost mTabHost;
+    private FilterSelect mFilterSelect;
+
 
 
 
@@ -102,25 +98,6 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
         Intent intent = getIntent();
         String picPath = intent.getStringExtra("mPicPath");
-        String sl[];
-        try {
-            AssetManager am = getResources().getAssets();
-            sl = am.list("covers");
-            m_overlay = new ArrayList<String>(sl.length+1);
-            m_overlay.add("none");
-            m_overlay.addAll(Arrays.asList(sl));
-            sl = am.list("frames");
-            m_frames = new ArrayList<String>(sl.length+1);
-            m_frames.add("none");
-            m_frames.addAll(Arrays.asList(sl));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String effectList = MagicJNILib.getEffectList();
-        sl = effectList.split(",");
-        m_filters = new ArrayList<String>(sl.length+1);
-        m_filters.add("none");
-        m_filters.addAll(Arrays.asList(sl));
 
         m_SurfaceView.setOnInitComplete(new InitCompleteListener(){
             @Override
@@ -141,103 +118,21 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                 //Toast.makeText(MagicActivity.this, "图片已保存！", Toast.LENGTH_SHORT);
             }
         };
-        setupTabHost();
+
+        mFilterSelect = new FilterSelect(this, this);
     }
 
-    final static int tabTitleId[] = {
-        R.string.str_effect_filter,
-        R.string.str_effect_overlay,
-        R.string.str_effect_frame
-    };
-    final static int tabContentId[] = {
-        R.id.gallery_filter,
-        R.id.gallery_overlay,
-        R.id.gallery_frame,
-    };
 
-    private final String[] data_from ={
-        "preview", "title",
-    };
-    private final int[] set_to = {
-        R.id.im_preview, R.id.tv_title
-    };
-    public void setupTabHost(){
-        mTabHost = (TabHost) findViewById(R.id.tabhost);
-        mTabHost.setup(getLocalActivityManager());
-        LinearLayout ll = (LinearLayout)mTabHost.getChildAt(0);
-        TabWidget tw = (TabWidget)ll.getChildAt(0);
-        LinearLayout tabIndicator;
-        TextView tvTab;
-        View v = LayoutInflater.from(this).inflate(R.layout.effect_tab_content,
-                        mTabHost.getTabContentView(),
-                        true);
-        ArrayList<String> EffectType = null;
-        String EffectName[] = {"filter_", "overlay_", "frame_"};
-        Resources res = getResources();
-        int resId;
-        String packageName = getPackageName();
-        for(int i = 0; i < tabTitleId.length; i++){
-            tabIndicator = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.effect_tab_indicator, tw, false);
-            tvTab = (TextView)tabIndicator.findViewById(R.id.title );
-            tvTab.setText(getString(tabTitleId[i]));
-            mTabHost.addTab(mTabHost.newTabSpec(String.format("tab_%d", i))
-                    .setIndicator(tabIndicator)
-                    .setContent(tabContentId[i]));
-
-            //设置各个Gallery项
-
-            Gallery g = (Gallery)v.findViewById(tabContentId[i]);
-            g.setCallbackDuringFling(false);
-            g.setOnItemSelectedListener(this);
-            ArrayList<Map<String, ?>> effects = new ArrayList<Map<String, ?>>();
-            Map<String, Object> item;
-            switch (i){
-                case 0:
-                    EffectType = m_filters;
-                    break;
-                case 1:
-                    EffectType = m_overlay;
-                    break;
-                case 2:
-                    EffectType = m_frames;
-                    break;
-            }
-            for (String str : EffectType){
-                item = new HashMap<String, Object>();
-                str = str.replace(".pk", "").toLowerCase();
-                //设置标题
-                resId = res.getIdentifier(EffectName[i]+str, "string", packageName);
-                if (resId != 0){
-                    item.put("title", res.getString(resId));
-                }else{
-                    item.put("title", str);   
-                }
-                resId = res.getIdentifier(EffectName[i]+str, "drawable", packageName);
-                if (resId == 0)
-                    resId = R.drawable.noeffect;
-                item.put("preview", resId);
-                effects.add(item);
-            }
-            g.setAdapter(new SimpleAdapter(this, effects,
-                    R.layout.gallery_item, data_from, set_to));
-        } 
-    }
-
-    //gallery 按钮回调
+    //设置滤镜
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        if (adapterView.getId() == R.id.gallery_filter){
-            m_SurfaceView.queueEvent(new SetEffect(m_filters.get(pos)));
-        }else if (adapterView.getId() == R.id.gallery_overlay){
-            m_SurfaceView.queueEvent(new SetOverlay("res://covers/"+m_overlay.get(pos)));
-        }else if (adapterView.getId() == R.id.gallery_frame){
-            m_SurfaceView.queueEvent(new SetFrame("res://frames/"+m_frames.get(pos)));
+    public void OnFilterSelected(String type, String name) {
+        if (type.equals(FilterSelect.Type_Filter)){
+            m_SurfaceView.queueEvent(new SetEffect(name));
+        }else if (type.equals(FilterSelect.Type_Cover)){
+            m_SurfaceView.queueEvent(new SetOverlay(name));
+        }else if (type.equals(FilterSelect.Type_Frame)){
+            m_SurfaceView.queueEvent(new SetFrame(name));
         }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
     @Override
     public void onClick(View view) {
@@ -252,32 +147,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
         } else if (view.getId() == R.id.btn_camera_cfg){
 
+
         } else if (view.getId() == R.id.btn_effect){
-            ToggleButton tbtn = (ToggleButton)view;
-            Animation anim;
-            if (tbtn.isChecked()){
-                anim = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
-            }else{
-                anim = AnimationUtils.loadAnimation(this, R.anim.push_down_out);
-            }
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    mTabHost.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    ToggleButton tbtn = (ToggleButton)findViewById(R.id.btn_effect);
-                    mTabHost.setVisibility(tbtn.isChecked()?View.VISIBLE:View.GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            mTabHost.startAnimation(anim);
+            mFilterSelect.showAtLocation(findViewById(R.id.tool_bar), Gravity.BOTTOM, 0, 0);
         }
     }
 
@@ -335,7 +207,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DIALOG_SELECT_ENGINE:
-                return new AlertDialog.Builder(this)
+                Dialog dlg = new AlertDialog.Builder(this)
                         .setItems(R.array.engine_types, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 0) {
@@ -346,6 +218,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                             }
                         })
                         .create();
+                dlg.setCanceledOnTouchOutside(true);
+                dlg.getWindow().setWindowAnimations(R.style.BottomUpAnimation);
+                return dlg;
 
         }
         return null;

@@ -49,27 +49,6 @@
             android:layout_height="match_parent"
 
             android:layout_weight="1"/>
-    <!--特效选择页-->
-    <TabHost android:id="@+id/tabhost"
-             android:visibility="gone"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:persistentDrawingCache="animation"
-             android:layout_above="@id/tool_bar">
-        <LinearLayout android:layout_width="fill_parent"
-                      android:layout_height="fill_parent"
-                      android:orientation="vertical">
-            <TabWidget android:layout_width="fill_parent"
-                       android:layout_height="wrap_content"
-                       android:background="@drawable/tab_bg"
-                       android:id="@android:id/tabs"/>
-            <FrameLayout android:layout_width="fill_parent"
-                         android:layout_height="fill_parent"
-                         android:background="@drawable/tab_content_bg"
-                         android:id="@android:id/tabcontent" >
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
     <!--底部工具栏-->
     <RelativeLayout android:id="@id/tool_bar"
             android:layout_width="fill_parent"
@@ -77,21 +56,17 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/toolbar_bg"
             >
-        <ToggleButton android:id="@+id/btn_camera_cfg"
+        <Button android:id="@+id/btn_camera_cfg"
                 android:background="@drawable/btn_cfg_bg"
                 android:text=""
-                android:textOff=""
-                android:textOn=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"/>
-        <ToggleButton android:id="@+id/btn_effect"
+        <Button android:id="@+id/btn_effect"
                 android:background="@drawable/btn_effect_bg"
                 android:text=""
-                android:textOff=""
-                android:textOn=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dip"
