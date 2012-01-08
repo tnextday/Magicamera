@@ -31,15 +31,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/btn_hide_n.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/btn_hide_p.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/btn_hide_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/filter_select.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/camera_mdoe_bg.9.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/delay_10.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/delay_3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/delay_5.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/split_line.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-hdpi/switch_camera.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/camera_setting.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/CameraSetting.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/title_bar_bg.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/title_bar_bg.9.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/push_down_out.xml" afterPath="$PROJECT_DIR$/res/anim/push_down_out.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/push_up_in.xml" afterPath="$PROJECT_DIR$/res/anim/push_up_in.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/magic.xml" afterPath="$PROJECT_DIR$/res/layout/magic.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
     </list>
     <ignored path="Magicamera.iws" />
@@ -114,8 +119,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -124,10 +129,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MagicActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MagicActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="20" selection-start="1769" selection-end="1771" vertical-scroll-proportion="0.5640244">
+            <state line="156" column="23" selection-start="5036" selection-end="5036" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CameraSetting.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/CameraSetting.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="47" selection-start="491" selection-end="491" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="camera_setting.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/camera_setting.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="42" selection-start="2046" selection-end="2046" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -136,27 +161,16 @@
       <file leaf-file-name="FilterSelect.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="11" selection-start="1624" selection-end="1624" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PopupView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="10" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0">
+            <state line="45" column="8" selection-start="1372" selection-end="1413" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="magic.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="magic.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="9" selection-start="2562" selection-end="2562" vertical-scroll-proportion="0.0">
+            <state line="42" column="67" selection-start="1975" selection-end="1986" vertical-scroll-proportion="2.3646111">
               <folding />
             </state>
           </provider>
@@ -172,22 +186,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" />
-        <option value="$PROJECT_DIR$/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/res/layout/effect_setting.xml" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/PosableDialog.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/MyPopupWindow.java" />
         <option value="$PROJECT_DIR$/res/layout/gallery_item.xml" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/PopupView.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/EffectSetting.java" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/EffectSelect.java" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java" />
-        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
         <option value="$PROJECT_DIR$/res/drawable/brn_hide_bg.xml" />
         <option value="$PROJECT_DIR$/res/layout/filter_select.xml" />
         <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java" />
+        <option value="$PROJECT_DIR$/res/anim/push_down_out.xml" />
+        <option value="$PROJECT_DIR$/res/anim/push_up_in.xml" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/popupviews/CameraSetting.java" />
         <option value="$PROJECT_DIR$/res/layout/magic.xml" />
+        <option value="$PROJECT_DIR$/res/layout/camera_setting.xml" />
+        <option value="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
       </list>
     </option>
   </component>
@@ -255,6 +269,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -334,10 +350,6 @@
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -371,39 +383,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="drawable-hdpi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Magicamera" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Magicamera" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="drawable" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Magicamera" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Magicamera" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
+              <option name="myItemId" value="anim" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -423,8 +403,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -447,8 +425,8 @@
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="2.3.3_HVGA" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -533,16 +511,6 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="embedded" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" runner="idea" />
       <module name="" />
@@ -568,6 +536,16 @@
         <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
         <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -666,7 +644,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25408497" sideWeight="0.3643533" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39950982" sideWeight="0.64037853" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25408497" sideWeight="0.64037853" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35962147" sideWeight="0.49346405" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35962147" sideWeight="0.49346405" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.533123" sideWeight="0.49671593" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32761437" sideWeight="0.63779527" order="3" side_tool="false" content_ui="tabs" x="471" y="252" width="717" height="416" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -789,31 +767,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicJNILib.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="22" selection-start="3085" selection-end="3085" vertical-scroll-proportion="2.3214285" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-hdpi/gallery_image_n.9.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/gallery_image_bg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="44" selection-start="384" selection-end="384" vertical-scroll-proportion="0.3941019" />
-      </provider>
-    </entry>
-    <entry file="file://D:/android-sdk-windows/platforms/android-8/src/android/app/Dialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="574" column="7" selection-start="18898" selection-end="18898" vertical-scroll-proportion="15.3707485" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/gallery_item.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="57" selection-start="514" selection-end="514" vertical-scroll-proportion="0.3843594" />
-      </provider>
-    </entry>
     <entry file="file://D:/android-sdk-windows/platforms/android-8/src/android/view/Window.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="775" column="25" selection-start="29140" selection-end="29140" vertical-scroll-proportion="0.0" />
@@ -826,65 +779,90 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/widget/PopupWindow.class">
+    <entry file="file://$PROJECT_DIR$/res/drawable/btn_hide_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="11" selection-start="354" selection-end="354" vertical-scroll-proportion="0.32142857">
+        <state line="4" column="48" selection-start="239" selection-end="239" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/filter_select.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="37" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/btn_cfg_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="11" selection-start="332" selection-end="332" vertical-scroll-proportion="0.20965058" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MSurfaceView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="39" selection-start="2233" selection-end="2233" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/PopupView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="10" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0">
+        <state line="15" column="52" selection-start="469" selection-end="469" vertical-scroll-proportion="0.32142857">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/btn_hide_bg.xml">
+    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/widget/PopupWindow.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="48" selection-start="239" selection-end="239" vertical-scroll-proportion="0.0">
+        <state line="74" column="16" selection-start="2952" selection-end="2952" vertical-scroll-proportion="0.33333334">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/filter_select.xml">
+    <entry file="file://$PROJECT_DIR$/res/anim/push_up_in.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="37" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+        <state line="6" column="0" selection-start="277" selection-end="277" vertical-scroll-proportion="0.35" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/anim/push_down_out.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="76" selection-start="263" selection-end="263" vertical-scroll-proportion="0.23333333">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/FilterSelect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="11" selection-start="1624" selection-end="1624" vertical-scroll-proportion="0.0">
+        <state line="45" column="8" selection-start="1372" selection-end="1413" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/camera_setting.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="42" selection-start="2046" selection-end="2046" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/popupviews/CameraSetting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="47" selection-start="491" selection-end="491" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/btn_cfg_bg.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="11" selection-start="332" selection-end="332" vertical-scroll-proportion="0.20965058">
+        <state line="156" column="23" selection-start="5036" selection-end="5036" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/magic.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="9" selection-start="2562" selection-end="2562" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="20" selection-start="1769" selection-end="1771" vertical-scroll-proportion="0.5640244">
+        <state line="42" column="67" selection-start="1975" selection-end="1986" vertical-scroll-proportion="2.3646111">
           <folding />
         </state>
       </provider>

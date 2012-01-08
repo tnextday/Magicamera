@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.funny.magicamera.popupviews.CameraSetting;
 import com.funny.magicamera.popupviews.FilterSelect;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
 
     private FilterSelect mFilterSelect;
+    private CameraSetting mCameraSetting = null;
 
 
 
@@ -120,6 +122,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         };
 
         mFilterSelect = new FilterSelect(this, this);
+        mCameraSetting = new CameraSetting(this);
     }
 
 
@@ -146,8 +149,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             takePicture();
 
         } else if (view.getId() == R.id.btn_camera_cfg){
-
-
+            View v = findViewById(R.id.surfaceview);
+            int[] location = new int[2];
+            v.getLocationInWindow(location);
+            int y = location[1];
+            //v.getLayoutParams().
+            //TODO 设置位置
+            mCameraSetting.showAtLocation(v, Gravity.BOTTOM, 0, -80);
         } else if (view.getId() == R.id.btn_effect){
             mFilterSelect.showAtLocation(findViewById(R.id.tool_bar), Gravity.BOTTOM, 0, 0);
         }

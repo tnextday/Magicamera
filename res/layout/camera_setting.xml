@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:background="@drawable/camera_mdoe_bg"
+              android:gravity="center_vertical"
+        >
+    <ImageButton android:id="@+id/btn_switch_camera"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:src="@drawable/switch_camera"
+                 android:background="@null"
+                 android:layout_weight="1"
+            />
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/split_line"/>
+    <ImageButton android:id="@+id/btn_delay"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:src="@drawable/delay_3"
+                 android:background="@null"
+                 android:layout_weight="1"
+            />
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/split_line"/>
+    <ImageButton android:id="@+id/btn_2"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:src="@drawable/delay_5"
+                 android:background="@null"
+                 android:layout_weight="1"
+            />
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/split_line"/>
+    <ImageButton android:id="@+id/btn_3"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:src="@drawable/delay_10"
+                 android:background="@null"
+                 android:layout_weight="1"
+            />
+</LinearLayout>
