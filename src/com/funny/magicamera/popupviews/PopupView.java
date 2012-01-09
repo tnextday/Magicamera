@@ -45,6 +45,8 @@ public class PopupView extends PopupWindow implements View.OnTouchListener, View
 
     @Override
     public void setContentView(View contentView) {
+
+        contentView.measure(getWidth(), getHeight());
         super.setContentView(contentView);
         contentView.setOnKeyListener(this);
     }
@@ -61,19 +63,20 @@ public class PopupView extends PopupWindow implements View.OnTouchListener, View
         setAnimationStyle(anim);
     }
 
-    private boolean isOutOfBounds(MotionEvent event) {
-        final int x = (int) event.getX();
-        final int y = (int) event.getY();
-        return (x < 0) || (y < 0)
-                || (x > getWidth())
-                || (y > getHeight());
+    
+    public int getMeasuredHeight(){
+        return getContentView().getMeasuredHeight();
+    }
+    
+    public int getMeasuredWidth(){
+        return getContentView().getMeasuredWidth();
     }
 
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if (mCanceledOnTouchOutside && event.getAction() == MotionEvent.ACTION_DOWN
-                && isOutOfBounds(event)) {
+        if (mCanceledOnTouchOutside 
+                && event.getAction() == MotionEvent.ACTION_DOWN) {
             dismiss();
             return true;
         }

@@ -149,13 +149,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             takePicture();
 
         } else if (view.getId() == R.id.btn_camera_cfg){
-            View v = findViewById(R.id.surfaceview);
+            View v = findViewById(R.id.btn_camera_cfg);
             int[] location = new int[2];
             v.getLocationInWindow(location);
-            int y = location[1];
+            int y = location[1] - mCameraSetting.getMeasuredHeight();
             //v.getLayoutParams().
             //TODO 设置位置
-            mCameraSetting.showAtLocation(v, Gravity.BOTTOM, 0, -80);
+            mCameraSetting.showAtLocation(v, Gravity.NO_GRAVITY, 0, y);
         } else if (view.getId() == R.id.btn_effect){
             mFilterSelect.showAtLocation(findViewById(R.id.tool_bar), Gravity.BOTTOM, 0, 0);
         }

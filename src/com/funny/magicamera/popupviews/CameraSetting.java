@@ -18,8 +18,8 @@ public class CameraSetting extends PopupView {
         super(context);
         mContext = context;
         mView = inflate(mContext, R.layout.camera_setting, null);
-        setContentView(mView);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        setContentView(mView);
         setAnimations(R.style.BottomUpAnimation);
     }
 
