@@ -4,4 +4,8 @@
         <item name="android:windowExitAnimation">@anim/push_down_out</item>
     </style>
 
+    <style name="AutoFoucusAnimation">
+        <item name="android:windowEnterAnimation">@anim/auto_focus</item>
+    </style>
+
 </resources>

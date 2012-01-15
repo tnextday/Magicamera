@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.funny.magicamera.popupviews.AutoFocusView;
 import com.funny.magicamera.popupviews.CameraSetting;
 import com.funny.magicamera.popupviews.FilterSelect;
 
@@ -51,6 +52,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
     private FilterSelect mFilterSelect;
     private CameraSetting mCameraSetting = null;
+    private AutoFocusView mAutoFocusView;
 
 
 
@@ -86,8 +88,15 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         btn_take.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mCamera != null)
-                    mCamera.autoFocus(null);
+                if (mCamera != null){
+                    mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                        @Override
+                        public void onAutoFocus(boolean b, Camera camera) {
+                            mAutoFocusView.autoFocusCompleted();
+                        }
+                    });
+                    beginAutoFocus();
+                }
                 return true;
             }
         });
@@ -123,6 +132,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
         mFilterSelect = new FilterSelect(this, this);
         mCameraSetting = new CameraSetting(this);
+        mAutoFocusView = new AutoFocusView(this);
     }
 
 
@@ -161,6 +171,17 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
     }
 
+    private void beginAutoFocus(){
+        View v = findViewById(R.id.surfaceview);
+//        int[] location = new int[2];
+//        v.getLocationInWindow(location);
+//        v.getMeasuredHeight();
+//        int x = location[0] + (v.getMeasuredWidth() - mAutoFocusView.getMeasuredWidth())/2;
+//        int y = location[1] + (v.getMeasuredHeight() - mAutoFocusView.getMeasuredHeight())/2;
+        mAutoFocusView.beginAutoFocus();
+        mAutoFocusView.showAtLocation(v, Gravity.CENTER, 0, 0);
+    }
+
     /***
      * 拍照
      */
@@ -170,6 +191,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
                 @Override
                 public void onAutoFocus(boolean b, Camera camera) {
+                    mAutoFocusView.autoFocusCompleted();
                     camera.takePicture(
                             new Camera.ShutterCallback() {
 
@@ -190,6 +212,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                     );
                 }
             });
+            beginAutoFocus();
         }else{
             m_SurfaceView.queueEvent(new TakePicture(null));
         }

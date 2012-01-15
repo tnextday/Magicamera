@@ -55,6 +55,10 @@ public class FilterSelect extends PopupView implements AdapterView.OnItemSelecte
 
     }
 
+    public void setOnFilterSelected(FilterSelected callback){
+        mFilterSelected = callback;
+    }
+
     public void getAllFilters(){
         String sl[];
         try {
