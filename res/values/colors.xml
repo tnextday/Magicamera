@@ -2,4 +2,6 @@
     <drawable name="gallery_text_color_normal">#ffcccccc</drawable>
     <drawable name="gallery_text_color_select">#ffffffff</drawable>
     <drawable name="blue">#ff0000ff</drawable>
+    <drawable name="img_btn_color_n">#ffd1d1d1</drawable>
+    <drawable name="img_btn_color_p">#ffffffff</drawable>
 </resources>
