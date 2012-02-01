@@ -2,7 +2,7 @@
 #ifndef _framebufferobject_h_
 #define _framebufferobject_h_
 
-#include <GLES2\gl2.h>
+#include <GLES2/gl2.h>
 
 class FramebufferObject
 {
@@ -16,10 +16,10 @@ private:
 
 public:
     //************************************
-    // Method:    FramebufferObject 构造函数
-    // Parameter: bool bColorBUffer 是否创建color buffer
-    // Parameter: bool bDepthBuffer 是否创建depth buffer
-    // ColorBuffer只支持16位色，如果想支持更高颜色，要使用texture2d纹理
+    // Method:    FramebufferObject 锟斤拷锟届函锟斤拷
+    // Parameter: bool bColorBUffer 锟角否创斤拷color buffer
+    // Parameter: bool bDepthBuffer 锟角否创斤拷depth buffer
+    // ColorBuffer只支锟斤拷16位色锟斤拷锟斤拷锟斤拷锟街э拷指锟斤拷锟斤拷色锟斤拷要使锟斤拷texture2d锟斤拷锟斤拷
     //************************************
     FramebufferObject(bool bDepthBuffer = false);
     ~FramebufferObject(void);
@@ -27,7 +27,7 @@ public:
     void bind(){ glBindFramebuffer(GL_FRAMEBUFFER, m_fboId[0]); };
     void bindWithTexture(GLuint texId);
     void unbind(){ glBindFramebuffer(GL_FRAMEBUFFER, 0); };
-    //此函数的色深与egl环境色深相同
+    //锟剿猴拷锟斤拷锟缴拷锟斤拷锟絜gl锟斤拷锟斤拷色锟斤拷锟斤拷同
     void texture2d(GLuint texId);
     void resizeBuffers(int w, int h);
     bool check_status();

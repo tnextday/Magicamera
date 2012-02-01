@@ -61,7 +61,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         FACING_BACK, FACING_FRONT
     }
 
-    private CameraType mCameraType = CameraType.FACING_BACK;
+    public CameraType mCameraType = CameraType.FACING_BACK;
 
     /**
      * Called when the activity is first created.
@@ -379,6 +379,23 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         new Thread(new OpenCamera(cameraType)).run();
     }
 
+    /**
+     * 切换前后相机
+     */
+    public void switchCamera(){
+        if(mCamera != null){
+            int numCameras = 1;
+            if (Build.VERSION.SDK_INT >= 9){
+                numCameras = Camera.getNumberOfCameras();
+            }
+            if (numCameras <= 1)
+                return;
+        }
+        CameraType type = mCameraType == CameraType.FACING_BACK ? CameraType.FACING_FRONT : CameraType.FACING_BACK;
+        startCamera(type);
+    }
+    
+
     /***
      * 异步执行打开相机操作，相机打开后会执行此函数
      * @param camera 打开后的相机，打开失败则为null
@@ -412,6 +429,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         parameters.setPreviewSize(optSize.width, optSize.height);
         if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
             parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
+        }else if (formats.contains(MagicJNILib.IMAGE_FORMAT_NV21)){
+            parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_NV21);
         }
 
         List<String> FocusModes = parameters.getSupportedFocusModes();

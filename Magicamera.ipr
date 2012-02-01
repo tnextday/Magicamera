@@ -36,10 +36,6 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-  <component name="Git.Settings">
-    <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
-    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
-  </component>
   <component name="IdProvider" IDEtalkID="B6800378D5122C184EDC2BE98F5F94E5" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
