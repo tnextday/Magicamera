@@ -22,15 +22,16 @@ public class CameraSetting extends PopupView implements View.OnClickListener {
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setContentView(mView);
         setAnimations(R.style.BottomUpAnimation);
-        mView.findViewById(R.id.btn_switch_camera).setOnClickListener(this);
-        
+        View v =  mView.findViewById(R.id.btn_switch_camera);
+        v.setOnClickListener(this);
+        v.setEnabled(mContext.canSwitchCamera());
     }
 
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_switch_camera){
-
+            mContext.switchCamera();
         }
     }
 }

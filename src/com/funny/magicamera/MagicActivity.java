@@ -17,9 +17,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.*;
 import com.funny.magicamera.popupviews.AutoFocusView;
 import com.funny.magicamera.popupviews.CameraSetting;
 import com.funny.magicamera.popupviews.FilterSelect;
@@ -33,7 +33,6 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             View.OnClickListener,
             CameraBufferReleaseListener,
             FilterSelect.FilterSelected {
-    MSurfaceView m_SurfaceView;
     public static String TAG = "MagicEngine";
 
     //    int m_CameraId; //use above 2.3
@@ -49,19 +48,18 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     public String mPicPath = null;
     private final static int DIALOG_SELECT_ENGINE = 0;
 
-
     private FilterSelect mFilterSelect;
     private CameraSetting mCameraSetting = null;
     private AutoFocusView mAutoFocusView;
 
+    MSurfaceView m_SurfaceView;
+    private TextSwitcher ts_delay;
 
-
-
-    enum CameraType {
-        FACING_BACK, FACING_FRONT
+    enum CameraFacing {
+        BACK, FRONT
     }
 
-    public CameraType mCameraType = CameraType.FACING_BACK;
+    public CameraFacing mCameraFacing = CameraFacing.BACK;
 
     /**
      * Called when the activity is first created.
@@ -76,10 +74,26 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             finish();
             return;
         }
-        setContentView(R.layout.magic);
+        setContentView(R.layout.magic_camera);
 
         findViewById(R.id.btn_back).setOnClickListener(this);
         findViewById(R.id.btn_mode).setOnClickListener(this);
+
+        //设置倒计时view
+        ts_delay = (TextSwitcher)findViewById(R.id.ts_delay);
+        ts_delay.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                return View.inflate(MagicActivity.this, R.layout.delay_text,null);
+            }
+        });
+        Animation in = AnimationUtils.loadAnimation(this,
+                android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(this,
+                android.R.anim.fade_out);
+        ts_delay.setInAnimation(in);
+        ts_delay.setOutAnimation(out);
+
 
         Button btn_take = (Button)findViewById(R.id.btn_take);
         btn_take.setOnClickListener(this);
@@ -153,8 +167,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             finish();
         } else if (view.getId() == R.id.btn_mode) {
             showDialog(DIALOG_SELECT_ENGINE);
-        } else if (view.getId() == R.id.btn_restore) {
-            MagicJNILib.restoreMesh();
+//        } else if (view.getId() == R.id.btn_restore) {
+//            MagicJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
             takePicture();
 
@@ -250,7 +264,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                         })
                         .create();
                 dlg.setCanceledOnTouchOutside(true);
-                dlg.getWindow().setWindowAnimations(R.style.BottomUpAnimation);
+                dlg.getWindow().setWindowAnimations(R.style.UpDownAnimation);
                 return dlg;
 
         }
@@ -265,7 +279,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         if (mPicPath != null) {
             m_SurfaceView.queueEvent(new SetImage(mPicPath));
         } else {
-            startCamera(mCameraType);
+            startCamera(mCameraFacing);
         }
     }
 
@@ -325,21 +339,21 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      * 打开相机的线程Runnable
      */
     private class OpenCamera implements Runnable {
-        private CameraType mCameraType;
-
-        public OpenCamera(CameraType type) {
-            mCameraType = type;
+        private CameraFacing mFacing;
+        public OpenCamera(CameraFacing facing) {
+            mFacing = facing;
         }
 
         @Override
         public void run() {
             Camera camera = null;
+            boolean bRightFacing = false;
             if (Build.VERSION.SDK_INT >= 9) {
                 int numberOfCameras = Camera.getNumberOfCameras();
                 if (numberOfCameras > 1){
                     int cameraId = 0;
                     int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    if (mCameraType == CameraType.FACING_FRONT) {
+                    if (mFacing == CameraFacing.FRONT) {
                         facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
                     }
                     Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
@@ -347,22 +361,28 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                         Camera.getCameraInfo(i, cameraInfo);
                         if (cameraInfo.facing == facing) {
                             cameraId = i;
+                            bRightFacing = true;
                         }
                     }
                     try{
                         camera = Camera.open(cameraId);
                     }catch (Exception e){
                         camera = null;
+                        bRightFacing = false;
                     }
 
                 }
             }
             if (camera == null){
+                bRightFacing = false;
                 try{
                     camera = Camera.open();
                 }catch (Exception e){
                     camera = null;
                 }
+            }
+            if (bRightFacing){
+                mCameraFacing = mFacing;
             }
             mEventHandler.sendMessage(Msg_Camera_Opened, camera);
         }
@@ -370,29 +390,30 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
     /***
      * 启动相机，异步模式
-     * @param cameraType 前/后摄像机
+     * @param facing 前/后摄像机
      */
-    public void startCamera(CameraType cameraType) {
+    public void startCamera(CameraFacing facing) {
         //TODO 显示等待画面
+//        Toast.makeText(this, "正在打开相机...", Toast.LENGTH_LONG).show();
+        Log.d(TAG, "正在打开相机...");
         stopCamera();
         //异步执行打开相机操作
-        new Thread(new OpenCamera(cameraType)).run();
+        new Thread(new OpenCamera(facing)).run();
     }
 
     /**
      * 切换前后相机
      */
     public void switchCamera(){
-        if(mCamera != null){
-            int numCameras = 1;
-            if (Build.VERSION.SDK_INT >= 9){
-                numCameras = Camera.getNumberOfCameras();
-            }
-            if (numCameras <= 1)
-                return;
+        if(!canSwitchCamera() && mCamera != null){
+            return;
         }
-        CameraType type = mCameraType == CameraType.FACING_BACK ? CameraType.FACING_FRONT : CameraType.FACING_BACK;
-        startCamera(type);
+        CameraFacing facing = mCameraFacing == CameraFacing.BACK ? CameraFacing.FRONT : CameraFacing.BACK;
+        startCamera(facing);
+    }
+
+    public static boolean canSwitchCamera(){
+        return Build.VERSION.SDK_INT >= 9 && Camera.getNumberOfCameras() > 1;
     }
     
 
