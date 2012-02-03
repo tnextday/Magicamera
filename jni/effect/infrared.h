@@ -3,7 +3,7 @@
 
 #define InfraRed_Effect_Name "InfraRed"
 
-//��תƬ
+//反转片
 class InfraRed : public Effect{
 
     BaseShader  mShader;

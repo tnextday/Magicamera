@@ -88,7 +88,7 @@ void MagicMain::renderFrame( float delta )
         delta = MaxDeltaTime;
 
     update(delta);
-    //Õâ¸öµÄ×ø±êÏµºÍÆäËûµÄÉÔÓĞ²»Í¬£¬ËùÒÔÕâ¸ö·ÅÔÚÇ°ÃæÖ´ĞĞ£¬¿ÉÒÔ¶ÔÆäÊ¹ÓÃ²»Í¬µÄShader 
+    //è¿™ä¸ªçš„åæ ‡ç³»å’Œå…¶ä»–çš„ç¨æœ‰ä¸åŒï¼Œæ‰€ä»¥è¿™ä¸ªæ”¾åœ¨å‰é¢æ‰§è¡Œï¼Œå¯ä»¥å¯¹å…¶ä½¿ç”¨ä¸åŒçš„Shader 
     if (m_Engine)
         m_Engine->drawImage();
     glClearColor(37.0/255.0, 72.0/255.0, 100.0/255.0, 0.0f);
@@ -122,7 +122,7 @@ void MagicMain::setInputDataInfo( int w, int h, int imageFormat )
     m_inputFortmat = imageFormat;
     initEngine();
 
-    //rgb565±Èrgb888¿ìÖÁÉÙ30%
+    //rgb565æ¯”rgb888å¿«è‡³å°‘30%
     if (m_inputFortmat == IMAGE_FORMAT_NV21){
         m_glYUVTex = new glYUVTexture(w, h, m_srcTex);
         m_glYUVTex->setImageAdjust(&m_adjust);
@@ -330,7 +330,7 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
     if (m_glYUVTex){
         m_glYUVTex->setImageAdjust(&m_adjust);   
     }else{
-        //Èç¹ûÔ­Ê¼Í¼Æ¬Ã»ÓĞ±¸·İ£¬ÄÇÃ´±¸·İÒ»·İÔ­Ê¼×ÊÔ´
+        //å¦‚æœåŸå§‹å›¾ç‰‡æ²¡æœ‰å¤‡ä»½ï¼Œé‚£ä¹ˆå¤‡ä»½ä¸€ä»½åŸå§‹èµ„æº
         if (m_origSrcTex == NULL){
             m_origSrcTex = m_srcTex;
             m_srcTex = new Texture();
@@ -344,7 +344,7 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
 void MagicMain::onEngineOutChange( Texture *tex )
 {
     m_outSprite.setTexture(tex);
-    //ÒòÎªÊÇäÖÈ¾µ½fboÉÏÃæµÄ£¬ÉÏÏÂ·­×ªµÄ¡£ËùÒÔÕâÀïÒªÕı»ØÀ´
+    //å› ä¸ºæ˜¯æ¸²æŸ“åˆ°fboä¸Šé¢çš„ï¼Œä¸Šä¸‹ç¿»è½¬çš„ã€‚æ‰€ä»¥è¿™é‡Œè¦æ­£å›æ¥
     m_outSprite.flip(false, true);
     m_outSprite.setScale(m_aspectRatio < m_outSprite.getAspect() ?
         m_aspectRatio/m_outSprite.getAspect() : 1.0);

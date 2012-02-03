@@ -3,7 +3,7 @@
 
 #define Reversal_Effect_Name "Reversal"
 
-//��תƬ
+//反转片
 class Reversal : public Effect{
 
     BaseShader  mShader;

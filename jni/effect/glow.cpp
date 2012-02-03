@@ -84,7 +84,7 @@ void Glow::apply( Texture* input, Texture* output )
 {
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    //ºáÏòÄ£ºý,äÖÈ¾µ½ÁÙÊ±ÎÆÀíÉÏ 
+    //æ¨ªå‘æ¨¡ç³Š,æ¸²æŸ“åˆ°ä¸´æ—¶çº¹ç†ä¸Š 
     mHBlur.use();
     mHBlur.setAttrf(mHBlurSizeLoc, mBlurStep/output->getWidth());
     mTmpTex.setSize(output->getWidth(), output->getHeight());
@@ -95,7 +95,7 @@ void Glow::apply( Texture* input, Texture* output )
     input->bind(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    //×ÝÏòÄ£ºý£¬²¢ÇÒºÍÔ­Í¼Æ¬»ìºÏ  
+    //çºµå‘æ¨¡ç³Šï¼Œå¹¶ä¸”å’ŒåŽŸå›¾ç‰‡æ··åˆ  
     mFinal.use();
     mFinal.setAttrf(mVBlurSizeLoc, mBlurStep/output->getHeight());
     mFBO.bindWithTexture(output->getTexHandle());

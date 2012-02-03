@@ -106,7 +106,7 @@ void HDR::apply( Texture* input, Texture* output )
 {
     glEnableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    //ºáÏòÄ£ºý,äÖÈ¾µ½ÁÙÊ±ÎÆÀíÉÏ,²¢ÇÒËõ·ÅÎªÔ­À´µÄ1/4´óÐ¡
+    //æ¨ªå‘æ¨¡ç³Š,æ¸²æŸ“åˆ°ä¸´æ—¶çº¹ç†ä¸Š,å¹¶ä¸”ç¼©æ”¾ä¸ºåŽŸæ¥çš„1/4å¤§å°
     int sw, sh;
     sw = output->getWidth()/4;
     sh = output->getHeight()/4;
@@ -120,7 +120,7 @@ void HDR::apply( Texture* input, Texture* output )
     input->bind(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    //×ÝÏòÄ£ºý
+    //çºµå‘æ¨¡ç³Š
     mVBlur.use();
     mVBlur.setAttrf(mVBlurSizeLoc, mBlurStep/output->getHeight());
     mTmpTex2.setSize(sw, sh);
@@ -130,7 +130,7 @@ void HDR::apply( Texture* input, Texture* output )
     mTmpTex.bind(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, G_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    //µ÷ÕûÁÁ¶È²¢ÇÒºÍÔ­Í¼Æ¬»ìºÏ
+    //è°ƒæ•´äº®åº¦å¹¶ä¸”å’ŒåŽŸå›¾ç‰‡æ··åˆ
     mFinal.use();
     mFinal.setAttrf(mExposureLoc, mExposure);
     mFBO.bindWithTexture(output->getTexHandle());

@@ -2,12 +2,12 @@
 #include <string.h>
 
 /*
-* Ê¹ÓÃGL shader À´½øÐÐYUV420SP2RGB×ª»»£¬ÀûÓÃGPUÇ¿º·µÄ¸¡µãÔËËã£¬×ª»»ËÙ¶ÈÎªCPUµÄ3±¶ÒÔÉÏ
-* ¹ØÓÚYUV420SPµÄ´¢´æ½á¹¹£¬Ê×ÏÈÊÇw*h×Ö½ÚµÄyÊý¾Ý£¬È»ºóÎªw*h/2×Ö½ÚµÄuv½»ÌæÅÅÁÐ£¬Ã¿2¸öy¹«ÓÃÒ»×éUV
-* Ê¹ÓÃÁ½¸öTexture´«µÝÊý¾Ý¸øGPU£¬Ò»¸ö´«µÝYÊý¾Ý£¬ÁíÒ»¸ö×¨µÝUVÊý¾Ý
-* YÊý¾ÝÊ¹ÓÃLUMINANCE´«µÝ£¬Ã¿¸öÏñËØÕ¼Ò»¸ö×Ö½Ú£¬
-* UVÊ¹ÓÃGL_LUMINANCE_ALPHA´«µÝ£¬Ã¿¸öÏñËØÕ¼ÓÃÁ½×Ö½Ú£¬ÔÚshaderÖÐÊ¹ÓÃrgb.raÀ´Ê¹ÓÃÊý¾Ý
-* ÕâÑù¿ÉÒÔÖ±½ÓÊ¹ÓÃGPU½âÎöYUV420SP¶ø²»±Ø½øÐÐÄÚ´æ¿½±´
+* ä½¿ç”¨GL shader æ¥è¿›è¡ŒYUV420SP2RGBè½¬æ¢ï¼Œåˆ©ç”¨GPUå¼ºæ‚çš„æµ®ç‚¹è¿ç®—ï¼Œè½¬æ¢é€Ÿåº¦ä¸ºCPUçš„3å€ä»¥ä¸Š
+* å…³äºŽYUV420SPçš„å‚¨å­˜ç»“æž„ï¼Œé¦–å…ˆæ˜¯w*hå­—èŠ‚çš„yæ•°æ®ï¼Œç„¶åŽä¸ºw*h/2å­—èŠ‚çš„uväº¤æ›¿æŽ’åˆ—ï¼Œæ¯2ä¸ªyå…¬ç”¨ä¸€ç»„UV
+* ä½¿ç”¨ä¸¤ä¸ªTextureä¼ é€’æ•°æ®ç»™GPUï¼Œä¸€ä¸ªä¼ é€’Yæ•°æ®ï¼Œå¦ä¸€ä¸ªä¸“é€’UVæ•°æ®
+* Yæ•°æ®ä½¿ç”¨LUMINANCEä¼ é€’ï¼Œæ¯ä¸ªåƒç´ å ä¸€ä¸ªå­—èŠ‚ï¼Œ
+* UVä½¿ç”¨GL_LUMINANCE_ALPHAä¼ é€’ï¼Œæ¯ä¸ªåƒç´ å ç”¨ä¸¤å­—èŠ‚ï¼Œåœ¨shaderä¸­ä½¿ç”¨rgb.raæ¥ä½¿ç”¨æ•°æ®
+* è¿™æ ·å¯ä»¥ç›´æŽ¥ä½¿ç”¨GPUè§£æžYUV420SPè€Œä¸å¿…è¿›è¡Œå†…å­˜æ‹·è´
 */
 
 
@@ -118,7 +118,7 @@ void glYUVTexture::uploadYUVTexImage( char* yuv420sp)
 
     
     glEnableVertexAttribArray(0);
-    glDisableVertexAttribArray(1); //»°Ëµ²»¹ØµôÕâ¸ö¾Í»á±¨´í
+    glDisableVertexAttribArray(1); //è¯è¯´ä¸å…³æŽ‰è¿™ä¸ªå°±ä¼šæŠ¥é”™
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();

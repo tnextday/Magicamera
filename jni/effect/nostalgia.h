@@ -3,7 +3,7 @@
 
 #define Nostalgia_Effect_Name "Nostalgia"
 
-//»³¾ÉÉ«µ÷
+//æ€€æ—§è‰²è°ƒ
 class Nostalgia : public Effect{
 
     BaseShader  mShader;

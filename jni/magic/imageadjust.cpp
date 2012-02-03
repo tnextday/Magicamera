@@ -126,7 +126,7 @@ bool ImageAdjust::init()
 
 void ImageAdjust::reset()
 {
-    //ÓÉÓÚÊÇäÖÈ¾µ½fboÉÏÃæ£¬ËùÒÔvÊÇµßµ¹µÄ
+    //ç”±äºæ˜¯æ¸²æŸ“åˆ°fboä¸Šé¢ï¼Œæ‰€ä»¥væ˜¯é¢ å€’çš„
     GLfloat Quad[] =
     {
         // X, Y, U, V
@@ -151,7 +151,7 @@ bool ImageAdjust::apply( Texture* src, Texture* dst )
     src->bind();
     //glEnableVertexAttribArray(m_shader.getPositionLoc());
     glEnableVertexAttribArray(0);
-    glDisableVertexAttribArray(1); //»°Ëµ²»¹ØµôÕâ¸ö¾Í»á±¨´í 
+    glDisableVertexAttribArray(1); //è¯è¯´ä¸å…³æ‰è¿™ä¸ªå°±ä¼šæŠ¥é”™ 
     glVertexAttribPointer(m_shader.getPositionLoc(), 4, GL_FLOAT, GL_FALSE, 0, m_QuadData);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_fbo->unbind();

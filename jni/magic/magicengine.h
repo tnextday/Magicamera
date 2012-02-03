@@ -49,7 +49,7 @@ protected:
 public:
     MagicEngine();
 /*    MagicEngine(Texture* SrcTex);*/
-    //声明为虚函数，确保子类可以被释放
+    //澹版槑涓鸿櫄鍑芥暟锛岀‘淇濆瓙绫诲彲浠ヨ閲婃斁
     virtual	~MagicEngine();
 
     bool initEngine(Texture* SrcTex) ;

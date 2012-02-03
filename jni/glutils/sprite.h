@@ -69,7 +69,7 @@ public:
     void setSize(GLfloat w, GLfloat h);
     void scale (GLfloat amount);
     void draw(BaseShader *shader, Texture *otherTex = NULL);
-    //VerticesµÄÅÅÁĞË³ĞòÎª(x1y1x2y2x3y3x4y4u1v1u2v2u3v3u4v4),²»ÊÇ½»ÌæÅÅÁĞµÄ
+    //Verticesçš„æ’åˆ—é¡ºåºä¸º(x1y1x2y2x3y3x4y4u1v1u2v2u3v3u4v4),ä¸æ˜¯äº¤æ›¿æ’åˆ—çš„
     GLfloat* getVertices ();
     
     float getX(){return m_x;};
@@ -85,10 +85,10 @@ public:
     
     //************************************
     // Method:    mapToWordSize
-    // Description: Ó³Éäµ½ÊÀ½ç×ø±êµÄ´óĞ¡£¬Ä¬ÈÏSprite³õÊ¼»¯»á½«¿í³õÊ¼»¯Îª1£¬¸ßÎª¿í¸ß±È
-    //              µ÷ÓÃ´Ëº¯Êıºó»á½«¿í¸ß×ª»¯ÎªÎÆÀíÔ­´óĞ¡Ïà¶ÔÓÚworld sizeµÄ´óĞ¡                     
-    // Parameter: float w ¿í 
-    // Parameter: float h ¸ß 
+    // Description: æ˜ å°„åˆ°ä¸–ç•Œåæ ‡çš„å¤§å°ï¼Œé»˜è®¤Spriteåˆå§‹åŒ–ä¼šå°†å®½åˆå§‹åŒ–ä¸º1ï¼Œé«˜ä¸ºå®½é«˜æ¯”
+    //              è°ƒç”¨æ­¤å‡½æ•°åä¼šå°†å®½é«˜è½¬åŒ–ä¸ºçº¹ç†åŸå¤§å°ç›¸å¯¹äºworld sizeçš„å¤§å°                     
+    // Parameter: float w å®½ 
+    // Parameter: float h é«˜ 
     // Returns:   void
     //************************************
     void mapToWordSize(float w, float h);

@@ -66,7 +66,7 @@ void Texture::bind( int unit )
     glBindTexture(GL_TEXTURE_2D, m_TexHandle);
 }
 
-//Èç¹ûÊ¹ÓÃ·Ç2^n´óÐ¡µÄÎÆÀí£¬±ØÐëÉèÖÃÎªGL_CLAMP_TO_EDGE£¬·ñÔò»áÊ§Ð§£¬Ä¬ÈÏÖ»ÉèÖÃ³ÉGL_CLAMP_TO_EDGE
+//å¦‚æžœä½¿ç”¨éž2^nå¤§å°çš„çº¹ç†ï¼Œå¿…é¡»è®¾ç½®ä¸ºGL_CLAMP_TO_EDGEï¼Œå¦åˆ™ä¼šå¤±æ•ˆï¼Œé»˜è®¤åªè®¾ç½®æˆGL_CLAMP_TO_EDGE
 // void Texture::setWrap( GLfloat wrap_s /*= GL_REPEAT*/, GLfloat wrap_t /*= GL_REPEAT*/ )
 // {
 //     bind();
@@ -76,10 +76,10 @@ void Texture::bind( int unit )
 //     glTexParameterf ( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
 // }
 
-// ¶ÔÓÚnpot(Non-Power-of-Two)ÎÆÀí£¬Èç¹ûÀ©Õ¹ÖÐ²»°üº¬GL_OES_texture_npot£¬
-// ÄÇÃ´Ö»ÄÜÉèÖÃÎªGL_CLAMP_TO_EDGE£¬GL_LINEAR»òÕßGL_NEAREST£¬·ñÔò»áºÚÆÁ£¬
-// PowerVRÏµÁÐÏÔ¿¨´ó²¿·Ö¶¼²»Ö§³ÖGL_OES_texture_npotÀ©Õ¹
-//Èç¹ûÊ¹ÓÃnpotÎÆÀí£¬Ö»ÄÜÉèÖÃÎªGL_LINEAR»òÕßGL_NEAREST
+// å¯¹äºŽnpot(Non-Power-of-Two)çº¹ç†ï¼Œå¦‚æžœæ‰©å±•ä¸­ä¸åŒ…å«GL_OES_texture_npotï¼Œ
+// é‚£ä¹ˆåªèƒ½è®¾ç½®ä¸ºGL_CLAMP_TO_EDGEï¼ŒGL_LINEARæˆ–è€…GL_NEARESTï¼Œå¦åˆ™ä¼šé»‘å±ï¼Œ
+// PowerVRç³»åˆ—æ˜¾å¡å¤§éƒ¨åˆ†éƒ½ä¸æ”¯æŒGL_OES_texture_npotæ‰©å±•
+//å¦‚æžœä½¿ç”¨npotçº¹ç†ï¼Œåªèƒ½è®¾ç½®ä¸ºGL_LINEARæˆ–è€…GL_NEAREST
 void Texture::setFilter( GLfloat min /*= GL_LINEAR*/, GLfloat mag /*= GL_LINEAR*/ )
 {
     bind();
@@ -114,7 +114,7 @@ bool Texture::loadFromMemory( const unsigned char *buffer, uint32_t len )
     m_imageFormat = pixmap->format;
     m_Width = pixmap->width;
     m_Height = pixmap->height;
-    //TODO Ã²ËÆÐèÒª×Ö½Ú¶ÔÆë 
+    //TODO è²Œä¼¼éœ€è¦å­—èŠ‚å¯¹é½ 
     LOGI("Decoder Image : %d,%d format:%d\n", pixmap->width, pixmap->height, pixmap->format);
     uploadImageData((GLubyte*)(pixmap->pixels), pixmap->width, pixmap->height, m_imageFormat);
     gdx2d_free(pixmap);

@@ -1,7 +1,7 @@
 #pragma once
 #include "effect.h"
 
-//ÑÕÉ«ÇúÏß
+//é¢œè‰²æ›²çº¿
 class CurveEffect : public Effect{
 
     BaseShader          mShader;

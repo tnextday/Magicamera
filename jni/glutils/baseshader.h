@@ -30,8 +30,8 @@ private:
 
 public:
     /**
-     * ¼òµ¥µÄShaderProgramÀà£¬Ä¿Ç°Ö»Ö§³Ö¹Ì¶¨µÄ¹Ø¼ü×Ö(uMVPMatrix, aPosition,aTexCoord)
-     * TODO ¶¯Ì¬ÊôĞÔÖ§³Ö
+     * ç®€å•çš„ShaderProgramç±»ï¼Œç›®å‰åªæ”¯æŒå›ºå®šçš„å…³é”®å­—(uMVPMatrix, aPosition,aTexCoord)
+     * TODO åŠ¨æ€å±æ€§æ”¯æŒ
      */
     BaseShader(void);
     BaseShader(const char* pVertexSource, const char* pFragmentSource);
@@ -59,7 +59,7 @@ public:
     bool loadFromFile(const char* fileName);
     bool loadFromMemory(const char* buf, int size);
 
-    //TODO ±£´æÓëÔØÈë±àÒëºóµÄShader Binary,Î´Íê³É
+    //TODO ä¿å­˜ä¸è½½å…¥ç¼–è¯‘åçš„Shader Binary,æœªå®Œæˆ
     bool saveBinary(const char* fileName);
     bool loadBinary(const char* binary, int size);
 

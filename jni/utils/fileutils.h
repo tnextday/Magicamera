@@ -7,17 +7,17 @@
 class FileUtils{
 public:
     virtual bool SaveImage(char* buffer, int w, int h, int format) = 0;
-    //¶ÁÈ¡×ÊÔ´Êı¾İ
+    //è¯»å–èµ„æºæ•°æ®
     virtual unsigned char* readResFile(const char* resName, uint32_t& size) = 0;
-    //¶ÁÈ¡ÆÕÍ¨Êı¾İ
+    //è¯»å–æ™®é€šæ•°æ®
     virtual unsigned char* readNormalFile(const char* filePath, uint32_t& size);
 
     //************************************
     // Method:    readFile
-    // Description: ÎÄ¼ş¶ÁÈ¡º¯Êı£¬ÔÊĞíÊ¹ÓÃÇ°×º{res://}
-    // Parameter: [in] const char * filePath  ÎÄ¼şÂ·¾¶£¬Èç¹ûÂ·¾¶Ç°×ºÎªres:// ¾Í´Ó×ÊÔ´ÖĞ¶ÁÈ¡Êı¾İ£¬·ñÔò´ÓÎÄ¼şÖĞ¶ÁÈ¡              
-    // Parameter: [out] uint32_t & size ÎÄ¼ş´óĞ¡ 
-    // Returns:   unsigned char* ÎÄ¼şÊı¾İ£¬Èç¹ûÎÄ¼ş²»´æÔÚ»òÕß¶ÁÈ¡Ê§°Ü£¬·µ»Ønull
+    // Description: æ–‡ä»¶è¯»å–å‡½æ•°ï¼Œå…è®¸ä½¿ç”¨å‰ç¼€{res://}
+    // Parameter: [in] const char * filePath  æ–‡ä»¶è·¯å¾„ï¼Œå¦‚æœè·¯å¾„å‰ç¼€ä¸ºres:// å°±ä»èµ„æºä¸­è¯»å–æ•°æ®ï¼Œå¦åˆ™ä»æ–‡ä»¶ä¸­è¯»å–              
+    // Parameter: [out] uint32_t & size æ–‡ä»¶å¤§å° 
+    // Returns:   unsigned char* æ–‡ä»¶æ•°æ®ï¼Œå¦‚æœæ–‡ä»¶ä¸å­˜åœ¨æˆ–è€…è¯»å–å¤±è´¥ï¼Œè¿”å›null
     //************************************
     unsigned char* readFile(const char* filePath, uint32_t& size);  
 };

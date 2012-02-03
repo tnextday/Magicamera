@@ -4,7 +4,7 @@
 #include "glutils/baseshader.h"
 #include "glutils/framebufferobject.h"
 
-//ÓÉÓÚeffectÈ«²¿¶¼ÊÇäÖÈ¾µ½fboÉÏÃæ£¬ÊÇÉÏÏÂ·­×ªµÄ£¬ÕâÀïÖ±½Ó·­×ª×ø±êÏµ
+//ç”±äºeffectå…¨éƒ¨éƒ½æ˜¯æ¸²æŸ“åˆ°fboä¸Šé¢ï¼Œæ˜¯ä¸Šä¸‹ç¿»è½¬çš„ï¼Œè¿™é‡Œç›´æ¥ç¿»è½¬åæ ‡ç³»
 const GLfloat G_QuadData[] = {
     // X, Y, U, V
     -1.0f, -1.0f, 0.0f, 1.0f,

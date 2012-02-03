@@ -10,7 +10,7 @@
 
 const int IMAGE_FORMAT_RGB_565    = 0x00000004; //4
 const int IMAGE_FORMAT_NV21        = 0x00000011; //17
-const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  ´ò°üÑ¹ËõµÄÊı¾İ£¬jpeg,png,tga,bitmap...
+const int IMAGE_FORMAT_PACKET    = 0x00000100; //256  æ‰“åŒ…å‹ç¼©çš„æ•°æ®ï¼Œjpeg,png,tga,bitmap...
 
 
 const int FORMAT_RGBA = 0;
@@ -91,7 +91,7 @@ public:
 
     void setIOCallBack(FileUtils* callback);
 
-    //EngineÊä³ötexture´óĞ¡¸Ä±ä 
+    //Engineè¾“å‡ºtextureå¤§å°æ”¹å˜ 
     virtual void onEngineOutChange( Texture *tex );
 
     void resize(int w, int h);
@@ -106,7 +106,7 @@ private:
 
     void drawImage();
 
-    //½«ÊäÈë×ø±ê×ª»»³ÉµÑ¿¨¶û×ø±ê 
+    //å°†è¾“å…¥åæ ‡è½¬æ¢æˆç¬›å¡å°”åæ ‡ 
     GLfloat transformX(float x){return m_aspectRatio*(x/m_ScreenWidth - 1.0/2.0);};
     GLfloat transformY(float y){return 1.0/2.0 - y/m_ScreenHeight;};
 };

@@ -207,7 +207,7 @@ void BaseShader::setAttrf( const char* attr_name, GLfloat value )
         glUniform1f(attr_loc, value);
 }
 
-//TODO 保存编译后的shader
+//TODO 淇濆瓨缂栬瘧鍚庣殑shader
 //http://www.khronos.org/registry/gles/extensions/OES/OES_get_program_binary.txt
 
 bool BaseShader::saveBinary( const char* fileName )
@@ -247,7 +247,7 @@ bool BaseShader::loadBinary( const char* binary, int size )
     return false;
 #else
 //    GLint   success;
-//    GLenum format = 1;//TODO 此处为binary格式，应该与glGetProgramBinaryOES中的format对应
+//    GLenum format = 1;//TODO 姝ゅ涓篵inary鏍煎紡锛屽簲璇ヤ笌glGetProgramBinaryOES涓殑format瀵瑰簲
 //    glProgramBinaryOES(m_program, format, binary, size);
 //    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
 //    if (!success)

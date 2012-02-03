@@ -41,7 +41,7 @@ public:
 
     GLfloat* getTexCoords(){ return m_texCoords; };
     
-    //返回一个TextureRegion数组，数组长度为count
+    //杩斿洖涓�涓猅extureRegion鏁扮粍锛屾暟缁勯暱搴︿负count
     TextureRegion* split(int rows, int cols);
     static TextureRegion* split(Texture *tex, int rows, int cols);
 };

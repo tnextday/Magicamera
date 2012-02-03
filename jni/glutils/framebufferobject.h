@@ -21,10 +21,10 @@ private:
 
 public:
     //************************************
-    // Method:    FramebufferObject ���캯��
-    // Parameter: bool bColorBUffer �Ƿ񴴽�color buffer
-    // Parameter: bool bDepthBuffer �Ƿ񴴽�depth buffer
-    // ColorBufferֻ֧��16λɫ�������֧�ָ����ɫ��Ҫʹ��texture2d����
+    // Method:    FramebufferObject 锟斤拷锟届函锟斤拷
+    // Parameter: bool bColorBUffer 锟角否创斤拷color buffer
+    // Parameter: bool bDepthBuffer 锟角否创斤拷depth buffer
+    // ColorBuffer只支锟斤拷16位色锟斤拷锟斤拷锟斤拷锟街э拷指锟斤拷锟斤拷色锟斤拷要使锟斤拷texture2d锟斤拷锟斤拷
     //************************************
     FramebufferObject(bool bDepthBuffer = false);
     ~FramebufferObject(void);
@@ -32,7 +32,7 @@ public:
     void bind(){ glBindFramebuffer(GL_FRAMEBUFFER, m_fboId[0]); };
     void bindWithTexture(GLuint texId);
     void unbind(){ glBindFramebuffer(GL_FRAMEBUFFER, 0); };
-    //�˺����ɫ����egl����ɫ����ͬ
+    //锟剿猴拷锟斤拷锟缴拷锟斤拷锟絜gl锟斤拷锟斤拷色锟斤拷锟斤拷同
     void texture2d(GLuint texId);
     void resizeBuffers(int w, int h);
     bool check_status();

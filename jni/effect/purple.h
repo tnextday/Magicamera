@@ -3,7 +3,7 @@
 
 #define Purple_Effect_Name "Purple"
 
-//×ÏÉ«µ÷
+//ç´«è‰²è°ƒ
 class Purple : public Effect{
 
     BaseShader          mShader;

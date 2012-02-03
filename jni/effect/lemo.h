@@ -3,7 +3,7 @@
 
 #define LEMO_Effect_Name "LEMO"
 
-//»³¾ÉÉ«µ÷
+//æ€€æ—§è‰²è°ƒ
 class LEMO : public Effect{
 
     BaseShader          mShader;
