@@ -11,9 +11,9 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MagicJNILib {
+public class CoreJNILib {
     static {
-        System.loadLibrary("magic");
+        System.loadLibrary("core");
     }
 
     public static final int IMAGE_FORMAT_PACKET = 0x00000100;
@@ -38,6 +38,8 @@ public class MagicJNILib {
     public static native boolean onTouchUp(float x, float y);
     public static native void setInputImage(String path);
     public static native void rotate90(boolean clockwise);
+    public static native void flip(boolean x, boolean y);
+    public static native void resetRotation();
     public static native void setApkPath(String apkPath);
     public static native void takePicture();
     public static native void takePictureWithFile(String path);

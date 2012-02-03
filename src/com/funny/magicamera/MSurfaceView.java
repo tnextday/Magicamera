@@ -16,6 +16,8 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 import java.util.LinkedList;
 
+import static com.funny.magicamera.MagicActivity.CameraFacing;
+
 /**
  * User: tNextDay
  * Description:
@@ -71,7 +73,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.w(MagicActivity.TAG, "MSurfaceView surfaceDestroyed");
         super.surfaceDestroyed(holder);
-        MagicJNILib.destory();
+        CoreJNILib.destory();
     }
 
     @Override
@@ -93,7 +95,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         deltaTime = (time - lastFrameTime) / 1000000000.0f;
         lastFrameTime = time;
         inputEvent.processEvents();
-        MagicJNILib.step(deltaTime);
+        CoreJNILib.step(deltaTime);
         checkFrameBuffer();
         //fps.log();
 //        long render_time = System.nanoTime() - time;
@@ -113,7 +115,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
             bytes = m_buffers.poll();
         }
         if (bytes != null) {
-            MagicJNILib.updateInputData(bytes);
+            CoreJNILib.updateInputData(bytes);
             if (m_onCameraBufferRelease != null){
                 m_onCameraBufferRelease.onCameraBufferRelease(bytes);
             }
@@ -128,13 +130,13 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         Log.d(MagicActivity.TAG, String.format("onSurfaceChanged: %d,%d", width, height));
-        MagicJNILib.resize(width, height);
+        CoreJNILib.resize(width, height);
         this.lastFrameTime = System.nanoTime();
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         Log.d(MagicActivity.TAG, "onSurfaceCreated");
-        MagicJNILib.create();
+        CoreJNILib.create();
         if (m_onInitComplete != null){
             m_onInitComplete.onEngineInitCompleted();
         }
@@ -161,19 +163,19 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
 
     @Override
     public boolean touchDown(int x, int y, int pointer) {
-        return MagicJNILib.onTouchDown(x, y);
+        return CoreJNILib.onTouchDown(x, y);
     }
 
 
     @Override
     public boolean touchUp(int x, int y, int pointer) {
-        return MagicJNILib.onTouchUp(x, y);
+        return CoreJNILib.onTouchUp(x, y);
     }
 
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        return MagicJNILib.onTouchDrag(x, y);
+        return CoreJNILib.onTouchDrag(x, y);
     }
 
 
@@ -246,7 +248,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         }
         @Override
         public void run() {
-            MagicJNILib.setCover(m_path);
+            CoreJNILib.setCover(m_path);
         }
     }
     static public class SetFrame implements Runnable {
@@ -256,7 +258,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         }
         @Override
         public void run() {
-            MagicJNILib.setFrame(m_path);
+            CoreJNILib.setFrame(m_path);
         }
     }
     static public class SetEffect implements Runnable {
@@ -266,7 +268,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         }
         @Override
         public void run() {
-            MagicJNILib.setEffect(m_path);
+            CoreJNILib.setEffect(m_path);
         }
     }
 
@@ -282,9 +284,9 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         @Override
         public void run() {
             if (mBuffer == null)
-                MagicJNILib.takePicture();
+                CoreJNILib.takePicture();
             else
-                MagicJNILib.takePictureWithBuffer(mBuffer);
+                CoreJNILib.takePictureWithBuffer(mBuffer);
         }
     }
 
@@ -297,7 +299,7 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
 
         @Override
         public void run() {
-            MagicJNILib.setInputImage(img_path);
+            CoreJNILib.setInputImage(img_path);
         }
     }
 
@@ -305,17 +307,26 @@ public class MSurfaceView extends GLSurfaceView implements GLSurfaceView.Rendere
         int width;
         int height;
         int format;
+        CameraFacing mFacing;
 
-        public SetPreviewInfo(int width, int height, int format) {
+        public SetPreviewInfo(int width, int height, int format, CameraFacing facing) {
             this.width = width;
             this.height = height;
             this.format = format;
+            mFacing = facing;
         }
 
         @Override
         public void run() {
-            MagicJNILib.setInputDataInfo(width, height, format);
-            MagicJNILib.rotate90(true);
+            CoreJNILib.resetRotation();
+            CoreJNILib.setInputDataInfo(width, height, format);
+            if (mFacing == CameraFacing.FRONT){
+                CoreJNILib.rotate90(false);
+                //因为先旋转了以后要所以才要flipY吗？
+                CoreJNILib.flip(false, true);
+            } else{
+                CoreJNILib.rotate90(true);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.funny.magicamera.MagicJNILib;
+import com.funny.magicamera.CoreJNILib;
 import com.funny.magicamera.R;
 
 import java.io.IOException;
@@ -74,7 +74,7 @@ public class FilterSelect extends PopupView implements AdapterView.OnItemSelecte
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String effectList = MagicJNILib.getEffectList();
+        String effectList = CoreJNILib.getEffectList();
         sl = effectList.split(",");
         m_filters = new ArrayList<String>(sl.length+1);
         m_filters.add("none");

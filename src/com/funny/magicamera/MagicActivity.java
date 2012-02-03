@@ -136,7 +136,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         if (picPath != null && new File(picPath).exists()) {
             mPicPath = picPath;
         }
-        MagicJNILib.onTake = new MagicJNILib.TakePictureListener(){
+        CoreJNILib.onTake = new CoreJNILib.TakePictureListener(){
             @Override
             public void onTakePicture(String picPath) {
                 mEventHandler.sendMessage(Msg_On_Take_Picture, picPath);
@@ -168,7 +168,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         } else if (view.getId() == R.id.btn_mode) {
             showDialog(DIALOG_SELECT_ENGINE);
 //        } else if (view.getId() == R.id.btn_restore) {
-//            MagicJNILib.restoreMesh();
+//            CoreJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
             takePicture();
 
@@ -236,14 +236,14 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
 
     private void switchEngine(int type){
-        //findViewById(R.id.btn_restore).setVisibility(type == MagicJNILib.ENGINE_TYPE_MESH ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_restore).setVisibility(type == CoreJNILib.ENGINE_TYPE_MESH ? View.VISIBLE : View.GONE);
 
-        //findViewById(R.id.btn_set_cover).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
-        //findViewById(R.id.btn_set_effect).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
-        //findViewById(R.id.btn_set_frame).setVisibility(type == MagicJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
-        MagicJNILib.switchEngine(type);
+        //findViewById(R.id.btn_set_cover).setVisibility(type == CoreJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_set_effect).setVisibility(type == CoreJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.btn_set_frame).setVisibility(type == CoreJNILib.ENGINE_TYPE_EFFECT ? View.VISIBLE : View.GONE);
+        CoreJNILib.switchEngine(type);
         int resId = R.string.str_haha_mode;
-        if (type == MagicJNILib.ENGINE_TYPE_EFFECT)
+        if (type == CoreJNILib.ENGINE_TYPE_EFFECT)
             resId = R.string.str_effect_mode;
         ((TextView)findViewById(R.id.tv_title)).setText(resId);
     }
@@ -256,9 +256,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                         .setItems(R.array.engine_types, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 0) {
-                                    switchEngine(MagicJNILib.ENGINE_TYPE_MESH);
+                                    switchEngine(CoreJNILib.ENGINE_TYPE_MESH);
                                 } else {
-                                    switchEngine(MagicJNILib.ENGINE_TYPE_EFFECT);
+                                    switchEngine(CoreJNILib.ENGINE_TYPE_EFFECT);
                                 }
                             }
                         })
@@ -275,7 +275,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      * 引擎初始化完成后回调
      */
     public void onEngineInitCompleted() {
-        //switchEngine(MagicJNILib.ENGINE_TYPE_EFFECT);
+        //switchEngine(CoreJNILib.ENGINE_TYPE_EFFECT);
         if (mPicPath != null) {
             m_SurfaceView.queueEvent(new SetImage(mPicPath));
         } else {
@@ -430,7 +430,6 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
         mCamera = camera;
         configCamera();
-        //MagicJNILib.rotate90(true);
         mCamera.startPreview();
     }
 
@@ -448,10 +447,10 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         parameters.setPictureSize(optJpgSize.width, optJpgSize.height);
         Camera.Size optSize = getOptimalPreviewSize(sizes, mPreviewWidth, mPreviewHeight);
         parameters.setPreviewSize(optSize.width, optSize.height);
-        if (formats.contains(MagicJNILib.IMAGE_FORMAT_RGB565)) {
-            parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_RGB565);
-        }else if (formats.contains(MagicJNILib.IMAGE_FORMAT_NV21)){
-            parameters.setPreviewFormat(MagicJNILib.IMAGE_FORMAT_NV21);
+        if (formats.contains(CoreJNILib.IMAGE_FORMAT_RGB565)) {
+            parameters.setPreviewFormat(CoreJNILib.IMAGE_FORMAT_RGB565);
+        }else if (formats.contains(CoreJNILib.IMAGE_FORMAT_NV21)){
+            parameters.setPreviewFormat(CoreJNILib.IMAGE_FORMAT_NV21);
         }
 
         List<String> FocusModes = parameters.getSupportedFocusModes();
@@ -474,7 +473,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         } else {
             mCamera.setPreviewCallback(this);
         }
-        m_SurfaceView.queueEvent(new SetPreviewInfo(mPreviewWidth, mPreviewHeight, parameters.getPreviewFormat()));
+        m_SurfaceView.queueEvent(new SetPreviewInfo(mPreviewWidth, mPreviewHeight, parameters.getPreviewFormat(), mCameraFacing));
 
     }
 

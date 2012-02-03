@@ -32,10 +32,6 @@ const int ADJV4 = 15;
 
 ImageAdjust::ImageAdjust(void)
 {
-    m_rorateCount = 0;
-    m_bNeedAdjust = false;
-    m_bXfliped = false;
-    m_bYfliped = false;
     reset();
 }
 
@@ -46,22 +42,26 @@ ImageAdjust::~ImageAdjust(void)
 
 void ImageAdjust::flip( bool x, bool y )
 {
+    float tmp;
     if (x) {
-        float m_u = m_QuadData[ADJU3];
-        float m_u2 = m_QuadData[ADJU1];
-        m_QuadData[ADJU1] = m_u;
-        m_QuadData[ADJU2] = m_u;
-        m_QuadData[ADJU3] = m_u2;
-        m_QuadData[ADJU4] = m_u2;
+        tmp = m_QuadData[ADJU1];
+        m_QuadData[ADJU1] = m_QuadData[ADJU3];
+        m_QuadData[ADJU3] = tmp;
+        tmp = m_QuadData[ADJU2];
+        m_QuadData[ADJU2] = m_QuadData[ADJU4];
+        m_QuadData[ADJU4] = tmp;
+        m_bXfliped = !m_bXfliped;
     }
     if (y) {
-        float m_v = m_QuadData[ADJV2];
-        float m_v2 = m_QuadData[ADJV4];
-        m_QuadData[ADJV1] = m_v2;
-        m_QuadData[ADJV2] = m_v;
-        m_QuadData[ADJV3] = m_v;
-        m_QuadData[ADJV4] = m_v2;
+        tmp = m_QuadData[ADJV1];
+        m_QuadData[ADJV1] = m_QuadData[ADJV3];
+        m_QuadData[ADJV3] = tmp;
+        tmp = m_QuadData[ADJV2];
+        m_QuadData[ADJV2] = m_QuadData[ADJV4];
+        m_QuadData[ADJV4] = tmp;
+        m_bYfliped = !m_bYfliped;
     }
+    m_bNeedAdjust = (m_rorateCount%4 != 0) || m_bXfliped|| m_bYfliped;
 }
 
 void ImageAdjust::rotate90( bool clockwise )
@@ -95,7 +95,7 @@ void ImageAdjust::rotate90( bool clockwise )
         m_QuadData[ADJU4] = temp;
         m_rorateCount--;
     }
-    m_bNeedAdjust = m_rorateCount%4 != 0;
+    m_bNeedAdjust = (m_rorateCount%4 != 0) || m_bXfliped|| m_bYfliped;
 }
 
 void ImageAdjust::setSize(int w, int h)
@@ -126,6 +126,12 @@ bool ImageAdjust::init()
 
 void ImageAdjust::reset()
 {
+    /*
+    4----3
+    |    |
+    |    |
+    1----2
+    */
     //由于是渲染到fbo上面，所以v是颠倒的
     GLfloat Quad[] =
     {
@@ -136,6 +142,10 @@ void ImageAdjust::reset()
         -1.0f, +1.0f, 0.0f, 0.0f,
     };
     memcpy(m_QuadData, Quad, sizeof(GLfloat)*16);
+    m_rorateCount = 0;
+    m_bNeedAdjust = false;
+    m_bXfliped = false;
+    m_bYfliped = false;
 }
 
 

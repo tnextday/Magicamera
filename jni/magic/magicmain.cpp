@@ -322,13 +322,10 @@ void MagicMain::restoreMesh()
     ((MeshEngine *)m_Engine)->restore();
 }
 
-void MagicMain::rotate90Input( bool clockwise /*= true*/)
-{
-
-    m_adjust.rotate90(!clockwise);
+void MagicMain::updateRotation(){
     if (!m_srcTex) return;
     if (m_glYUVTex){
-        m_glYUVTex->setImageAdjust(&m_adjust);   
+        m_glYUVTex->setImageAdjust(&m_adjust);
     }else{
         //如果原始图片没有备份，那么备份一份原始资源
         if (m_origSrcTex == NULL){
@@ -339,6 +336,23 @@ void MagicMain::rotate90Input( bool clockwise /*= true*/)
         m_adjust.apply(m_origSrcTex, m_srcTex);
     }
     m_Engine->setInputTexture(m_srcTex);
+}
+
+
+void MagicMain::rotate90Input( bool clockwise /*= true*/)
+{
+    m_adjust.rotate90(!clockwise);
+    updateRotation();
+}
+
+void MagicMain::resetRotation(){
+    m_adjust.reset();
+    updateRotation();
+}
+
+void MagicMain::flip(bool x , bool y){
+    m_adjust.flip(x, y);
+    updateRotation();
 }
 
 void MagicMain::onEngineOutChange( Texture *tex )
