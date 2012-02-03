@@ -1,5 +1,5 @@
 #pragma once
-#include <GLES2/gl2.h>
+
 #include "glutils/texture.h"
 #include "glutils/baseshader.h"
 #include "ui/touchevent.h"

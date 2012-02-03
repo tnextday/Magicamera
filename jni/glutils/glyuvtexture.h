@@ -1,7 +1,12 @@
 #ifndef _glyuvtexture_h_
 #define _glyuvtexture_h_
 
+#ifdef __MAC_NA
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#else
 #include <GLES2/gl2.h>
+#endif
 #include "glutils.h"
 #include "utils/mathelpers.h"
 #include "framebufferobject.h"

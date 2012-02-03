@@ -5,7 +5,7 @@
 #include <zlib.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <GLES2/gl2ext.h>
+
 
 
 BaseShader::BaseShader(void)
@@ -214,28 +214,28 @@ bool BaseShader::saveBinary( const char* fileName )
 {
     if (checkIfSupportsExtension("GL_OES_get_program_binary"))
         return false;
-#ifdef WIN32
+#ifndef ANDROID
     return false;
 #else
-    GLsizei binaryLength;
-    GLvoid* binary;
-    GLenum format;
-    FILE*   outfile;
-
-    //
-    //  Retrieve the binary from the program object
-    //
-    glGetProgramiv(m_program, GL_PROGRAM_BINARY_LENGTH_OES, &binaryLength);
-    binary = (GLvoid*)malloc(binaryLength);
-    glGetProgramBinaryOES(m_program, binaryLength, NULL, &format, binary);
-
-    //
-    //  Cache the program binary for future runs
-    //
-    outfile = fopen(fileName, "wb");
-    fwrite(binary, binaryLength, 1, outfile);
-    fclose(outfile);
-    free(binary);
+//    GLsizei binaryLength;
+//    GLvoid* binary;
+//    GLenum format;
+//    FILE*   outfile;
+//
+//    //
+//    //  Retrieve the binary from the program object
+//    //
+//    glGetProgramiv(m_program, GL_PROGRAM_BINARY_LENGTH_OES, &binaryLength);
+//    binary = (GLvoid*)malloc(binaryLength);
+//    glGetProgramBinaryOES(m_program, binaryLength, NULL, &format, binary);
+//
+//    //
+//    //  Cache the program binary for future runs
+//    //
+//    outfile = fopen(fileName, "wb");
+//    fwrite(binary, binaryLength, 1, outfile);
+//    fclose(outfile);
+//    free(binary);
     return true;
 #endif
 
@@ -243,22 +243,22 @@ bool BaseShader::saveBinary( const char* fileName )
 
 bool BaseShader::loadBinary( const char* binary, int size )
 {
-#ifdef WIN32
+#ifndef ANDROID
     return false;
 #else
-    GLint   success;
-    GLenum format = 1;//TODO 此处为binary格式，应该与glGetProgramBinaryOES中的format对应
-    glProgramBinaryOES(m_program, format, binary, size);
-    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        //
-        // Something must have changed since the program binaries
-        // were cached away.  Fallback to source shader loading path,
-        // and then retrieve and cache new program binaries once again.
-        //
-        return false;
-    }
+//    GLint   success;
+//    GLenum format = 1;//TODO 此处为binary格式，应该与glGetProgramBinaryOES中的format对应
+//    glProgramBinaryOES(m_program, format, binary, size);
+//    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+//    if (!success)
+//    {
+//        //
+//        // Something must have changed since the program binaries
+//        // were cached away.  Fallback to source shader loading path,
+//        // and then retrieve and cache new program binaries once again.
+//        //
+//        return false;
+//    }
     return true;
 #endif
 

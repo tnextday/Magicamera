@@ -6,6 +6,7 @@
 #include "utils/mathelpers.h"
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utils/packageloader.h"
 #include "effect/effectfactory.h"
 

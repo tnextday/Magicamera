@@ -2,7 +2,12 @@
 #ifndef _framebufferobject_h_
 #define _framebufferobject_h_
 
+#ifdef __MAC_NA
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#else
 #include <GLES2/gl2.h>
+#endif
 
 class FramebufferObject
 {

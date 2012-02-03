@@ -1,7 +1,12 @@
 #ifndef _Texture_h_
 #define _Texture_h_
 
+#ifdef __MAC_NA
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#else
 #include <GLES2/gl2.h>
+#endif
 #include "gdx2d/gdx2d.h"
 
 

@@ -15,7 +15,7 @@
 #define STBI_HEADER_FILE_ONLY
 #define STBI_NO_FAILURE_STRINGS
 #include "stb_image.c"
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 
 static uint32_t gdx2d_blend = GDX2D_BLEND_NONE;
