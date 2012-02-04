@@ -26,6 +26,8 @@ import com.funny.magicamera.popupviews.FilterSelect;
 
 import java.io.File;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.funny.magicamera.MSurfaceView.*;
 
@@ -35,8 +37,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             FilterSelect.FilterSelected {
     public static String TAG = "MagicEngine";
 
-    //    int m_CameraId; //use above 2.3
-    Camera mCamera = null;
+    private Camera mCamera = null;
     final static int BufferCount = 2;
 
     int mPreviewHeight = 360;
@@ -139,8 +140,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         CoreJNILib.onTake = new CoreJNILib.TakePictureListener(){
             @Override
             public void onTakePicture(String picPath) {
-                mEventHandler.sendMessage(Msg_On_Take_Picture, picPath);
-                //Toast.makeText(MagicActivity.this, "图片已保存！", Toast.LENGTH_SHORT);
+                mEventHandler.sendMessage(Msg_On_Picture_Saved, picPath);
             }
         };
 
@@ -167,19 +167,14 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             finish();
         } else if (view.getId() == R.id.btn_mode) {
             showDialog(DIALOG_SELECT_ENGINE);
-//        } else if (view.getId() == R.id.btn_restore) {
-//            CoreJNILib.restoreMesh();
         } else if (view.getId() == R.id.btn_take) {
             takePicture();
 
         } else if (view.getId() == R.id.btn_camera_cfg){
-            View v = findViewById(R.id.btn_camera_cfg);
             int[] location = new int[2];
-            v.getLocationInWindow(location);
+            view.getLocationInWindow(location);
             int y = location[1] - mCameraSetting.getMeasuredHeight();
-            //v.getLayoutParams().
-            //TODO 设置位置
-            mCameraSetting.showAtLocation(v, Gravity.NO_GRAVITY, 0, y);
+            mCameraSetting.showAtLocation(view, Gravity.NO_GRAVITY, 0, y);
         } else if (view.getId() == R.id.btn_effect){
             mFilterSelect.showAtLocation(findViewById(R.id.tool_bar), Gravity.BOTTOM, 0, 0);
         }
@@ -196,42 +191,78 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mAutoFocusView.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
 
-    /***
+    /*
      * 拍照
      */
     void takePicture() {
         if (mPicPath == null){
-            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+            if (mDelayTime > 0){
+                ts_delay.setText(String.valueOf(mDelayTime));
+                ts_delay.setVisibility(View.VISIBLE);
+                final Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    int mRemainTime = mDelayTime;
+                    @Override
+                    public void run() {
+                        //TODO 播放声音
+                        mRemainTime--;
+                        mEventHandler.sendMessage(Msg_On_Delay_Shutter_Timer, mRemainTime);
+                        if (mRemainTime == 0){
+                            timer.cancel();
+                        }
+                    }
+                }, 1000, 1000); 
+            }else{
+                cameraShutter();    
+            }
 
-                @Override
-                public void onAutoFocus(boolean b, Camera camera) {
-                    mAutoFocusView.autoFocusCompleted();
-                    camera.takePicture(
-                            new Camera.ShutterCallback() {
 
-                                @Override
-                                public void onShutter() {
-
-                                }
-                            },
-                            null,
-                            new Camera.PictureCallback() {
-                                @Override
-                                public void onPictureTaken(byte[] bytes, Camera camera) {
-                                    m_SurfaceView.queueEvent(new TakePicture(bytes));
-                                    camera.startPreview();
-
-                                }
-                            }
-                    );
-                }
-            });
-            beginAutoFocus();
         }else{
             m_SurfaceView.queueEvent(new TakePicture(null));
         }
+    }
 
+    /**
+     * 延时拍摄每秒会调
+     * @param remainTime 剩余时间
+     */
+    private void onDelayShutterTimer(Integer remainTime) {
+        ts_delay.setCurrentText(String.valueOf(remainTime));
+        if ((remainTime == 0)){
+            ts_delay.setVisibility(View.GONE);
+            cameraShutter();
+        }
+    }
 
+    /**
+     * 相机拍照
+     */
+    private void cameraShutter(){
+        mCamera.autoFocus(new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean b, Camera camera) {
+                mAutoFocusView.autoFocusCompleted();
+                camera.takePicture(
+                        new Camera.ShutterCallback() {
+
+                            @Override
+                            public void onShutter() {
+
+                            }
+                        },
+                        null,
+                        new Camera.PictureCallback() {
+                            @Override
+                            public void onPictureTaken(byte[] bytes, Camera camera) {
+                                m_SurfaceView.queueEvent(new TakePicture(bytes));
+                                camera.startPreview();
+
+                            }
+                        }
+                );
+            }
+        });
+        beginAutoFocus();
     }
 
 
@@ -283,7 +314,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
     }
 
-    /***
+    /*
      * 图片保存后回调
      * @param picPath 图片地址
      */
@@ -297,14 +328,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         super.onPause();
         Log.d(TAG, "OnPause");
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
     }
 
-    /***
+    /*
      * 是否支持GLES 2.0
      * @return
      */
@@ -315,7 +345,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         return (info.reqGlEsVersion >= 0x20000);
     }
 
-    /***
+    /*
      * 相机预览帧数据回调
      * @param bytes
      * @param camera
@@ -326,7 +356,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         //    	mCamera.addCallbackBuffer(bytes);
     }
 
-    /***
+    /*
      * 当Surface使用完帧数据后的回调
      * @param buffer
      */
@@ -335,7 +365,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera.addCallbackBuffer(buffer);
     }
 
-    /***
+    /*
      * 打开相机的线程Runnable
      */
     private class OpenCamera implements Runnable {
@@ -388,7 +418,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
     }
 
-    /***
+    /*
      * 启动相机，异步模式
      * @param facing 前/后摄像机
      */
@@ -415,9 +445,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     public static boolean canSwitchCamera(){
         return Build.VERSION.SDK_INT >= 9 && Camera.getNumberOfCameras() > 1;
     }
+
+    public Camera getCamera(){
+        return mCamera;
+    }
     
 
-    /***
+    /*
      * 异步执行打开相机操作，相机打开后会执行此函数
      * @param camera 打开后的相机，打开失败则为null
      */
@@ -433,7 +467,64 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera.startPreview();
     }
 
-    /***
+    private String mCameraFlashMode = null;
+
+    /**
+     * 获取当前相机的闪光灯状态
+     * @return "on", "off", "auto", null（不支持闪光灯）
+     */
+    public String getCameraFlashMode(){
+        return mCameraFlashMode;
+    }
+
+    /**
+     * 设置下一个闪光灯状态，顺序为“auto”， “on”，“off”
+     * @return 返回设置后的闪光灯状态
+     */
+    public String setNextFlashMode(){
+        if(mCamera == null || mCameraFlashMode == null) return null;
+        Camera.Parameters parameters = mCamera.getParameters();
+        //List<String> flashModes = parameters.getSupportedFlashModes();
+        if(mCameraFlashMode.equals(Camera.Parameters.FLASH_MODE_AUTO)){
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+        }else if(mCameraFlashMode.equals(Camera.Parameters.FLASH_MODE_ON)){
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+        }else if(mCameraFlashMode.equals(Camera.Parameters.FLASH_MODE_ON)){
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+        }
+        mCameraFlashMode = parameters.getFlashMode();
+        mCamera.setParameters(parameters);
+        return mCameraFlashMode;
+    }
+
+    //延时拍摄时间
+    private int mDelayTime = 0;
+    /**
+     * 获取延时拍摄时间，如果返回0则表示直接拍摄
+     * @return 延时时间（0，3，5，10），单位为秒
+     */
+    public int getShootDelayTime(){
+        return mDelayTime;   
+    }
+
+    /**
+     * 设置延时时间，顺序为 0，3，5，10
+     * @return 设置后的延时时间
+     */
+    public int setNextDelayTime(){
+        if (mDelayTime == 0){
+            mDelayTime = 3;
+        }else if (mDelayTime == 3){
+            mDelayTime = 5;
+        }else if (mDelayTime == 5){
+            mDelayTime = 10;
+        }else if (mDelayTime == 10){
+            mDelayTime = 0;
+        }
+        return mDelayTime;
+    }
+    
+    /*
      * 设置相机参数
      */
     private void configCamera(){
@@ -457,6 +548,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         if (FocusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO))
             parameters.setFlashMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(parameters);
+        
+        List<String> flashModes = parameters.getSupportedFlashModes();
+        if (flashModes.size() <= 1){
+            mCameraFlashMode = null;
+        }else{
+            mCameraFlashMode = parameters.getFlashMode();
+        }
 
         parameters = mCamera.getParameters();
         Camera.Size previewSize = parameters.getPreviewSize();
@@ -464,7 +562,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mPreviewHeight = previewSize.height;
         int previewFormat = parameters.getPreviewFormat();
         int szBuffer = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(previewFormat) / 8;
-        //2.2以上版本才能使用addCallbackBuffer，这个效率比不是用callbackbuffer高30%
+        //2.2以上版本才能使用addCallbackBuffer，这个效率比不用callbackbuffer高30%
         if (Build.VERSION.SDK_INT >= 8) {
             mCamera.setPreviewCallbackWithBuffer(this);
             for (int i = 0; i < BufferCount; i++) {
@@ -493,7 +591,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera = null;
     }
 
-    /***
+    /*
      * 获取最接近的大小
      * @param sizes size列表
      * @param w 宽
@@ -536,9 +634,10 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     private EventHandler mEventHandler = new EventHandler();
     private static final int Msg_Engine_Inited = 1;
     private static final int Msg_Camera_Opened = 2;
-    private static final int Msg_On_Take_Picture = 3;
+    private static final int Msg_On_Picture_Saved = 3;
+    private static final int Msg_On_Delay_Shutter_Timer = 4;
 
-    /***
+    /*
      * 多线程环境主线程同步Handler
      */
     private class EventHandler extends Handler {
@@ -551,8 +650,11 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                 case Msg_Camera_Opened:
                     onCameraOpened((Camera)msg.obj);
                     break;
-                case Msg_On_Take_Picture:
+                case Msg_On_Picture_Saved:
                     onPictureSaved((String)msg.obj);
+                    break;
+                case Msg_On_Delay_Shutter_Timer:
+                    onDelayShutterTimer((Integer) msg.obj);
                     break;
                 default:
                     break;
@@ -570,4 +672,6 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             sendMessage(obtainMessage(what, arg1, arg2));
         }
     }
+
+
 }

@@ -5,7 +5,7 @@ MagicMain *g_MagicMain = NULL;
 AndroidFileUtils g_androidFileUtils;
 
 static JavaVM *g_JavaVM = 0;
-static jclass classOfMagicJNILib = 0;
+static jclass classOfCoreJNILib = 0;
 JNIEnv *env = 0;
 
 
@@ -27,7 +27,7 @@ bool AndroidFileUtils::SaveImage( char* buffer, int w, int h, int format )
         memcpy(p_buffer+szLine*j, buffer+szLine*(h-j-1), szLine);
     }
     env->ReleasePrimitiveArrayCritical(jBuffer, p_buffer, 0);
-    bool result = env->CallStaticBooleanMethod(classOfMagicJNILib, jniMethod_saveImage, jBuffer, w, h, format);
+    bool result = env->CallStaticBooleanMethod(classOfCoreJNILib, jniMethod_saveImage, jBuffer, w, h, format);
     env->ReleaseByteArrayElements(jBuffer, p_buffer, szBuffer);
     return result;
 }
@@ -69,14 +69,14 @@ static jmethodID getMethodID(const char *methodName, const char *paramCode)
         return 0;
     }
 
-    classOfMagicJNILib = env->FindClass("com/funny/magicamera/MagicJNILib");
-    if (! classOfMagicJNILib){
-        LOGE("Failed to find class of com/funny/magicamera/MagicJNILib");
+    classOfCoreJNILib = env->FindClass("com/funny/magicamera/CoreJNILib");
+    if (! classOfCoreJNILib){
+        LOGE("Failed to find class of com/funny/magicamera/CoreJNILib");
         return 0;
     }
 
-    if (env != 0 && classOfMagicJNILib != 0){
-        ret = env->GetStaticMethodID(classOfMagicJNILib, methodName, paramCode);
+    if (env != 0 && classOfCoreJNILib != 0){
+        ret = env->GetStaticMethodID(classOfCoreJNILib, methodName, paramCode);
     }
 
     if (! ret){
@@ -90,12 +90,12 @@ static jmethodID getMethodID(const char *methodName, const char *paramCode)
 
 void playSound(int soundId){
     jmethodID jniMethod = getMethodID("playSound","(I)V");
-    env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, soundId); 
+    env->CallStaticVoidMethod(classOfCoreJNILib, jniMethod, soundId); 
 }
 
 void playMusic(int musicId){
     jmethodID jniMethod = getMethodID("playMusic","(I)V");
-    env->CallStaticVoidMethod(classOfMagicJNILib, jniMethod, musicId); 
+    env->CallStaticVoidMethod(classOfCoreJNILib, jniMethod, musicId); 
 }
 
 /*
