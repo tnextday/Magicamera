@@ -84,7 +84,7 @@ public class CoreJNILib {
             return false;
         }
         if (onTake != null){
-            onTake.onTakePicture(savePath);
+            onTake.onPictureSaved(savePath);
         }
         return true;
     }
@@ -106,6 +106,6 @@ public class CoreJNILib {
     }
 
     public interface TakePictureListener{
-        void onTakePicture(String picPath);
+        void onPictureSaved(String picPath);
     }
 }

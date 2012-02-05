@@ -139,7 +139,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
         CoreJNILib.onTake = new CoreJNILib.TakePictureListener(){
             @Override
-            public void onTakePicture(String picPath) {
+            public void onPictureSaved(String picPath) {
                 mEventHandler.sendMessage(Msg_On_Picture_Saved, picPath);
             }
         };
@@ -150,7 +150,11 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     }
 
 
-    //设置滤镜
+    /**
+     * 设置滤镜类型
+     * @param type
+     * @param name
+     */
     @Override
     public void OnFilterSelected(String type, String name) {
         if (type.equals(FilterSelect.Type_Filter)){
@@ -161,6 +165,11 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             m_SurfaceView.queueEvent(new SetFrame(name));
         }
     }
+
+    /**
+     * View.OnClickLister回调
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_back) {
@@ -180,6 +189,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
     }
 
+    /**
+     * 界面上现实对焦框
+     */
     private void beginAutoFocus(){
         View v = findViewById(R.id.surfaceview);
 //        int[] location = new int[2];
@@ -191,7 +203,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mAutoFocusView.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
 
-    /*
+    /**
      * 拍照
      */
     void takePicture() {
@@ -223,7 +235,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     }
 
     /**
-     * 延时拍摄每秒会调
+     * 延时拍摄每秒回调
      * @param remainTime 剩余时间
      */
     private void onDelayShutterTimer(Integer remainTime) {
@@ -247,16 +259,14 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
                             @Override
                             public void onShutter() {
-
+                                Log.d(TAG, "onShutter");
                             }
                         },
-                        null,
+                        null,//postview
                         new Camera.PictureCallback() {
                             @Override
                             public void onPictureTaken(byte[] bytes, Camera camera) {
                                 m_SurfaceView.queueEvent(new TakePicture(bytes));
-                                camera.startPreview();
-
                             }
                         }
                 );
@@ -265,7 +275,10 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         beginAutoFocus();
     }
 
-
+    /**
+     * 切换引擎 哈哈镜引擎与特效引擎
+     * @param type CoreJNILib.ENGINE_TYPE_EFFECT or CoreJNILib.ENGINE_TYPE_MESH
+     */
     private void switchEngine(int type){
         //findViewById(R.id.btn_restore).setVisibility(type == CoreJNILib.ENGINE_TYPE_MESH ? View.VISIBLE : View.GONE);
 
@@ -314,12 +327,13 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
     }
 
-    /*
+    /**
      * 图片保存后回调
      * @param picPath 图片地址
      */
     public void onPictureSaved(String picPath){
         Toast.makeText(this, "图片已保存！\n"+picPath, Toast.LENGTH_LONG).show();
+        mCamera.startPreview();
     }
 
     @Override
@@ -345,7 +359,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         return (info.reqGlEsVersion >= 0x20000);
     }
 
-    /*
+    /**
      * 相机预览帧数据回调
      * @param bytes
      * @param camera
@@ -356,7 +370,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         //    	mCamera.addCallbackBuffer(bytes);
     }
 
-    /*
+    /**
      * 当Surface使用完帧数据后的回调
      * @param buffer
      */
@@ -365,7 +379,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera.addCallbackBuffer(buffer);
     }
 
-    /*
+    /**
      * 打开相机的线程Runnable
      */
     private class OpenCamera implements Runnable {
@@ -418,7 +432,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         }
     }
 
-    /*
+    /**
      * 启动相机，异步模式
      * @param facing 前/后摄像机
      */
@@ -451,7 +465,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     }
     
 
-    /*
+    /**
      * 异步执行打开相机操作，相机打开后会执行此函数
      * @param camera 打开后的相机，打开失败则为null
      */
@@ -489,7 +503,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
         }else if(mCameraFlashMode.equals(Camera.Parameters.FLASH_MODE_ON)){
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-        }else if(mCameraFlashMode.equals(Camera.Parameters.FLASH_MODE_ON)){
+        }else if(mCameraFlashMode.equals(Camera.Parameters.FLASH_MODE_OFF)){
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
         }
         mCameraFlashMode = parameters.getFlashMode();
@@ -524,8 +538,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         return mDelayTime;
     }
     
-    /*
-     * 设置相机参数
+    /**
+     * 配置当前摄像头
      */
     private void configCamera(){
         Camera.Parameters parameters = mCamera.getParameters();
@@ -591,7 +605,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera = null;
     }
 
-    /*
+    /**
      * 获取最接近的大小
      * @param sizes size列表
      * @param w 宽
@@ -637,7 +651,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     private static final int Msg_On_Picture_Saved = 3;
     private static final int Msg_On_Delay_Shutter_Timer = 4;
 
-    /*
+    /**
      * 多线程环境主线程同步Handler
      */
     private class EventHandler extends Handler {
