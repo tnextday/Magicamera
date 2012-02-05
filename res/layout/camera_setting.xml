@@ -9,7 +9,7 @@
         >
     <Button android:id="@+id/btn_switch_camera"
             style="@style/IconTextButton"
-            android:drawableTop="@drawable/icon_switch_camera"
+            android:drawableTop="@drawable/ic_switch_camera"
             android:text="@string/str_switch_camera"
             android:layout_weight="1"
             />
@@ -18,7 +18,7 @@
                android:src="@drawable/split_line"/>
     <Button android:id="@+id/btn_delay"
                  style="@style/IconTextButton"
-                 android:drawableTop="@drawable/icon_delay_3"
+                 android:drawableTop="@drawable/ic_timer_3"
                  android:text="@string/str_delay_shoot"
                  android:layout_weight="1"
             />
@@ -27,17 +27,17 @@
                android:src="@drawable/split_line"/>
     <Button android:id="@+id/btn_flash_mode"
             style="@style/IconTextButton"
-            android:drawableTop="@drawable/icon_switch_camera"
+            android:drawableTop="@drawable/ic_switch_camera"
             android:text="@string/str_flush_mode"
             android:layout_weight="1"
             />
     <ImageView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:src="@drawable/split_line"/>
-    <Button android:id="@+id/btn_3"
+    <Button android:id="@+id/btn_mute"
             style="@style/IconTextButton"
-            android:drawableTop="@drawable/icon_switch_camera"
-            android:text="TO_SET"
+            android:drawableTop="@drawable/ic_switch_camera"
+            android:text="@string/str_sound"
             android:layout_weight="1"
             />
 </LinearLayout>

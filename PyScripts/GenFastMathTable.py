@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 #coding=utf-8
-
+'''
+Description: 生成部分耗时的计算函数的预查表
+'''
 import os,sys
 import math
 

@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 #coding=utf-8
-
+'''
+Description: 生成一个圆形的衰减精度表
+'''
 import os,sys
 import math
 

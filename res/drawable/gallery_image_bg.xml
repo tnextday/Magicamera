@@ -2,8 +2,11 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true"
-          android:drawable="@drawable/gallery_image_s" /> <!-- pressed -->
+          android:drawable="@drawable/gallery_image_s"/>
+    <!-- pressed -->
     <item android:state_selected="true"
-          android:drawable="@drawable/gallery_image_s" /> <!-- selected -->
-    <item android:drawable="@drawable/gallery_image_n" /> <!-- default -->
+          android:drawable="@drawable/gallery_image_s"/>
+    <!-- selected -->
+    <item android:drawable="@drawable/gallery_image_n"/>
+    <!-- default -->
 </selector>

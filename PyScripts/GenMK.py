@@ -1,11 +1,14 @@
 #! /usr/bin/env python
 #coding=utf-8
-
+'''
+Description:自动生成Android.mk文件
+'''
 import os
 import sys
 from os import path
 
-g_module_name = "libmagic"
+g_module_name = "libcore"
+g_jni_dir = "../jni/"
 
 g_exts = [".cpp", ".c"]
 
@@ -42,8 +45,8 @@ def writeMK(dir, srcs):
     fh.close()
 
 def main(args):
-    cpps = getfiles("./", g_exts)
-    writeMK("./", cpps)
+    cpps = getfiles(g_jni_dir, g_exts)
+    writeMK(g_jni_dir, cpps)
 
 if __name__ == "__main__":
     main(sys.argv)

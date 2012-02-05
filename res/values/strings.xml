@@ -12,7 +12,8 @@
     <string name="str_effect_frame">相 框</string>
     <string name="msg_camera_open_failed">打开相机失败！</string>
     <string name="str_switch_camera">切换相机</string>
-    <string name="str_gps">GPS</string>
+    <string name="str_gps">GPS标签</string>
+    <string name="str_sound">静  音</string>
     <string name="str_flush_mode">闪光灯</string>
     <string name="str_autofocus">自动对焦</string>
     <string name="str_delay_shoot">延时拍摄</string>

@@ -23,6 +23,7 @@ import android.widget.*;
 import com.funny.magicamera.popupviews.AutoFocusView;
 import com.funny.magicamera.popupviews.CameraSetting;
 import com.funny.magicamera.popupviews.FilterSelect;
+import com.funny.magicamera.utils.SoundEngine;
 
 import java.io.File;
 import java.util.List;
@@ -48,6 +49,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
     public String mPicPath = null;
     private final static int DIALOG_SELECT_ENGINE = 0;
+
+    private SoundEngine mSoundEngine;
 
     private FilterSelect mFilterSelect;
     private CameraSetting mCameraSetting = null;
@@ -107,6 +110,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                     mCamera.autoFocus(new Camera.AutoFocusCallback() {
                         @Override
                         public void onAutoFocus(boolean b, Camera camera) {
+                            mSoundEngine.playEffect(MagicActivity.this, R.raw.auto_fouse);
                             mAutoFocusView.autoFocusCompleted();
                         }
                     });
@@ -147,6 +151,12 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mFilterSelect = new FilterSelect(this, this);
         mCameraSetting = new CameraSetting(this);
         mAutoFocusView = new AutoFocusView(this);
+
+        mSoundEngine = new SoundEngine();
+        mSoundEngine.preloadEffect(this, R.raw.auto_fouse);
+        mSoundEngine.preloadEffect(this, R.raw.camera_shoot);
+        mSoundEngine.preloadEffect(this, R.raw.delay_timer_beep);
+        mSoundEngine.setEffectsVolume(1.0f);
     }
 
 
@@ -209,10 +219,10 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     void takePicture() {
         if (mPicPath == null){
             if (mDelayTime > 0){
-                ts_delay.setText(String.valueOf(mDelayTime));
+                ts_delay.setCurrentText(String.valueOf(mDelayTime));
                 ts_delay.setVisibility(View.VISIBLE);
                 final Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
+                timer.scheduleAtFixedRate (new TimerTask() {
                     int mRemainTime = mDelayTime;
                     @Override
                     public void run() {
@@ -239,10 +249,12 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      * @param remainTime 剩余时间
      */
     private void onDelayShutterTimer(Integer remainTime) {
-        ts_delay.setCurrentText(String.valueOf(remainTime));
+        ts_delay.setText(String.valueOf(remainTime));
         if ((remainTime == 0)){
             ts_delay.setVisibility(View.GONE);
             cameraShutter();
+        }else{
+            mSoundEngine.playEffect(this, R.raw.delay_timer_beep);
         }
     }
 
@@ -253,13 +265,14 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean b, Camera camera) {
+                mSoundEngine.playEffect(MagicActivity.this, R.raw.auto_fouse);
                 mAutoFocusView.autoFocusCompleted();
                 camera.takePicture(
                         new Camera.ShutterCallback() {
 
                             @Override
                             public void onShutter() {
-                                Log.d(TAG, "onShutter");
+                                mSoundEngine.playEffect(MagicActivity.this, R.raw.camera_shoot);
                             }
                         },
                         null,//postview
@@ -346,6 +359,28 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+    }
+
+    /**
+     * 打开静音
+     */
+    public void mute() {
+        mSoundEngine.mute();
+    }
+
+    /**
+     * 关闭静音
+     */
+    public void unMute() {
+        mSoundEngine.unmute();
+    }
+
+    /**
+     * 是否静音状态
+     * @return
+     */
+    public boolean isMute() {
+        return mSoundEngine.isMute();
     }
 
     /*
@@ -564,7 +599,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera.setParameters(parameters);
         
         List<String> flashModes = parameters.getSupportedFlashModes();
-        if (flashModes.size() <= 1){
+        if (flashModes == null || flashModes.size() <= 1){
             mCameraFlashMode = null;
         }else{
             mCameraFlashMode = parameters.getFlashMode();
