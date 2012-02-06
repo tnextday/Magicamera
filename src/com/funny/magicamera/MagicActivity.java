@@ -265,7 +265,9 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean b, Camera camera) {
-                mSoundEngine.playEffect(MagicActivity.this, R.raw.auto_fouse);
+                if (b){
+                    mSoundEngine.playEffect(MagicActivity.this, R.raw.auto_fouse);
+                }
                 mAutoFocusView.autoFocusCompleted();
                 camera.takePicture(
                         new Camera.ShutterCallback() {
@@ -275,6 +277,7 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
                                 mSoundEngine.playEffect(MagicActivity.this, R.raw.camera_shoot);
                             }
                         },
+                        null,//raw
                         null,//postview
                         new Camera.PictureCallback() {
                             @Override

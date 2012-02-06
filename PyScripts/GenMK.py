@@ -8,21 +8,22 @@ import sys
 from os import path
 
 g_module_name = "libcore"
-g_jni_dir = "../jni/"
+g_add_header_dir = ['facedetector']
+g_src_dirs = []
 
+g_jni_dir = os.path.join('..', 'jni')+path.sep
 g_exts = [".cpp", ".c"]
 
 def getfiles(dir, exts):
     result = []
     for parent, dirnames, filenames in os.walk(dir):
         for filename in filenames:
-            for ext in exts:
-                if (filename.endswith(ext)):
-                    basedir = os.path.basename(parent)
-                    if (basedir == ""):
-                        result += [ filename]
-                    else:
-                        result += [ basedir + "/" + filename]
+            if (path.splitext(filename)[1] in exts):
+                basedir = parent.replace(g_jni_dir, '').replace(path.sep, '/')
+                if (basedir == ""):
+                    result += [ filename]
+                else:
+                    result += [ basedir + "/" + filename]
     return result
 
 def writeMK(dir, srcs):
@@ -37,9 +38,14 @@ def writeMK(dir, srcs):
     fh.writelines("LOCAL_CFLAGS := -Werror\n")
     fh.writelines("\n")
     fh.writelines("LOCAL_SRC_FILES :=")
+    #源码文件的顺序有要求，这个要怎么办呢，手动写目录？
     for src in srcs:
         fh.writelines("\t"+src+" \\\n")
     fh.writelines("\n")
+    if (len(g_add_header_dir) > 0):
+        fh.writelines("LOCAL_C_INCLUDES += \\\n")
+        for hp in g_add_header_dir:
+            fh.writelines("\t$(LOCAL_PATH)/"+hp+" \n")
     fh.writelines("LOCAL_LDLIBS    := -llog -lGLESv2 -lz \n")
     fh.writelines("include $(BUILD_SHARED_LIBRARY)\n")
     fh.close()

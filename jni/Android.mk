@@ -47,6 +47,97 @@ LOCAL_SRC_FILES :=	jni_main.cpp \
 	utils/packageloader.cpp \
 	zip/ioapi.cpp \
 	zip/unzip.cpp \
+	facedetector/b_BasicEm/APh.c \
+	facedetector/b_BasicEm/APhArr.c \
+	facedetector/b_BasicEm/Complex.c \
+	facedetector/b_BasicEm/ComplexArr.c \
+	facedetector/b_BasicEm/Context.c \
+	facedetector/b_BasicEm/DynMemManager.c \
+	facedetector/b_BasicEm/Functions.c \
+	facedetector/b_BasicEm/Int16Arr.c \
+	facedetector/b_BasicEm/Int32Arr.c \
+	facedetector/b_BasicEm/Int8Arr.c \
+	facedetector/b_BasicEm/Math.c \
+	facedetector/b_BasicEm/MathSSE2.c \
+	facedetector/b_BasicEm/Memory.c \
+	facedetector/b_BasicEm/MemSeg.c \
+	facedetector/b_BasicEm/MemTbl.c \
+	facedetector/b_BasicEm/Phase.c \
+	facedetector/b_BasicEm/String.c \
+	facedetector/b_BasicEm/UInt16Arr.c \
+	facedetector/b_BasicEm/UInt32Arr.c \
+	facedetector/b_BasicEm/UInt8Arr.c \
+    facedetector/b_TensorEm/Alt.c \
+	facedetector/b_TensorEm/Cluster2D.c \
+	facedetector/b_TensorEm/Cluster3D.c \
+	facedetector/b_TensorEm/CompactAlt.c \
+	facedetector/b_TensorEm/CompactMat.c \
+	facedetector/b_TensorEm/Flt16Alt2D.c \
+	facedetector/b_TensorEm/Flt16Alt3D.c \
+	facedetector/b_TensorEm/Flt16Mat2D.c \
+	facedetector/b_TensorEm/Flt16Mat3D.c \
+	facedetector/b_TensorEm/Flt16Vec.c \
+	facedetector/b_TensorEm/Flt16Vec2D.c \
+	facedetector/b_TensorEm/Flt16Vec3D.c \
+	facedetector/b_TensorEm/Functions.c \
+	facedetector/b_TensorEm/IdCluster2D.c \
+	facedetector/b_TensorEm/Int16Mat2D.c \
+	facedetector/b_TensorEm/Int16Rect.c \
+	facedetector/b_TensorEm/Int16Vec2D.c \
+	facedetector/b_TensorEm/Int16Vec3D.c \
+	facedetector/b_TensorEm/Int32Mat.c \
+	facedetector/b_TensorEm/MapSequence.c \
+	facedetector/b_TensorEm/Mat.c \
+	facedetector/b_TensorEm/Normalizer.c \
+	facedetector/b_TensorEm/RBFMap2D.c \
+	facedetector/b_TensorEm/SubVecMap.c \
+	facedetector/b_TensorEm/Uint32Rect.c \
+	facedetector/b_TensorEm/VectorMap.c \
+	facedetector/b_ImageEm/APhImage.c \
+	facedetector/b_ImageEm/ComplexImage.c \
+	facedetector/b_ImageEm/Flt16Image.c \
+	facedetector/b_ImageEm/Functions.c \
+	facedetector/b_ImageEm/HistoEq.c \
+	facedetector/b_ImageEm/HistoEq16.c \
+	#facedetector/b_ImageEm/ToneDownBGSupp.c \
+	facedetector/b_ImageEm/UInt16ByteImage.c \
+	facedetector/b_ImageEm/UInt16BytePyrImage.c \
+	facedetector/b_ImageEm/UInt32Image.c \
+	facedetector/b_ImageEm/UInt8Image.c \
+	facedetector/b_ImageEm/UInt8PyramidalImage.c \
+	facedetector/b_BitFeatureEm/BitParam.c \
+	facedetector/b_BitFeatureEm/Feature.c \
+	facedetector/b_BitFeatureEm/Functions.c \
+	facedetector/b_BitFeatureEm/I04Dns2x2Ftr.c \
+	facedetector/b_BitFeatureEm/I04Dns2x4Ftr.c \
+	facedetector/b_BitFeatureEm/I04Tld2x4Ftr.c \
+	facedetector/b_BitFeatureEm/L01Dns2x4Ftr.c \
+	facedetector/b_BitFeatureEm/L01Tld1x1Ftr.c \
+	facedetector/b_BitFeatureEm/L01Tld2x4Ftr.c \
+	facedetector/b_BitFeatureEm/L04Dns2x2Ftr.c \
+	facedetector/b_BitFeatureEm/L04Dns2x4Ftr.c \
+	facedetector/b_BitFeatureEm/L04Dns3x3Ftr.c \
+	facedetector/b_BitFeatureEm/L04Tld2x4Ftr.c \
+	facedetector/b_BitFeatureEm/L06Dns3x3Ftr.c \
+	facedetector/b_BitFeatureEm/L06Dns4x4Ftr.c \
+	facedetector/b_BitFeatureEm/L06DnsNx4x4Ftr.c \
+	facedetector/b_BitFeatureEm/LocalScanDetector.c \
+	facedetector/b_BitFeatureEm/LocalScanner.c \
+	facedetector/b_BitFeatureEm/ScanDetector.c \
+	facedetector/b_BitFeatureEm/Scanner.c \
+	facedetector/b_BitFeatureEm/Sequence.c \
+	facedetector/b_APIEm/BFFaceFinder.c \
+	facedetector/b_APIEm/DCR.c \
+	facedetector/b_APIEm/FaceFinder.c \
+	facedetector/b_APIEm/FaceFinderRef.c \
+	facedetector/b_APIEm/Functions.c \
+	facedetector/DCR.c \
+	facedetector/FaceFinder.c \
+	facedetector/SDK.c \
+
+LOCAL_C_INCLUDES += \
+    $(LOCAL_PATH)/facedetector
+
 
 LOCAL_LDLIBS    := -llog -lGLESv2 -lz 
 include $(BUILD_SHARED_LIBRARY)
