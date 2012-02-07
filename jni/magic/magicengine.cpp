@@ -17,11 +17,7 @@ static const char Engine_VertexShader[] =
     "}\n";
 
 static const char Engine_FragmentShader[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
-    "precision highp float;\n"
-    "#else\n"
     "precision mediump float;\n"
-    "#endif\n"
     "varying vec2 vTexCoord;\n"
     "uniform sampler2D sTexture;\n"
     "void main() {\n"

@@ -8,11 +8,7 @@ static const char Nostalgia_VShader[] =
     "    vTexCoord = vec2(aPosition.z, aPosition.w );\n"
     "}\n";
 static const char Nostalgia_FShader[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n" 
-    "   precision highp float;\n" 
-    "#else\n"
-    "   precision mediump float;\n"
-    "#endif\n"
+    "precision mediump float;\n"
     "uniform sampler2D uImgTex;\n"
     "varying vec2 vTexCoord;\n"
     "float mid(float a, float b, float c){\n"

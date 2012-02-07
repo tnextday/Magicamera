@@ -8,11 +8,7 @@ static const char Purple_VShader[] =
     "    vTexCoord = vec2(aPosition.z, aPosition.w );\n"
     "}\n";
 static const char Purple_FShader[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
-    "   precision highp float;\n"
-    "#else\n"
-    "   precision mediump float;\n"
-    "#endif\n"
+    "precision mediump float;\n"
     "uniform sampler2D uImgTex;\n"
     "uniform sampler2D uCurve;\n"
     "varying vec2 vTexCoord;\n"

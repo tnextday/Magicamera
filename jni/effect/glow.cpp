@@ -9,11 +9,7 @@ static const char Glow_VShader[] =
     "    vTexCoord = vec2(aPosition.z, aPosition.w );\n"
     "}\n";
 static const char Glow_FShader_hblur[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
-    "precision highp float;\n"
-    "#else\n"
     "precision mediump float;\n"
-    "#endif\n"
     "uniform sampler2D RTScene;\n"
     "varying vec2 vTexCoord;\n"
     "uniform float hBlurSize;\n"
@@ -32,11 +28,7 @@ static const char Glow_FShader_hblur[] =
     "    gl_FragColor = sum;\n"
     "}\n";
 static const char Glow_FShader_vblur_final[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
-    "precision highp float;\n"
-    "#else\n"
     "precision mediump float;\n"
-    "#endif\n"
     "uniform sampler2D RTScene;\n"
     "uniform sampler2D SrcTex;\n"
     "varying vec2 vTexCoord;\n"

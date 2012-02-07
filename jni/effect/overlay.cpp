@@ -8,11 +8,7 @@ static const char Overlay_VShader[] =
     "    vTexCoord = vec2(aPosition.z, aPosition.w );\n"
     "}\n";
 static const char Overlay_FShader[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n" 
-    "   precision highp float;\n" 
-    "#else\n"
-    "   precision mediump float;\n"
-    "#endif\n"
+    "precision mediump float;\n"
     "uniform sampler2D uImgTex;\n"
     "varying vec2 vTexCoord;\n"
     "void main(void)\n"

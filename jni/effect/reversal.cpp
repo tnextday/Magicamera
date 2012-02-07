@@ -8,11 +8,7 @@ static const char Reversal_VShader[] =
     "    vTexCoord = vec2(aPosition.z, aPosition.w );\n"
     "}\n";
 static const char Reversal_FShader[] = 
-    "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
-    "   precision highp float;\n"
-    "#else\n" 
-    "   precision mediump float;\n"
-    "#endif\n" 
+    "precision mediump float;\n"
     "uniform sampler2D uImgTex;\n"
     "varying vec2 vTexCoord;\n"
     "#define BlendColorBurnf(base, blend)  ((blend == 0.0) ? blend : max((1.0 - ((1.0 - base) / blend)), 0.0))\n"

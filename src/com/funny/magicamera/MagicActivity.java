@@ -35,7 +35,7 @@ import static com.funny.magicamera.MSurfaceView.*;
 public class MagicActivity extends ActivityGroup implements Camera.PreviewCallback,
             View.OnClickListener,
             CameraBufferReleaseListener,
-            FilterSelect.FilterSelected {
+            FilterSelect.FilterSelected, Camera.AutoFocusCallback, Camera.ShutterCallback, Camera.PictureCallback {
     public static String TAG = "MagicEngine";
 
     private Camera mCamera = null;
@@ -58,6 +58,8 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
 
     MSurfaceView m_SurfaceView;
     private TextSwitcher ts_delay;
+
+
 
     enum CameraFacing {
         BACK, FRONT
@@ -262,34 +264,49 @@ public class MagicActivity extends ActivityGroup implements Camera.PreviewCallba
      * 相机拍照
      */
     private void cameraShutter(){
-        mCamera.autoFocus(new Camera.AutoFocusCallback() {
-            @Override
-            public void onAutoFocus(boolean b, Camera camera) {
-                if (b){
-                    mSoundEngine.playEffect(MagicActivity.this, R.raw.auto_fouse);
-                }
-                mAutoFocusView.autoFocusCompleted();
-                camera.takePicture(
-                        new Camera.ShutterCallback() {
-
-                            @Override
-                            public void onShutter() {
-                                mSoundEngine.playEffect(MagicActivity.this, R.raw.camera_shoot);
-                            }
-                        },
-                        null,//raw
-                        null,//postview
-                        new Camera.PictureCallback() {
-                            @Override
-                            public void onPictureTaken(byte[] bytes, Camera camera) {
-                                m_SurfaceView.queueEvent(new TakePicture(bytes));
-                            }
-                        }
-                );
-            }
-        });
+        //先对焦，对焦结束后拍照
+        mCamera.autoFocus(this);
         beginAutoFocus();
     }
+
+    /**
+     * 自动对焦结束回调
+     * @param b 是否成功对焦
+     * @param camera
+     */
+    @Override
+    public void onAutoFocus(boolean b, Camera camera) {
+        if (b){
+            mSoundEngine.playEffect(MagicActivity.this, R.raw.auto_fouse);
+        }
+        mAutoFocusView.autoFocusCompleted();
+        camera.takePicture(
+                this,//Shutter
+                null,//raw
+                null,//postview
+                this //jpeg
+        );
+    }
+
+    /**
+     * 当相机拍照时会回调此函数
+     */
+    @Override
+    public void onShutter() {
+        //播放拍照音
+        mSoundEngine.playEffect(MagicActivity.this, R.raw.camera_shoot);
+    }
+
+    /**
+     * Camera.takePicture Jpeg回调，当拍照结束后会返回jpeg数据
+     * @param bytes jpeg数据
+     * @param camera
+     */
+    @Override
+    public void onPictureTaken(byte[] bytes, Camera camera) {
+        m_SurfaceView.queueEvent(new TakePicture(bytes));
+    }
+
 
     /**
      * 切换引擎 哈哈镜引擎与特效引擎

@@ -60,6 +60,9 @@
     <Filter Include="Engine\magic">
       <UniqueIdentifier>{6e2fc9df-7cf5-4806-aff7-1b92b66c930a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\facedetector">
+      <UniqueIdentifier>{b219a97f-2fc2-4484-b3a5-6a4c6976ca7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eglhelper.cpp">
@@ -218,6 +221,264 @@
     <ClCompile Include="..\..\jni\effect\curveeffect.cpp">
       <Filter>Engine\effect</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\DCR.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\FaceFinder.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\SDK.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\APhImage.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\ComplexImage.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\Flt16Image.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\Functions.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\HistoEq.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\HistoEq16.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\UInt16ByteImage.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\UInt16BytePyrImage.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\UInt32Image.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\UInt8Image.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_ImageEm\UInt8PyramidalImage.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_APIEm\BFFaceFinder.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_APIEm\DCR.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_APIEm\FaceFinder.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_APIEm\FaceFinderRef.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_APIEm\Functions.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\APh.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\APhArr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Complex.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\ComplexArr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Context.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\DynMemManager.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Functions.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Int16Arr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Int32Arr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Int8Arr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Math.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\MathSSE2.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Memory.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\MemSeg.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\MemTbl.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\Phase.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\String.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\UInt16Arr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\UInt32Arr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BasicEm\UInt8Arr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\BitParam.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\Feature.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\Functions.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\I04Dns2x2Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\I04Dns2x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\I04Tld2x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L01Dns2x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L01Tld1x1Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L01Tld2x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L04Dns2x2Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L04Dns2x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L04Dns3x3Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L04Tld2x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L06Dns3x3Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L06Dns4x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\L06DnsNx4x4Ftr.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\LocalScanDetector.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\LocalScanner.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\ScanDetector.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\Scanner.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_BitFeatureEm\Sequence.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Alt.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Cluster2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Cluster3D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\CompactAlt.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\CompactMat.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Alt2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Alt3D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Mat2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Mat3D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Vec.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Vec2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Flt16Vec3D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Functions.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\IdCluster2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Int16Mat2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Int16Rect.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Int16Vec2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Int16Vec3D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Int32Mat.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\MapSequence.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Mat.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Normalizer.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\RBFMap2D.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\SubVecMap.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\Uint32Rect.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\facedetector\b_TensorEm\VectorMap.c">
+      <Filter>Engine\facedetector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eglhelper.h">
@@ -360,6 +621,288 @@
     </ClInclude>
     <ClInclude Include="..\..\jni\effect\colorcurves.h">
       <Filter>Engine\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\Types.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\DCR.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\DCR_Internal.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\FaceFinder.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\FaceFinder_Internal.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\fd_emb_sdk.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\SDK.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\SDK_Internal.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\APhImage.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\ComplexImage.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\Flt16Image.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\Functions.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\HistoEq.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\HistoEq16.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\UInt16ByteImage.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\UInt16BytePyrImage.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\UInt32Image.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\UInt8Image.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_ImageEm\UInt8PyramidalImage.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_APIEm\BFFaceFinder.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_APIEm\DCR.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_APIEm\FaceFinder.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_APIEm\FaceFinderRef.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_APIEm\Functions.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_APIEm\Types.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\APh.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\APhArr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Basic.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Complex.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\ComplexArr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Config.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Context.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\DynMemManager.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Functions.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Int16Arr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Int32Arr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Int8Arr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Math.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Memory.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\MemSeg.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\MemTbl.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\Phase.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\String.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\UInt16Arr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\UInt32Arr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BasicEm\UInt8Arr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\BitParam.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\Feature.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\Functions.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\I04Dns2x2Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\I04Dns2x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\I04Tld2x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L01Dns2x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L01Tld1x1Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L01Tld2x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L04Dns2x2Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L04Dns2x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L04Dns3x3Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L04Tld2x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L06Dns3x3Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L06Dns4x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\L06DnsNx4x4Ftr.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\LocalScanDetector.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\LocalScanner.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\ScanDetector.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\Scanner.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_BitFeatureEm\Sequence.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Alt.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Cluster2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Cluster3D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\CompactAlt.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\CompactMat.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Alt2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Alt3D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Mat2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Mat3D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Vec.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Vec2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Flt16Vec3D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Functions.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\IdCluster2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Int16Mat2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Int16Rect.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Int16Vec2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Int16Vec3D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Int32Mat.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\MapSequence.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Mat.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Normalizer.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\RBFMap2D.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\SubVecMap.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\Uint32Rect.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\b_TensorEm\VectorMap.h">
+      <Filter>Engine\facedetector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\facedetector\conf\b_BasicEm\LibConfig.h">
+      <Filter>Engine\facedetector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

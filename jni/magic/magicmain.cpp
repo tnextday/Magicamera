@@ -21,11 +21,7 @@ static const char gVertexShader[] =
         "}\n";
 
 static const char gFragmentShader[] = 
-        "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
-        "precision highp float;\n"
-        "#else\n"
         "precision mediump float;\n"
-        "#endif\n"
         "varying vec2 vTexCoord;\n"
         "uniform sampler2D sTexture;\n"
         "void main() {\n"
