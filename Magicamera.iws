@@ -30,25 +30,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37a5a740-d6d7-4cb4-b0a0-36a899e04249" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj.filters" afterPath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj.filters" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj" afterPath="$PROJECT_DIR$/tools/WinMagic/WinMagic.vcxproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Magicamera.iws" afterPath="$PROJECT_DIR$/Magicamera.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/curveeffect.cpp" afterPath="$PROJECT_DIR$/jni/effect/curveeffect.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/glow.cpp" afterPath="$PROJECT_DIR$/jni/effect/glow.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/hdr.cpp" afterPath="$PROJECT_DIR$/jni/effect/hdr.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/infrared.cpp" afterPath="$PROJECT_DIR$/jni/effect/infrared.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/lemo.cpp" afterPath="$PROJECT_DIR$/jni/effect/lemo.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/microspur.cpp" afterPath="$PROJECT_DIR$/jni/effect/microspur.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/nostalgia.cpp" afterPath="$PROJECT_DIR$/jni/effect/nostalgia.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/overlay.cpp" afterPath="$PROJECT_DIR$/jni/effect/overlay.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/purple.cpp" afterPath="$PROJECT_DIR$/jni/effect/purple.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/reversal.cpp" afterPath="$PROJECT_DIR$/jni/effect/reversal.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/scanline.cpp" afterPath="$PROJECT_DIR$/jni/effect/scanline.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/effect/shift.cpp" afterPath="$PROJECT_DIR$/jni/effect/shift.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/imageadjust.cpp" afterPath="$PROJECT_DIR$/jni/magic/imageadjust.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicengine.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicengine.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/gdx2d/gdx2d.cpp" afterPath="$PROJECT_DIR$/jni/gdx2d/gdx2d.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/glutils/glutils.h" afterPath="$PROJECT_DIR$/jni/glutils/glutils.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.cpp" afterPath="$PROJECT_DIR$/jni/magic/magicmain.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" afterPath="$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/magic/magicmain.h" afterPath="$PROJECT_DIR$/jni/magic/magicmain.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jni/utils/fileutils.h" afterPath="$PROJECT_DIR$/jni/utils/fileutils.h" />
     </list>
     <list id="8df0ada0-e458-4f6d-ad40-96412b40ae30" name="Failed commit: Default" comment="[update]前后镜头切换正常" />
     <ignored path="Magicamera.iws" />
@@ -151,8 +137,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -164,7 +150,7 @@
       <file leaf-file-name="MagicActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="423" column="0" selection-start="13079" selection-end="13079" vertical-scroll-proportion="-12.237804">
+            <state line="423" column="0" selection-start="13079" selection-end="13079" vertical-scroll-proportion="0.035714287">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -299,7 +285,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -361,22 +346,23 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="SDKs" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeWidth1" value="109" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeWidth1" value="109" />
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeWidth2" value="113" />
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeWidth0" value="108" />
     <property name="DEBUGGABLE_DEVICE" value="33C2086428011D7" />
-    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeOrder0" value="0" />
     <property name="DEBUGGABLE_PROCESS" value="com.funny.magicamera" />
+    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeOrder0" value="0" />
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_treeOrder2" value="2" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -395,12 +381,12 @@
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatWidth0" value="102" />
     <property name="options.lastSelected" value="editor.preferences.tabs" />
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatOrder1" value="1" />
-    <property name="project.structure.side.proportion" value="0.23329908" />
     <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatOrder3" value="3" />
+    <property name="project.structure.side.proportion" value="0.23329908" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="33C2086428011D7" />
-    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatOrder3" value="3" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="FileHistory.org.zmlx.hg4idea.provider.HgHistoryProvider_flatOrder2" value="2" />
     <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
@@ -487,17 +473,6 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="embedded" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" runner="idea" />
       <module name="" />
@@ -523,6 +498,17 @@
         <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
         <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -609,7 +595,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.6403941" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3280757" sideWeight="0.0" order="12" side_tool="false" content_ui="tabs" />
@@ -621,7 +607,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17747164" sideWeight="0.6413793" order="1" side_tool="true" content_ui="tabs" x="530" y="257" width="219" height="264" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32820097" sideWeight="0.64037853" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32492113" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32737276" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.17728758" sideWeight="0.47862068" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3987034" sideWeight="0.64037853" order="9" side_tool="false" content_ui="tabs" />
@@ -637,6 +622,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32689655" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32492113" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.6537931" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -806,6 +792,11 @@
         <state line="20" column="4" selection-start="520" selection-end="520" vertical-scroll-proportion="-1.5357143" />
       </provider>
     </entry>
+    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/hardware/Camera.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="46" selection-start="754" selection-end="754" vertical-scroll-proportion="0.0" />
@@ -821,18 +812,9 @@
         <state line="34" column="0" selection-start="1141" selection-end="1141" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="jar://D:/android-sdk-windows/platforms/android-10/android.jar!/android/hardware/Camera.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#14700#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/funny/magicamera/MagicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="423" column="0" selection-start="13079" selection-end="13079" vertical-scroll-proportion="-12.237804">
+        <state line="423" column="0" selection-start="13079" selection-end="13079" vertical-scroll-proportion="0.035714287">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

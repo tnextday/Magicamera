@@ -26,3 +26,10 @@ win32/*
 *.old
 tools/ipch/*
 *.opensdf
+*.obj
+tools/magic/release/arraylist.o
+tools/magic/release/
+ui/*
+*.Debug
+*.Release
+tools/magic/ui_*
