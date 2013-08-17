@@ -1,4 +1,4 @@
-syntax: glob
+/docs
 bin/*
 gen/*
 obj/*
